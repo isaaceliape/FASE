@@ -163,4 +163,205 @@
 
 ---
 
+## 📋 Plano de Implementação Detalhado
+
+### Fase 1: Core (MVP) — 5 arquivos
+
+**Objetivo:** Ter o mínimo funcional para criar e executar projetos.
+
+**Critérios de Aceitação:**
+- [ ] Todos os comandos core traduzidos e testados
+- [ ] Agents principais (executor, planner, verifier) funcionando em PT-BR
+- [ ] Fluxo básico: `new-project` → `plan-phase` → `execute-phase` funcional
+- [ ] Documentação mínima no README
+
+**Dependências:**
+- `faz-executor.pt.md` ✅ (já traduzido)
+- `faz-planner.pt.md` → depende do executor
+- `faz-verifier.pt.md` → depende do planner
+
+**Checklist Fase 1:**
+
+| # | Arquivo | Status | Tamanho | Complexidade | Responsável | Previsão |
+|---|---------|--------|---------|--------------|-------------|----------|
+| 1 | `commands/faz/help.pt.md` | ✅ Traduzido | ~8KB | Baixa | OpenCode | 2026-03-06 |
+| 2 | `commands/faz/new-project.pt.md` | ⏳ Pendente | ~12KB | Média | OpenCode | 2026-03-06 |
+| 3 | `commands/faz/plan-phase.pt.md` | ⏳ Pendente | ~15KB | Média | OpenCode | 2026-03-06 |
+| 4 | `commands/faz/execute-phase.pt.md` | ⏳ Pendente | ~10KB | Média | OpenCode | 2026-03-06 |
+| 5 | `agents/faz-planner.pt.md` | ⏳ Pendente | ~43KB | Alta | OpenCode | 2026-03-07 |
+| 6 | `agents/faz-verifier.pt.md` | ⏳ Pendente | ~19KB | Média | OpenCode | 2026-03-07 |
+
+**Estimativa:** 2-3 dias
+
+---
+
+### Fase 2: Planning & Research — 9 arquivos
+
+**Objetivo:** Suporte completo a planejamento e pesquisa de projetos.
+
+**Critérios de Aceitação:**
+- [ ] Capacidade de criar roadmaps de múltiplas fases
+- [ ] Pesquisa automatizada de tecnologias e ecossistemas
+- [ ] Mapeamento de codebase existente
+- [ ] Integração entre pesquisa e planejamento
+
+**Dependências:**
+- Depende da Fase 1 (especialmente planner e verifier)
+- `faz-roadmapper.pt.md` → base para todos os outros
+- `faz-research-synthesizer.pt.md` → depende dos researchers
+
+**Checklist Fase 2:**
+
+| # | Arquivo | Tipo | Tamanho | Complexidade | Dependência |
+|---|---------|------|---------|--------------|-------------|
+| 1 | `agents/faz-roadmapper.pt.md` | Agent | ~35KB | Alta | Fase 1 |
+| 2 | `agents/faz-project-researcher.pt.md` | Agent | ~25KB | Média | - |
+| 3 | `agents/faz-phase-researcher.pt.md` | Agent | ~20KB | Média | - |
+| 4 | `agents/faz-research-synthesizer.pt.md` | Agent | ~18KB | Média | #2, #3 |
+| 5 | `agents/faz-codebase-mapper.pt.md` | Agent | ~22KB | Média | - |
+| 6 | `commands/faz/new-milestone.pt.md` | Command | ~10KB | Baixa | #1 |
+| 7 | `commands/faz/add-phase.pt.md` | Command | ~12KB | Baixa | #1 |
+| 8 | `commands/faz/research-phase.pt.md` | Command | ~15KB | Média | #2, #3, #4 |
+| 9 | `commands/faz/map-codebase.pt.md` | Command | ~10KB | Baixa | #5 |
+
+**Estimativa:** 4-5 dias
+
+---
+
+### Fase 3: Verification & Debug — 9 arquivos
+
+**Objetivo:** Garantir qualidade e facilitar debugging.
+
+**Critérios de Aceitação:**
+- [ ] Verificação automática de planos antes da execução
+- [ ] Checagem de integração entre fases
+- [ ] Sistema de debug estruturado
+- [ ] Gestão de TODOs integrada
+
+**Dependências:**
+- Depende da Fase 1
+- Alguns agents dependem de conceitos do planner
+
+**Checklist Fase 3:**
+
+| # | Arquivo | Tipo | Tamanho | Complexidade | Dependência |
+|---|---------|------|---------|--------------|-------------|
+| 1 | `agents/faz-plan-checker.pt.md` | Agent | ~20KB | Média | Fase 1 |
+| 2 | `agents/faz-integration-checker.pt.md` | Agent | ~25KB | Média | Fase 1 |
+| 3 | `agents/faz-debugger.pt.md` | Agent | ~30KB | Alta | - |
+| 4 | `commands/faz/verify-work.pt.md` | Command | ~12KB | Média | Fase 1 |
+| 5 | `commands/faz/validate-phase.pt.md` | Command | ~10KB | Média | #1 |
+| 6 | `commands/faz/debug.pt.md` | Command | ~15KB | Média | #3 |
+| 7 | `commands/faz/check-todos.pt.md` | Command | ~8KB | Baixa | - |
+| 8 | `commands/faz/add-todo.pt.md` | Command | ~8KB | Baixa | - |
+| 9 | `commands/faz/add-tests.pt.md` | Command | ~12KB | Média | #4 |
+
+**Estimativa:** 4-5 dias
+
+---
+
+### Fase 4: Advanced & Utility — 22 arquivos
+
+**Objetivo:** Recursos avançados, hooks e commands utilitários.
+
+**Critérios de Aceitação:**
+- [ ] Sistema de hooks funcionando
+- [ ] Auditor Nyquist implementado
+- [ ] Commands utilitários todos traduzidos
+- [ ] Otimizações e integrações extras
+
+**Dependências:**
+- Depende das Fases 1-3
+- Hooks são independentes mas precisam de testes
+
+**Checklist Fase 4:**
+
+#### Hooks (3 arquivos)
+| # | Arquivo | Tamanho | Complexidade |
+|---|---------|---------|--------------|
+| 1 | `hooks/faz-check-update.js` | ~5KB | Baixa |
+| 2 | `hooks/faz-statusline.js` | ~8KB | Média |
+| 3 | `hooks/faz-context-monitor.js` | ~10KB | Média |
+
+#### Agent Avançado (1 arquivo)
+| # | Arquivo | Tamanho | Complexidade |
+|---|---------|---------|--------------|
+| 4 | `agents/faz-nyquist-auditor.pt.md` | ~35KB | Alta |
+
+#### Commands Utilitários (18 arquivos - selecionar os mais importantes)
+| # | Arquivo | Prioridade | Estimativa |
+|---|---------|------------|------------|
+| 5 | `fix-lint.pt.md` | Alta | 1 dia |
+| 6 | `fix-typecheck.pt.md` | Alta | 1 dia |
+| 7 | `commit.pt.md` | Alta | 1 dia |
+| 8 | `status.pt.md` | Alta | 0.5 dia |
+| 9 | `review.pt.md` | Média | 1 dia |
+| 10 | `optimize.pt.md` | Média | 1 dia |
+| 11 | `refactor.pt.md` | Média | 1 dia |
+| 12 | `explain.pt.md` | Média | 0.5 dia |
+| 13-22 | (outros 10 commands) | Baixa | 3 dias |
+
+**Estimativa:** 7-10 dias
+
+---
+
+## 🔄 Estratégia de Tradução
+
+### Prioridade de Tradução
+1. **Commands antes de Agents** — Commands são menores e dão base
+2. **Core antes de Advanced** — Funcionalidade básica primeiro
+3. **Independentes antes de Dependentes** — Quebrar cadeias de dependência
+
+### Processo de Tradução por Arquivo
+1. **Preparação:** Ler arquivo original, identificar termos técnicos
+2. **Tradução:** Traduzir mantendo estrutura e formatação
+3. **Atualização de Prefixos:** `gsd-` → `faz-`, `/gsd:` → `/faz:`
+4. **Atualização de Paths:** `~/.claude/get-shit-done/` → `~/.faz/`
+5. **Revisão:** Verificar consistência com glossário
+6. **Teste:** Validar se comandos fazem sentido em PT-BR
+7. **Commit:** Commitar com mensagem descritiva
+
+### Ferramentas por Tipo
+- **Agents grandes (>30KB):** OpenCode para velocidade + revisão manual
+- **Commands médios (10-20KB):** OpenCode direto
+- **Hooks e utilitários (<10KB):** Manual ou OpenCode rápido
+- **Documentação:** Revisão manual importante
+
+---
+
+## 📅 Cronograma Consolidado
+
+| Fase | Arquivos | Estimativa | Início | Fim | Status |
+|------|----------|------------|--------|-----|--------|
+| Setup | 7 | 1 dia | 06/03 | 06/03 | ✅ Concluído |
+| Fase 1: Core | 6 | 2-3 dias | 06/03 | 08/03 | 🚧 Em progresso |
+| Fase 2: Planning | 9 | 4-5 dias | 08/03 | 13/03 | ⏳ Pendente |
+| Fase 3: Verification | 9 | 4-5 dias | 13/03 | 18/03 | ⏳ Pendente |
+| Fase 4: Advanced | 22 | 7-10 dias | 18/03 | 28/03 | ⏳ Pendente |
+| **TOTAL** | **53** | **18-24 dias** | | | **11%** |
+
+---
+
+## 🎯 Marcos (Milestones)
+
+- [x] **M0: Setup** — Repo, docs iniciais, estrutura
+- [ ] **M1: MVP Funcional** — Fase 1 completa (Core)
+- [ ] **M2: Planning Completo** — Fases 1-2 (pode planejar e executar projetos)
+- [ ] **M3: Qualidade** — Fases 1-3 (com verificação e debug)
+- [ ] **M4: Release** — Todas as fases + testes + docs
+
+---
+
+## ⚠️ Riscos e Mitigações
+
+| Risco | Probabilidade | Impacto | Mitigação |
+|-------|---------------|---------|-----------|
+| GSD original atualiza | Média | Alto | Monitorar repo original, manter compatibilidade |
+| Termos técnicos inconsistentes | Média | Médio | Usar TRANSLATION_GUIDE.md rigorosamente |
+| Arquivos grandes demais para tradução | Baixa | Médio | Dividir em partes, usar OpenCode em batches |
+| Testes falham após tradução | Média | Alto | Testar cada fase antes de avançar |
+| Fadiga/tradutor indisponível | Média | Alto | Trabalho incremental, commits frequentes |
+
+---
+
 **"Chega de enrolação. Descreve o que quer e FAZ acontecer."** 🇧🇷🚀
