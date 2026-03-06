@@ -1,5 +1,5 @@
 ---
-name: faz:add-phase
+name: faz:adicionar-fase
 description: Adiciona fase ao final do milestone atual no roadmap
 argument-hint: <descrição>
 allowed-tools:

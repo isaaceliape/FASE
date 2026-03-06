@@ -1,5 +1,5 @@
 ---
-name: faz:health
+name: faz:saude
 description: Diagnostica health do diretório de planning e opcionalmente repara issues
 argument-hint: [--repair]
 allowed-tools:

@@ -1,5 +1,5 @@
 ---
-name: faz:progress
+name: faz:progresso
 description: Verifica progresso do projeto, mostra contexto e direciona para próxima ação (executar ou planejar)
 allowed-tools:
   - Read

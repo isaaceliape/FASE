@@ -1,5 +1,5 @@
 ---
-name: faz:map-codebase
+name: faz:mapear-codigo
 description: Analisa codebase com agents mapper paralelos para produzir documentos .planning/codebase/
 argument-hint: "[opcional: área específica para mapear, ex: 'api' ou 'auth']"
 allowed-tools:
@@ -30,8 +30,8 @@ Output: pasta `.planning/codebase/` com 7 documentos estruturados sobre o estado
 Verifique por .planning/STATE.md - carrega contexto se projeto já inicializado
 
 **Este comando pode rodar:**
-- Antes de /faz:new-project (codebases brownfield) - cria mapa do codebase primeiro
-- Depois de /faz:new-project (codebases greenfield) - atualiza mapa do codebase conforme código evolui
+- Antes de /faz:novo-projeto (codebases brownfield) - cria mapa do codebase primeiro
+- Depois de /faz:novo-projeto (codebases greenfield) - atualiza mapa do codebase conforme código evolui
 - A qualquer momento para refrescar entendimento do codebase
 </context>
 
@@ -59,7 +59,7 @@ Verifique por .planning/STATE.md - carrega contexto se projeto já inicializado
 4. Aguardar agents completarem, coletar confirmações (NÃO conteúdos dos documentos)
 5. Verificar se todos os 7 documentos existem com contagem de linhas
 6. Commitar mapa do codebase
-7. Oferecer próximos passos (tipicamente: /faz:new-project ou /faz:plan-phase)
+7. Oferecer próximos passos (tipicamente: /faz:novo-projeto ou /faz:planejar-fase)
 </process>
 
 <success_criteria>

@@ -1,5 +1,5 @@
 ---
-name: faz:audit-milestone
+name: faz:auditar-marco
 description: Audita conclusão do milestone contra o intent original antes de arquivar
 argument-hint: "[version]"
 allowed-tools:

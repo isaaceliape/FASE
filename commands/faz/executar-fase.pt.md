@@ -1,5 +1,5 @@
 ---
-name: faz:execute-phase
+name: faz:executar-fase
 description: Executa todos os planos de uma fase com paralelização em waves
 argument-hint: "<número-fase> [--gaps-only]"
 allowed-tools:

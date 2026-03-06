@@ -1,5 +1,5 @@
 ---
-name: faz:list-phase-assumptions
+name: faz:listar-premissas
 description: Expõe suposições do Claude sobre abordagem da phase antes do planning
 argument-hint: "[phase]"
 allowed-tools:

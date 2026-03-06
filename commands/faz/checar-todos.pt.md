@@ -1,5 +1,5 @@
 ---
-name: faz:check-todos
+name: faz:checar-todos
 description: Lista todos pendentes e seleciona um para trabalhar
 argument-hint: [filtro de área]
 allowed-tools:

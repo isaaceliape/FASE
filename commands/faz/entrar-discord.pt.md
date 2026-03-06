@@ -1,5 +1,5 @@
 ---
-name: faz:join-discord
+name: faz:entrar-discord
 description: Entre no Discord da comunidade GSD
 ---
 

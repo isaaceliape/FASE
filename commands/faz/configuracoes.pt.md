@@ -1,5 +1,5 @@
 ---
-name: faz:settings
+name: faz:configuracoes
 description: Configurar toggles de workflow FAZ e perfil de model
 allowed-tools:
   - Read

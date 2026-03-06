@@ -59,9 +59,9 @@ O instalador vai te perguntar:
 
 ### Verificar Instalação
 
-- Claude Code / Gemini: `/gsd:help`
-- OpenCode: `/gsd-help`
-- Codex: `$gsd-help`
+- Claude Code / Gemini: `/faz:ajuda`
+- OpenCode: `/faz-ajuda`
+- Codex: `$faz-ajuda`
 
 ---
 
@@ -79,6 +79,70 @@ A filosofia é a mesma do original:
 
 ---
 
+## 📋 Comandos Disponíveis
+
+**32 comandos em português brasileiro:**
+
+### Core
+```bash
+/faz:ajuda              # Mostra ajuda
+/faz:novo-projeto       # Inicia novo projeto
+/faz:planejar-fase      # Planeja uma fase
+/faz:executar-fase      # Executa uma fase
+/faz:configuracoes      # Ajusta configurações
+```
+
+### Planning
+```bash
+/faz:novo-marco         # Cria novo marco/milestone
+/faz:adicionar-fase     # Adiciona uma fase
+/faz:inserir-fase       # Insere fase em posição específica
+/faz:remover-fase       # Remove uma fase
+/faz:pausar-trabalho    # Pausa o trabalho
+/faz:retomar-trabalho   # Retoma o trabalho
+/faz:progresso          # Mostra progresso atual
+```
+
+### Research
+```bash
+/faz:pesquisar-fase     # Pesquisa para uma fase
+/faz:mapear-codigo      # Mapeia codebase existente
+/faz:listar-premissas   # Lista premissas da fase
+```
+
+### Verification
+```bash
+/faz:verificar-trabalho # Verifica trabalho feito
+/faz:validar-fase       # Valida uma fase
+/faz:auditar-marco      # Audita um marco
+```
+
+### Debug
+```bash
+/faz:debug              # Debuga problemas
+/faz:checar-todos       # Checa lista de todos
+/faz:adicionar-todo     # Adiciona um todo
+/faz:adicionar-testes   # Adiciona testes
+```
+
+### Utility
+```bash
+/faz:discutir-fase      # Discute uma fase
+/faz:completar-marco    # Completa um marco
+/faz:planejar-lacunas   # Planeja como fechar lacunas
+/faz:limpar             # Limpa arquivos temporários
+/faz:saude              # Checkup de saúde do projeto
+/faz:atualizar          # Atualiza o F.A.Z.
+/faz:rapido             # Modo rápido para tarefas simples
+/faz:entrar-discord     # Link para Discord
+/faz:reaplicar-patches  # Reaplica patches
+/faz:definir-perfil     # Define perfil de modelo
+```
+
+**Veja a lista completa:** [📚 COMANDOS.md](docs/COMANDOS.md)
+
+---
+
 ## 🎯 Pra Quem É Isso?
 
 - **Devs brasileiros** que querem usar o GSD em português
@@ -92,7 +156,8 @@ A filosofia é a mesma do original:
 
 - [📖 Guia do Usuário](docs/USER-GUIDE.md)
 - [📝 Guia de Tradução](TRANSLATION_GUIDE.md)
-- [🔧 Comandos Disponíveis](docs/COMMANDS.md)
+- [🔧 Comandos Disponíveis](docs/COMANDOS.md)
+- [📊 Progresso do Projeto](PROGRESSO.md)
 - [🤔 FAQ](docs/FAQ.md)
 
 ---

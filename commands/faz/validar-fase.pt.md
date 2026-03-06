@@ -1,5 +1,5 @@
 ---
-name: faz:validate-phase
+name: faz:validar-fase
 description: Audita retroativamente e preenche gaps de validação Nyquist para uma fase completada
 argument-hint: "[número da fase]"
 allowed-tools:

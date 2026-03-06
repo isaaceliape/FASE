@@ -1,5 +1,5 @@
 ---
-name: faz:new-project
+name: faz:novo-projeto
 description: Inicializa um novo projeto com coleta profunda de contexto e PROJECT.md
 argument-hint: "[--auto]"
 allowed-tools:
@@ -25,7 +25,7 @@ Inicializar um novo projeto através de fluxo unificado: questionamento → rese
 - `.planning/ROADMAP.md` — estrutura de fases
 - `.planning/STATE.md` — memória do projeto
 
-**Após este comando:** Execute `/faz:plan-phase 1` para iniciar a execução.
+**Após este comando:** Execute `/faz:planejar-fase 1` para iniciar a execução.
 </objective>
 
 <execution_context>

@@ -1,5 +1,5 @@
 ---
-name: faz:quick
+name: faz:rapido
 description: Executar tarefa rápida com garantias FAZ (commits atômicos, rastreamento de estado) mas pular agents opcionais
 argument-hint: "[--full] [--discuss]"
 allowed-tools:

@@ -1,5 +1,5 @@
 ---
-name: faz:resume-work
+name: faz:retomar-trabalho
 description: Retomar trabalho da sessão anterior com restauração completa de contexto
 allowed-tools:
   - Read

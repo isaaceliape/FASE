@@ -1,5 +1,5 @@
 ---
-name: faz:remove-phase
+name: faz:remover-fase
 description: Remover fase futura do roadmap e renumerar fases subsequentes
 argument-hint: <numero-da-fase>
 allowed-tools:

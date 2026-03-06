@@ -1,6 +1,6 @@
 ---
 name: faz-planner
-description: Cria planos de fase executáveis com divisão de tarefas, análise de dependências e verificação de trás pra frente. Criado pelo orquestrador /faz:plan-phase.
+description: Cria planos de fase executáveis com divisão de tarefas, análise de dependências e verificação de trás pra frente. Criado pelo orquestrador /faz:planejar-fase.
 tools: Read, Write, Bash, Glob, Grep, WebFetch, mcp__context7__*
 color: green
 skills:
@@ -17,9 +17,9 @@ skills:
 Você é um planejador FAZ. Cria planos de fase executáveis com divisão de tarefas, análise de dependências e verificação de trás pra frente.
 
 Criado por:
-- Orquestrador `/faz:plan-phase` (planejamento de fase padrão)
-- Orquestrador `/faz:plan-phase --gaps` (fechamento de gaps de falhas de verificação)
-- Orquestrador `/faz:plan-phase` em modo revisão (atualizando planos baseado em feedback do checker)
+- Orquestrador `/faz:planejar-fase` (planejamento de fase padrão)
+- Orquestrador `/faz:planejar-fase --gaps` (fechamento de gaps de falhas de verificação)
+- Orquestrador `/faz:planejar-fase` em modo revisão (atualizando planos baseado em feedback do checker)
 
 Seu trabalho: Produzir arquivos PLAN.md que executores Claude possam implementar sem interpretação. Planos são prompts, não documentos que viram prompts.
 
@@ -147,7 +147,7 @@ Descoberta é OBRIGATÓRIA a menos que você possa provar que contexto atual exi
 - Nível 2+: Biblioteca nova não no package.json, API externa, "escolher/selecionar/avaliar" na descrição
 - Nível 3: "arquitetura/design/sistema", múltiplos serviços externos, modelagem de dados, design de auth
 
-Para nichos específicos (3D, jogos, áudio, shaders, ML), sugerir `/faz:research-phase` antes de plan-phase.
+Para nichos específicos (3D, jogos, áudio, shaders, ML), sugerir `/faz:pesquisar-fase` antes de plan-phase.
 
 </discovery_levels>
 
@@ -1078,7 +1078,7 @@ Use `phase_dir` do contexto init (já carregado em load_project_state).
 
 ```bash
 cat "$phase_dir"/*-CONTEXT.md 2>/dev/null   # De /faz:discuss-phase
-cat "$phase_dir"/*-RESEARCH.md 2>/dev/null   # De /faz:research-phase
+cat "$phase_dir"/*-RESEARCH.md 2>/dev/null   # De /faz:pesquisar-fase
 cat "$phase_dir"/*-DISCOVERY.md 2>/dev/null  # De descoberta obrigatória
 ```
 
@@ -1243,7 +1243,7 @@ Retorne resultado de planejamento estruturado para o orquestrador.
 
 ### Próximos Passos
 
-Execute: `/faz:execute-phase {fase}`
+Execute: `/faz:executar-fase {fase}`
 
 <sub>`/clear` primeiro - fresh context window</sub>
 ```
@@ -1264,7 +1264,7 @@ Execute: `/faz:execute-phase {fase}`
 
 ### Próximos Passos
 
-Execute: `/faz:execute-phase {fase} --gaps-only`
+Execute: `/faz:executar-fase {fase} --gaps-only`
 ```
 
 ## Checkpoint Alcançado / Revisão Completa
@@ -1304,6 +1304,6 @@ Planejamento completo quando:
 - [ ] Arquivo(s) PLAN existem com gap_closure: true
 - [ ] Cada plano: tarefas derivadas de itens gap.missing
 - [ ] Arquivo(s) PLAN commitados no git
-- [ ] Usuário sabe rodar `/faz:execute-phase {X}` em seguida
+- [ ] Usuário sabe rodar `/faz:executar-fase {X}` em seguida
 
 </success_criteria>

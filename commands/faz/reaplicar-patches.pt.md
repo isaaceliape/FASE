@@ -41,7 +41,7 @@ Ler `backup-meta.json` do diretório de patches.
 ```
 Nenhum patch local encontrado. Nada para reaplicar.
 
-Patches locais são salvos automaticamente quando você executa /faz:update
+Patches locais são salvos automaticamente quando você executa /faz:atualizar
 após modificar qualquer workflow, command ou agent files do FAZ.
 ```
 Sair.
@@ -89,7 +89,7 @@ Para cada arquivo em `backup-meta.json`:
 Após reaplicar, regenerar o manifest do arquivo para que futuras atualizações detectem corretamente estas como modificações do usuário:
 
 ```bash
-# O manifest será regenerado no próximo /faz:update
+# O manifest será regenerado no próximo /faz:atualizar
 # Por enquanto, apenas notar quais arquivos foram modificados
 ```
 

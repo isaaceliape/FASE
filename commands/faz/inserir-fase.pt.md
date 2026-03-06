@@ -1,5 +1,5 @@
 ---
-name: faz:insert-phase
+name: faz:inserir-fase
 description: Insere trabalho urgente como phase decimal (ex: 72.1) entre phases existentes
 argument-hint: <after> <description>
 allowed-tools:

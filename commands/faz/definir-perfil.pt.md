@@ -1,5 +1,5 @@
 ---
-name: faz:set-profile
+name: faz:definir-perfil
 description: Trocar perfil de model para agents FAZ (quality/balanced/budget)
 argument-hint: <perfil>
 allowed-tools:

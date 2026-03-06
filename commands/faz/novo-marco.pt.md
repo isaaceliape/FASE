@@ -1,5 +1,5 @@
 ---
-name: faz:new-milestone
+name: faz:novo-marco
 description: Inicia um novo ciclo de milestone — atualiza PROJECT.md e roteia para requirements
 argument-hint: "[nome do milestone, ex: 'v1.1 Notifications']"
 allowed-tools:
@@ -21,7 +21,7 @@ Equivalente brownfield de new-project. Projeto existe, PROJECT.md tem histórico
 - `.planning/ROADMAP.md` — estrutura de fases (continua numeração)
 - `.planning/STATE.md` — resetado para novo milestone
 
-**Depois:** `/faz:plan-phase [N]` para iniciar execução.
+**Depois:** `/faz:planejar-fase [N]` para iniciar execução.
 </objective>
 
 <execution_context>

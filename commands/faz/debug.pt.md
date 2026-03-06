@@ -183,7 +183,7 @@ Quando debugging completa:
 
 **Se fix automatizado:**
 - Gere PLAN.md com tasks específicas
-- Coordene com `/faz:execute-phase` se necessário
+- Coordene com `/faz:executar-fase` se necessário
 
 </process>
 

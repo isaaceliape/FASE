@@ -1,5 +1,5 @@
 ---
-name: faz:update
+name: faz:atualizar
 description: Atualizar FAZ para versão mais recente com exibição de changelog
 allowed-tools:
   - Bash

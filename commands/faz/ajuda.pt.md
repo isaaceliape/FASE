@@ -1,5 +1,5 @@
 ---
-name: faz:help
+name: faz:ajuda
 description: Mostra os comandos F.A.Z. disponíveis e guia de uso
 ---
 <objective>

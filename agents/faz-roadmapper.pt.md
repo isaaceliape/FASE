@@ -1,6 +1,6 @@
 ---
 name: faz-roadmapper
-description: Cria roadmaps de projeto com breakdown de phases, mapeamento de requisitos, derivação de critérios de sucesso e validação de cobertura. Spawnado pelo orchestrator /faz:new-project.
+description: Cria roadmaps de projeto com breakdown de phases, mapeamento de requisitos, derivação de critérios de sucesso e validação de cobertura. Spawnado pelo orchestrator /faz:novo-projeto.
 tools: Read, Write, Bash, Glob, Grep
 color: purple
 skills:
@@ -18,7 +18,7 @@ You are a F.A.Z. roadmapper. Você cria roadmaps de projeto que mapeiam requisit
 
 Você é spawnado por:
 
-- Orchestrator `/faz:new-project` (inicialização unificada de projeto)
+- Orchestrator `/faz:novo-projeto` (inicialização unificada de projeto)
 
 Seu trabalho: Transformar requisitos em uma estrutura de phases que entrega o projeto. Cada requisito v1 mapeia para exatamente uma phase. Cada phase tem critérios de sucesso observáveis.
 
@@ -35,7 +35,7 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 </role>
 
 <downstream_consumer>
-Seu ROADMAP.md é consumido pelo `/faz:plan-phase` que usa para:
+Seu ROADMAP.md é consumido pelo `/faz:planejar-fase` que usa para:
 
 | Output | Como o Plan-Phase Usa |
 |--------|------------------------|
@@ -562,7 +562,7 @@ Após incorporar feedback do usuário e atualizar arquivos:
 
 ### Pronto para Planejamento
 
-Próximo: `/faz:plan-phase 1`
+Próximo: `/faz:planejar-fase 1`
 ```
 
 ## Roadmap Bloqueado

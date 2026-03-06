@@ -1,5 +1,5 @@
 ---
-name: faz:verify-work
+name: faz:verificar-trabalho
 description: Valida features construídas através de UAT conversacional
 argument-hint: "[número da fase, ex: '4']"
 allowed-tools:
@@ -16,7 +16,7 @@ Validar features construídas através de testing conversacional com estado pers
 
 Propósito: Confirmar que o que o Claude construiu realmente funciona da perspectiva do usuário. Um teste por vez, respostas em texto simples, sem interrogação. Quando issues são encontradas, automaticamente diagnosticar, planejar correções, e preparar para execução.
 
-Output: {phase_num}-UAT.md rastreando todos os resultados de teste. Se issues encontradas: gaps diagnosticados, planos de correção verificados prontos para /faz:execute-phase
+Output: {phase_num}-UAT.md rastreando todos os resultados de teste. Se issues encontradas: gaps diagnosticados, planos de correção verificados prontos para /faz:executar-fase
 </objective>
 
 <execution_context>

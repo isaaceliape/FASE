@@ -1,5 +1,5 @@
 ---
-name: faz:add-tests
+name: faz:adicionar-testes
 description: Gera testes para uma fase completada baseado em critérios UAT e implementação
 argument-hint: "<fase> [instruções adicionais]"
 allowed-tools:
@@ -13,8 +13,8 @@ allowed-tools:
   - AskUserQuestion
 argument-instructions: |
   Parseie o argumento como um número de fase (inteiro, decimal, ou sufixo de letra), mais instruções opcionais em free-text.
-  Exemplo: /faz:add-tests 12
-  Exemplo: /faz:add-tests 12 focar em edge cases no módulo de pricing
+  Exemplo: /faz:adicionar-testes 12
+  Exemplo: /faz:adicionar-testes 12 focar em edge cases no módulo de pricing
 ---
 <objective>
 Gerar testes unit e E2E para uma fase completada, usando seu SUMMARY.md, CONTEXT.md, e VERIFICATION.md como especificações.

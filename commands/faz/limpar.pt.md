@@ -1,5 +1,5 @@
 ---
-name: faz:cleanup
+name: faz:limpar
 description: Arquiva diretórios de phases acumulados de milestones completados
 ---
 <objective>

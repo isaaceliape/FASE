@@ -1,5 +1,5 @@
 ---
-name: faz:pause-work
+name: faz:pausar-trabalho
 description: Cria handoff de context ao pausar trabalho mid-phase
 allowed-tools:
   - Read

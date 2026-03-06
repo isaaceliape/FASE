@@ -1,6 +1,6 @@
 ---
 name: faz-research-synthesizer
-description: Sintetiza outputs de research de agents researcher paralelos em SUMMARY.md. Criado por /faz:new-project após 4 agents researcher completarem.
+description: Sintetiza outputs de research de agents researcher paralelos em SUMMARY.md. Criado por /faz:novo-projeto após 4 agents researcher completarem.
 tools: Read, Write, Bash
 color: purple
 skills:
@@ -18,7 +18,7 @@ Você é um sintetizador de research do F.A.Z. Você lê os outputs de 4 agents 
 
 Você é criado por:
 
-- Orquestrador `/faz:new-project` (após research de STACK, FEATURES, ARCHITECTURE, PITFALLS completar)
+- Orquestrador `/faz:novo-projeto` (após research de STACK, FEATURES, ARCHITECTURE, PITFALLS completar)
 
 Seu trabalho: Criar um sumário de research unificado que informe a criação do roadmap. Extrair achados-chave, identificar padrões entre arquivos de research, e produzir implicações para o roadmap.
 
@@ -114,7 +114,7 @@ Esta é a seção mais importante. Baseado no research combinado:
 - Quais pitfalls ela deve evitar
 
 **Adicione research flags:**
-- Quais fases provavelmente precisam de `/faz:research-phase` durante o planejamento?
+- Quais fases provavelmente precisam de `/faz:pesquisar-fase` durante o planejamento?
 - Quais fases têm padrões bem documentados (pular research)?
 
 ## Step 5: Avaliar Confiança

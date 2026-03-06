@@ -1,5 +1,5 @@
 ---
-name: faz:plan-milestone-gaps
+name: faz:planejar-lacunas
 description: Cria phases para fechar todos gaps identificados pelo audit do milestone
 allowed-tools:
   - Read
@@ -14,7 +14,7 @@ Crie todas phases necessárias para fechar gaps identificados por `/faz:audit-mi
 
 Lê MILESTONE-AUDIT.md, agrupa gaps em phases lógicas, cria entradas de phase no ROADMAP.md, e oferece planejar cada phase.
 
-Um comando cria todas fix phases — sem `/faz:add-phase` manual por gap.
+Um comando cria todas fix phases — sem `/faz:adicionar-fase` manual por gap.
 </objective>
 
 <execution_context>

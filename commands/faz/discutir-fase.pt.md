@@ -1,5 +1,5 @@
 ---
-name: faz:discuss-phase
+name: faz:discutir-fase
 description: Reúne context da phase através de questioning adaptativo antes do planning
 argument-hint: "<phase> [--auto]"
 allowed-tools:

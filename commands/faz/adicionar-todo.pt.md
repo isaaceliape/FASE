@@ -1,5 +1,5 @@
 ---
-name: faz:add-todo
+name: faz:adicionar-todo
 description: Captura ideia ou task como todo do contexto atual da conversa
 argument-hint: [descrição opcional]
 allowed-tools:
