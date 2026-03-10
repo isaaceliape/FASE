@@ -1,49 +1,49 @@
-# Context Window Monitor
+# Monitor de Janela de Contexto
 
-A post-tool hook (`PostToolUse` for Claude Code, `AfterTool` for Gemini CLI) that warns the agent when context window usage is high.
+Um hook post-tool (`PostToolUse` para Claude Code, `AfterTool` para Gemini CLI) que avisa o agente quando o uso da janela de contexto está alto.
 
-## Problem
+## Problema
 
-The statusline shows context usage to the **user**, but the **agent** has no awareness of context limits. When context runs low, the agent continues working until it hits the wall — potentially mid-task with no state saved.
+A statusline mostra o uso do contexto ao **usuário**, mas o **agente** não tem consciência dos limites de contexto. Quando o contexto está baixo, o agente continua trabalhando até atingir o limite — possivelmente no meio de uma tarefa sem nenhum estado salvo.
 
-## How It Works
+## Como Funciona
 
-1. The statusline hook writes context metrics to `/tmp/claude-ctx-{session_id}.json`
-2. After each tool use, the context monitor reads these metrics
-3. When remaining context drops below thresholds, it injects a warning as `additionalContext`
-4. The agent receives the warning in its conversation and can act accordingly
+1. O hook de statusline escreve métricas de contexto em `/tmp/claude-ctx-{session_id}.json`
+2. Após cada uso de ferramenta, o monitor de contexto lê essas métricas
+3. Quando o contexto restante cai abaixo dos limites, ele injeta um aviso como `additionalContext`
+4. O agente recebe o aviso em sua conversa e pode agir de acordo
 
-## Thresholds
+## Limites
 
-| Level | Remaining | Agent Behavior |
-|-------|-----------|----------------|
-| Normal | > 35% | No warning |
-| WARNING | <= 35% | Wrap up current task, avoid starting new complex work |
-| CRITICAL | <= 25% | Stop immediately, save state (`/gsd:pause-work`) |
+| Nível | Restante | Comportamento do Agente |
+|-------|----------|------------------------|
+| Normal | > 35% | Sem aviso |
+| AVISO | <= 35% | Encerrar tarefa atual, evitar iniciar trabalho complexo novo |
+| CRÍTICO | <= 25% | Parar imediatamente, salvar estado (`/faz:pausar-trabalho`) |
 
 ## Debounce
 
-To avoid spamming the agent with repeated warnings:
-- First warning always fires immediately
-- Subsequent warnings require 5 tool uses between them
-- Severity escalation (WARNING -> CRITICAL) bypasses debounce
+Para evitar spam de avisos repetidos ao agente:
+- O primeiro aviso sempre dispara imediatamente
+- Avisos subsequentes exigem 5 usos de ferramenta entre eles
+- Escalada de severidade (AVISO -> CRÍTICO) ignora o debounce
 
-## Architecture
+## Arquitetura
 
 ```
-Statusline Hook (gsd-statusline.js)
-    | writes
+Hook de Statusline (gsd-statusline.js)
+    | escreve
     v
 /tmp/claude-ctx-{session_id}.json
-    ^ reads
+    ^ lê
     |
-Context Monitor (gsd-context-monitor.js, PostToolUse/AfterTool)
-    | injects
+Monitor de Contexto (gsd-context-monitor.js, PostToolUse/AfterTool)
+    | injeta
     v
-additionalContext -> Agent sees warning
+additionalContext -> Agente vê o aviso
 ```
 
-The bridge file is a simple JSON object:
+O arquivo bridge é um objeto JSON simples:
 
 ```json
 {
@@ -54,18 +54,18 @@ The bridge file is a simple JSON object:
 }
 ```
 
-## Integration with GSD
+## Integração com o FAZ
 
-GSD's `/gsd:pause-work` command saves execution state. The WARNING message suggests using it. The CRITICAL message instructs immediate state save.
+O comando `/faz:pausar-trabalho` salva o estado de execução. A mensagem de AVISO sugere usá-lo. A mensagem CRÍTICA instrui o salvamento imediato do estado.
 
-## Setup
+## Configuração
 
-Both hooks are automatically registered during `npx get-shit-done-cc` installation:
+Ambos os hooks são registrados automaticamente durante a instalação via `npx get-shit-done-cc`:
 
-- **Statusline** (writes bridge file): Registered as `statusLine` in settings.json
-- **Context Monitor** (reads bridge file): Registered as `PostToolUse` hook in settings.json (`AfterTool` for Gemini)
+- **Statusline** (escreve o arquivo bridge): Registrado como `statusLine` no settings.json
+- **Monitor de Contexto** (lê o arquivo bridge): Registrado como hook `PostToolUse` no settings.json (`AfterTool` para Gemini)
 
-Manual registration in `~/.claude/settings.json` (Claude Code):
+Registro manual em `~/.claude/settings.json` (Claude Code):
 
 ```json
 {
@@ -88,7 +88,7 @@ Manual registration in `~/.claude/settings.json` (Claude Code):
 }
 ```
 
-For Gemini CLI (`~/.gemini/settings.json`), use `AfterTool` instead of `PostToolUse`:
+Para Gemini CLI (`~/.gemini/settings.json`), use `AfterTool` em vez de `PostToolUse`:
 
 ```json
 {
@@ -107,9 +107,9 @@ For Gemini CLI (`~/.gemini/settings.json`), use `AfterTool` instead of `PostTool
 }
 ```
 
-## Safety
+## Segurança
 
-- The hook wraps everything in try/catch and exits silently on error
-- It never blocks tool execution — a broken monitor should not break the agent's workflow
-- Stale metrics (older than 60s) are ignored
-- Missing bridge files are handled gracefully (subagents, fresh sessions)
+- O hook envolve tudo em try/catch e sai silenciosamente em caso de erro
+- Nunca bloqueia a execução de ferramentas — um monitor com problema não deve quebrar o fluxo de trabalho do agente
+- Métricas obsoletas (mais de 60s) são ignoradas
+- Arquivos bridge ausentes são tratados graciosamente (subagentes, sessões novas)
