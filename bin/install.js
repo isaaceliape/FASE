@@ -175,14 +175,14 @@ function getGlobalDir(runtime, explicitDir = null) {
 }
 
 const banner = '\n' +
-  cyan + '  ███████╗  █████╗ ███████╗\n' +
-  '  ██╔════╝ ██╔══██╗╚════██║\n' +
-  '  █████╗   ███████║    ██╔╝\n' +
-  '  ██╔══╝   ██╔══██║   ██╔╝ \n' +
-  '  ██║      ██║  ██║███████╗\n' +
-  '  ╚═╝      ╚═╝  ╚═╝╚══════╝' + reset + '\n' +
+  cyan + '  ███████╗  █████╗ ███████╗███████╗\n' +
+  '  ██╔════╝ ██╔══██╗██╔════╝██╔════╝\n' +
+  '  █████╗   ███████║███████╗█████╗  \n' +
+  '  ██╔══╝   ██╔══██║╚════██║██╔══╝  \n' +
+  '  ██║      ██║  ██║███████║███████╗\n' +
+  '  ╚═╝      ╚═╝  ╚═╝╚══════╝╚══════╝' + reset + '\n' +
   '\n' +
-  '  FAZ ' + dim + 'v' + pkg.version + reset + '\n' +
+  '  FASE ' + dim + 'v' + pkg.version + reset + '\n' +
   '  Sistema de meta-prompting, context engineering e\n' +
   '  desenvolvimento spec-driven para Claude Code, OpenCode, Gemini e Codex.\n';
 
@@ -218,7 +218,7 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx get-shit-done-cc [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}-g, --global${reset}              Instalar globalmente (no diretório de configuração)\n    ${cyan}-l, --local${reset}               Instalar localmente (no diretório atual)\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FAZ (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime e localização)${reset}\n    npx get-shit-done-cc\n\n    ${dim}# Instalar para Claude Code globalmente${reset}\n    npx get-shit-done-cc --claude --global\n\n    ${dim}# Instalar para Gemini globalmente${reset}\n    npx get-shit-done-cc --gemini --global\n\n    ${dim}# Instalar para Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global\n\n    ${dim}# Instalar para todos os runtimes globalmente${reset}\n    npx get-shit-done-cc --all --global\n\n    ${dim}# Instalar em diretório de configuração customizado${reset}\n    npx get-shit-done-cc --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Instalar apenas no projeto atual${reset}\n    npx get-shit-done-cc --claude --local\n\n    ${dim}# Desinstalar FAZ do Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx get-shit-done-cc [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}-g, --global${reset}              Instalar globalmente (no diretório de configuração)\n    ${cyan}-l, --local${reset}               Instalar localmente (no diretório atual)\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime e localização)${reset}\n    npx get-shit-done-cc\n\n    ${dim}# Instalar para Claude Code globalmente${reset}\n    npx get-shit-done-cc --claude --global\n\n    ${dim}# Instalar para Gemini globalmente${reset}\n    npx get-shit-done-cc --gemini --global\n\n    ${dim}# Instalar para Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global\n\n    ${dim}# Instalar para todos os runtimes globalmente${reset}\n    npx get-shit-done-cc --all --global\n\n    ${dim}# Instalar em diretório de configuração customizado${reset}\n    npx get-shit-done-cc --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Instalar apenas no projeto atual${reset}\n    npx get-shit-done-cc --claude --local\n\n    ${dim}# Desinstalar FASE do Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n`);
   process.exit(0);
 }
 
@@ -1271,7 +1271,7 @@ function uninstall(isGlobal, runtime = 'claude') {
   if (runtime === 'gemini') runtimeLabel = 'Gemini';
   if (runtime === 'codex') runtimeLabel = 'Codex';
 
-  console.log(`  Desinstalando FAZ de ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`);
+  console.log(`  Desinstalando FASE de ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`);
 
   // Check if target directory exists
   if (!fs.existsSync(targetDir)) {
@@ -1294,7 +1294,7 @@ function uninstall(isGlobal, runtime = 'claude') {
           removedCount++;
         }
       }
-      console.log(`  ${green}✓${reset} Removidos comandos FAZ de command/`);
+      console.log(`  ${green}✓${reset} Removidos comandos FASE de command/`);
     }
   } else if (isCodex) {
     // Codex: remove skills/gsd-*/SKILL.md skill directories
@@ -1340,11 +1340,11 @@ function uninstall(isGlobal, runtime = 'claude') {
         // File is empty after stripping — delete it
         fs.unlinkSync(configPath);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removido config.toml (era exclusivo do FAZ)`);
+        console.log(`  ${green}✓${reset} Removido config.toml (era exclusivo do FASE)`);
       } else if (cleaned !== content) {
         fs.writeFileSync(configPath, cleaned);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removidas seções do FAZ do config.toml`);
+        console.log(`  ${green}✓${reset} Removidas seções do FASE do config.toml`);
       }
     }
   } else {
@@ -1378,7 +1378,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (agentCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removidos ${agentCount} agentes FAZ`);
+      console.log(`  ${green}✓${reset} Removidos agentes FASE`);
     }
   }
 
@@ -1396,7 +1396,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (hookCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removidos ${hookCount} hooks FAZ`);
+      console.log(`  ${green}✓${reset} Removidos ${hookCount} hooks FASE`);
     }
   }
 
@@ -1409,7 +1409,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       if (content === '{"type":"commonjs"}') {
         fs.unlinkSync(pkgJsonPath);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removido package.json do FAZ`);
+        console.log(`  ${green}✓${reset} Removido package.json do FASE`);
       }
     } catch (e) {
       // Ignore read errors
@@ -1427,7 +1427,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         settings.statusLine.command.includes('gsd-statusline')) {
       delete settings.statusLine;
       settingsModified = true;
-      console.log(`  ${green}✓${reset} Removida statusline do FAZ das configurações`);
+      console.log(`  ${green}✓${reset} Removida statusline do FASE das configurações`);
     }
 
     // Remove GSD hooks from SessionStart
@@ -1445,7 +1445,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       });
       if (settings.hooks.SessionStart.length < before) {
         settingsModified = true;
-        console.log(`  ${green}✓${reset} Removidos hooks FAZ das configurações`);
+        console.log(`  ${green}✓${reset} Removidos hooks FASE das configurações`);
       }
       // Clean up empty array
       if (settings.hooks.SessionStart.length === 0) {
@@ -1525,7 +1525,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         if (modified) {
           fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
           removedCount++;
-          console.log(`  ${green}✓${reset} Removidas permissões FAZ do opencode.json`);
+          console.log(`  ${green}✓${reset} Removidas permissões FASE do opencode.json`);
         }
       } catch (e) {
         // Ignore JSON parse errors
@@ -1534,11 +1534,11 @@ function uninstall(isGlobal, runtime = 'claude') {
   }
 
   if (removedCount === 0) {
-    console.log(`  ${yellow}⚠${reset} Nenhum arquivo FAZ encontrado para remover.`);
+    console.log(`  ${yellow}⚠${reset} Nenhum arquivo FASE encontrado para remover.`);
   }
 
   console.log(`
-  ${green}Pronto!${reset} FAZ foi desinstalado de ${runtimeLabel}.
+  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
   Seus outros arquivos e configurações foram preservados.
 `);
 }
@@ -1673,7 +1673,7 @@ function configureOpencodePermissions(isGlobal = true) {
 
   // Write config back
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-  console.log(`  ${green}✓${reset} Configurada permissão de leitura para docs do FAZ`);
+  console.log(`  ${green}✓${reset} Configurada permissão de leitura para docs do FASE`);
 }
 
 /**
@@ -1833,7 +1833,7 @@ function saveLocalPatches(configDir) {
       files: modified
     };
     fs.writeFileSync(path.join(patchesDir, 'backup-meta.json'), JSON.stringify(meta, null, 2));
-    console.log('  ' + yellow + 'i' + reset + '  Encontrado(s) ' + modified.length + ' arquivo(s) FAZ modificado(s) localmente — salvo(s) em ' + PATCHES_DIR_NAME + '/');
+    console.log('  ' + yellow + 'i' + reset + '  Encontrado(s) ' + modified.length + ' arquivo(s) FASE modificado(s) localmente — salvo(s) em ' + PATCHES_DIR_NAME + '/');
     for (const f of modified) {
       console.log('     ' + dim + f + reset);
     }
@@ -2223,9 +2223,9 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   if (runtime === 'gemini') program = 'Gemini';
   if (runtime === 'codex') program = 'Codex';
 
-  let command = '/faz:novo-projeto';
-  if (runtime === 'opencode') command = '/faz-novo-projeto';
-  if (runtime === 'codex') command = '$faz-novo-projeto';
+  let command = '/fase:novo-projeto';
+  if (runtime === 'opencode') command = '/fase-novo-projeto';
+  if (runtime === 'codex') command = '$fase-novo-projeto';
   console.log(`
   ${green}Pronto!${reset} Abra um diretório em branco no ${program} e execute ${cyan}${command}${reset}.
 
@@ -2268,13 +2268,13 @@ function handleStatusline(settings, isInteractive, callback) {
   Sua statusline atual:
     ${dim}command: ${existingCmd}${reset}
 
-  O FAZ inclui uma statusline mostrando:
+  O FASE inclui uma statusline mostrando:
     • Nome do modelo
     • Tarefa atual (da lista de todos)
     • Uso da janela de contexto (com cores)
 
   ${cyan}1${reset}) Manter existente
-  ${cyan}2${reset}) Substituir pela statusline do FAZ
+  ${cyan}2${reset}) Substituir pela statusline do FASE
 `);
 
   rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
