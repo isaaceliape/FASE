@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Check for GSD updates in background, write result to cache
-// Called by SessionStart hook - runs once per session
+// Verifica atualizações do FASE em segundo plano e salva resultado no cache
+// Chamado pelo hook SessionStart — executa uma vez por sessão
 
 const fs = require('fs');
 const path = require('path');
@@ -10,10 +10,10 @@ const { spawn } = require('child_process');
 const homeDir = os.homedir();
 const cwd = process.cwd();
 
-// Detect runtime config directory (supports Claude, OpenCode, Gemini)
-// Respects CLAUDE_CONFIG_DIR for custom config directory setups
+// Detecta o diretório de configuração do runtime (suporta Claude, OpenCode, Gemini)
+// Respeita CLAUDE_CONFIG_DIR para configurações com diretório customizado
 function detectConfigDir(baseDir) {
-  // Check env override first (supports multi-account setups)
+  // Verifica variável de ambiente primeiro (suporta configurações multi-conta)
   const envDir = process.env.CLAUDE_CONFIG_DIR;
   if (envDir && fs.existsSync(path.join(envDir, 'get-shit-done', 'VERSION'))) {
     return envDir;
@@ -31,16 +31,16 @@ const projectConfigDir = detectConfigDir(cwd);
 const cacheDir = path.join(globalConfigDir, 'cache');
 const cacheFile = path.join(cacheDir, 'gsd-update-check.json');
 
-// VERSION file locations (check project first, then global)
+// Localização dos arquivos VERSION (verifica projeto primeiro, depois global)
 const projectVersionFile = path.join(projectConfigDir, 'get-shit-done', 'VERSION');
 const globalVersionFile = path.join(globalConfigDir, 'get-shit-done', 'VERSION');
 
-// Ensure cache directory exists
+// Garante que o diretório de cache existe
 if (!fs.existsSync(cacheDir)) {
   fs.mkdirSync(cacheDir, { recursive: true });
 }
 
-// Run check in background (spawn background process, windowsHide prevents console flash)
+// Executa verificação em segundo plano (processo separado; windowsHide evita flash de console no Windows)
 const child = spawn(process.execPath, ['-e', `
   const fs = require('fs');
   const { execSync } = require('child_process');
@@ -49,7 +49,7 @@ const child = spawn(process.execPath, ['-e', `
   const projectVersionFile = ${JSON.stringify(projectVersionFile)};
   const globalVersionFile = ${JSON.stringify(globalVersionFile)};
 
-  // Check project directory first (local install), then global
+  // Verifica diretório do projeto primeiro (instalação local), depois global
   let installed = '0.0.0';
   try {
     if (fs.existsSync(projectVersionFile)) {
@@ -75,7 +75,7 @@ const child = spawn(process.execPath, ['-e', `
 `], {
   stdio: 'ignore',
   windowsHide: true,
-  detached: true  // Required on Windows for proper process detachment
+  detached: true  // Necessário no Windows para desanexar o processo corretamente
 });
 
 child.unref();

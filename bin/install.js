@@ -175,16 +175,16 @@ function getGlobalDir(runtime, explicitDir = null) {
 }
 
 const banner = '\n' +
-  cyan + '   ██████╗ ███████╗██████╗\n' +
-  '  ██╔════╝ ██╔════╝██╔══██╗\n' +
-  '  ██║  ███╗███████╗██║  ██║\n' +
-  '  ██║   ██║╚════██║██║  ██║\n' +
-  '  ╚██████╔╝███████║██████╔╝\n' +
-  '   ╚═════╝ ╚══════╝╚═════╝' + reset + '\n' +
+  cyan + '  ███████╗  █████╗ ███████╗███████╗\n' +
+  '  ██╔════╝ ██╔══██╗██╔════╝██╔════╝\n' +
+  '  █████╗   ███████║███████╗█████╗  \n' +
+  '  ██╔══╝   ██╔══██║╚════██║██╔══╝  \n' +
+  '  ██║      ██║  ██║███████║███████╗\n' +
+  '  ╚═╝      ╚═╝  ╚═╝╚══════╝╚══════╝' + reset + '\n' +
   '\n' +
-  '  Get Shit Done ' + dim + 'v' + pkg.version + reset + '\n' +
-  '  A meta-prompting, context engineering and spec-driven\n' +
-  '  development system for Claude Code, OpenCode, Gemini, and Codex by TÂCHES.\n';
+  '  FASE ' + dim + 'v' + pkg.version + reset + '\n' +
+  '  Sistema de meta-prompting, context engineering e\n' +
+  '  desenvolvimento spec-driven para Claude Code, OpenCode, Gemini e Codex.\n';
 
 // Parse --config-dir argument
 function parseConfigDirArg() {
@@ -193,7 +193,7 @@ function parseConfigDirArg() {
     const nextArg = args[configDirIndex + 1];
     // Error if --config-dir is provided without a value or next arg is another flag
     if (!nextArg || nextArg.startsWith('-')) {
-      console.error(`  ${yellow}--config-dir requires a path argument${reset}`);
+      console.error(`  ${yellow}--config-dir requer um argumento de caminho${reset}`);
       process.exit(1);
     }
     return nextArg;
@@ -203,7 +203,7 @@ function parseConfigDirArg() {
   if (configDirArg) {
     const value = configDirArg.split('=')[1];
     if (!value) {
-      console.error(`  ${yellow}--config-dir requires a non-empty path${reset}`);
+      console.error(`  ${yellow}--config-dir requer um caminho não vazio${reset}`);
       process.exit(1);
     }
     return value;
@@ -218,7 +218,7 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cc [options]\n\n  ${yellow}Options:${reset}\n    ${cyan}-g, --global${reset}              Install globally (to config directory)\n    ${cyan}-l, --local${reset}               Install locally (to current directory)\n    ${cyan}--claude${reset}                  Install for Claude Code only\n    ${cyan}--opencode${reset}                Install for OpenCode only\n    ${cyan}--gemini${reset}                  Install for Gemini only\n    ${cyan}--codex${reset}                   Install for Codex only\n    ${cyan}--all${reset}                     Install for all runtimes\n    ${cyan}-u, --uninstall${reset}           Uninstall GSD (remove all GSD files)\n    ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory\n    ${cyan}-h, --help${reset}                Show this help message\n    ${cyan}--force-statusline${reset}        Replace existing statusline config\n\n  ${yellow}Examples:${reset}\n    ${dim}# Interactive install (prompts for runtime and location)${reset}\n    npx get-shit-done-cc\n\n    ${dim}# Install for Claude Code globally${reset}\n    npx get-shit-done-cc --claude --global\n\n    ${dim}# Install for Gemini globally${reset}\n    npx get-shit-done-cc --gemini --global\n\n    ${dim}# Install for Codex globally${reset}\n    npx get-shit-done-cc --codex --global\n\n    ${dim}# Install for all runtimes globally${reset}\n    npx get-shit-done-cc --all --global\n\n    ${dim}# Install to custom config directory${reset}\n    npx get-shit-done-cc --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Install to current project only${reset}\n    npx get-shit-done-cc --claude --local\n\n    ${dim}# Uninstall GSD from Codex globally${reset}\n    npx get-shit-done-cc --codex --global --uninstall\n\n  ${yellow}Notes:${reset}\n    The --config-dir option is useful when you have multiple configurations.\n    It takes priority over CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME environment variables.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx get-shit-done-cc [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}-g, --global${reset}              Instalar globalmente (no diretório de configuração)\n    ${cyan}-l, --local${reset}               Instalar localmente (no diretório atual)\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime e localização)${reset}\n    npx get-shit-done-cc\n\n    ${dim}# Instalar para Claude Code globalmente${reset}\n    npx get-shit-done-cc --claude --global\n\n    ${dim}# Instalar para Gemini globalmente${reset}\n    npx get-shit-done-cc --gemini --global\n\n    ${dim}# Instalar para Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global\n\n    ${dim}# Instalar para todos os runtimes globalmente${reset}\n    npx get-shit-done-cc --all --global\n\n    ${dim}# Instalar em diretório de configuração customizado${reset}\n    npx get-shit-done-cc --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Instalar apenas no projeto atual${reset}\n    npx get-shit-done-cc --claude --local\n\n    ${dim}# Desinstalar FASE do Codex globalmente${reset}\n    npx get-shit-done-cc --codex --global --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n`);
   process.exit(0);
 }
 
@@ -1184,7 +1184,7 @@ function cleanupOrphanedFiles(configDir) {
     const fullPath = path.join(configDir, relPath);
     if (fs.existsSync(fullPath)) {
       fs.unlinkSync(fullPath);
-      console.log(`  ${green}✓${reset} Removed orphaned ${relPath}`);
+      console.log(`  ${green}✓${reset} Removido arquivo obsoleto ${relPath}`);
     }
   }
 }
@@ -1228,7 +1228,7 @@ function cleanupOrphanedHooks(settings) {
   }
 
   if (cleanedHooks) {
-    console.log(`  ${green}✓${reset} Removed orphaned hook registrations`);
+    console.log(`  ${green}✓${reset} Removidos registros de hooks obsoletos`);
   }
 
   // Fix #330: Update statusLine if it points to old GSD statusline.js path
@@ -1240,7 +1240,7 @@ function cleanupOrphanedHooks(settings) {
       /hooks([\/\\])statusline\.js/,
       'hooks$1gsd-statusline.js'
     );
-    console.log(`  ${green}✓${reset} Updated statusline path (hooks/statusline.js → hooks/gsd-statusline.js)`);
+    console.log(`  ${green}✓${reset} Atualizado caminho da statusline (hooks/statusline.js → hooks/gsd-statusline.js)`);
   }
 
   return settings;
@@ -1271,12 +1271,12 @@ function uninstall(isGlobal, runtime = 'claude') {
   if (runtime === 'gemini') runtimeLabel = 'Gemini';
   if (runtime === 'codex') runtimeLabel = 'Codex';
 
-  console.log(`  Uninstalling GSD from ${cyan}${runtimeLabel}${reset} at ${cyan}${locationLabel}${reset}\n`);
+  console.log(`  Desinstalando FASE de ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`);
 
   // Check if target directory exists
   if (!fs.existsSync(targetDir)) {
-    console.log(`  ${yellow}⚠${reset} Directory does not exist: ${locationLabel}`);
-    console.log(`  Nothing to uninstall.\n`);
+    console.log(`  ${yellow}⚠${reset} Diretório não existe: ${locationLabel}`);
+    console.log(`  Nada a desinstalar.\n`);
     return;
   }
 
@@ -1294,7 +1294,7 @@ function uninstall(isGlobal, runtime = 'claude') {
           removedCount++;
         }
       }
-      console.log(`  ${green}✓${reset} Removed GSD commands from command/`);
+      console.log(`  ${green}✓${reset} Removidos comandos FASE de command/`);
     }
   } else if (isCodex) {
     // Codex: remove skills/gsd-*/SKILL.md skill directories
@@ -1310,7 +1310,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       }
       if (skillCount > 0) {
         removedCount++;
-        console.log(`  ${green}✓${reset} Removed ${skillCount} Codex skills`);
+        console.log(`  ${green}✓${reset} Removidas ${skillCount} skills do Codex`);
       }
     }
 
@@ -1327,7 +1327,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       }
       if (tomlCount > 0) {
         removedCount++;
-        console.log(`  ${green}✓${reset} Removed ${tomlCount} agent .toml configs`);
+        console.log(`  ${green}✓${reset} Removidos ${tomlCount} configs .toml de agentes`);
       }
     }
 
@@ -1340,11 +1340,11 @@ function uninstall(isGlobal, runtime = 'claude') {
         // File is empty after stripping — delete it
         fs.unlinkSync(configPath);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removed config.toml (was GSD-only)`);
+        console.log(`  ${green}✓${reset} Removido config.toml (era exclusivo do FASE)`);
       } else if (cleaned !== content) {
         fs.writeFileSync(configPath, cleaned);
         removedCount++;
-        console.log(`  ${green}✓${reset} Cleaned GSD sections from config.toml`);
+        console.log(`  ${green}✓${reset} Removidas seções do FASE do config.toml`);
       }
     }
   } else {
@@ -1353,7 +1353,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     if (fs.existsSync(gsdCommandsDir)) {
       fs.rmSync(gsdCommandsDir, { recursive: true });
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed commands/gsd/`);
+      console.log(`  ${green}✓${reset} Removido commands/faz/`);
     }
   }
 
@@ -1362,7 +1362,7 @@ function uninstall(isGlobal, runtime = 'claude') {
   if (fs.existsSync(gsdDir)) {
     fs.rmSync(gsdDir, { recursive: true });
     removedCount++;
-    console.log(`  ${green}✓${reset} Removed get-shit-done/`);
+    console.log(`  ${green}✓${reset} Removido get-shit-done/`);
   }
 
   // 3. Remove GSD agents (gsd-*.md files only)
@@ -1378,7 +1378,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (agentCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${agentCount} GSD agents`);
+      console.log(`  ${green}✓${reset} Removidos agentes FASE`);
     }
   }
 
@@ -1396,7 +1396,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (hookCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${hookCount} GSD hooks`);
+      console.log(`  ${green}✓${reset} Removidos ${hookCount} hooks FASE`);
     }
   }
 
@@ -1409,7 +1409,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       if (content === '{"type":"commonjs"}') {
         fs.unlinkSync(pkgJsonPath);
         removedCount++;
-        console.log(`  ${green}✓${reset} Removed GSD package.json`);
+        console.log(`  ${green}✓${reset} Removido package.json do FASE`);
       }
     } catch (e) {
       // Ignore read errors
@@ -1427,7 +1427,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         settings.statusLine.command.includes('gsd-statusline')) {
       delete settings.statusLine;
       settingsModified = true;
-      console.log(`  ${green}✓${reset} Removed GSD statusline from settings`);
+      console.log(`  ${green}✓${reset} Removida statusline do FASE das configurações`);
     }
 
     // Remove GSD hooks from SessionStart
@@ -1445,7 +1445,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       });
       if (settings.hooks.SessionStart.length < before) {
         settingsModified = true;
-        console.log(`  ${green}✓${reset} Removed GSD hooks from settings`);
+        console.log(`  ${green}✓${reset} Removidos hooks FASE das configurações`);
       }
       // Clean up empty array
       if (settings.hooks.SessionStart.length === 0) {
@@ -1468,7 +1468,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         });
         if (settings.hooks[eventName].length < before) {
           settingsModified = true;
-          console.log(`  ${green}✓${reset} Removed context monitor hook from settings`);
+          console.log(`  ${green}✓${reset} Removido hook do monitor de contexto das configurações`);
         }
         if (settings.hooks[eventName].length === 0) {
           delete settings.hooks[eventName];
@@ -1525,7 +1525,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         if (modified) {
           fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
           removedCount++;
-          console.log(`  ${green}✓${reset} Removed GSD permissions from opencode.json`);
+          console.log(`  ${green}✓${reset} Removidas permissões FASE do opencode.json`);
         }
       } catch (e) {
         // Ignore JSON parse errors
@@ -1534,12 +1534,12 @@ function uninstall(isGlobal, runtime = 'claude') {
   }
 
   if (removedCount === 0) {
-    console.log(`  ${yellow}⚠${reset} No GSD files found to remove.`);
+    console.log(`  ${yellow}⚠${reset} Nenhum arquivo FASE encontrado para remover.`);
   }
 
   console.log(`
-  ${green}Done!${reset} GSD has been uninstalled from ${runtimeLabel}.
-  Your other files and settings have been preserved.
+  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
+  Seus outros arquivos e configurações foram preservados.
 `);
 }
 
@@ -1628,9 +1628,9 @@ function configureOpencodePermissions(isGlobal = true) {
       config = parseJsonc(content);
     } catch (e) {
       // Cannot parse - DO NOT overwrite user's config
-      console.log(`  ${yellow}⚠${reset} Could not parse opencode.json - skipping permission config`);
-      console.log(`    ${dim}Reason: ${e.message}${reset}`);
-      console.log(`    ${dim}Your config was NOT modified. Fix the syntax manually if needed.${reset}`);
+      console.log(`  ${yellow}⚠${reset} Não foi possível analisar opencode.json - ignorando configuração de permissões`);
+      console.log(`    ${dim}Motivo: ${e.message}${reset}`);
+      console.log(`    ${dim}Sua configuração NÃO foi modificada. Corrija a sintaxe manualmente se necessário.${reset}`);
       return;
     }
   }
@@ -1673,7 +1673,7 @@ function configureOpencodePermissions(isGlobal = true) {
 
   // Write config back
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-  console.log(`  ${green}✓${reset} Configured read permission for GSD docs`);
+  console.log(`  ${green}✓${reset} Configurada permissão de leitura para docs do FASE`);
 }
 
 /**
@@ -1681,17 +1681,17 @@ function configureOpencodePermissions(isGlobal = true) {
  */
 function verifyInstalled(dirPath, description) {
   if (!fs.existsSync(dirPath)) {
-    console.error(`  ${yellow}✗${reset} Failed to install ${description}: directory not created`);
+    console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: diretório não foi criado`);
     return false;
   }
   try {
     const entries = fs.readdirSync(dirPath);
     if (entries.length === 0) {
-      console.error(`  ${yellow}✗${reset} Failed to install ${description}: directory is empty`);
+      console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: diretório está vazio`);
       return false;
     }
   } catch (e) {
-    console.error(`  ${yellow}✗${reset} Failed to install ${description}: ${e.message}`);
+    console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: ${e.message}`);
     return false;
   }
   return true;
@@ -1702,7 +1702,7 @@ function verifyInstalled(dirPath, description) {
  */
 function verifyFileInstalled(filePath, description) {
   if (!fs.existsSync(filePath)) {
-    console.error(`  ${yellow}✗${reset} Failed to install ${description}: file not created`);
+    console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: arquivo não foi criado`);
     return false;
   }
   return true;
@@ -1833,7 +1833,7 @@ function saveLocalPatches(configDir) {
       files: modified
     };
     fs.writeFileSync(path.join(patchesDir, 'backup-meta.json'), JSON.stringify(meta, null, 2));
-    console.log('  ' + yellow + 'i' + reset + '  Found ' + modified.length + ' locally modified GSD file(s) — backed up to ' + PATCHES_DIR_NAME + '/');
+    console.log('  ' + yellow + 'i' + reset + '  Encontrado(s) ' + modified.length + ' arquivo(s) FASE modificado(s) localmente — salvo(s) em ' + PATCHES_DIR_NAME + '/');
     for (const f of modified) {
       console.log('     ' + dim + f + reset);
     }
@@ -1859,14 +1859,14 @@ function reportLocalPatches(configDir, runtime = 'claude') {
         ? '$gsd-reapply-patches'
         : '/gsd:reapply-patches';
     console.log('');
-    console.log('  ' + yellow + 'Local patches detected' + reset + ' (from v' + meta.from_version + '):');
+    console.log('  ' + yellow + 'Patches locais detectados' + reset + ' (da v' + meta.from_version + '):');
     for (const f of meta.files) {
       console.log('     ' + cyan + f + reset);
     }
     console.log('');
-    console.log('  Your modifications are saved in ' + cyan + PATCHES_DIR_NAME + '/' + reset);
-    console.log('  Run ' + cyan + reapplyCommand + reset + ' to merge them into the new version.');
-    console.log('  Or manually compare and merge the files.');
+    console.log('  Suas modificações estão salvas em ' + cyan + PATCHES_DIR_NAME + '/' + reset);
+    console.log('  Execute ' + cyan + reapplyCommand + reset + ' para mesclá-las na nova versão.');
+    console.log('  Ou compare e mescle os arquivos manualmente.');
     console.log('');
   }
   return meta.files || [];
@@ -1900,7 +1900,7 @@ function install(isGlobal, runtime = 'claude') {
   if (isGemini) runtimeLabel = 'Gemini';
   if (isCodex) runtimeLabel = 'Codex';
 
-  console.log(`  Installing for ${cyan}${runtimeLabel}${reset} to ${cyan}${locationLabel}${reset}\n`);
+  console.log(`  Instalando para ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`);
 
   // Track installation failures
   const failures = [];
@@ -1922,7 +1922,7 @@ function install(isGlobal, runtime = 'claude') {
     copyFlattenedCommands(gsdSrc, commandDir, 'gsd', pathPrefix, runtime);
     if (verifyInstalled(commandDir, 'command/gsd-*')) {
       const count = fs.readdirSync(commandDir).filter(f => f.startsWith('gsd-')).length;
-      console.log(`  ${green}✓${reset} Installed ${count} commands to command/`);
+      console.log(`  ${green}✓${reset} Instalados ${count} comandos em command/`);
     } else {
       failures.push('command/gsd-*');
     }
@@ -1932,7 +1932,7 @@ function install(isGlobal, runtime = 'claude') {
     copyCommandsAsCodexSkills(gsdSrc, skillsDir, 'gsd', pathPrefix, runtime);
     const installedSkillNames = listCodexSkillNames(skillsDir);
     if (installedSkillNames.length > 0) {
-      console.log(`  ${green}✓${reset} Installed ${installedSkillNames.length} skills to skills/`);
+      console.log(`  ${green}✓${reset} Instaladas ${installedSkillNames.length} skills em skills/`);
     } else {
       failures.push('skills/gsd-*');
     }
@@ -1945,7 +1945,7 @@ function install(isGlobal, runtime = 'claude') {
     const gsdDest = path.join(commandsDir, 'gsd');
     copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, runtime, true);
     if (verifyInstalled(gsdDest, 'commands/gsd')) {
-      console.log(`  ${green}✓${reset} Installed commands/gsd`);
+      console.log(`  ${green}✓${reset} Instalado commands/faz`);
     } else {
       failures.push('commands/gsd');
     }
@@ -1956,7 +1956,7 @@ function install(isGlobal, runtime = 'claude') {
   const skillDest = path.join(targetDir, 'get-shit-done');
   copyWithPathReplacement(skillSrc, skillDest, pathPrefix, runtime);
   if (verifyInstalled(skillDest, 'get-shit-done')) {
-    console.log(`  ${green}✓${reset} Installed get-shit-done`);
+    console.log(`  ${green}✓${reset} Instalado get-shit-done`);
   } else {
     failures.push('get-shit-done');
   }
@@ -1999,7 +1999,7 @@ function install(isGlobal, runtime = 'claude') {
       }
     }
     if (verifyInstalled(agentsDest, 'agents')) {
-      console.log(`  ${green}✓${reset} Installed agents`);
+      console.log(`  ${green}✓${reset} Instalados agentes`);
     } else {
       failures.push('agents');
     }
@@ -2011,7 +2011,7 @@ function install(isGlobal, runtime = 'claude') {
   if (fs.existsSync(changelogSrc)) {
     fs.copyFileSync(changelogSrc, changelogDest);
     if (verifyFileInstalled(changelogDest, 'CHANGELOG.md')) {
-      console.log(`  ${green}✓${reset} Installed CHANGELOG.md`);
+      console.log(`  ${green}✓${reset} Instalado CHANGELOG.md`);
     } else {
       failures.push('CHANGELOG.md');
     }
@@ -2021,7 +2021,7 @@ function install(isGlobal, runtime = 'claude') {
   const versionDest = path.join(targetDir, 'get-shit-done', 'VERSION');
   fs.writeFileSync(versionDest, pkg.version);
   if (verifyFileInstalled(versionDest, 'VERSION')) {
-    console.log(`  ${green}✓${reset} Wrote VERSION (${pkg.version})`);
+    console.log(`  ${green}✓${reset} Gravado VERSION (${pkg.version})`);
   } else {
     failures.push('VERSION');
   }
@@ -2032,7 +2032,7 @@ function install(isGlobal, runtime = 'claude') {
     // Node.js walks up looking for package.json - this stops inheritance from project
     const pkgJsonDest = path.join(targetDir, 'package.json');
     fs.writeFileSync(pkgJsonDest, '{"type":"commonjs"}\n');
-    console.log(`  ${green}✓${reset} Wrote package.json (CommonJS mode)`);
+    console.log(`  ${green}✓${reset} Gravado package.json (modo CommonJS)`);
 
     // Copy hooks from dist/ (bundled with dependencies)
     // Template paths for the target runtime (replaces '.claude' with correct config dir)
@@ -2057,7 +2057,7 @@ function install(isGlobal, runtime = 'claude') {
         }
       }
       if (verifyInstalled(hooksDest, 'hooks')) {
-        console.log(`  ${green}✓${reset} Installed hooks (bundled)`);
+        console.log(`  ${green}✓${reset} Instalados hooks (empacotados)`);
       } else {
         failures.push('hooks');
       }
@@ -2065,13 +2065,13 @@ function install(isGlobal, runtime = 'claude') {
   }
 
   if (failures.length > 0) {
-    console.error(`\n  ${yellow}Installation incomplete!${reset} Failed: ${failures.join(', ')}`);
+    console.error(`\n  ${yellow}Instalação incompleta!${reset} Falhou: ${failures.join(', ')}`);
     process.exit(1);
   }
 
   // Write file manifest for future modification detection
   writeManifest(targetDir, runtime);
-  console.log(`  ${green}✓${reset} Wrote file manifest (${MANIFEST_NAME})`);
+  console.log(`  ${green}✓${reset} Gravado manifesto de arquivos (${MANIFEST_NAME})`);
 
   // Report any backed-up local patches
   reportLocalPatches(targetDir, runtime);
@@ -2098,22 +2098,22 @@ function install(isGlobal, runtime = 'claude') {
     scanForLeakedPaths(targetDir);
     if (leakedPaths.length > 0) {
       const totalLeaks = leakedPaths.reduce((sum, l) => sum + l.count, 0);
-      console.warn(`\n  ${yellow}⚠${reset}  Found ${totalLeaks} unreplaced .claude path reference(s) in ${leakedPaths.length} file(s):`);
+      console.warn(`\n  ${yellow}⚠${reset}  Encontrada(s) ${totalLeaks} referência(s) de caminho .claude não substituída(s) em ${leakedPaths.length} arquivo(s):`);
       for (const leak of leakedPaths.slice(0, 5)) {
         console.warn(`     ${dim}${leak.file}${reset} (${leak.count})`);
       }
       if (leakedPaths.length > 5) {
-        console.warn(`     ${dim}... and ${leakedPaths.length - 5} more file(s)${reset}`);
+        console.warn(`     ${dim}... e mais ${leakedPaths.length - 5} arquivo(s)${reset}`);
       }
-      console.warn(`  ${dim}These paths may not resolve correctly for ${runtimeLabel}.${reset}`);
+      console.warn(`  ${dim}Esses caminhos podem não ser resolvidos corretamente para ${runtimeLabel}.${reset}`);
     }
   }
 
   if (isCodex) {
     // Generate Codex config.toml and per-agent .toml files
     const agentCount = installCodexConfig(targetDir, agentsSrc);
-    console.log(`  ${green}✓${reset} Generated config.toml with ${agentCount} agent roles`);
-    console.log(`  ${green}✓${reset} Generated ${agentCount} agent .toml config files`);
+    console.log(`  ${green}✓${reset} Gerado config.toml com ${agentCount} papéis de agentes`);
+    console.log(`  ${green}✓${reset} Gerados ${agentCount} arquivos de config .toml de agentes`);
     return { settingsPath: null, settings: null, statuslineCommand: null, runtime };
   }
 
@@ -2139,7 +2139,7 @@ function install(isGlobal, runtime = 'claude') {
     }
     if (!settings.experimental.enableAgents) {
       settings.experimental.enableAgents = true;
-      console.log(`  ${green}✓${reset} Enabled experimental agents`);
+      console.log(`  ${green}✓${reset} Agentes experimentais habilitados`);
     }
   }
 
@@ -2165,7 +2165,7 @@ function install(isGlobal, runtime = 'claude') {
           }
         ]
       });
-      console.log(`  ${green}✓${reset} Configured update check hook`);
+      console.log(`  ${green}✓${reset} Hook de verificação de atualização configurado`);
     }
 
     // Configure post-tool hook for context window monitoring
@@ -2186,7 +2186,7 @@ function install(isGlobal, runtime = 'claude') {
           }
         ]
       });
-      console.log(`  ${green}✓${reset} Configured context window monitor hook`);
+      console.log(`  ${green}✓${reset} Hook de monitor de janela de contexto configurado`);
     }
   }
 
@@ -2205,7 +2205,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
       type: 'command',
       command: statuslineCommand
     };
-    console.log(`  ${green}✓${reset} Configured statusline`);
+    console.log(`  ${green}✓${reset} Statusline configurada`);
   }
 
   // Write settings when runtime supports settings.json
@@ -2223,13 +2223,13 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   if (runtime === 'gemini') program = 'Gemini';
   if (runtime === 'codex') program = 'Codex';
 
-  let command = '/gsd:new-project';
-  if (runtime === 'opencode') command = '/gsd-new-project';
-  if (runtime === 'codex') command = '$gsd-new-project';
+  let command = '/fase:novo-projeto';
+  if (runtime === 'opencode') command = '/fase-novo-projeto';
+  if (runtime === 'codex') command = '$fase-novo-projeto';
   console.log(`
-  ${green}Done!${reset} Open a blank directory in ${program} and run ${cyan}${command}${reset}.
+  ${green}Pronto!${reset} Abra um diretório em branco no ${program} e execute ${cyan}${command}${reset}.
 
-  ${cyan}Join the community:${reset} https://discord.gg/gsd
+  ${cyan}Entre na comunidade:${reset} https://discord.gg/gsd
 `);
 }
 
@@ -2250,8 +2250,8 @@ function handleStatusline(settings, isInteractive, callback) {
   }
 
   if (!isInteractive) {
-    console.log(`  ${yellow}⚠${reset} Skipping statusline (already configured)`);
-    console.log(`    Use ${cyan}--force-statusline${reset} to replace\n`);
+    console.log(`  ${yellow}⚠${reset} Ignorando statusline (já configurada)`);
+    console.log(`    Use ${cyan}--force-statusline${reset} para substituir\n`);
     callback(false);
     return;
   }
@@ -2264,20 +2264,20 @@ function handleStatusline(settings, isInteractive, callback) {
   });
 
   console.log(`
-  ${yellow}⚠${reset} Existing statusline detected\n
-  Your current statusline:
+  ${yellow}⚠${reset} Statusline existente detectada\n
+  Sua statusline atual:
     ${dim}command: ${existingCmd}${reset}
 
-  GSD includes a statusline showing:
-    • Model name
-    • Current task (from todo list)
-    • Context window usage (color-coded)
+  O FASE inclui uma statusline mostrando:
+    • Nome do modelo
+    • Tarefa atual (da lista de todos)
+    • Uso da janela de contexto (com cores)
 
-  ${cyan}1${reset}) Keep existing
-  ${cyan}2${reset}) Replace with GSD statusline
+  ${cyan}1${reset}) Manter existente
+  ${cyan}2${reset}) Substituir pela statusline do FASE
 `);
 
-  rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
+  rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
     rl.close();
     const choice = answer.trim() || '1';
     callback(choice === '2');
@@ -2298,19 +2298,19 @@ function promptRuntime(callback) {
   rl.on('close', () => {
     if (!answered) {
       answered = true;
-      console.log(`\n  ${yellow}Installation cancelled${reset}\n`);
+      console.log(`\n  ${yellow}Instalação cancelada${reset}\n`);
       process.exit(0);
     }
   });
 
-  console.log(`  ${yellow}Which runtime(s) would you like to install for?${reset}\n\n  ${cyan}1${reset}) Claude Code ${dim}(~/.claude)${reset}
-  ${cyan}2${reset}) OpenCode    ${dim}(~/.config/opencode)${reset} - open source, free models
+  console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n\n  ${cyan}1${reset}) Claude Code ${dim}(~/.claude)${reset}
+  ${cyan}2${reset}) OpenCode    ${dim}(~/.config/opencode)${reset} - código aberto, modelos gratuitos
   ${cyan}3${reset}) Gemini      ${dim}(~/.gemini)${reset}
   ${cyan}4${reset}) Codex       ${dim}(~/.codex)${reset}
-  ${cyan}5${reset}) All
+  ${cyan}5${reset}) Todos
 `);
 
-  rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
+  rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
     answered = true;
     rl.close();
     const choice = answer.trim() || '1';
@@ -2333,7 +2333,7 @@ function promptRuntime(callback) {
  */
 function promptLocation(runtimes) {
   if (!process.stdin.isTTY) {
-    console.log(`  ${yellow}Non-interactive terminal detected, defaulting to global install${reset}\n`);
+    console.log(`  ${yellow}Terminal não interativo detectado, usando instalação global por padrão${reset}\n`);
     installAllRuntimes(runtimes, true, false);
     return;
   }
@@ -2348,7 +2348,7 @@ function promptLocation(runtimes) {
   rl.on('close', () => {
     if (!answered) {
       answered = true;
-      console.log(`\n  ${yellow}Installation cancelled${reset}\n`);
+      console.log(`\n  ${yellow}Instalação cancelada${reset}\n`);
       process.exit(0);
     }
   });
@@ -2360,11 +2360,11 @@ function promptLocation(runtimes) {
 
   const localExamples = runtimes.map(r => `./${getDirName(r)}`).join(', ');
 
-  console.log(`  ${yellow}Where would you like to install?${reset}\n\n  ${cyan}1${reset}) Global ${dim}(${pathExamples})${reset} - available in all projects
-  ${cyan}2${reset}) Local  ${dim}(${localExamples})${reset} - this project only
+  console.log(`  ${yellow}Onde deseja instalar?${reset}\n\n  ${cyan}1${reset}) Global ${dim}(${pathExamples})${reset} - disponível em todos os projetos
+  ${cyan}2${reset}) Local  ${dim}(${localExamples})${reset} - somente neste projeto
 `);
 
-  rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
+  rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
     answered = true;
     rl.close();
     const choice = answer.trim() || '1';
@@ -2426,14 +2426,14 @@ if (process.env.GSD_TEST_MODE) {
 
 // Main logic
 if (hasGlobal && hasLocal) {
-  console.error(`  ${yellow}Cannot specify both --global and --local${reset}`);
+  console.error(`  ${yellow}Não é possível especificar --global e --local ao mesmo tempo${reset}`);
   process.exit(1);
 } else if (explicitConfigDir && hasLocal) {
-  console.error(`  ${yellow}Cannot use --config-dir with --local${reset}`);
+  console.error(`  ${yellow}Não é possível usar --config-dir com --local${reset}`);
   process.exit(1);
 } else if (hasUninstall) {
   if (!hasGlobal && !hasLocal) {
-    console.error(`  ${yellow}--uninstall requires --global or --local${reset}`);
+    console.error(`  ${yellow}--uninstall requer --global ou --local${reset}`);
     process.exit(1);
   }
   const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];
@@ -2452,7 +2452,7 @@ if (hasGlobal && hasLocal) {
 } else {
   // Interactive
   if (!process.stdin.isTTY) {
-    console.log(`  ${yellow}Non-interactive terminal detected, defaulting to Claude Code global install${reset}\n`);
+    console.log(`  ${yellow}Terminal não interativo detectado, usando instalação global do Claude Code por padrão${reset}\n`);
     installAllRuntimes(['claude'], true, false);
   } else {
     promptRuntime((runtimes) => {

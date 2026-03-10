@@ -1,6 +1,6 @@
 ---
 name: faz:definir-perfil
-description: Trocar perfil de model para agents FAZ (quality/balanced/budget)
+description: Trocar perfil de model para agents FASE (quality/balanced/budget)
 argument-hint: <perfil>
 allowed-tools:
   - Read
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Trocar o perfil de model usado por agents FAZ. Controla qual modelo Claude cada agent usa, balanceando qualidade vs gasto de tokens.
+Trocar o perfil de model usado por agents FASE. Controla qual modelo Claude cada agent usa, balanceando qualidade vs gasto de tokens.
 
 Direciona para o workflow set-profile que lida com:
 - Validação de argumento (quality/balanced/budget)

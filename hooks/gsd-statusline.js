@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// Claude Code Statusline - GSD Edition
-// Shows: model | current task | directory | context usage
+// Statusline do Claude Code — Edição FASE
+// Exibe: modelo | tarefa atual | diretório | uso do contexto
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-// Read JSON from stdin
+// Lê JSON do stdin
 let input = '';
-// Timeout guard: if stdin doesn't close within 3s (e.g. pipe issues on
-// Windows/Git Bash), exit silently instead of hanging. See #775.
+// Guarda de timeout: se stdin não fechar em 3s (ex.: problemas de pipe no
+// Windows/Git Bash), sai silenciosamente em vez de travar. Ver #775.
 const stdinTimeout = setTimeout(() => process.exit(0), 3000);
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', chunk => input += chunk);
@@ -22,18 +22,18 @@ process.stdin.on('end', () => {
     const session = data.session_id || '';
     const remaining = data.context_window?.remaining_percentage;
 
-    // Context window display (shows USED percentage scaled to usable context)
-    // Claude Code reserves ~16.5% for autocompact buffer, so usable context
-    // is 83.5% of the total window. We normalize to show 100% at that point.
+    // Exibição da janela de contexto (mostra porcentagem USADA escalada para o contexto utilizável)
+    // O Claude Code reserva ~16,5% para o buffer de autocompact, então o contexto utilizável
+    // é 83,5% da janela total. Normalizamos para mostrar 100% nesse ponto.
     const AUTO_COMPACT_BUFFER_PCT = 16.5;
     let ctx = '';
     if (remaining != null) {
-      // Normalize: subtract buffer from remaining, scale to usable range
+      // Normaliza: subtrai o buffer do restante, escala para o intervalo utilizável
       const usableRemaining = Math.max(0, ((remaining - AUTO_COMPACT_BUFFER_PCT) / (100 - AUTO_COMPACT_BUFFER_PCT)) * 100);
       const used = Math.max(0, Math.min(100, Math.round(100 - usableRemaining)));
 
-      // Write context metrics to bridge file for the context-monitor PostToolUse hook.
-      // The monitor reads this file to inject agent-facing warnings when context is low.
+      // Escreve métricas de contexto no arquivo bridge para o hook PostToolUse de contexto.
+      // O monitor lê este arquivo para injetar avisos ao agente quando o contexto está baixo.
       if (session) {
         try {
           const bridgePath = path.join(os.tmpdir(), `claude-ctx-${session}.json`);
@@ -45,15 +45,15 @@ process.stdin.on('end', () => {
           });
           fs.writeFileSync(bridgePath, bridgeData);
         } catch (e) {
-          // Silent fail -- bridge is best-effort, don't break statusline
+          // Falha silenciosa — bridge é melhor-esforço, não quebra a statusline
         }
       }
 
-      // Build progress bar (10 segments)
+      // Constrói barra de progresso (10 segmentos)
       const filled = Math.floor(used / 10);
       const bar = '█'.repeat(filled) + '░'.repeat(10 - filled);
 
-      // Color based on usable context thresholds
+      // Cor baseada nos limites de contexto utilizável
       if (used < 50) {
         ctx = ` \x1b[32m${bar} ${used}%\x1b[0m`;
       } else if (used < 65) {
@@ -65,10 +65,10 @@ process.stdin.on('end', () => {
       }
     }
 
-    // Current task from todos
+    // Tarefa atual a partir dos todos
     let task = '';
     const homeDir = os.homedir();
-    // Respect CLAUDE_CONFIG_DIR for custom config directory setups (#870)
+    // Respeita CLAUDE_CONFIG_DIR para configurações com diretório customizado (#870)
     const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(homeDir, '.claude');
     const todosDir = path.join(claudeDir, 'todos');
     if (session && fs.existsSync(todosDir)) {
@@ -86,23 +86,23 @@ process.stdin.on('end', () => {
           } catch (e) {}
         }
       } catch (e) {
-        // Silently fail on file system errors - don't break statusline
+        // Falha silenciosa em erros de sistema de arquivos — não quebra a statusline
       }
     }
 
-    // GSD update available?
+    // Atualização do FASE disponível?
     let gsdUpdate = '';
     const cacheFile = path.join(claudeDir, 'cache', 'gsd-update-check.json');
     if (fs.existsSync(cacheFile)) {
       try {
         const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
         if (cache.update_available) {
-          gsdUpdate = '\x1b[33m⬆ /gsd:update\x1b[0m │ ';
+          gsdUpdate = '\x1b[33m⬆ /fase:atualizar\x1b[0m │ ';
         }
       } catch (e) {}
     }
 
-    // Output
+    // Saída
     const dirname = path.basename(dir);
     if (task) {
       process.stdout.write(`${gsdUpdate}\x1b[2m${model}\x1b[0m │ \x1b[1m${task}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
@@ -110,6 +110,6 @@ process.stdin.on('end', () => {
       process.stdout.write(`${gsdUpdate}\x1b[2m${model}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
     }
   } catch (e) {
-    // Silent fail - don't break statusline on parse errors
+    // Falha silenciosa — não quebra a statusline em erros de parse
   }
 });

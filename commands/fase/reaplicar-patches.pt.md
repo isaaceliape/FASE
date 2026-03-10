@@ -1,10 +1,10 @@
 ---
-description: Reaplicar modificações locais após atualização do FAZ
+description: Reaplicar modificações locais após atualização do FASE
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
 ---
 
 <purpose>
-Após uma atualização do FAZ que limpa e reinstala arquivos, este comando mescla modificações locais previamente salvas do usuário de volta na nova versão. Usa comparação inteligente para lidar com casos onde o arquivo upstream também mudou.
+Após uma atualização do FASE que limpa e reinstala arquivos, este comando mescla modificações locais previamente salvas do usuário de volta na nova versão. Usa comparação inteligente para lidar com casos onde o arquivo upstream também mudou.
 </purpose>
 
 <process>
@@ -41,8 +41,8 @@ Ler `backup-meta.json` do diretório de patches.
 ```
 Nenhum patch local encontrado. Nada para reaplicar.
 
-Patches locais são salvos automaticamente quando você executa /faz:atualizar
-após modificar qualquer workflow, command ou agent files do FAZ.
+Patches locais são salvos automaticamente quando você executa /fase:atualizar
+após modificar qualquer workflow, command ou agent files do FASE.
 ```
 Sair.
 
@@ -89,7 +89,7 @@ Para cada arquivo em `backup-meta.json`:
 Após reaplicar, regenerar o manifest do arquivo para que futuras atualizações detectem corretamente estas como modificações do usuário:
 
 ```bash
-# O manifest será regenerado no próximo /faz:atualizar
+# O manifest será regenerado no próximo /fase:atualizar
 # Por enquanto, apenas notar quais arquivos foram modificados
 ```
 

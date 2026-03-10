@@ -1,6 +1,6 @@
 ---
 name: faz:configuracoes
-description: Configurar toggles de workflow FAZ e perfil de model
+description: Configurar toggles de workflow FASE e perfil de model
 allowed-tools:
   - Read
   - Write
@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Configuração interativa de agents e perfil de model do workflow FAZ via prompt multi-question.
+Configuração interativa de agents e perfil de model do workflow FASE via prompt multi-question.
 
 Direciona para o workflow settings que lida com:
 - Garantia de existência de config

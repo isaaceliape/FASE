@@ -1,247 +1,238 @@
-# GSD User Guide
+# Guia do Usuário — FASE
 
-A detailed reference for workflows, troubleshooting, and configuration. For quick-start setup, see the [README](../README.md).
-
----
-
-## Table of Contents
-
-- [Workflow Diagrams](#workflow-diagrams)
-- [Command Reference](#command-reference)
-- [Configuration Reference](#configuration-reference)
-- [Usage Examples](#usage-examples)
-- [Troubleshooting](#troubleshooting)
-- [Recovery Quick Reference](#recovery-quick-reference)
+Referência detalhada de workflows, resolução de problemas e configuração. Para configuração rápida, veja o [README](../README.md).
 
 ---
 
-## Workflow Diagrams
+## Índice
 
-### Full Project Lifecycle
+- [Diagramas de Workflow](#diagramas-de-workflow)
+- [Referência de Comandos](#referência-de-comandos)
+- [Referência de Configuração](#referência-de-configuração)
+- [Exemplos de Uso](#exemplos-de-uso)
+- [Resolução de Problemas](#resolução-de-problemas)
+- [Referência Rápida de Recuperação](#referência-rápida-de-recuperação)
+
+---
+
+## Diagramas de Workflow
+
+### Ciclo de Vida Completo do Projeto
 
 ```
   ┌──────────────────────────────────────────────────┐
-  │                   NEW PROJECT                    │
-  │  /gsd:new-project                                │
-  │  Questions -> Research -> Requirements -> Roadmap│
+  │                  NOVO PROJETO                    │
+  │  /fase:novo-projeto                               │
+  │  Perguntas -> Pesquisa -> Requisitos -> Roadmap  │
   └─────────────────────────┬────────────────────────┘
                             │
              ┌──────────────▼─────────────┐
-             │      FOR EACH PHASE:       │
+             │      PARA CADA FASE:       │
              │                            │
-             │  ┌────────────────────┐    │
-             │  │ /gsd:discuss-phase │    │  <- Lock in preferences
-             │  └──────────┬─────────┘    │
+             │  ┌──────────────────────┐  │
+             │  │ /fase:discutir-fase   │  │  <- Definir preferências
+             │  └──────────┬───────────┘  │
              │             │              │
-             │  ┌──────────▼─────────┐    │
-             │  │ /gsd:plan-phase    │    │  <- Research + Plan + Verify
-             │  └──────────┬─────────┘    │
+             │  ┌──────────▼──────────┐   │
+             │  │ /fase:planejar-fase  │   │  <- Pesquisa + Plano + Verificação
+             │  └──────────┬──────────┘   │
              │             │              │
-             │  ┌──────────▼─────────┐    │
-             │  │ /gsd:execute-phase │    │  <- Parallel execution
-             │  └──────────┬─────────┘    │
+             │  ┌──────────▼──────────┐   │
+             │  │ /fase:executar-fase  │   │  <- Execução paralela
+             │  └──────────┬──────────┘   │
              │             │              │
-             │  ┌──────────▼─────────┐    │
-             │  │ /gsd:verify-work   │    │  <- Manual UAT
-             │  └──────────┬─────────┘    │
+             │  ┌──────────▼────────────┐ │
+             │  │ /fase:verificar-trabalho│ │  <- UAT manual
+             │  └──────────┬────────────┘ │
              │             │              │
-             │     Next Phase?────────────┘
-             │             │ No
+             │     Próxima fase?──────────┘
+             │             │ Não
              └─────────────┼──────────────┘
                             │
             ┌───────────────▼──────────────┐
-            │  /gsd:audit-milestone        │
-            │  /gsd:complete-milestone     │
+            │  /fase:auditar-marco          │
+            │  /fase:completar-marco        │
             └───────────────┬──────────────┘
                             │
-                   Another milestone?
+                   Outro marco?
                        │          │
-                      Yes         No -> Done!
+                      Sim        Não -> Pronto!
                        │
                ┌───────▼──────────────┐
-               │  /gsd:new-milestone  │
+               │  /fase:novo-marco     │
                └──────────────────────┘
 ```
 
-### Planning Agent Coordination
+### Coordenação do Agente de Planejamento
 
 ```
-  /gsd:plan-phase N
+  /fase:planejar-fase N
          │
-         ├── Phase Researcher (x4 parallel)
-         │     ├── Stack researcher
-         │     ├── Features researcher
-         │     ├── Architecture researcher
-         │     └── Pitfalls researcher
+         ├── Pesquisador de Fase (x4 em paralelo)
+         │     ├── Pesquisador de stack
+         │     ├── Pesquisador de funcionalidades
+         │     ├── Pesquisador de arquitetura
+         │     └── Pesquisador de armadilhas
          │           │
          │     ┌──────▼──────┐
          │     │ RESEARCH.md │
          │     └──────┬──────┘
          │            │
          │     ┌──────▼──────┐
-         │     │   Planner   │  <- Reads PROJECT.md, REQUIREMENTS.md,
+         │     │  Planejador │  <- Lê PROJECT.md, REQUIREMENTS.md,
          │     │             │     CONTEXT.md, RESEARCH.md
          │     └──────┬──────┘
          │            │
          │     ┌──────▼───────────┐     ┌────────┐
-         │     │   Plan Checker   │────>│ PASS?  │
-         │     └──────────────────┘     └───┬────┘
-         │                                  │
-         │                             Yes  │  No
+         │     │ Verificador de   │────>│ PASSA? │
+         │     │ Plano            │     └───┬────┘
+         │     └──────────────────┘         │
+         │                             Sim  │  Não
          │                              │   │   │
-         │                              │   └───┘  (loop, up to 3x)
+         │                              │   └───┘  (loop, até 3x)
          │                              │
          │                        ┌─────▼──────┐
-         │                        │ PLAN files │
+         │                        │ Arquivos   │
+         │                        │ de PLANO   │
          │                        └────────────┘
-         └── Done
+         └── Concluído
 ```
 
-### Validation Architecture (Nyquist Layer)
+### Arquitetura de Validação (Camada Nyquist)
 
-During plan-phase research, GSD now maps automated test coverage to each phase
-requirement before any code is written. This ensures that when Claude's executor
-commits a task, a feedback mechanism already exists to verify it within seconds.
+Durante a pesquisa do planejar-fase, o FASE mapeia a cobertura de testes automatizados para cada requisito da fase antes de qualquer código ser escrito. Isso garante que, quando o executor do Claude fizer commit de uma tarefa, já exista um mecanismo de feedback para verificá-la em segundos.
 
-The researcher detects your existing test infrastructure, maps each requirement to
-a specific test command, and identifies any test scaffolding that must be created
-before implementation begins (Wave 0 tasks).
+O pesquisador detecta sua infraestrutura de testes existente, mapeia cada requisito a um comando de teste específico, e identifica qualquer scaffolding de testes que deve ser criado antes do início da implementação (tarefas da Wave 0).
 
-The plan-checker enforces this as an 8th verification dimension: plans where tasks
-lack automated verify commands will not be approved.
+O verificador de plano aplica isso como uma 8ª dimensão de verificação: planos onde as tarefas não possuem comandos de verificação automatizados não serão aprovados.
 
-**Output:** `{phase}-VALIDATION.md` -- the feedback contract for the phase.
+**Saída:** `{fase}-VALIDATION.md` — o contrato de feedback para a fase.
 
-**Disable:** Set `workflow.nyquist_validation: false` in `/gsd:settings` for
-rapid prototyping phases where test infrastructure isn't the focus.
+**Desabilitar:** Defina `workflow.nyquist_validation: false` em `/fase:configuracoes` para fases de prototipagem rápida onde a infraestrutura de testes não é o foco.
 
-### Retroactive Validation (`/gsd:validate-phase`)
+### Validação Retroativa (`/fase:validar-fase`)
 
-For phases executed before Nyquist validation existed, or for existing codebases
-with only traditional test suites, retroactively audit and fill coverage gaps:
+Para fases executadas antes da validação Nyquist existir, ou para bases de código existentes com apenas suítes de testes tradicionais, audite retroativamente e preencha lacunas de cobertura:
 
 ```
-  /gsd:validate-phase N
+  /fase:validar-fase N
          |
-         +-- Detect state (VALIDATION.md exists? SUMMARY.md exists?)
+         +-- Detectar estado (VALIDATION.md existe? SUMMARY.md existe?)
          |
-         +-- Discover: scan implementation, map requirements to tests
+         +-- Descobrir: escanear implementação, mapear requisitos para testes
          |
-         +-- Analyze gaps: which requirements lack automated verification?
+         +-- Analisar lacunas: quais requisitos não têm verificação automatizada?
          |
-         +-- Present gap plan for approval
+         +-- Apresentar plano de lacunas para aprovação
          |
-         +-- Spawn auditor: generate tests, run, debug (max 3 attempts)
+         +-- Spawnar auditor: gerar testes, executar, depurar (máx. 3 tentativas)
          |
-         +-- Update VALIDATION.md
+         +-- Atualizar VALIDATION.md
                |
-               +-- COMPLIANT -> all requirements have automated checks
-               +-- PARTIAL -> some gaps escalated to manual-only
+               +-- CONFORME -> todos os requisitos têm verificações automatizadas
+               +-- PARCIAL -> algumas lacunas escaladas para manual apenas
 ```
 
-The auditor never modifies implementation code — only test files and
-VALIDATION.md. If a test reveals an implementation bug, it's flagged as an
-escalation for you to address.
+O auditor nunca modifica o código de implementação — apenas arquivos de teste e VALIDATION.md. Se um teste revelar um bug de implementação, ele é sinalizado como uma escalação para você resolver.
 
-**When to use:** After executing phases that were planned before Nyquist was
-enabled, or after `/gsd:audit-milestone` surfaces Nyquist compliance gaps.
+**Quando usar:** Após executar fases que foram planejadas antes do Nyquist estar habilitado, ou após `/fase:auditar-marco` detectar lacunas de conformidade Nyquist.
 
-### Execution Wave Coordination
+### Coordenação de Waves de Execução
 
 ```
-  /gsd:execute-phase N
+  /fase:executar-fase N
          │
-         ├── Analyze plan dependencies
+         ├── Analisar dependências do plano
          │
-         ├── Wave 1 (independent plans):
-         │     ├── Executor A (fresh 200K context) -> commit
-         │     └── Executor B (fresh 200K context) -> commit
+         ├── Wave 1 (planos independentes):
+         │     ├── Executor A (contexto fresco de 200K) -> commit
+         │     └── Executor B (contexto fresco de 200K) -> commit
          │
-         ├── Wave 2 (depends on Wave 1):
-         │     └── Executor C (fresh 200K context) -> commit
+         ├── Wave 2 (depende da Wave 1):
+         │     └── Executor C (contexto fresco de 200K) -> commit
          │
-         └── Verifier
-               └── Check codebase against phase goals
+         └── Verificador
+               └── Verificar base de código contra objetivos da fase
                      │
-                     ├── PASS -> VERIFICATION.md (success)
-                     └── FAIL -> Issues logged for /gsd:verify-work
+                     ├── PASSA -> VERIFICATION.md (sucesso)
+                     └── FALHA -> Problemas registrados para /fase:verificar-trabalho
 ```
 
-### Brownfield Workflow (Existing Codebase)
+### Workflow Brownfield (Base de Código Existente)
 
 ```
-  /gsd:map-codebase
+  /fase:mapear-codigo
          │
-         ├── Stack Mapper     -> codebase/STACK.md
-         ├── Arch Mapper      -> codebase/ARCHITECTURE.md
-         ├── Convention Mapper -> codebase/CONVENTIONS.md
-         └── Concern Mapper   -> codebase/CONCERNS.md
+         ├── Mapeador de Stack     -> codebase/STACK.md
+         ├── Mapeador de Arq.      -> codebase/ARCHITECTURE.md
+         ├── Mapeador de Convenções -> codebase/CONVENTIONS.md
+         └── Mapeador de Preocupações -> codebase/CONCERNS.md
                 │
-        ┌───────▼──────────┐
-        │ /gsd:new-project │  <- Questions focus on what you're ADDING
-        └──────────────────┘
+        ┌───────▼──────────────┐
+        │ /fase:novo-projeto    │  <- Perguntas focam no que você está ADICIONANDO
+        └──────────────────────┘
 ```
 
 ---
 
-## Command Reference
+## Referência de Comandos
 
-### Core Workflow
+### Workflow Principal
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/gsd:new-project` | Full project init: questions, research, requirements, roadmap | Start of a new project |
-| `/gsd:new-project --auto @idea.md` | Automated init from document | Have a PRD or idea doc ready |
-| `/gsd:discuss-phase [N]` | Capture implementation decisions | Before planning, to shape how it gets built |
-| `/gsd:plan-phase [N]` | Research + plan + verify | Before executing a phase |
-| `/gsd:execute-phase <N>` | Execute all plans in parallel waves | After planning is complete |
-| `/gsd:verify-work [N]` | Manual UAT with auto-diagnosis | After execution completes |
-| `/gsd:audit-milestone` | Verify milestone met its definition of done | Before completing milestone |
-| `/gsd:complete-milestone` | Archive milestone, tag release | All phases verified |
-| `/gsd:new-milestone [name]` | Start next version cycle | After completing a milestone |
+| Comando | Propósito | Quando Usar |
+|---------|----------|-------------|
+| `/fase:novo-projeto` | Inicialização completa: perguntas, pesquisa, requisitos, roadmap | Início de um novo projeto |
+| `/fase:novo-projeto --auto @ideia.md` | Inicialização automatizada a partir de documento | Quando você tem um PRD ou documento de ideia pronto |
+| `/fase:discutir-fase [N]` | Capturar decisões de implementação | Antes do planejamento, para definir como será construído |
+| `/fase:planejar-fase [N]` | Pesquisa + plano + verificação | Antes de executar uma fase |
+| `/fase:executar-fase <N>` | Executar todos os planos em waves paralelas | Após o planejamento estar completo |
+| `/fase:verificar-trabalho [N]` | UAT manual com diagnóstico automático | Após a execução ser concluída |
+| `/fase:auditar-marco` | Verificar se o marco atingiu sua definição de pronto | Antes de completar o marco |
+| `/fase:completar-marco` | Arquivar marco, criar tag de release | Após todas as fases serem verificadas |
+| `/fase:novo-marco [nome]` | Iniciar próximo ciclo de versão | Após completar um marco |
 
-### Navigation
+### Navegação
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/gsd:progress` | Show status and next steps | Anytime -- "where am I?" |
-| `/gsd:resume-work` | Restore full context from last session | Starting a new session |
-| `/gsd:pause-work` | Save context handoff | Stopping mid-phase |
-| `/gsd:help` | Show all commands | Quick reference |
-| `/gsd:update` | Update GSD with changelog preview | Check for new versions |
-| `/gsd:join-discord` | Open Discord community invite | Questions or community |
+| Comando | Propósito | Quando Usar |
+|---------|----------|-------------|
+| `/fase:progresso` | Mostrar status e próximos passos | A qualquer momento — "onde estou?" |
+| `/fase:retomar-trabalho` | Restaurar contexto completo da última sessão | Ao iniciar uma nova sessão |
+| `/fase:pausar-trabalho` | Salvar handoff de contexto | Ao parar no meio de uma fase |
+| `/fase:ajuda` | Mostrar todos os comandos | Referência rápida |
+| `/fase:atualizar` | Atualizar FASE com prévia do changelog | Verificar novas versões |
+| `/fase:entrar-discord` | Abrir convite da comunidade Discord | Dúvidas ou comunidade |
 
-### Phase Management
+### Gerenciamento de Fases
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/gsd:add-phase` | Append new phase to roadmap | Scope grows after initial planning |
-| `/gsd:insert-phase [N]` | Insert urgent work (decimal numbering) | Urgent fix mid-milestone |
-| `/gsd:remove-phase [N]` | Remove future phase and renumber | Descoping a feature |
-| `/gsd:list-phase-assumptions [N]` | Preview Claude's intended approach | Before planning, to validate direction |
-| `/gsd:plan-milestone-gaps` | Create phases for audit gaps | After audit finds missing items |
-| `/gsd:research-phase [N]` | Deep ecosystem research only | Complex or unfamiliar domain |
+| Comando | Propósito | Quando Usar |
+|---------|----------|-------------|
+| `/fase:adicionar-fase` | Adicionar nova fase ao roadmap | Escopo cresce após planejamento inicial |
+| `/fase:inserir-fase [N]` | Inserir trabalho urgente (numeração decimal) | Correção urgente no meio do marco |
+| `/fase:remover-fase [N]` | Remover fase futura e renumerar | Reduzir escopo de uma funcionalidade |
+| `/fase:listar-premissas [N]` | Prévia da abordagem pretendida pelo Claude | Antes do planejamento, para validar direção |
+| `/fase:planejar-lacunas` | Criar fases para lacunas da auditoria | Após auditoria encontrar itens faltando |
+| `/fase:pesquisar-fase [N]` | Pesquisa profunda do ecossistema apenas | Domínio complexo ou desconhecido |
 
-### Brownfield & Utilities
+### Brownfield e Utilitários
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `/gsd:map-codebase` | Analyze existing codebase | Before `/gsd:new-project` on existing code |
-| `/gsd:quick` | Ad-hoc task with GSD guarantees | Bug fixes, small features, config changes |
-| `/gsd:debug [desc]` | Systematic debugging with persistent state | When something breaks |
-| `/gsd:add-todo [desc]` | Capture an idea for later | Think of something during a session |
-| `/gsd:check-todos` | List pending todos | Review captured ideas |
-| `/gsd:settings` | Configure workflow toggles and model profile | Change model, toggle agents |
-| `/gsd:set-profile <profile>` | Quick profile switch | Change cost/quality tradeoff |
-| `/gsd:reapply-patches` | Restore local modifications after update | After `/gsd:update` if you had local edits |
+| Comando | Propósito | Quando Usar |
+|---------|----------|-------------|
+| `/fase:mapear-codigo` | Analisar base de código existente | Antes de `/fase:novo-projeto` em código existente |
+| `/fase:rapido` | Tarefa avulsa com garantias do FASE | Correções de bugs, pequenas funcionalidades, mudanças de config |
+| `/fase:debug [desc]` | Depuração sistemática com estado persistente | Quando algo quebra |
+| `/fase:adicionar-todo [desc]` | Capturar uma ideia para depois | Pensar em algo durante uma sessão |
+| `/fase:checar-todos` | Listar todos pendentes | Revisar ideias capturadas |
+| `/fase:configuracoes` | Configurar toggles de workflow e perfil de modelo | Mudar modelo, alternar agentes |
+| `/fase:definir-perfil <perfil>` | Troca rápida de perfil | Mudar custo/qualidade |
+| `/fase:reaplicar-patches` | Restaurar modificações locais após atualização | Após `/fase:atualizar` se você tinha edições locais |
 
 ---
 
-## Configuration Reference
+## Referência de Configuração
 
-GSD stores project settings in `.planning/config.json`. Configure during `/gsd:new-project` or update later with `/gsd:settings`.
+O FASE armazena configurações do projeto em `.planning/config.json`. Configure durante `/fase:novo-projeto` ou atualize depois com `/fase:configuracoes`.
 
-### Full config.json Schema
+### Schema Completo do config.json
 
 ```json
 {
@@ -260,243 +251,243 @@ GSD stores project settings in `.planning/config.json`. Configure during `/gsd:n
   },
   "git": {
     "branching_strategy": "none",
-    "phase_branch_template": "gsd/phase-{phase}-{slug}",
-    "milestone_branch_template": "gsd/{milestone}-{slug}"
+    "phase_branch_template": "faz/fase-{phase}-{slug}",
+    "milestone_branch_template": "faz/{milestone}-{slug}"
   }
 }
 ```
 
-### Core Settings
+### Configurações Principais
 
-| Setting | Options | Default | What it Controls |
-|---------|---------|---------|------------------|
-| `mode` | `interactive`, `yolo` | `interactive` | `yolo` auto-approves decisions; `interactive` confirms at each step |
-| `granularity` | `coarse`, `standard`, `fine` | `standard` | Phase granularity: how finely scope is sliced (3-5, 5-8, or 8-12 phases) |
-| `model_profile` | `quality`, `balanced`, `budget` | `balanced` | Model tier for each agent (see table below) |
+| Configuração | Opções | Padrão | O que Controla |
+|-------------|--------|--------|----------------|
+| `mode` | `interactive`, `yolo` | `interactive` | `yolo` aprova decisões automaticamente; `interactive` confirma em cada etapa |
+| `granularity` | `coarse`, `standard`, `fine` | `standard` | Granularidade das fases: como o escopo é dividido (3-5, 5-8 ou 8-12 fases) |
+| `model_profile` | `quality`, `balanced`, `budget` | `balanced` | Nível de modelo para cada agente (veja tabela abaixo) |
 
-### Planning Settings
+### Configurações de Planejamento
 
-| Setting | Options | Default | What it Controls |
-|---------|---------|---------|------------------|
-| `planning.commit_docs` | `true`, `false` | `true` | Whether `.planning/` files are committed to git |
-| `planning.search_gitignored` | `true`, `false` | `false` | Add `--no-ignore` to broad searches to include `.planning/` |
+| Configuração | Opções | Padrão | O que Controla |
+|-------------|--------|--------|----------------|
+| `planning.commit_docs` | `true`, `false` | `true` | Se os arquivos de `.planning/` são commitados no git |
+| `planning.search_gitignored` | `true`, `false` | `false` | Adiciona `--no-ignore` a buscas amplas para incluir `.planning/` |
 
-> **Note:** If `.planning/` is in `.gitignore`, `commit_docs` is automatically `false` regardless of the config value.
+> **Nota:** Se `.planning/` está no `.gitignore`, `commit_docs` é automaticamente `false` independente do valor da configuração.
 
-### Workflow Toggles
+### Toggles de Workflow
 
-| Setting | Options | Default | What it Controls |
-|---------|---------|---------|------------------|
-| `workflow.research` | `true`, `false` | `true` | Domain investigation before planning |
-| `workflow.plan_check` | `true`, `false` | `true` | Plan verification loop (up to 3 iterations) |
-| `workflow.verifier` | `true`, `false` | `true` | Post-execution verification against phase goals |
-| `workflow.nyquist_validation` | `true`, `false` | `true` | Validation architecture research during plan-phase; 8th plan-check dimension |
+| Configuração | Opções | Padrão | O que Controla |
+|-------------|--------|--------|----------------|
+| `workflow.research` | `true`, `false` | `true` | Investigação de domínio antes do planejamento |
+| `workflow.plan_check` | `true`, `false` | `true` | Loop de verificação do plano (até 3 iterações) |
+| `workflow.verifier` | `true`, `false` | `true` | Verificação pós-execução contra objetivos da fase |
+| `workflow.nyquist_validation` | `true`, `false` | `true` | Pesquisa de arquitetura de validação durante o planejar-fase; 8ª dimensão do verificador de plano |
 
-Disable these to speed up phases in familiar domains or when conserving tokens.
+Desabilite esses toggles para acelerar fases em domínios familiares ou para economizar tokens.
 
-### Git Branching
+### Branching Git
 
-| Setting | Options | Default | What it Controls |
-|---------|---------|---------|------------------|
-| `git.branching_strategy` | `none`, `phase`, `milestone` | `none` | When and how branches are created |
-| `git.phase_branch_template` | Template string | `gsd/phase-{phase}-{slug}` | Branch name for phase strategy |
-| `git.milestone_branch_template` | Template string | `gsd/{milestone}-{slug}` | Branch name for milestone strategy |
+| Configuração | Opções | Padrão | O que Controla |
+|-------------|--------|--------|----------------|
+| `git.branching_strategy` | `none`, `phase`, `milestone` | `none` | Quando e como as branches são criadas |
+| `git.phase_branch_template` | String template | `faz/fase-{phase}-{slug}` | Nome da branch para estratégia por fase |
+| `git.milestone_branch_template` | String template | `faz/{milestone}-{slug}` | Nome da branch para estratégia por marco |
 
-**Branching strategies explained:**
+**Estratégias de branching explicadas:**
 
-| Strategy | Creates Branch | Scope | Best For |
-|----------|---------------|-------|----------|
-| `none` | Never | N/A | Solo development, simple projects |
-| `phase` | At each `execute-phase` | One phase per branch | Code review per phase, granular rollback |
-| `milestone` | At first `execute-phase` | All phases share one branch | Release branches, PR per version |
+| Estratégia | Cria Branch | Escopo | Melhor Para |
+|------------|------------|--------|-------------|
+| `none` | Nunca | N/A | Desenvolvimento solo, projetos simples |
+| `phase` | Em cada `executar-fase` | Uma fase por branch | Code review por fase, rollback granular |
+| `milestone` | No primeiro `executar-fase` | Todas as fases compartilham uma branch | Branches de release, PR por versão |
 
-**Template variables:** `{phase}` = zero-padded number (e.g., "03"), `{slug}` = lowercase hyphenated name, `{milestone}` = version (e.g., "v1.0").
+**Variáveis de template:** `{phase}` = número com zero à esquerda (ex.: "03"), `{slug}` = nome em minúsculas com hífens, `{milestone}` = versão (ex.: "v1.0").
 
-### Model Profiles (Per-Agent Breakdown)
+### Perfis de Modelo (Por Agente)
 
-| Agent | `quality` | `balanced` | `budget` |
-|-------|-----------|------------|----------|
-| gsd-planner | Opus | Opus | Sonnet |
-| gsd-roadmapper | Opus | Sonnet | Sonnet |
-| gsd-executor | Opus | Sonnet | Sonnet |
-| gsd-phase-researcher | Opus | Sonnet | Haiku |
-| gsd-project-researcher | Opus | Sonnet | Haiku |
-| gsd-research-synthesizer | Sonnet | Sonnet | Haiku |
-| gsd-debugger | Opus | Sonnet | Sonnet |
-| gsd-codebase-mapper | Sonnet | Haiku | Haiku |
-| gsd-verifier | Sonnet | Sonnet | Haiku |
-| gsd-plan-checker | Sonnet | Sonnet | Haiku |
-| gsd-integration-checker | Sonnet | Sonnet | Haiku |
+| Agente | `quality` | `balanced` | `budget` |
+|--------|-----------|------------|----------|
+| fase-planner | Opus | Opus | Sonnet |
+| fase-roadmapper | Opus | Sonnet | Sonnet |
+| fase-executor | Opus | Sonnet | Sonnet |
+| fase-phase-researcher | Opus | Sonnet | Haiku |
+| fase-project-researcher | Opus | Sonnet | Haiku |
+| fase-research-synthesizer | Sonnet | Sonnet | Haiku |
+| fase-debugger | Opus | Sonnet | Sonnet |
+| fase-codebase-mapper | Sonnet | Haiku | Haiku |
+| fase-verifier | Sonnet | Sonnet | Haiku |
+| fase-plan-checker | Sonnet | Sonnet | Haiku |
+| fase-integration-checker | Sonnet | Sonnet | Haiku |
 
-**Profile philosophy:**
-- **quality** -- Opus for all decision-making agents, Sonnet for read-only verification. Use when quota is available and the work is critical.
-- **balanced** -- Opus only for planning (where architecture decisions happen), Sonnet for everything else. The default for good reason.
-- **budget** -- Sonnet for anything that writes code, Haiku for research and verification. Use for high-volume work or less critical phases.
+**Filosofia dos perfis:**
+- **quality** — Opus para todos os agentes de tomada de decisão, Sonnet para verificação somente-leitura. Use quando há cota disponível e o trabalho é crítico.
+- **balanced** — Opus apenas para planejamento (onde as decisões de arquitetura acontecem), Sonnet para todo o resto. O padrão por boas razões.
+- **budget** — Sonnet para tudo que escreve código, Haiku para pesquisa e verificação. Use para trabalho de alto volume ou fases menos críticas.
 
 ---
 
-## Usage Examples
+## Exemplos de Uso
 
-### New Project (Full Cycle)
+### Novo Projeto (Ciclo Completo)
 
 ```bash
 claude --dangerously-skip-permissions
-/gsd:new-project            # Answer questions, configure, approve roadmap
+/fase:novo-projeto            # Responda perguntas, configure, aprove o roadmap
 /clear
-/gsd:discuss-phase 1        # Lock in your preferences
-/gsd:plan-phase 1           # Research + plan + verify
-/gsd:execute-phase 1        # Parallel execution
-/gsd:verify-work 1          # Manual UAT
+/fase:discutir-fase 1        # Defina suas preferências
+/fase:planejar-fase 1        # Pesquisa + plano + verificação
+/fase:executar-fase 1        # Execução paralela
+/fase:verificar-trabalho 1   # UAT manual
 /clear
-/gsd:discuss-phase 2        # Repeat for each phase
+/fase:discutir-fase 2        # Repita para cada fase
 ...
-/gsd:audit-milestone        # Check everything shipped
-/gsd:complete-milestone     # Archive, tag, done
+/fase:auditar-marco          # Verifique tudo que foi entregue
+/fase:completar-marco        # Arquive, crie tag, pronto
 ```
 
-### New Project from Existing Document
+### Novo Projeto a Partir de Documento Existente
 
 ```bash
-/gsd:new-project --auto @prd.md   # Auto-runs research/requirements/roadmap from your doc
+/fase:novo-projeto --auto @prd.md   # Executa automaticamente pesquisa/requisitos/roadmap do seu doc
 /clear
-/gsd:discuss-phase 1               # Normal flow from here
+/fase:discutir-fase 1               # Fluxo normal a partir daqui
 ```
 
-### Existing Codebase
+### Base de Código Existente
 
 ```bash
-/gsd:map-codebase           # Analyze what exists (parallel agents)
-/gsd:new-project            # Questions focus on what you're ADDING
-# (normal phase workflow from here)
+/fase:mapear-codigo          # Analisar o que existe (agentes em paralelo)
+/fase:novo-projeto           # Perguntas focam no que você está ADICIONANDO
+# (fluxo de fases normal a partir daqui)
 ```
 
-### Quick Bug Fix
+### Correção Rápida de Bug
 
 ```bash
-/gsd:quick
-> "Fix the login button not responding on mobile Safari"
+/fase:rapido
+> "Corrigir o botão de login que não responde no Safari mobile"
 ```
 
-### Resuming After a Break
+### Retomando Após uma Pausa
 
 ```bash
-/gsd:progress               # See where you left off and what's next
-# or
-/gsd:resume-work            # Full context restoration from last session
+/fase:progresso              # Veja onde você parou e o que vem a seguir
+# ou
+/fase:retomar-trabalho       # Restauração completa do contexto da última sessão
 ```
 
-### Preparing for Release
+### Preparando para Release
 
 ```bash
-/gsd:audit-milestone        # Check requirements coverage, detect stubs
-/gsd:plan-milestone-gaps    # If audit found gaps, create phases to close them
-/gsd:complete-milestone     # Archive, tag, done
+/fase:auditar-marco          # Verificar cobertura de requisitos, detectar stubs
+/fase:planejar-lacunas       # Se a auditoria encontrou lacunas, criar fases para fechá-las
+/fase:completar-marco        # Arquive, crie tag, pronto
 ```
 
-### Speed vs Quality Presets
+### Presets de Velocidade vs Qualidade
 
-| Scenario | Mode | Granularity | Profile | Research | Plan Check | Verifier |
-|----------|------|-------|---------|----------|------------|----------|
-| Prototyping | `yolo` | `coarse` | `budget` | off | off | off |
-| Normal dev | `interactive` | `standard` | `balanced` | on | on | on |
-| Production | `interactive` | `fine` | `quality` | on | on | on |
+| Cenário | Modo | Granularidade | Perfil | Pesquisa | Verificar Plano | Verificador |
+|---------|------|--------------|--------|---------|----------------|-------------|
+| Prototipagem | `yolo` | `coarse` | `budget` | deslig. | deslig. | deslig. |
+| Dev normal | `interactive` | `standard` | `balanced` | lig. | lig. | lig. |
+| Produção | `interactive` | `fine` | `quality` | lig. | lig. | lig. |
 
-### Mid-Milestone Scope Changes
+### Mudanças de Escopo no Meio do Marco
 
 ```bash
-/gsd:add-phase              # Append a new phase to the roadmap
-# or
-/gsd:insert-phase 3         # Insert urgent work between phases 3 and 4
-# or
-/gsd:remove-phase 7         # Descope phase 7 and renumber
+/fase:adicionar-fase         # Adicionar nova fase ao roadmap
+# ou
+/fase:inserir-fase 3         # Inserir trabalho urgente entre fases 3 e 4
+# ou
+/fase:remover-fase 7         # Remover escopo da fase 7 e renumerar
 ```
 
 ---
 
-## Troubleshooting
+## Resolução de Problemas
 
-### "Project already initialized"
+### "Projeto já inicializado"
 
-You ran `/gsd:new-project` but `.planning/PROJECT.md` already exists. This is a safety check. If you want to start over, delete the `.planning/` directory first.
+Você executou `/fase:novo-projeto` mas `.planning/PROJECT.md` já existe. Esse é um mecanismo de segurança. Se quiser recomeçar, delete o diretório `.planning/` primeiro.
 
-### Context Degradation During Long Sessions
+### Degradação de Contexto em Sessões Longas
 
-Clear your context window between major commands: `/clear` in Claude Code. GSD is designed around fresh contexts -- every subagent gets a clean 200K window. If quality is dropping in the main session, clear and use `/gsd:resume-work` or `/gsd:progress` to restore state.
+Limpe sua janela de contexto entre comandos principais: `/clear` no Claude Code. O FASE é projetado em torno de contextos frescos — cada subagente recebe uma janela limpa de 200K. Se a qualidade estiver caindo na sessão principal, limpe e use `/fase:retomar-trabalho` ou `/fase:progresso` para restaurar o estado.
 
-### Plans Seem Wrong or Misaligned
+### Planos Parecem Errados ou Desalinhados
 
-Run `/gsd:discuss-phase [N]` before planning. Most plan quality issues come from Claude making assumptions that `CONTEXT.md` would have prevented. You can also run `/gsd:list-phase-assumptions [N]` to see what Claude intends to do before committing to a plan.
+Execute `/fase:discutir-fase [N]` antes do planejamento. A maioria dos problemas de qualidade do plano vem do Claude fazendo suposições que o `CONTEXT.md` teria prevenido. Você também pode executar `/fase:listar-premissas [N]` para ver o que o Claude pretende fazer antes de se comprometer com um plano.
 
-### Execution Fails or Produces Stubs
+### Execução Falha ou Produz Stubs
 
-Check that the plan was not too ambitious. Plans should have 2-3 tasks maximum. If tasks are too large, they exceed what a single context window can produce reliably. Re-plan with smaller scope.
+Verifique se o plano não foi muito ambicioso. Os planos devem ter no máximo 2-3 tarefas. Se as tarefas forem muito grandes, elas excedem o que uma única janela de contexto consegue produzir de forma confiável. Replaneje com escopo menor.
 
-### Lost Track of Where You Are
+### Perdeu o Fio da Meada
 
-Run `/gsd:progress`. It reads all state files and tells you exactly where you are and what to do next.
+Execute `/fase:progresso`. Ele lê todos os arquivos de estado e diz exatamente onde você está e o que fazer a seguir.
 
-### Need to Change Something After Execution
+### Precisa Mudar Algo Após a Execução
 
-Do not re-run `/gsd:execute-phase`. Use `/gsd:quick` for targeted fixes, or `/gsd:verify-work` to systematically identify and fix issues through UAT.
+Não reexecute `/fase:executar-fase`. Use `/fase:rapido` para correções pontuais, ou `/fase:verificar-trabalho` para identificar e corrigir problemas sistematicamente via UAT.
 
-### Model Costs Too High
+### Custos de Modelo Muito Altos
 
-Switch to budget profile: `/gsd:set-profile budget`. Disable research and plan-check agents via `/gsd:settings` if the domain is familiar to you (or to Claude).
+Mude para o perfil budget: `/fase:definir-perfil budget`. Desabilite os agentes de pesquisa e verificação de plano via `/fase:configuracoes` se o domínio for familiar para você (ou para o Claude).
 
-### Working on a Sensitive/Private Project
+### Trabalhando em Projeto Sensível/Privado
 
-Set `commit_docs: false` during `/gsd:new-project` or via `/gsd:settings`. Add `.planning/` to your `.gitignore`. Planning artifacts stay local and never touch git.
+Defina `commit_docs: false` durante `/fase:novo-projeto` ou via `/fase:configuracoes`. Adicione `.planning/` ao seu `.gitignore`. Os artefatos de planejamento ficam locais e nunca tocam o git.
 
-### GSD Update Overwrote My Local Changes
+### Atualização do FASE Sobrescreveu Minhas Mudanças Locais
 
-Since v1.17, the installer backs up locally modified files to `gsd-local-patches/`. Run `/gsd:reapply-patches` to merge your changes back.
+Desde a v1.17, o instalador faz backup de arquivos modificados localmente em `faz-local-patches/`. Execute `/fase:reaplicar-patches` para mesclar suas mudanças de volta.
 
-### Subagent Appears to Fail but Work Was Done
+### Subagente Parece Ter Falhado Mas o Trabalho Foi Feito
 
-A known workaround exists for a Claude Code classification bug. GSD's orchestrators (execute-phase, quick) spot-check actual output before reporting failure. If you see a failure message but commits were made, check `git log` -- the work may have succeeded.
-
----
-
-## Recovery Quick Reference
-
-| Problem | Solution |
-|---------|----------|
-| Lost context / new session | `/gsd:resume-work` or `/gsd:progress` |
-| Phase went wrong | `git revert` the phase commits, then re-plan |
-| Need to change scope | `/gsd:add-phase`, `/gsd:insert-phase`, or `/gsd:remove-phase` |
-| Milestone audit found gaps | `/gsd:plan-milestone-gaps` |
-| Something broke | `/gsd:debug "description"` |
-| Quick targeted fix | `/gsd:quick` |
-| Plan doesn't match your vision | `/gsd:discuss-phase [N]` then re-plan |
-| Costs running high | `/gsd:set-profile budget` and `/gsd:settings` to toggle agents off |
-| Update broke local changes | `/gsd:reapply-patches` |
+Existe uma solução conhecida para um bug de classificação do Claude Code. Os orquestradores do FASE (executar-fase, rapido) verificam a saída real antes de reportar falha. Se você vir uma mensagem de falha mas commits foram feitos, verifique `git log` — o trabalho pode ter sido bem-sucedido.
 
 ---
 
-## Project File Structure
+## Referência Rápida de Recuperação
 
-For reference, here is what GSD creates in your project:
+| Problema | Solução |
+|---------|---------|
+| Contexto perdido / nova sessão | `/fase:retomar-trabalho` ou `/fase:progresso` |
+| Fase deu errado | `git revert` nos commits da fase, depois replaneje |
+| Precisa mudar escopo | `/fase:adicionar-fase`, `/fase:inserir-fase` ou `/fase:remover-fase` |
+| Auditoria de marco encontrou lacunas | `/fase:planejar-lacunas` |
+| Algo quebrou | `/fase:debug "descrição"` |
+| Correção pontual rápida | `/fase:rapido` |
+| Plano não corresponde à sua visão | `/fase:discutir-fase [N]` e replaneje |
+| Custos altos | `/fase:definir-perfil budget` e `/fase:configuracoes` para desligar agentes |
+| Atualização quebrou mudanças locais | `/fase:reaplicar-patches` |
+
+---
+
+## Estrutura de Arquivos do Projeto
+
+Para referência, aqui está o que o FASE cria no seu projeto:
 
 ```
 .planning/
-  PROJECT.md              # Project vision and context (always loaded)
-  REQUIREMENTS.md         # Scoped v1/v2 requirements with IDs
-  ROADMAP.md              # Phase breakdown with status tracking
-  STATE.md                # Decisions, blockers, session memory
-  config.json             # Workflow configuration
-  MILESTONES.md           # Completed milestone archive
-  research/               # Domain research from /gsd:new-project
+  PROJECT.md              # Visão e contexto do projeto (sempre carregado)
+  REQUIREMENTS.md         # Requisitos v1/v2 com escopo e IDs
+  ROADMAP.md              # Divisão de fases com rastreamento de status
+  STATE.md                # Decisões, bloqueadores, memória de sessão
+  config.json             # Configuração de workflow
+  MILESTONES.md           # Arquivo de marcos concluídos
+  research/               # Pesquisa de domínio do /fase:novo-projeto
   todos/
-    pending/              # Captured ideas awaiting work
-    done/                 # Completed todos
-  debug/                  # Active debug sessions
-    resolved/             # Archived debug sessions
-  codebase/               # Brownfield codebase mapping (from /gsd:map-codebase)
+    pending/              # Ideias capturadas aguardando trabalho
+    done/                 # Todos concluídos
+  debug/                  # Sessões de debug ativas
+    resolved/             # Sessões de debug arquivadas
+  codebase/               # Mapeamento brownfield da base de código (de /fase:mapear-codigo)
   phases/
-    XX-phase-name/
-      XX-YY-PLAN.md       # Atomic execution plans
-      XX-YY-SUMMARY.md    # Execution outcomes and decisions
-      CONTEXT.md          # Your implementation preferences
-      RESEARCH.md         # Ecosystem research findings
-      VERIFICATION.md     # Post-execution verification results
+    XX-nome-da-fase/
+      XX-YY-PLAN.md       # Planos de execução atômicos
+      XX-YY-SUMMARY.md    # Resultados de execução e decisões
+      CONTEXT.md          # Suas preferências de implementação
+      RESEARCH.md         # Descobertas da pesquisa do ecossistema
+      VERIFICATION.md     # Resultados de verificação pós-execução
 ```
