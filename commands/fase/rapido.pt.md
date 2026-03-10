@@ -1,6 +1,6 @@
 ---
 name: faz:rapido
-description: Executar tarefa rápida com garantias FAZ (commits atômicos, rastreamento de estado) mas pular agents opcionais
+description: Executar tarefa rápida com garantias FASE (commits atômicos, rastreamento de estado) mas pular agents opcionais
 argument-hint: "[--full] [--discuss]"
 allowed-tools:
   - Read
@@ -13,7 +13,7 @@ allowed-tools:
   - AskUserQuestion
 ---
 <objective>
-Executar tarefas pequenas e ad-hoc com garantias FAZ (commits atômicos, rastreamento STATE.md).
+Executar tarefas pequenas e ad-hoc com garantias FASE (commits atômicos, rastreamento STATE.md).
 
 Modo rápido é o mesmo sistema com caminho mais curto:
 - Spawn faz-planner (modo rápido) + faz-executor(s)

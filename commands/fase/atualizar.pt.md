@@ -1,13 +1,13 @@
 ---
 name: faz:atualizar
-description: Atualizar FAZ para versão mais recente com exibição de changelog
+description: Atualizar FASE para versão mais recente com exibição de changelog
 allowed-tools:
   - Bash
   - AskUserQuestion
 ---
 
 <objective>
-Verificar atualizações do FAZ, instalar se disponível e exibir o que mudou.
+Verificar atualizações do FASE, instalar se disponível e exibir o que mudou.
 
 Direciona para o workflow update que lida com:
 - Detecção de versão (instalação local vs global)
