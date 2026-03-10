@@ -188,7 +188,7 @@ O mínimo pra funcionar:
 ## 📝 Estrutura de Pastas do F.A.S.E.
 
 ```
-FAZ/
+FASE/
 ├── README.md
 ├── CONTEXT.md
 ├── TRANSLATION_GUIDE.md
