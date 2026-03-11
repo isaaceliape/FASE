@@ -9,7 +9,8 @@
 Spec-driven development, context engineering e meta-prompting — agora em português brasileiro.
 
 [![Original](https://img.shields.io/badge/Original-get--shit--done-blue?style=for-the-badge&logo=github)](https://github.com/gsd-build/get-shit-done)
-[![npm version](https://img.shields.io/npm/v/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
+[![npm version](https://img.shields.io/npm/v/fase-ai?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/fase-ai)
+[![npm downloads](https://img.shields.io/npm/dm/fase-ai?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/fase-ai)
 <br>
 
 **Funciona no Mac, Windows e Linux.**
@@ -43,6 +44,16 @@ O **F.A.S.E.** é a versão em português brasileiro do **Get Shit Done (GSD)** 
 
 ## 🚀 Instalação
 
+Execute o instalador:
+
+```bash
+# Instalação interativa (recomendado)
+npx fase-ai
+
+# Ou instale para um runtime específico
+npx fase-ai --opencode --global
+```
+
 O instalador vai te perguntar:
 1. **Runtime** — Claude Code, OpenCode, Gemini, Codex, ou todos
 2. **Localização** — Global (todos os projetos) ou local (projeto atual)
@@ -52,6 +63,49 @@ O instalador vai te perguntar:
 - Claude Code / Gemini: `/fase:ajuda`
 - OpenCode: `/fase-ajuda`
 - Codex: `$fase-ajuda`
+
+### Opções de Instalação
+
+```bash
+# Claude Code global
+npx fase-ai --claude --global
+
+# OpenCode global
+npx fase-ai --opencode --global
+
+# Todos os runtimes
+npx fase-ai --all --global
+
+# Projeto local
+npx fase-ai --claude --local
+
+# Ver ajuda
+npx fase-ai --help
+```
+
+### Via Instalador
+
+O instalador vai te perguntar:
+1. **Runtime** — Claude Code, OpenCode, Gemini, Codex, ou todos
+2. **Localização** — Global (todos os projetos) ou local (projeto atual)
+
+### Verificar Instalação
+
+- Claude Code / Gemini: `/fase:ajuda`
+- OpenCode: `/fase-ajuda`
+- Codex: `$fase-ajuda`
+
+### Uso do CLI
+
+```bash
+# Usar o comando fase diretamente (se instalado globalmente)
+fase-tools <comando> [args]
+
+# Exemplos:
+fase-tools state json
+fase-tools resolve-model planner
+fase-tools find-phase 1
+```
 
 ---
 

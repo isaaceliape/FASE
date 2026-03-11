@@ -1,0 +1,48 @@
+{
+  "name": "fase-ai",
+  "version": "2.0.0",
+  "description": "F.A.S.E. - Framework de Automação Sem Enrolação. Brazilian Portuguese translation of get-shit-done for AI coding assistants",
+  "bin": {
+    "fase-ai": "./install.js",
+    "fase": "./install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isaaceliape/FASE.git"
+  },
+  "keywords": [
+    "fase",
+    "get-shit-done",
+    "gsd",
+    "ai",
+    "automation",
+    "claude-code",
+    "opencode",
+    "gemini",
+    "codex",
+    "portuguese",
+    "brazilian",
+    "spec-driven",
+    "context-engineering",
+    "meta-prompting"
+  ],
+  "author": "Isaac Eliape",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isaaceliape/FASE/issues"
+  },
+  "homepage": "https://github.com/isaaceliape/FASE#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "./",
+    "lib/",
+    "install.js",
+    "README.md",
+    "../agentes/",
+    "../comandos/",
+    "../hooks/",
+    "../scripts/"
+  ]
+}
