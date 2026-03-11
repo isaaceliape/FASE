@@ -1,5 +1,5 @@
 ---
-name: faz:planejar-fase
+name: fase:planejar-fase
 description: Cria plano detalhado da fase (PLAN.md) com loop de verificação
 argument-hint: "[fase] [--auto] [--research] [--skip-research] [--gaps] [--skip-verify] [--prd <arquivo>]"
 agent: faz-planner
@@ -22,8 +22,8 @@ Criar prompts executáveis da fase (arquivos PLAN.md) para uma fase do roadmap c
 </objective>
 
 <execution_context>
-@~/.claude/faz/workflows/plan-phase.md
-@~/.claude/faz/references/ui-brand.md
+@~/.claude/fase/workflows/plan-phase.md
+@~/.claude/fase/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -40,6 +40,6 @@ Normalizar input da fase no passo 2 antes de qualquer lookup de diretório.
 </context>
 
 <process>
-Execute o workflow plan-phase de @~/.claude/faz/workflows/plan-phase.md ponta a ponta.
+Execute o workflow plan-phase de @~/.claude/fase/workflows/plan-phase.md ponta a ponta.
 Preservar todos os gates do workflow (validação, research, planejamento, loop de verificação, roteamento).
 </process>

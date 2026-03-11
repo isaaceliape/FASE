@@ -1,5 +1,5 @@
 ---
-name: faz:debug
+name: fase:debug
 description: Debugging sistemático com estado persistente através de resets de contexto
 argument-hint: [descrição da issue]
 allowed-tools:

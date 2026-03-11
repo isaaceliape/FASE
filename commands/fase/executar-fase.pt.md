@@ -1,5 +1,5 @@
 ---
-name: faz:executar-fase
+name: fase:executar-fase
 description: Executa todos os planos de uma fase com paralelização em waves
 argument-hint: "<número-fase> [--gaps-only]"
 allowed-tools:
@@ -22,8 +22,8 @@ Orçamento de contexto: ~15% orquestrador, 100% fresh por subagent.
 </objective>
 
 <execution_context>
-@~/.claude/faz/workflows/execute-phase.md
-@~/.claude/faz/references/ui-brand.md
+@~/.claude/fase/workflows/execute-phase.md
+@~/.claude/fase/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -36,6 +36,6 @@ Arquivos de contexto são resolvidos dentro do workflow via `faz-tools init exec
 </context>
 
 <process>
-Execute o workflow execute-phase de @~/.claude/faz/workflows/execute-phase.md ponta a ponta.
+Execute o workflow execute-phase de @~/.claude/fase/workflows/execute-phase.md ponta a ponta.
 Preservar todos os gates do workflow (execução em waves, checkpoint handling, verificação, atualizações de estado, roteamento).
 </process>
