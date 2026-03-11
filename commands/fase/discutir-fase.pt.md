@@ -29,8 +29,8 @@ Extraia decisões de implementação que downstream agents precisam — research
 </objective>
 
 <execution_context>
-@~/.faz/workflows/discuss-phase.md
-@~/.faz/templates/context.md
+@~/.fase/workflows/discuss-phase.md
+@~/.fase/templates/context.md
 </execution_context>
 
 <context>

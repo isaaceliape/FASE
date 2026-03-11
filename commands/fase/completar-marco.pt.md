@@ -19,8 +19,8 @@ Output: Milestone arquivado (roadmap + requirements), PROJECT.md evoluído, git 
 <execution_context>
 **Carregue estes arquivos AGORA (antes de prosseguir):**
 
-- @~/.faz/workflows/complete-milestone.md (workflow principal)
-- @~/.faz/templates/milestone-archive.md (template de archive)
+- @~/.fase/workflows/complete-milestone.md (workflow principal)
+- @~/.fase/templates/milestone-archive.md (template de archive)
   </execution_context>
 
 <context>
