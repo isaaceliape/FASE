@@ -243,7 +243,7 @@ FASE/
 Sugestão de ordem:
 
 1. `agents/gsd-executor.md` → `agents/fase-executor.pt.md`
-2. `commands/gsd/help.md` → `commands/fase/help.pt.md`
-3. `commands/gsd/new-project.md` → `commands/fase/new-project.pt.md`
+2. `commands/gsd/help.md` → `comandos/help.pt.md`
+3. `commands/gsd/new-project.md` → `comandos/new-project.pt.md`
 
 **Quer que eu comece a traduzir o primeiro agent agora?** 🐙

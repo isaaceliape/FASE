@@ -162,7 +162,7 @@ Este projeto é uma **tradução comunitária**, não um fork oficial.
 - [x] Branding atualizado (README, CONTEXT, docs)
 - [x] CLI (bin/install.js) atualizado
 - [x] Hooks atualizados
-- [x] Diretório `commands/fase/` renomeado
+- [x] Diretório `comandos/` renomeado
 - [x] Agentes renomeados para `fase-*.pt.md`
 - [x] Documentação técnica atualizada
 

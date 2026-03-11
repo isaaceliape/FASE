@@ -9,7 +9,7 @@
 | Categoria | Quantidade |
 |-----------|-----------|
 | Agentes a renomear (`faz-*.pt.md`) | 12 arquivos |
-| Diretório de comandos a renomear | `commands/faz/` → `commands/fase/` |
+| Diretório de comandos a renomear | `commands/faz/` → `comandos/` |
 | Arquivos com padrão `/faz:` | 27 arquivos |
 | Arquivos com "FAZ" (maiúsculo) | 18 arquivos, 61 ocorrências |
 | Hooks com referências `/faz:` | 2 arquivos |
@@ -57,7 +57,7 @@
 ## Parte 4 — Diretório e conteúdo dos comandos
 
 **O que muda:**
-- Renomear diretório: `commands/faz/` → `commands/fase/`
+- Renomear diretório: `commands/faz/` → `comandos/`
 - Atualizar conteúdo de todos os 31 arquivos `.pt.md`:
   - `/faz:` → `/fase:` (namespace de comandos)
   - Referências ao nome "FAZ" → "FASE"

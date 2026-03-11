@@ -98,10 +98,10 @@
 
 ### Fase 1: Core (MVP) — ✅ COMPLETA
 
-1. ✅ `commands/fase/help.pt.md`
-2. ✅ `commands/fase/new-project.pt.md`
-3. ✅ `commands/fase/plan-phase.pt.md`
-4. ✅ `commands/fase/execute-phase.pt.md`
+1. ✅ `comandos/help.pt.md`
+2. ✅ `comandos/new-project.pt.md`
+3. ✅ `comandos/plan-phase.pt.md`
+4. ✅ `comandos/execute-phase.pt.md`
 5. ✅ `agents/fase-executor.pt.md`
 6. ✅ `agents/fase-planner.pt.md` (43KB)
 7. ✅ `agents/fase-verifier.pt.md` (19KB)
@@ -116,22 +116,22 @@
 
 **Pendentes:**
 - `agents/fase-research-synthesizer.pt.md`
-- `commands/fase/new-milestone.pt.md`
-- `commands/fase/add-phase.pt.md`
-- `commands/fase/research-phase.pt.md`
-- `commands/fase/map-codebase.pt.md`
+- `comandos/new-milestone.pt.md`
+- `comandos/add-phase.pt.md`
+- `comandos/research-phase.pt.md`
+- `comandos/map-codebase.pt.md`
 
 ### Fase 3: Verification & Debug — 9 arquivos
 
 - `agents/fase-plan-checker.pt.md`
 - `agents/fase-integration-checker.pt.md`
 - `agents/fase-debugger.pt.md`
-- `commands/fase/verify-work.pt.md`
-- `commands/fase/validate-phase.pt.md`
-- `commands/fase/debug.pt.md`
-- `commands/fase/checar-tarefas.pt.md`
-- `commands/fase/adicionar-tarefa.pt.md`
-- `commands/fase/add-tests.pt.md`
+- `comandos/verify-work.pt.md`
+- `comandos/validate-phase.pt.md`
+- `comandos/debug.pt.md`
+- `comandos/checar-tarefas.pt.md`
+- `comandos/adicionar-tarefa.pt.md`
+- `comandos/add-tests.pt.md`
 
 ### Fase 4: Advanced & Utility — 22 arquivos
 
@@ -246,10 +246,10 @@
 
 | # | Arquivo | Status | Tamanho | Complexidade | Responsável | Previsão |
 |---|---------|--------|---------|--------------|-------------|----------|
-| 1 | `commands/fase/help.pt.md` | ✅ Traduzido | ~8KB | Baixa | OpenCode | 2026-03-06 |
-| 2 | `commands/fase/new-project.pt.md` | ⏳ Pendente | ~12KB | Média | OpenCode | 2026-03-06 |
-| 3 | `commands/fase/plan-phase.pt.md` | ⏳ Pendente | ~15KB | Média | OpenCode | 2026-03-06 |
-| 4 | `commands/fase/execute-phase.pt.md` | ⏳ Pendente | ~10KB | Média | OpenCode | 2026-03-06 |
+| 1 | `comandos/help.pt.md` | ✅ Traduzido | ~8KB | Baixa | OpenCode | 2026-03-06 |
+| 2 | `comandos/new-project.pt.md` | ⏳ Pendente | ~12KB | Média | OpenCode | 2026-03-06 |
+| 3 | `comandos/plan-phase.pt.md` | ⏳ Pendente | ~15KB | Média | OpenCode | 2026-03-06 |
+| 4 | `comandos/execute-phase.pt.md` | ⏳ Pendente | ~10KB | Média | OpenCode | 2026-03-06 |
 | 5 | `agents/fase-planner.pt.md` | ⏳ Pendente | ~43KB | Alta | OpenCode | 2026-03-07 |
 | 6 | `agents/fase-verifier.pt.md` | ⏳ Pendente | ~19KB | Média | OpenCode | 2026-03-07 |
 
@@ -281,10 +281,10 @@
 | 3 | `agents/fase-phase-researcher.pt.md` | Agent | ~20KB | Média | - |
 | 4 | `agents/fase-research-synthesizer.pt.md` | Agent | ~18KB | Média | #2, #3 |
 | 5 | `agents/fase-codebase-mapper.pt.md` | Agent | ~22KB | Média | - |
-| 6 | `commands/fase/new-milestone.pt.md` | Command | ~10KB | Baixa | #1 |
-| 7 | `commands/fase/add-phase.pt.md` | Command | ~12KB | Baixa | #1 |
-| 8 | `commands/fase/research-phase.pt.md` | Command | ~15KB | Média | #2, #3, #4 |
-| 9 | `commands/fase/map-codebase.pt.md` | Command | ~10KB | Baixa | #5 |
+| 6 | `comandos/new-milestone.pt.md` | Command | ~10KB | Baixa | #1 |
+| 7 | `comandos/add-phase.pt.md` | Command | ~12KB | Baixa | #1 |
+| 8 | `comandos/research-phase.pt.md` | Command | ~15KB | Média | #2, #3, #4 |
+| 9 | `comandos/map-codebase.pt.md` | Command | ~10KB | Baixa | #5 |
 
 **Estimativa:** 4-5 dias
 
@@ -311,12 +311,12 @@
 | 1 | `agents/fase-plan-checker.pt.md` | Agent | ~20KB | Média | Fase 1 |
 | 2 | `agents/fase-integration-checker.pt.md` | Agent | ~25KB | Média | Fase 1 |
 | 3 | `agents/fase-debugger.pt.md` | Agent | ~30KB | Alta | - |
-| 4 | `commands/fase/verify-work.pt.md` | Command | ~12KB | Média | Fase 1 |
-| 5 | `commands/fase/validate-phase.pt.md` | Command | ~10KB | Média | #1 |
-| 6 | `commands/fase/debug.pt.md` | Command | ~15KB | Média | #3 |
-| 7 | `commands/fase/checar-tarefas.pt.md` | Command | ~8KB | Baixa | - |
-| 8 | `commands/fase/adicionar-tarefa.pt.md` | Command | ~8KB | Baixa | - |
-| 9 | `commands/fase/add-tests.pt.md` | Command | ~12KB | Média | #4 |
+| 4 | `comandos/verify-work.pt.md` | Command | ~12KB | Média | Fase 1 |
+| 5 | `comandos/validate-phase.pt.md` | Command | ~10KB | Média | #1 |
+| 6 | `comandos/debug.pt.md` | Command | ~15KB | Média | #3 |
+| 7 | `comandos/checar-tarefas.pt.md` | Command | ~8KB | Baixa | - |
+| 8 | `comandos/adicionar-tarefa.pt.md` | Command | ~8KB | Baixa | - |
+| 9 | `comandos/add-tests.pt.md` | Command | ~12KB | Média | #4 |
 
 **Estimativa:** 4-5 dias
 
