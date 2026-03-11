@@ -1,5 +1,5 @@
 ---
-name: faz:mapear-codigo
+name: fase:mapear-codigo
 description: Analisa codebase com agents mapper paralelos para produzir documentos .planning/codebase/
 argument-hint: "[opcional: área específica para mapear, ex: 'api' ou 'auth']"
 allowed-tools:
@@ -20,7 +20,7 @@ Output: pasta `.planning/codebase/` com 7 documentos estruturados sobre o estado
 </objective>
 
 <execution_context>
-@~/.claude/faz/workflows/map-codebase.md
+@~/.claude/fase/workflows/map-codebase.md
 </execution_context>
 
 <context>

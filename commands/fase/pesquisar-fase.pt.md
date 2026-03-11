@@ -1,5 +1,5 @@
 ---
-name: faz:pesquisar-fase
+name: fase:pesquisar-fase
 description: Pesquisa como implementar uma fase (standalone - geralmente use /fase:planejar-fase ao invés disso)
 argument-hint: "[fase]"
 allowed-tools:
@@ -34,7 +34,7 @@ Normalize input da fase no passo 1 antes de qualquer lookup de diretório.
 ## 0. Inicializar Contexto
 
 ```bash
-INIT=$(node "$HOME/.claude/faz/bin/faz-tools.cjs" init phase-op "$ARGUMENTS")
+INIT=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" init phase-op "$ARGUMENTS")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -42,13 +42,13 @@ Extraia do init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`, 
 
 Resolva modelo do researcher:
 ```bash
-RESEARCHER_MODEL=$(node "$HOME/.claude/faz/bin/faz-tools.cjs" resolve-model faz-phase-researcher --raw)
+RESEARCHER_MODEL=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-phase-researcher --raw)
 ```
 
 ## 1. Validar Fase
 
 ```bash
-PHASE_INFO=$(node "$HOME/.claude/faz/bin/faz-tools.cjs" roadmap get-phase "${phase_number}")
+PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roadmap get-phase "${phase_number}")
 ```
 
 **Se `found` é false:** Erro e exit. **Se `found` é true:** Extraia `phase_number`, `phase_name`, `goal` do JSON.
