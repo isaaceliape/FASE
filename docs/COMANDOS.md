@@ -6,17 +6,17 @@
 
 ## 📋 Índice
 
-- [Core](#core) — Comandos principais
-- [Planning](#planning) — Planejamento e milestones
-- [Research](#research) — Pesquisa e mapeamento
-- [Verification](#verification) — Verificação e validação
-- [Debug](#debug) — Debug e troubleshooting
-- [Discussion](#discussion) — Discussão e conclusão
-- [Utility](#utility) — Utilitários diversos
+- [Essenciais](#essenciais) — Comandos principais
+- [Planejamento](#planejamento) — Planejamento e milestones
+- [Pesquisa](#pesquisa) — Pesquisa e mapeamento
+- [Verificação](#verificação) — Verificação e validação
+- [Depuração](#depuração) — Debug e troubleshooting
+- [Discussão](#discussão) — Discussão e conclusão
+- [Utilitários](#utilitários) — Utilitários diversos
 
 ---
 
-## Core
+## Essenciais
 
 Comandos essenciais para começar e executar projetos.
 
@@ -101,7 +101,7 @@ Mostra e ajusta configurações do F.A.S.E.
 
 ---
 
-## Planning
+## Planejamento
 
 Comandos para planejar e gerenciar milestones e fases.
 
@@ -217,7 +217,7 @@ Mostra o progresso atual do projeto.
 
 ---
 
-## Research
+## Pesquisa
 
 Comandos para pesquisar e mapear o projeto.
 
@@ -277,7 +277,7 @@ Lista todas as premissas de uma fase.
 
 ---
 
-## Verification
+## Verificação
 
 Comandos para verificar e validar o trabalho.
 
@@ -332,7 +332,7 @@ Realiza auditoria de um marco.
 
 ---
 
-## Debug
+## Depuração
 
 Comandos para debug e troubleshooting.
 
@@ -402,7 +402,7 @@ Adiciona testes para uma funcionalidade.
 
 ---
 
-## Discussion
+## Discussão
 
 Comandos para discussão e conclusão.
 
@@ -457,7 +457,7 @@ Identifica e planeja como fechar lacunas de um marco.
 
 ---
 
-## Utility
+## Utilitários
 
 Comandos utilitários diversos.
 
