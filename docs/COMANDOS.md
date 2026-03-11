@@ -6,17 +6,17 @@
 
 ## 📋 Índice
 
-- [Core](#core) — Comandos principais
-- [Planning](#planning) — Planejamento e milestones
-- [Research](#research) — Pesquisa e mapeamento
-- [Verification](#verification) — Verificação e validação
-- [Debug](#debug) — Debug e troubleshooting
-- [Discussion](#discussion) — Discussão e conclusão
-- [Utility](#utility) — Utilitários diversos
+- [Essenciais](#essenciais) — Comandos principais
+- [Planejamento](#planejamento) — Planejamento e milestones
+- [Pesquisa](#pesquisa) — Pesquisa e mapeamento
+- [Verificação](#verificação) — Verificação e validação
+- [Depuração](#depuração) — Debug e troubleshooting
+- [Discussão](#discussão) — Discussão e conclusão
+- [Utilitários](#utilitários) — Utilitários diversos
 
 ---
 
-## Core
+## Essenciais
 
 Comandos essenciais para começar e executar projetos.
 
@@ -101,7 +101,7 @@ Mostra e ajusta configurações do F.A.S.E.
 
 ---
 
-## Planning
+## Planejamento
 
 Comandos para planejar e gerenciar milestones e fases.
 
@@ -217,7 +217,7 @@ Mostra o progresso atual do projeto.
 
 ---
 
-## Research
+## Pesquisa
 
 Comandos para pesquisar e mapear o projeto.
 
@@ -277,7 +277,7 @@ Lista todas as premissas de uma fase.
 
 ---
 
-## Verification
+## Verificação
 
 Comandos para verificar e validar o trabalho.
 
@@ -332,7 +332,7 @@ Realiza auditoria de um marco.
 
 ---
 
-## Debug
+## Depuração
 
 Comandos para debug e troubleshooting.
 
@@ -353,34 +353,34 @@ Inicia sessão de debug estruturado.
 
 ---
 
-### `/fase:checar-todos`
+### `/fase:checar-tarefas`
 
-Lista todos os TODOs do projeto.
+Lista todas as tarefas do projeto.
 
 **O que faz:**
-- Varre código por comentários TODO
+- Varre código por tarefas pendentes
 - Agrupa por arquivo/fase
-- Mostra status de cada um
+- Mostra status de cada uma
 
 **Exemplo:**
 ```bash
-/fase:checar-todos
+/fase:checar-tarefas
 ```
 
 ---
 
-### `/fase:adicionar-todo`
+### `/fase:adicionar-tarefa`
 
-Adiciona um TODO ao projeto.
+Adiciona uma tarefa ao projeto.
 
 **O que faz:**
-- Cria entrada na lista de TODOs
+- Cria entrada na lista de tarefas
 - Linka com fase relevante
 - Define prioridade
 
 **Exemplo:**
 ```bash
-/fase:adicionar-todo "Adicionar rate limiting no login" --prioridade alta
+/fase:adicionar-tarefa "Adicionar rate limiting no login" --prioridade alta
 ```
 
 ---
@@ -402,7 +402,7 @@ Adiciona testes para uma funcionalidade.
 
 ---
 
-## Discussion
+## Discussão
 
 Comandos para discussão e conclusão.
 
@@ -457,7 +457,7 @@ Identifica e planeja como fechar lacunas de um marco.
 
 ---
 
-## Utility
+## Utilitários
 
 Comandos utilitários diversos.
 
@@ -527,15 +527,6 @@ Modo rápido para tarefas simples.
 
 ---
 
-### `/fase:entrar-discord`
-
-Mostra link para entrar no Discord da comunidade.
-
-**Exemplo:**
-```bash
-/fase:entrar-discord
-```
-
 ---
 
 ### `/fase:reaplicar-patches`
@@ -578,7 +569,6 @@ Define o perfil de modelo a ser usado.
 
 - 📖 [Guia do Usuário](USER-GUIDE.md)
 - 🐛 [Reportar bug](https://github.com/isaaceliape/FASE/issues)
-- 💬 [Discord da comunidade](https://discord.gg/gsd)
 
 ---
 

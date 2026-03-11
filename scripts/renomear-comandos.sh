@@ -39,7 +39,6 @@ declare -A MAPEAMENTO=(
     ["health.pt.md"]="saude.pt.md"
     ["update.pt.md"]="atualizar.pt.md"
     ["quick.pt.md"]="rapido.pt.md"
-    ["join-discord.pt.md"]="entrar-discord.pt.md"
     ["reapply-patches.pt.md"]="reaplicar-patches.pt.md"
     ["set-profile.pt.md"]="definir-perfil.pt.md"
 )

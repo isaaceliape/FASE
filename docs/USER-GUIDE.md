@@ -200,7 +200,6 @@ O auditor nunca modifica o código de implementação — apenas arquivos de tes
 | `/fase:pausar-trabalho` | Salvar handoff de contexto | Ao parar no meio de uma fase |
 | `/fase:ajuda` | Mostrar todos os comandos | Referência rápida |
 | `/fase:atualizar` | Atualizar FASE com prévia do changelog | Verificar novas versões |
-| `/fase:entrar-discord` | Abrir convite da comunidade Discord | Dúvidas ou comunidade |
 
 ### Gerenciamento de Fases
 
@@ -220,8 +219,8 @@ O auditor nunca modifica o código de implementação — apenas arquivos de tes
 | `/fase:mapear-codigo` | Analisar base de código existente | Antes de `/fase:novo-projeto` em código existente |
 | `/fase:rapido` | Tarefa avulsa com garantias do FASE | Correções de bugs, pequenas funcionalidades, mudanças de config |
 | `/fase:debug [desc]` | Depuração sistemática com estado persistente | Quando algo quebra |
-| `/fase:adicionar-todo [desc]` | Capturar uma ideia para depois | Pensar em algo durante uma sessão |
-| `/fase:checar-todos` | Listar todos pendentes | Revisar ideias capturadas |
+| `/fase:adicionar-tarefa [desc]` | Capturar uma ideia para depois | Pensar em algo durante uma sessão |
+| `/fase:checar-tarefas` | Listar tarefas pendentes | Revisar ideias capturadas |
 | `/fase:configuracoes` | Configurar toggles de workflow e perfil de modelo | Mudar modelo, alternar agentes |
 | `/fase:definir-perfil <perfil>` | Troca rápida de perfil | Mudar custo/qualidade |
 | `/fase:reaplicar-patches` | Restaurar modificações locais após atualização | Após `/fase:atualizar` se você tinha edições locais |
