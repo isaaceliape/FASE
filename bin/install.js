@@ -2229,7 +2229,6 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   console.log(`
   ${green}Pronto!${reset} Abra um diretório em branco no ${program} e execute ${cyan}${command}${reset}.
 
-  ${cyan}Entre na comunidade:${reset} https://discord.gg/gsd
 `);
 }
 

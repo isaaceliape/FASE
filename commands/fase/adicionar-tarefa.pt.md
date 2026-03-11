@@ -1,6 +1,6 @@
 ---
-name: fase:adicionar-todo
-description: Captura ideia ou task como todo do contexto atual da conversa
+name: fase:adicionar-tarefa
+description: Captura ideia ou task como tarefa do contexto atual da conversa
 argument-hint: [descrição opcional]
 allowed-tools:
   - Read
@@ -10,14 +10,14 @@ allowed-tools:
 ---
 
 <objective>
-Capturar uma ideia, task, ou issue que surge durante uma sessão F.A.Z. como um todo estruturado para trabalho posterior.
+Capturar uma ideia, task, ou issue que surge durante uma sessão F.A.S.E. como uma tarefa estruturada para trabalho posterior.
 
 Roteia para o workflow add-todo que gerencia:
 - Criação de estrutura de diretório
 - Extração de conteúdo dos argumentos ou conversa
 - Inferência de área dos file paths
 - Detecção e resolução de duplicados
-- Criação de arquivo todo com frontmatter
+- Criação de arquivo de tarefa com frontmatter
 - Atualizações no STATE.md
 - Commits git
 </objective>
@@ -27,7 +27,7 @@ Roteia para o workflow add-todo que gerencia:
 </execution_context>
 
 <context>
-Argumentos: $ARGUMENTS (descrição do todo opcional)
+Argumentos: $ARGUMENTS (descrição da tarefa opcional)
 
 Estado é resolvido in-workflow via `init todos` e reads direcionados.
 </context>
@@ -45,3 +45,4 @@ O workflow gerencia toda a lógica incluindo:
 7. Atualizações no STATE.md
 8. Commits git
 </process>
+</output>

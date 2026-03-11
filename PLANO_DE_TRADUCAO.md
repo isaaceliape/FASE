@@ -86,7 +86,7 @@ get-shit-done/
 | **Verification** | `verify-work.md`, `validate-phase.md`, `audit-milestone.md` |
 | **Debug** | `debug.md`, `check-todos.md`, `add-todo.md`, `add-tests.md` |
 | **Discussion** | `discuss-phase.md`, `complete-milestone.md`, `plan-milestone-gaps.md` |
-| **Utility** | `cleanup.md`, `health.md`, `update.md`, `quick.md`, `join-discord.md` |
+| **Utility** | `cleanup.md`, `health.md`, `update.md`, `quick.md` |
 | **Advanced** | `reapply-patches.md`, `set-profile.md` |
 
 **Total commands:** 32 arquivos
@@ -179,7 +179,6 @@ O mínimo pra funcionar:
 46. 🔲 `commands/gsd/insert-phase.md`
 47. 🔲 `commands/gsd/remove-phase.md`
 48. 🔲 `commands/gsd/list-phase-assumptions.md`
-49. 🔲 `commands/gsd/join-discord.md`
 50. 🔲 `commands/gsd/settings.md`
 51. 🔲 `docs/context-monitor.md`
 

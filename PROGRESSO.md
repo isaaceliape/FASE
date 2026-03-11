@@ -68,14 +68,14 @@
 **Execution:** execute-phase, resume-work, pause-work, progress ✅
 **Research:** research-phase, map-codebase, list-phase-assumptions ✅
 **Verification:** verify-work, validate-phase, audit-milestone ✅
-**Debug:** debug, check-todos, add-todo, add-tests ✅
+**Debug:** debug, checar-tarefas, adicionar-tarefa, add-tests ✅
 **Discussion:** discuss-phase, complete-milestone, plan-milestone-gaps ✅
-**Utility:** cleanup, health, update, quick, join-discord ✅
+**Utility:** cleanup, health, update, quick ✅
 **Advanced:** reapply-patches, set-profile ✅
 
 **Últimos traduzidos (18:06):**
 - audit-milestone, cleanup, complete-milestone, discuss-phase, health
-- insert-phase, join-discord, list-phase-assumptions, pause-work, plan-milestone-gaps
+- insert-phase, list-phase-assumptions, pause-work, plan-milestone-gaps
 - progress, quick, reapply-patches, remove-phase, resume-work
 - set-profile, settings, update
 
@@ -129,8 +129,8 @@
 - `commands/fase/verify-work.pt.md`
 - `commands/fase/validate-phase.pt.md`
 - `commands/fase/debug.pt.md`
-- `commands/fase/check-todos.pt.md`
-- `commands/fase/add-todo.pt.md`
+- `commands/fase/checar-tarefas.pt.md`
+- `commands/fase/adicionar-tarefa.pt.md`
 - `commands/fase/add-tests.pt.md`
 
 ### Fase 4: Advanced & Utility — 22 arquivos
@@ -211,7 +211,7 @@
 
 ### Lançamento
 4. Preparar release v1.0.0
-5. Divulgar na comunidade BR (Discord, Twitter, LinkedIn)
+5. Divulgar na comunidade BR (Twitter, LinkedIn)
 6. Coletar feedback dos primeiros usuários
 
 ---
@@ -314,8 +314,8 @@
 | 4 | `commands/fase/verify-work.pt.md` | Command | ~12KB | Média | Fase 1 |
 | 5 | `commands/fase/validate-phase.pt.md` | Command | ~10KB | Média | #1 |
 | 6 | `commands/fase/debug.pt.md` | Command | ~15KB | Média | #3 |
-| 7 | `commands/fase/check-todos.pt.md` | Command | ~8KB | Baixa | - |
-| 8 | `commands/fase/add-todo.pt.md` | Command | ~8KB | Baixa | - |
+| 7 | `commands/fase/checar-tarefas.pt.md` | Command | ~8KB | Baixa | - |
+| 8 | `commands/fase/adicionar-tarefa.pt.md` | Command | ~8KB | Baixa | - |
 | 9 | `commands/fase/add-tests.pt.md` | Command | ~12KB | Média | #4 |
 
 **Estimativa:** 4-5 dias

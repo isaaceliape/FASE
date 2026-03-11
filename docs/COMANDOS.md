@@ -353,34 +353,34 @@ Inicia sessão de debug estruturado.
 
 ---
 
-### `/fase:checar-todos`
+### `/fase:checar-tarefas`
 
-Lista todos os TODOs do projeto.
+Lista todas as tarefas do projeto.
 
 **O que faz:**
-- Varre código por comentários TODO
+- Varre código por tarefas pendentes
 - Agrupa por arquivo/fase
-- Mostra status de cada um
+- Mostra status de cada uma
 
 **Exemplo:**
 ```bash
-/fase:checar-todos
+/fase:checar-tarefas
 ```
 
 ---
 
-### `/fase:adicionar-todo`
+### `/fase:adicionar-tarefa`
 
-Adiciona um TODO ao projeto.
+Adiciona uma tarefa ao projeto.
 
 **O que faz:**
-- Cria entrada na lista de TODOs
+- Cria entrada na lista de tarefas
 - Linka com fase relevante
 - Define prioridade
 
 **Exemplo:**
 ```bash
-/fase:adicionar-todo "Adicionar rate limiting no login" --prioridade alta
+/fase:adicionar-tarefa "Adicionar rate limiting no login" --prioridade alta
 ```
 
 ---
@@ -527,15 +527,6 @@ Modo rápido para tarefas simples.
 
 ---
 
-### `/fase:entrar-discord`
-
-Mostra link para entrar no Discord da comunidade.
-
-**Exemplo:**
-```bash
-/fase:entrar-discord
-```
-
 ---
 
 ### `/fase:reaplicar-patches`
@@ -578,7 +569,6 @@ Define o perfil de modelo a ser usado.
 
 - 📖 [Guia do Usuário](USER-GUIDE.md)
 - 🐛 [Reportar bug](https://github.com/isaaceliape/FASE/issues)
-- 💬 [Discord da comunidade](https://discord.gg/gsd)
 
 ---
 

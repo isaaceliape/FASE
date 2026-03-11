@@ -10,8 +10,6 @@ Spec-driven development, context engineering e meta-prompting — agora em portu
 
 [![Original](https://img.shields.io/badge/Original-get--shit--done-blue?style=for-the-badge&logo=github)](https://github.com/gsd-build/get-shit-done)
 [![npm version](https://img.shields.io/npm/v/get-shit-done-cc?style=for-the-badge&logo=npm&logoColor=white&color=CB3837)](https://www.npmjs.com/package/get-shit-done-cc)
-[![Discord BR](https://img.shields.io/badge/Discord-Comunidade%20BR-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/gsd)
-
 <br>
 
 ```bash
@@ -120,8 +118,8 @@ A filosofia é a mesma do original:
 ### Debug
 ```bash
 /fase:debug              # Debuga problemas
-/fase:checar-todos       # Checa lista de todos
-/fase:adicionar-todo     # Adiciona um todo
+/fase:checar-tarefas     # Checa lista de tarefas
+/fase:adicionar-tarefa   # Adiciona uma tarefa
 /fase:adicionar-testes   # Adiciona testes
 ```
 
@@ -134,7 +132,6 @@ A filosofia é a mesma do original:
 /fase:saude              # Checkup de saúde do projeto
 /fase:atualizar          # Atualiza o F.A.S.E.
 /fase:rapido             # Modo rápido para tarefas simples
-/fase:entrar-discord     # Link para Discord
 /fase:reaplicar-patches  # Reaplica patches
 /fase:definir-perfil     # Define perfil de modelo
 ```
@@ -182,13 +179,12 @@ Quer ajudar a traduzir ou melhorar o F.A.S.E.?
 2. **Traduza** um agent ou documento
 3. **Abra um PR** descrevendo o que mudou
 
-**Precisa de ajuda?** Abre uma issue ou entra no Discord da comunidade.
+**Precisa de ajuda?** Abre uma issue no GitHub.
 
 ---
 
 ## 📞 Comunidade
 
-- **Discord Internacional:** https://discord.gg/gsd
 - **GitHub Issues:** [Reportar bugs / sugerir melhorias](https://github.com/isaaceliape/FASE/issues)
 
 ---

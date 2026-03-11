@@ -128,7 +128,6 @@ O GSD original evolui rápido. Precisamos:
 
 ## 📞 Comunidade
 
-- **Discord Internacional:** https://discord.gg/gsd
 - **GitHub:** https://github.com/isaaceliape/FASE
 - **Issues:** Reportar bugs e sugerir melhorias
 
