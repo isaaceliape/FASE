@@ -1921,11 +1921,11 @@ function install(isGlobal, runtime = 'claude') {
     // Copy comandos/*.md as command/fase-*.md (flatten structure)
     const gsdSrc = path.join(src, 'comandos');
     copyFlattenedCommands(gsdSrc, commandDir, 'fase', pathPrefix, runtime);
-    if (verifyInstalled(commandDir, 'command/gsd-*')) {
-      const count = fs.readdirSync(commandDir).filter(f => f.startsWith('gsd-')).length;
+    if (verifyInstalled(commandDir, 'command/fase-*')) {
+      const count = fs.readdirSync(commandDir).filter(f => f.startsWith('fase-')).length;
       console.log(`  ${green}✓${reset} Instalados ${count} comandos em command/`);
     } else {
-      failures.push('command/gsd-*');
+      failures.push('command/fase-*');
     }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
@@ -1935,7 +1935,7 @@ function install(isGlobal, runtime = 'claude') {
     if (installedSkillNames.length > 0) {
       console.log(`  ${green}✓${reset} Instaladas ${installedSkillNames.length} skills em skills/`);
     } else {
-      failures.push('skills/gsd-*');
+      failures.push('skills/fase-*');
     }
   } else {
     // Claude Code & Gemini: nested structure in commands/ directory
