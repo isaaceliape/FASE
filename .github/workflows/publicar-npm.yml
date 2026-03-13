@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Verificar integridade do pacote
         run: |
@@ -36,9 +35,11 @@ jobs:
       - name: Publicar no npm
         run: |
           cd bin
+          npm config set registry https://registry.npmjs.org/
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Criar release no GitHub
         uses: actions/create-release@v1
