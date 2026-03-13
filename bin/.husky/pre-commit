@@ -1,0 +1,50 @@
+#!/bin/sh
+# Hook de pre-commit para verificar integridade do pacote npm
+
+set -e
+
+echo "🔍 Verificando integridade do pacote npm..."
+
+# Executar verificação do pacote
+if ! npm pack --dry-run > /tmp/pack_check.txt 2>&1; then
+  echo "❌ Erro: falha ao criar pacote"
+  cat /tmp/pack_check.txt
+  exit 1
+fi
+
+# Verificar se há arquivos no pacote
+if grep -q "total files: 0" /tmp/pack_check.txt; then
+  echo "❌ Erro: nenhum arquivo encontrado no pacote"
+  echo "Verifique o campo 'files' em package.json"
+  exit 1
+fi
+
+# Verificar arquivos essenciais
+echo "📦 Verificando arquivos essenciais..."
+for file in "install.js" "lib/core.cjs" "package.json"; do
+  if ! grep -q "$file" /tmp/pack_check.txt; then
+    echo "❌ Erro: arquivo essencial '$file' não encontrado no pacote"
+    exit 1
+  fi
+done
+
+# Verificar agentes e comandos
+if ! grep -q "agentes/" /tmp/pack_check.txt; then
+  echo "❌ Erro: diretório 'agentes/' não encontrado no pacote"
+  exit 1
+fi
+
+if ! grep -q "comandos/" /tmp/pack_check.txt; then
+  echo "❌ Erro: diretório 'comandos/' não encontrado no pacote"
+  exit 1
+fi
+
+# Validar package.json
+echo "📄 Validando package.json..."
+if ! node -c package.json 2>/dev/null || ! jq empty package.json 2>/dev/null; then
+  echo "❌ Erro: package.json inválido"
+  exit 1
+fi
+
+echo "✅ Todas as verificações passaram!"
+echo ""

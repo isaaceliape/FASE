@@ -29,3 +29,10 @@ STATE.md
 # Environment
 .env
 .env.local
+
+# npm package tarballs
+*.tgz
+
+# Husky
+.husky/_/.gitignore
+.husky/_/husky.sh

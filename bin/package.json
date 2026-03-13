@@ -35,6 +35,19 @@
   "engines": {
     "node": ">=14.0.0"
   },
+  "scripts": {
+    "prepare": "cd .. && husky install bin/.husky || true",
+    "verificar-pacote": "npm pack --dry-run"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0"
+  },
+  "lint-staged": {
+    "package.json": [
+      "node -e \"const pkg = require('./package.json'); console.log('✓ package.json válido');\""
+    ]
+  },
   "files": [
     "lib/",
     "agentes/",

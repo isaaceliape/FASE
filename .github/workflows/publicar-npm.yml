@@ -1,0 +1,58 @@
+name: Publicar no npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verificar integridade do pacote
+        run: |
+          cd bin
+          npm pack --dry-run > /tmp/pack_output.txt
+          if grep -q "total files: 0" /tmp/pack_output.txt; then
+            echo "❌ Erro: nenhum arquivo encontrado no pacote"
+            exit 1
+          fi
+          echo "✓ Pacote verificado com sucesso"
+          cat /tmp/pack_output.txt
+
+      - name: Publicar no npm
+        run: |
+          cd bin
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Criar release no GitHub
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Publicado em npm: https://www.npmjs.com/package/fase-ai/v${{ github.ref_name }}
+
+            Instale com:
+            ```bash
+            npx fase-ai@${{ github.ref_name }}
+            ```
+          draft: false
+          prerelease: false

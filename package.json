@@ -1,0 +1,16 @@
+{
+  "name": "fase-development",
+  "version": "1.0.0",
+  "description": "FASE - Development workspace",
+  "private": true,
+  "workspaces": [
+    "bin"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "verificar": "cd bin && npm pack --dry-run"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0"
+  }
+}
