@@ -11,6 +11,7 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 | [**USER-GUIDE.md**](USER-GUIDE.md) | Guia completo de instalação e uso do FASE |
 | [**COMANDOS.md**](COMANDOS.md) | Lista com todos os 32 comandos disponíveis |
 | [**FAQ.md**](FAQ.md) | Perguntas frequentes e respostas |
+| [**NPM-REGISTRY.md**](NPM-REGISTRY.md) | Configuração do npm registry e instalação |
 
 ### Para Desenvolvedores
 
