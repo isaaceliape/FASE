@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "skills": {
+    "self-improving-agent": {
+      "version": "1.0.11",
+      "installedAt": 1772190418923
+    },
+    "model-usage": {
+      "version": "1.0.0",
+      "installedAt": 1772190501505
+    },
+    "markdown-converter": {
+      "version": "1.0.0",
+      "installedAt": 1772190549228
+    },
+    "create-cli": {
+      "version": "1.0.0",
+      "installedAt": 1772190608911
+    },
+    "tmux": {
+      "version": "1.0.0",
+      "installedAt": 1772190622087
+    },
+    "slack": {
+      "version": "1.0.0",
+      "installedAt": 1772190633707
+    },
+    "openai-whisper": {
+      "version": "1.0.0",
+      "installedAt": 1772190681159
+    },
+    "imsg": {
+      "version": "1.0.0",
+      "installedAt": 1772190717371
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1772190728634
+    },
+    "brave-search": {
+      "version": "1.0.1",
+      "installedAt": 1772190757181
+    },
+    "weather": {
+      "version": "1.0.0",
+      "installedAt": 1772190801294
+    },
+    "api-gateway": {
+      "version": "1.0.51",
+      "installedAt": 1772190929379
+    },
+    "himalaya": {
+      "version": "1.0.0",
+      "installedAt": 1772191650138
+    },
+    "obsidian-cli-official": {
+      "version": "4.0.1",
+      "installedAt": 1772662009153
+    }
+  }
+}
