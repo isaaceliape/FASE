@@ -24,13 +24,6 @@ Equivalente brownfield de new-project. Projeto existe, PROJETO.md tem histórico
 **Depois:** `/fase-planejar-fase [N]` para iniciar execução.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/new-milestone.md
-@~/.claude/fase/references/questioning.md
-@~/.claude/fase/references/ui-brand.md
-@~/.claude/fase/templates/project.md
-@~/.claude/fase/templates/requisitos.md
-</execution_context>
 
 <context>
 Nome do milestone: $ARGUMENTS (opcional - vai perguntar se não fornecido)
@@ -39,6 +32,6 @@ Arquivos de contexto de projeto e milestone são resolvidos dentro do workflow (
 </context>
 
 <process>
-Execute o workflow new-milestone de @~/.claude/fase/workflows/new-milestone.md ponta a ponta.
+Execute o workflow new-milestone ponta a ponta.
 Preserve todos os gates do workflow (validação, questionamento, pesquisa, requisitos, aprovação de roteiro, commits).
 </process>

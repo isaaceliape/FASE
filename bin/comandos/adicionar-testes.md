@@ -24,9 +24,6 @@ Analisa arquivos de implementação, classifica em TDD (unit), E2E (browser), ou
 Output: Arquivos de teste commitados com mensagem `test(phase-{N}): add unit and E2E tests from add-tests command`
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/add-tests.md
-</execution_context>
 
 <context>
 Fase: $ARGUMENTS
@@ -36,6 +33,6 @@ Fase: $ARGUMENTS
 </context>
 
 <process>
-Execute o workflow add-tests de @~/.claude/fase/workflows/add-tests.md ponta a ponta.
+Execute o workflow add-tests ponta a ponta.
 Preserve todos os gates do workflow (aprovação de classificação, aprovação de plano de teste, verificação RED-GREEN, relatório de gaps).
 </process>

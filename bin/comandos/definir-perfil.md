@@ -18,12 +18,9 @@ Direciona para o workflow set-profile que lida com:
 - Confirmação com exibição de tabela de models
 </objective>
 
-<execution_context>
-@~/.fase/workflows/set-profile.md
-</execution_context>
 
 <process>
-**Seguir workflow set-profile** em `@~/.fase/workflows/set-profile.md`.
+**Seguir workflow set-profile**.
 
 O workflow lida com toda lógica incluindo:
 1. Validação de argumento de perfil

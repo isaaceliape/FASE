@@ -18,12 +18,9 @@ Direciona para o workflow update que lida com:
 - Lembrete de restart
 </objective>
 
-<execution_context>
-@~/.fase/workflows/update.md
-</execution_context>
 
 <process>
-**Seguir workflow update** em `@~/.fase/workflows/update.md`.
+**Seguir workflow update**.
 
 O workflow lida com toda lógica incluindo:
 1. Detecção de versão instalada (local/global)

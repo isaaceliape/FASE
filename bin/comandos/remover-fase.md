@@ -15,9 +15,6 @@ Propósito: Remoção limpa de trabalho que decidiu não fazer, sem poluir conte
 Output: Fase deletada, todas fases subsequentes renumeradas, git commit como registro histórico.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/remove-phase.md
-</execution_context>
 
 <context>
 Fase: $ARGUMENTS
@@ -26,6 +23,6 @@ Roadmap e estado são resolvidos no-workflow via `init phase-op` e leituras dire
 </context>
 
 <process>
-Executar workflow remove-phase em @~/.fase/workflows/remove-phase.md do início ao fim.
+Executar workflow remove-phase em do início ao fim.
 Preservar todos validation gates (checagem de fase futura, checagem de trabalho), lógica de renumeração e commit.
 </process>

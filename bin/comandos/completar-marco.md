@@ -16,12 +16,6 @@ Propósito: Criar registro histórico da version shipped, arquiva artefatos do m
 Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git tagged.
 </objective>
 
-<execution_context>
-**Carregue estes arquivos AGORA (antes de prosseguir):**
-
-- @~/.fase/workflows/complete-milestone.md (workflow principal)
-- @~/.fase/templates/milestone-archive.md (template de archive)
-  </execution_context>
 
 <context>
 **Arquivos do projeto:**

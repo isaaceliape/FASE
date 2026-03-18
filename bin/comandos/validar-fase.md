@@ -21,15 +21,12 @@ Auditar cobertura de validação Nyquist para uma fase completada. Três estados
 Output: VALIDACAO.md atualizado + arquivos de teste gerados.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/validate-phase.md
-</execution_context>
 
 <context>
 Fase: $ARGUMENTS — opcional, padrão é última fase completada.
 </context>
 
 <process>
-Execute @~/.claude/fase/workflows/validate-phase.md.
+Execute .md.
 Preserve todos os gates do workflow.
 </process>

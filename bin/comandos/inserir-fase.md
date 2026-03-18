@@ -16,9 +16,6 @@ Usa numeração decimal (72.1, 72.2, etc.) para preservar sequência lógica de 
 Propósito: Lidar com trabalho urgente descoberto durante execução sem renumerar roteiro inteiro.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/insert-phase.md
-</execution_context>
 
 <context>
 Argumentos: $ARGUMENTS (formato: <after-phase-number> <description>)
@@ -27,6 +24,6 @@ Roadmap e state são resolvidos in-workflow via `init phase-op` e tool calls dir
 </context>
 
 <process>
-Execute o workflow insert-phase de @~/.fase/workflows/insert-phase.md end-to-end.
+Execute o workflow insert-phase end-to-end.
 Preserve todas validation gates (argument parsing, phase verification, decimal calculation, roteiro updates).
 </process>

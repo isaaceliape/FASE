@@ -16,9 +16,6 @@ Propósito: Ajudar usuários a ver o que Claude pensa ANTES do planning começar
 Output: Apenas output conversacional (sem criação de arquivo) — termina com prompt "O que você acha?"
 </objective>
 
-<execution_context>
-@~/.fase/workflows/list-phase-assumptions.md
-</execution_context>
 
 <context>
 Phase number: $ARGUMENTS (required)

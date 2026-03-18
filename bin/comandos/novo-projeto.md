@@ -28,15 +28,8 @@ Inicializar um novo projeto através de fluxo unificado: questionamento → pesq
 **Após este comando:** Execute `/fase-planejar-fase 1` para iniciar a execução.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/new-project.md
-@~/.claude/fase/references/questioning.md
-@~/.claude/fase/references/ui-brand.md
-@~/.claude/fase/templates/project.md
-@~/.claude/fase/templates/requisitos.md
-</execution_context>
 
 <process>
-Execute o workflow new-project de @~/.claude/fase/workflows/new-project.md ponta a ponta.
+Execute o workflow new-project ponta a ponta.
 Preservar todos os gates do workflow (validação, aprovações, commits, roteamento).
 </process>

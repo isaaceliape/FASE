@@ -21,10 +21,6 @@ Orquestrador se mantém enxuto: descobrir planos, analisar dependências, agrupa
 Orçamento de contexto: ~15% orquestrador, 100% fresh por subagent.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/execute-phase.md
-@~/.claude/fase/references/ui-brand.md
-</execution_context>
 
 <context>
 Fase: $ARGUMENTS
@@ -36,6 +32,6 @@ Arquivos de contexto são resolvidos dentro do workflow via `fase-tools init exe
 </context>
 
 <process>
-Execute o workflow execute-phase de @~/.claude/fase/workflows/execute-phase.md ponta a ponta.
+Execute o workflow execute-phase ponta a ponta.
 Preservar todos os gates do workflow (execução em waves, checkpoint handling, verificação, atualizações de estado, roteamento).
 </process>

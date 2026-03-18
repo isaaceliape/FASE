@@ -18,9 +18,6 @@ Roteia para o workflow add-phase que gerencia:
 - Tracking de evolução do roteiro no ESTADO.md
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/add-phase.md
-</execution_context>
 
 <context>
 Argumentos: $ARGUMENTS (descrição da fase)
@@ -29,7 +26,7 @@ Roadmap e state são resolvidos in-workflow via `init phase-op` e tool calls dir
 </context>
 
 <process>
-**Siga o workflow add-phase** de `@~/.claude/fase/workflows/add-phase.md`.
+**Siga o workflow add-phase** de .
 
 O workflow gerencia toda a lógica incluindo:
 1. Parse e validação de argumentos

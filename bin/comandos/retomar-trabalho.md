@@ -21,12 +21,9 @@ Direciona para o workflow resume-project que lida com:
 - Roteamento de próxima ação consciente de contexto
   </objective>
 
-<execution_context>
-@~/.fase/workflows/resume-project.md
-</execution_context>
 
 <process>
-**Seguir workflow resume-project** em `@~/.fase/workflows/resume-project.md`.
+**Seguir workflow resume-project**.
 
 O workflow lida com toda lógica de resumo incluindo:
 

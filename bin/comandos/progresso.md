@@ -14,11 +14,8 @@ Verificar progresso do projeto, resumir trabalho recente e o que está por vir, 
 Fornece consciência situacional antes de continuar o trabalho.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/progress.md
-</execution_context>
 
 <process>
-Executar o workflow de progresso em @~/.fase/workflows/progress.md do início ao fim.
+Executar o workflow de progresso em do início ao fim.
 Preservar toda lógica de roteamento (Rotas A até F) e tratamento de casos extremos.
 </process>

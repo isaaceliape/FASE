@@ -19,9 +19,6 @@ Cada agent mapper explora uma área de foco e **escreve documentos diretamente**
 Output: pasta `.planejamento/codigo/` com 7 documentos estruturados sobre o estado do codebase.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/map-codebase.md
-</execution_context>
 
 <context>
 Área de foco: $ARGUMENTS (opcional - se fornecido, diz aos agents para focarem em subsystem específico)

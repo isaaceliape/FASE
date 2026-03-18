@@ -12,11 +12,8 @@ Apenas envie o conteúdo da referência. NÃO adicione:
 - Qualquer comentário além da referência
 </objective>
 
-<execution_context>
-@~/.fase/workflows/help.md
-</execution_context>
 
 <process>
-Exiba a referência completa de comandos F.A.S.E. de @~/.fase/workflows/help.md.
+Exiba a referência completa de comandos F.A.S.E. de .md.
 Mostre o conteúdo da referência diretamente — sem adições ou modificações.
 </process>

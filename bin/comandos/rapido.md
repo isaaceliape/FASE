@@ -29,9 +29,6 @@ Modo rápido é o mesmo sistema com caminho mais curto:
 Flags são composáveis: `--discuss --full` dá discussão + verificação de plano + verificação.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/quick.md
-</execution_context>
 
 <context>
 $ARGUMENTS
@@ -40,6 +37,6 @@ Arquivos de contexto são resolvidos dentro do workflow (`init quick`) e delegad
 </context>
 
 <process>
-Executar o workflow quick em @~/.fase/workflows/quick.md do início ao fim.
+Executar o workflow quick em do início ao fim.
 Preservar todos os gates do workflow (validação, descrição da tarefa, planejamento, execução, atualizações de estado, commits).
 </process>

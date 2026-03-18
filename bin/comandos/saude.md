@@ -12,11 +12,8 @@ allowed-tools:
 Valide integridade do diretório `.planejamento/` e reporte issues acionáveis. Checa por arquivos ausentes, configurações inválidas, estado inconsistente, e plans orphaned.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/health.md
-</execution_context>
 
 <process>
-Execute o workflow health de @~/.fase/workflows/health.md end-to-end.
+Execute o workflow health end-to-end.
 Parse flag --repair dos argumentos e passe para workflow.
 </process>

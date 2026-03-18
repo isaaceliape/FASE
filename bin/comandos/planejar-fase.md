@@ -21,10 +21,6 @@ Criar prompts executáveis da fase (arquivos PLANO.md) para uma fase do roteiro 
 **Papel do orquestrador:** Analisar argumentos, validar fase, pesquisar domínio (a menos que pulado), spawnar faz-planner, verificar com faz-plan-checker, iterar até passar ou atingir max de iterações, apresentar resultados.
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/plan-phase.md
-@~/.claude/fase/references/ui-brand.md
-</execution_context>
 
 <context>
 Número da fase: $ARGUMENTS (opcional — auto-detecta próxima fase não planejada se omitido)
@@ -40,6 +36,6 @@ Normalizar input da fase no passo 2 antes de qualquer lookup de diretório.
 </context>
 
 <process>
-Execute o workflow plan-phase de @~/.claude/fase/workflows/plan-phase.md ponta a ponta.
+Execute o workflow plan-phase ponta a ponta.
 Preservar todos os gates do workflow (validação, pesquisa, planejamento, loop de verificação, roteamento).
 </process>

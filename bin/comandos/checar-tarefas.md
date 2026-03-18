@@ -20,9 +20,6 @@ Roteia para o workflow check-todos que gerencia:
 - Atualizações no ESTADO.md e commits git
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/check-todos.md
-</execution_context>
 
 <context>
 Argumentos: $ARGUMENTS (filtro de área opcional)
@@ -31,7 +28,7 @@ Estado de tarefas e correlação com roteiro são carregados in-workflow usando 
 </context>
 
 <process>
-**Siga o workflow check-todos** de `@~/.claude/fase/workflows/check-todos.md`.
+**Siga o workflow check-todos** de .
 
 O workflow gerencia toda a lógica incluindo:
 1. Checagem de existência de tarefas

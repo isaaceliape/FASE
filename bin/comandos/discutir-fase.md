@@ -28,10 +28,6 @@ Extraia decisões de implementação que downstream agents precisam — pesquisa
 **Output:** `{phase_num}-CONTEXTO.md` — decisões claras o suficiente para downstream agents agirem sem perguntar ao usuário novamente
 </objective>
 
-<execution_context>
-@~/.fase/workflows/discuss-phase.md
-@~/.fase/templates/context.md
-</execution_context>
 
 <context>
 Phase number: $ARGUMENTS (required)

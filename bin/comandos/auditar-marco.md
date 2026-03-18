@@ -16,9 +16,6 @@ Verifique se o milestone atingiu sua definição de done. Cheque cobertura de re
 **Este comando É o orchestrator.** Lê arquivos VERIFICACAO.md existentes (fases já verificadas durante execute-phase), agrega tech debt e gaps adiados, então spawn integration checker para cross-phase wiring.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/audit-milestone.md
-</execution_context>
 
 <context>
 Version: $ARGUMENTS (opcional — defaults para current milestone)
@@ -31,6 +28,6 @@ Glob: .planejamento/fases/*/*-VERIFICACAO.md
 </context>
 
 <process>
-Execute o workflow audit-milestone de @~/.fase/workflows/audit-milestone.md end-to-end.
+Execute o workflow audit-milestone end-to-end.
 Preserve todas as gates do workflow (determinação de escopo, leitura de verificação, integration check, cobertura de requisitos, routing).
 </process>

@@ -18,16 +18,13 @@ Roteia para workflow pause-work que lida com:
 - Instruções de resume
 </objective>
 
-<execution_context>
-@~/.fase/workflows/pause-work.md
-</execution_context>
 
 <context>
 Estado e phase progress são gathered in-workflow com reads direcionados.
 </context>
 
 <process>
-**Siga o workflow pause-work** de `@~/.fase/workflows/pause-work.md`.
+**Siga o workflow pause-work** de .
 
 O workflow lida com toda lógica incluindo:
 1. Detecção de phase directory

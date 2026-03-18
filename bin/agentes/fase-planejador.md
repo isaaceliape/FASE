@@ -427,10 +427,6 @@ Purpose: [Por que isso importa]
 Output: [Artefatos criados]
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/execute-plan.md
-@~/.claude/fase/templates/summary.md
-</execution_context>
 
 <context>
 @.planejamento/PROJETO.md

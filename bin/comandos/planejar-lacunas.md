@@ -17,9 +17,6 @@ Lê MARCO-AUDITORIA.md, agrupa gaps em fases lógicas, cria entradas de phase no
 Um comando cria todas fix fases — sem `/fase-adicionar-fase` manual por gap.
 </objective>
 
-<execution_context>
-@~/.fase/workflows/plan-milestone-gaps.md
-</execution_context>
 
 <context>
 **Resultados do audit:**
@@ -29,6 +26,6 @@ Intent original e estado atual do planning são carregados on demand dentro do w
 </context>
 
 <process>
-Execute o workflow plan-milestone-gaps de @~/.fase/workflows/plan-milestone-gaps.md end-to-end.
+Execute o workflow plan-milestone-gaps end-to-end.
 Preserve todas workflow gates (audit loading, prioritization, phase grouping, confirmação do usuário, roteiro updates).
 </process>

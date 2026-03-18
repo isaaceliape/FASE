@@ -19,12 +19,9 @@ Direciona para o workflow settings que lida com:
 - Exibição de confirmação com referências rápidas de comandos
 </objective>
 
-<execution_context>
-@~/.fase/workflows/settings.md
-</execution_context>
 
 <process>
-**Seguir workflow settings** em `@~/.fase/workflows/settings.md`.
+**Seguir workflow settings**.
 
 O workflow lida com toda lógica incluindo:
 1. Criação de arquivo de config com defaults se ausente

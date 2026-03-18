@@ -22,9 +22,6 @@ Roteia para o workflow add-todo que gerencia:
 - Commits git
 </objective>
 
-<execution_context>
-@~/.claude/fase/workflows/add-todo.md
-</execution_context>
 
 <context>
 Argumentos: $ARGUMENTS (descrição da tarefa opcional)
@@ -33,7 +30,7 @@ Estado é resolvido in-workflow via `init todos` e reads direcionados.
 </context>
 
 <process>
-**Siga o workflow add-todo** de `@~/.claude/fase/workflows/add-todo.md`.
+**Siga o workflow add-todo** de .
 
 O workflow gerencia toda a lógica incluindo:
 1. Garantia de diretório
