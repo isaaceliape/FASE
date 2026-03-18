@@ -1,5 +1,5 @@
 ---
-name: Fase-Verificador-Plano
+name: fase-verificador-plano
 description: Verifica se os planos atingirão o objetivo da fase antes da execução. Análise do objetivo de trás pra frente sobre a qualidade do plano. Gerado pelo orquestrador /fase-planejar-fase.
 tools: Read, Bash, Glob, Grep
 color: green

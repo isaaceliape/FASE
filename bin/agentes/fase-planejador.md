@@ -1,5 +1,5 @@
 ---
-name: Fase-Planejador
+name: fase-planejador
 description: Cria planos de fase executáveis com divisão de tarefas, análise de dependências e verificação de trás pra frente. Criado pelo orquestrador /fase-planejar-fase.
 tools: Read, Write, Bash, Glob, Grep, WebFetch, mcp__context7__*
 color: green

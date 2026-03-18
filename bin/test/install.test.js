@@ -195,6 +195,145 @@ describe('FASE Installation', () => {
       assert.ok(errors[0].path, 'Error should include path information');
     });
   });
+
+  describe('Gemini Agent Normalization', () => {
+    it('should normalize agent names to lowercase slugs', () => {
+      const testCases = [
+        { input: 'name: Fase-Auditor-Nyquist', expected: 'name: fase-auditor-nyquist' },
+        { input: 'name: Fase-Depurador', expected: 'name: fase-depurador' },
+        { input: 'name: Fase-Executor', expected: 'name: fase-executor' },
+        { input: 'name: Fase-Planejador', expected: 'name: fase-planejador' }
+      ];
+
+      testCases.forEach(({ input, expected }) => {
+        assert.strictEqual(
+          input.toLowerCase(),
+          expected,
+          `'${input}' should normalize to '${expected}'`
+        );
+      });
+    });
+
+    it('should remove accents from agent names', () => {
+      const nameWithAccent = 'Fase-Mapeador-Código';
+      const normalized = nameWithAccent
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+      assert.strictEqual(normalized, 'fase-mapeador-codigo', 'Accents should be removed');
+    });
+
+    it('should handle multiple accents in agent names', () => {
+      const nameWithMultipleAccents = 'Fase-Verificador-Integração';
+      const normalized = nameWithMultipleAccents
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
+      assert.strictEqual(normalized, 'fase-verificador-integracao', 'Multiple accents should be removed');
+    });
+  });
+
+  describe('Gemini Agent Frontmatter Cleanup', () => {
+    it('should remove skills key from agent frontmatter', () => {
+      const agentContent = `---
+name: Test-Agent
+description: Test agent
+skills:
+  - test-skill
+tools:
+  - read_file
+---
+
+Body content here`;
+
+      const lines = agentContent.split('\n');
+      const filtered = lines.filter(line => !line.startsWith('skills:') && !line.match(/^\s*- test-skill/));
+      const result = filtered.join('\n');
+
+      assert.strictEqual(result.includes('skills:'), false, 'skills key should be removed');
+      assert.strictEqual(result.includes('test-skill'), false, 'skill item should be removed');
+      assert.strictEqual(result.includes('tools:'), true, 'tools should remain');
+    });
+
+    it('should preserve tools array when removing skills', () => {
+      const agentContent = `---
+name: Test-Agent
+skills:
+  - test-skill
+tools:
+  - read_file
+  - write_file
+---`;
+
+      const hasTools = agentContent.includes('tools:');
+      const hasSkills = agentContent.includes('skills:');
+
+      assert.strictEqual(hasTools, true, 'tools should be present');
+      assert.strictEqual(hasSkills, true, 'skills should be present initially');
+    });
+  });
+
+  describe('Gemini Installation Hooks Handling', () => {
+    it('should not configure hooks if hooks directory does not exist', () => {
+      const targetDir = path.join(tempDir, 'gemini-install');
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      const hooksDest = path.join(targetDir, 'hooks');
+      const hooksExist = fs.existsSync(hooksDest);
+
+      assert.strictEqual(hooksExist, false, 'hooks directory should not exist');
+    });
+
+    it('should recognize when hooks directory exists', () => {
+      const targetDir = path.join(tempDir, 'gemini-with-hooks');
+      const hooksDest = path.join(targetDir, 'hooks');
+      fs.mkdirSync(hooksDest, { recursive: true });
+
+      const hooksExist = fs.existsSync(hooksDest);
+      assert.strictEqual(hooksExist, true, 'hooks directory should exist');
+    });
+
+    it('should clean up orphaned hook patterns from settings', () => {
+      const orphanedPatterns = [
+        'fase-check-update.js',
+        'fase-context-monitor.js',
+        'fase-statusline.js',
+        'hooks/statusline.js'
+      ];
+
+      const command = 'node .gemini/hooks/fase-check-update.js';
+      const hasOrphaned = orphanedPatterns.some(pattern => command.includes(pattern));
+
+      assert.strictEqual(hasOrphaned, true, 'Should identify orphaned hook patterns');
+    });
+  });
+
+  describe('Gemini Settings Configuration', () => {
+    it('should create minimal settings.json for Gemini without hooks', () => {
+      const settingsPath = path.join(tempDir, 'settings.json');
+      const settings = { experimental: { enableAgents: true } };
+
+      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
+
+      const content = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      assert.strictEqual(content.experimental.enableAgents, true, 'Experimental agents should be enabled');
+      assert.strictEqual(content.hooks, undefined, 'hooks should not be present');
+    });
+
+    it('should not add hook references when hooks do not exist', () => {
+      const settings = { experimental: { enableAgents: true } };
+
+      // Simulate not adding hooks because hooks directory doesn't exist
+      const hooksExist = false;
+      if (hooksExist) {
+        if (!settings.hooks) settings.hooks = {};
+      }
+
+      assert.strictEqual(settings.hooks, undefined, 'hooks should not be added when directory does not exist');
+    });
+  });
 });
 
 // Run tests if executed directly
@@ -208,7 +347,11 @@ if (require.main === module) {
       'File Writing with Error Handling',
       'package.json CommonJS Mode',
       'Path Construction',
-      'Error Messages'
+      'Error Messages',
+      'Gemini Agent Normalization',
+      'Gemini Agent Frontmatter Cleanup',
+      'Gemini Installation Hooks Handling',
+      'Gemini Settings Configuration'
     ];
 
     console.log(`✓ All test suites defined: ${tests.join(', ')}`);

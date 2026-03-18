@@ -770,10 +770,38 @@ function convertClaudeToGeminiAgent(content) {
   const lines = frontmatter.split('\n');
   const newLines = [];
   let inAllowedTools = false;
+  let inSkills = false;
   const tools = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
+
+    // Skip skills section entirely (not supported by Gemini)
+    if (trimmed.startsWith('skills:')) {
+      inSkills = true;
+      continue;
+    }
+
+    // Handle indented lines under skills
+    if (inSkills) {
+      if (trimmed.startsWith('- ') || (trimmed && line.startsWith('  '))) {
+        continue;
+      } else if (trimmed) {
+        inSkills = false;
+      }
+    }
+
+    // Normalize agent name to valid slug (lowercase, no accents)
+    if (trimmed.startsWith('name:')) {
+      const nameValue = trimmed.substring(5).trim();
+      // Convert to lowercase and remove accents
+      const normalized = nameValue
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      newLines.push(`name: ${normalized}`);
+      continue;
+    }
 
     // Convert allowed-tools YAML array to tools list
     if (trimmed.startsWith('allowed-tools:')) {
@@ -811,7 +839,7 @@ function convertClaudeToGeminiAgent(content) {
       }
     }
 
-    if (!inAllowedTools) {
+    if (!inAllowedTools && !inSkills) {
       newLines.push(line);
     }
   }
@@ -1200,6 +1228,9 @@ function cleanupOrphanedHooks(settings) {
     'fase-intel-index.js',  // Removed in v1.9.2
     'fase-intel-session.js',  // Removed in v1.9.2
     'fase-intel-prune.js',  // Removed in v1.9.2
+    'fase-check-update.js',  // Gemini hooks that may not exist in local installs
+    'fase-context-monitor.js',  // Gemini hooks that may not exist in local installs
+    'fase-statusline.js',  // May reference hooks/ dir that doesn't exist
   ];
 
   let cleanedHooks = false;
@@ -1488,7 +1519,19 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
   }
 
-  // 6. For OpenCode, clean up permissions from opencode.json
+  // 7. Remove fase-file-manifest.json
+  const manifestPath = path.join(targetDir, MANIFEST_NAME);
+  if (fs.existsSync(manifestPath)) {
+    try {
+      fs.unlinkSync(manifestPath);
+      removedCount++;
+      console.log(`  ${green}✓${reset} Removido fase-file-manifest.json`);
+    } catch (e) {
+      // Ignore deletion errors
+    }
+  }
+
+  // 8. For OpenCode, clean up permissions from opencode.json
   if (isOpencode) {
     // For local uninstalls, clean up ./.opencode/opencode.json
     // For global uninstalls, clean up ~/.config/opencode/opencode.json
@@ -2171,15 +2214,28 @@ function install(isGlobal, runtime = 'claude') {
   const postToolEvent = runtime === 'gemini' ? 'AfterTool' : 'PostToolUse';
   const settingsPath = path.join(targetDir, 'settings.json');
   const settings = cleanupOrphanedHooks(readSettings(settingsPath));
-  const statuslineCommand = isGlobal
-    ? buildHookCommand(targetDir, 'fase-statusline.js')
-    : 'node ' + dirName + '/hooks/fase-statusline.js';
-  const updateCheckCommand = isGlobal
-    ? buildHookCommand(targetDir, 'fase-check-update.js')
-    : 'node ' + dirName + '/hooks/fase-check-update.js';
-  const contextMonitorCommand = isGlobal
-    ? buildHookCommand(targetDir, 'fase-context-monitor.js')
-    : 'node ' + dirName + '/hooks/fase-context-monitor.js';
+
+  // Check if hooks directory actually exists before building hook commands
+  const hooksDest = path.join(targetDir, 'hooks');
+  const hooksExist = fs.existsSync(hooksDest);
+
+  const statuslineCommand = hooksExist ? (
+    isGlobal
+      ? buildHookCommand(targetDir, 'fase-statusline.js')
+      : 'node ' + dirName + '/hooks/fase-statusline.js'
+  ) : null;
+
+  const updateCheckCommand = hooksExist ? (
+    isGlobal
+      ? buildHookCommand(targetDir, 'fase-check-update.js')
+      : 'node ' + dirName + '/hooks/fase-check-update.js'
+  ) : null;
+
+  const contextMonitorCommand = hooksExist ? (
+    isGlobal
+      ? buildHookCommand(targetDir, 'fase-context-monitor.js')
+      : 'node ' + dirName + '/hooks/fase-context-monitor.js'
+  ) : null;
 
   // Enable experimental agents for Gemini CLI (required for custom sub-agents)
   if (isGemini) {
@@ -2192,8 +2248,8 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
 
-  // Configure SessionStart hook for update checking (skip for opencode)
-  if (!isOpencode) {
+  // Configure SessionStart hook for update checking (skip for opencode and if hooks don't exist)
+  if (!isOpencode && hooksExist && updateCheckCommand) {
     if (!settings.hooks) {
       settings.hooks = {};
     }
@@ -2226,7 +2282,7 @@ function install(isGlobal, runtime = 'claude') {
       entry.hooks && entry.hooks.some(h => h.command && h.command.includes('fase-context-monitor'))
     );
 
-    if (!hasContextMonitorHook) {
+    if (!hasContextMonitorHook && contextMonitorCommand) {
       settings.hooks[postToolEvent].push({
         hooks: [
           {
@@ -2249,7 +2305,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
 
-  if (shouldInstallStatusline && !isOpencode && !isCodex) {
+  if (shouldInstallStatusline && !isOpencode && !isCodex && statuslineCommand) {
     settings.statusLine = {
       type: 'command',
       command: statuslineCommand

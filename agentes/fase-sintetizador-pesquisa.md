@@ -1,5 +1,5 @@
 ---
-name: Fase-Sintetizador-Pesquisa
+name: fase-sintetizador-pesquisa
 description: Sintetiza outputs de pesquisa de agents pesquisador paralelos em SUMARIO.md. Criado por /fase-novo-projeto após 4 agents pesquisador completarem.
 tools: Read, Write, Bash
 color: purple

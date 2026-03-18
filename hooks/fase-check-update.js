@@ -15,11 +15,11 @@ const cwd = process.cwd();
 function detectConfigDir(baseDir) {
   // Verifica variável de ambiente primeiro (suporta configurações multi-conta)
   const envDir = process.env.CLAUDE_CONFIG_DIR;
-  if (envDir && fs.existsSync(path.join(envDir, 'get-shit-done', 'VERSION'))) {
+  if (envDir && fs.existsSync(path.join(envDir, 'fase-ai', 'VERSION'))) {
     return envDir;
   }
   for (const dir of ['.config/opencode', '.opencode', '.gemini', '.claude']) {
-    if (fs.existsSync(path.join(baseDir, dir, 'get-shit-done', 'VERSION'))) {
+    if (fs.existsSync(path.join(baseDir, dir, 'fase-ai', 'VERSION'))) {
       return path.join(baseDir, dir);
     }
   }
@@ -29,11 +29,11 @@ function detectConfigDir(baseDir) {
 const globalConfigDir = detectConfigDir(homeDir);
 const projectConfigDir = detectConfigDir(cwd);
 const cacheDir = path.join(globalConfigDir, 'cache');
-const cacheFile = path.join(cacheDir, 'gsd-update-check.json');
+const cacheFile = path.join(cacheDir, 'fase-update-check.json');
 
 // Localização dos arquivos VERSION (verifica projeto primeiro, depois global)
-const projectVersionFile = path.join(projectConfigDir, 'get-shit-done', 'VERSION');
-const globalVersionFile = path.join(globalConfigDir, 'get-shit-done', 'VERSION');
+const projectVersionFile = path.join(projectConfigDir, 'fase-ai', 'VERSION');
+const globalVersionFile = path.join(globalConfigDir, 'fase-ai', 'VERSION');
 
 // Garante que o diretório de cache existe
 if (!fs.existsSync(cacheDir)) {
@@ -61,7 +61,7 @@ const child = spawn(process.execPath, ['-e', `
 
   let latest = null;
   try {
-    latest = execSync('npm view get-shit-done-cc version', { encoding: 'utf8', timeout: 10000, windowsHide: true }).trim();
+    latest = execSync('npm view fase-ai version', { encoding: 'utf8', timeout: 10000, windowsHide: true }).trim();
   } catch (e) {}
 
   const result = {

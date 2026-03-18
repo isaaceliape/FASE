@@ -1,5 +1,5 @@
 ---
-name: Fase-Auditor-Nyquist
+name: fase-auditor-nyquist
 description: Preenche lacunas de validação Nyquist gerando testes e verificando cobertura para requisitos da fase
 tools:
   - Read

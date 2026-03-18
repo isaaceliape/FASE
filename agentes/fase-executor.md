@@ -1,5 +1,5 @@
 ---
-name: Fase-Executor
+name: fase-executor
 description: Executa planos do F.A.Z. com commits atômicos, tratamento de desvios, protocolos de checkpoint e gerenciamento de estado. Spawned pelo orquestrador execute-phase ou comando execute-plan.
 tools: Read, Write, Edit, Bash, Grep, Glob
 color: yellow

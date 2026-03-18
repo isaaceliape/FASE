@@ -31,13 +31,13 @@ Para evitar spam de avisos repetidos ao agente:
 ## Arquitetura
 
 ```
-Hook de Statusline (gsd-statusline.js)
+Hook de Statusline (fase-statusline.js)
     | escreve
     v
 /tmp/claude-ctx-{session_id}.json
     ^ lê
     |
-Monitor de Contexto (gsd-context-monitor.js, PostToolUse/AfterTool)
+Monitor de Contexto (fase-context-monitor.js, PostToolUse/AfterTool)
     | injeta
     v
 additionalContext -> Agente vê o aviso
@@ -60,7 +60,7 @@ O comando `/fase-pausar-trabalho` salva o estado de execução. A mensagem de AV
 
 ## Configuração
 
-Ambos os hooks são registrados automaticamente durante a instalação via `npx get-shit-done-cc`:
+Ambos os hooks são registrados automaticamente durante a instalação via `npx fase-ai`:
 
 - **Statusline** (escreve o arquivo bridge): Registrado como `statusLine` no settings.json
 - **Monitor de Contexto** (lê o arquivo bridge): Registrado como hook `PostToolUse` no settings.json (`AfterTool` para Gemini)
@@ -71,7 +71,7 @@ Registro manual em `~/.claude/settings.json` (Claude Code):
 {
   "statusLine": {
     "type": "command",
-    "command": "node ~/.claude/hooks/gsd-statusline.js"
+    "command": "node ~/.claude/hooks/fase-statusline.js"
   },
   "hooks": {
     "PostToolUse": [
@@ -79,7 +79,7 @@ Registro manual em `~/.claude/settings.json` (Claude Code):
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.claude/hooks/gsd-context-monitor.js"
+            "command": "node ~/.claude/hooks/fase-context-monitor.js"
           }
         ]
       }
@@ -98,7 +98,7 @@ Para Gemini CLI (`~/.gemini/settings.json`), use `AfterTool` em vez de `PostTool
         "hooks": [
           {
             "type": "command",
-            "command": "node ~/.gemini/hooks/gsd-context-monitor.js"
+            "command": "node ~/.gemini/hooks/fase-context-monitor.js"
           }
         ]
       }

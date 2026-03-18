@@ -1,5 +1,5 @@
 ---
-name: Fase-Depurador
+name: fase-depurador
 description: Investiga bugs usando método científico, gerencia sessões de debug, lida com checkpoints. Gerado pelo orquestrador /fase-debug.
 tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
 color: orange

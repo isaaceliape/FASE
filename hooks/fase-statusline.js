@@ -91,13 +91,13 @@ process.stdin.on('end', () => {
     }
 
     // Atualização do FASE disponível?
-    let gsdUpdate = '';
-    const cacheFile = path.join(claudeDir, 'cache', 'gsd-update-check.json');
+    let faseUpdate = '';
+    const cacheFile = path.join(claudeDir, 'cache', 'fase-update-check.json');
     if (fs.existsSync(cacheFile)) {
       try {
         const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
         if (cache.update_available) {
-          gsdUpdate = '\x1b[33m⬆ /fase:atualizar\x1b[0m │ ';
+          faseUpdate = '\x1b[33m⬆ /fase:atualizar\x1b[0m │ ';
         }
       } catch (e) {}
     }
@@ -105,9 +105,9 @@ process.stdin.on('end', () => {
     // Saída
     const dirname = path.basename(dir);
     if (task) {
-      process.stdout.write(`${gsdUpdate}\x1b[2m${model}\x1b[0m │ \x1b[1m${task}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
+      process.stdout.write(`${faseUpdate}\x1b[2m${model}\x1b[0m │ \x1b[1m${task}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
     } else {
-      process.stdout.write(`${gsdUpdate}\x1b[2m${model}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
+      process.stdout.write(`${faseUpdate}\x1b[2m${model}\x1b[0m │ \x1b[2m${dirname}\x1b[0m${ctx}`);
     }
   } catch (e) {
     // Falha silenciosa — não quebra a statusline em erros de parse
