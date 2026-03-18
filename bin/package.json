@@ -37,8 +37,16 @@
   },
   "scripts": {
     "verificar-pacote": "npm pack --dry-run",
-    "test": "mocha test/install.test.js",
-    "test:watch": "mocha test/install.test.js --watch"
+    "test": "mocha test/*.test.js",
+    "test:install": "mocha test/install.test.js",
+    "test:providers": "mocha test/providers.test.js",
+    "test:integration": "mocha test/integration.test.js",
+    "test:docker": "mocha test/docker-test.js",
+    "test:edge-cases": "mocha test/edge-cases.test.js",
+    "test:watch": "mocha test/*.test.js --watch",
+    "test:coverage": "mocha test/*.test.js --reporter json > test-results.json",
+    "test:docker:all": "cd test && bash run-docker-tests.sh --all",
+    "test:docker:clean": "cd test && bash run-docker-tests.sh --cleanup"
   },
   "devDependencies": {
     "husky": "^9.0.0",
