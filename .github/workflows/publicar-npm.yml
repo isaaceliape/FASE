@@ -37,7 +37,7 @@ jobs:
           cd bin
           npm config set registry https://registry.npmjs.org/
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish
+          npm publish --workspaces=false
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
