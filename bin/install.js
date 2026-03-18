@@ -219,7 +219,7 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}-g, --global${reset}              Instalar globalmente (no diretório de configuração)\n    ${cyan}-l, --local${reset}               Instalar localmente (no diretório atual)\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime e localização)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code globalmente${reset}\n    npx fase-ai --claude --global\n\n    ${dim}# Instalar para OpenCode globalmente${reset}\n    npx fase-ai --opencode --global\n\n    ${dim}# Instalar para Gemini globalmente${reset}\n    npx fase-ai --gemini --global\n\n    ${dim}# Instalar para Codex globalmente${reset}\n    npx fase-ai --codex --global\n\n    ${dim}# Instalar para todos os runtimes globalmente${reset}\n    npx fase-ai --all --global\n\n    ${dim}# Instalar em diretório de configuração customizado${reset}\n    npx fase-ai --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Instalar apenas no projeto atual${reset}\n    npx fase-ai --claude --local\n\n    ${dim}# Desinstalar FASE do Codex globalmente${reset}\n    npx fase-ai --codex --global --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}-g, --global${reset}              Instalar globalmente (no diretório de configuração)\n    ${cyan}-l, --local${reset}               Instalar localmente (no diretório atual)\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime e localização)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code globalmente${reset}\n    npx fase-ai --claude --global\n\n    ${dim}# Instalar para OpenCode globalmente${reset}\n    npx fase-ai --opencode --global\n\n    ${dim}# Instalar para Gemini globalmente${reset}\n    npx fase-ai --gemini --global\n\n    ${dim}# Instalar para Codex globalmente${reset}\n    npx fase-ai --codex --global\n\n    ${dim}# Instalar para todos os runtimes globalmente${reset}\n    npx fase-ai --all --global\n\n    ${dim}# Instalar em diretório de configuração customizado${reset}\n    npx fase-ai --codex --global --config-dir ~/.codex-work\n\n    ${dim}# Instalar apenas no projeto atual${reset}\n    npx fase-ai --claude --local\n\n    ${dim}# Desinstalação interativa (solicita localização e confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex globalmente${reset}\n    npx fase-ai --codex --global --uninstall\n\n    ${dim}# Desinstalar do OpenCode localmente${reset}\n    npx fase-ai --opencode --local --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n`);
   process.exit(0);
 }
 
@@ -2390,6 +2390,95 @@ function promptLocation(runtimes) {
 }
 
 /**
+ * Prompt for uninstall location (global or local)
+ */
+function promptUninstallLocation(runtimes) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  let answered = false;
+
+  rl.on('close', () => {
+    if (!answered) {
+      answered = true;
+      console.log(`\n  ${yellow}Desinstalação cancelada${reset}\n`);
+      process.exit(0);
+    }
+  });
+
+  const pathExamples = runtimes.map(r => {
+    const globalDir = getGlobalDir(r, null);
+    return globalDir.replace(os.homedir(), '~');
+  }).join(', ');
+
+  const localExamples = runtimes.map(r => `./${getDirName(r)}`).join(', ');
+
+  console.log(`  ${yellow}De onde deseja desinstalar o FASE?${reset}\n\n  ${cyan}1${reset}) Global ${dim}(${pathExamples})${reset} - remove de todos os projetos
+  ${cyan}2${reset}) Local  ${dim}(${localExamples})${reset} - remove apenas deste projeto
+`);
+
+  rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
+    answered = true;
+    rl.close();
+    const choice = answer.trim() || '1';
+    const isGlobal = choice !== '2';
+    promptUninstallConfirmation(runtimes, isGlobal);
+  });
+}
+
+/**
+ * Prompt for confirmation before uninstalling
+ */
+function promptUninstallConfirmation(runtimes, isGlobal) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  let answered = false;
+
+  rl.on('close', () => {
+    if (!answered) {
+      answered = true;
+      console.log(`\n  ${yellow}Desinstalação cancelada${reset}\n`);
+      process.exit(0);
+    }
+  });
+
+  const locationLabel = isGlobal ? 'globalmente' : 'localmente';
+  const runtimeList = runtimes.map(r => {
+    if (r === 'claude') return 'Claude Code';
+    if (r === 'opencode') return 'OpenCode';
+    if (r === 'gemini') return 'Gemini';
+    if (r === 'codex') return 'Codex';
+    return r;
+  }).join(', ');
+
+  console.log(`\n  ${yellow}Atenção!${reset} Isto irá remover o FASE ${locationLabel} de: ${cyan}${runtimeList}${reset}
+
+  ${dim}Você pode reinstalar a qualquer momento executando ${cyan}npx fase-ai${reset}${dim}.${reset}
+`);
+
+  rl.question(`  Tem certeza que deseja continuar? (s/N): `, (answer) => {
+    answered = true;
+    rl.close();
+    const confirm = answer.trim().toLowerCase();
+
+    if (confirm === 's' || confirm === 'sim' || confirm === 'y' || confirm === 'yes') {
+      console.log();
+      for (const runtime of runtimes) {
+        uninstall(isGlobal, runtime);
+      }
+      console.log(`\n  ${green}✓${reset} FASE foi desinstalado com sucesso\n`);
+    } else {
+      console.log(`\n  ${yellow}Desinstalação cancelada${reset}\n`);
+    }
+  });
+}
+
+/**
  * Install FASE for all selected runtimes
  */
 function installAllRuntimes(runtimes, isGlobal, isInteractive) {
@@ -2449,12 +2538,11 @@ if (hasGlobal && hasLocal) {
   process.exit(1);
 } else if (hasUninstall) {
   if (!hasGlobal && !hasLocal) {
-    console.error(`  ${yellow}--uninstall requer --global ou --local${reset}`);
-    process.exit(1);
-  }
-  const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];
-  for (const runtime of runtimes) {
-    uninstall(hasGlobal, runtime);
+    // Prompt for uninstall location if not specified
+    promptUninstallLocation(selectedRuntimes.length > 0 ? selectedRuntimes : ['claude']);
+  } else {
+    const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];
+    promptUninstallConfirmation(runtimes, hasGlobal);
   }
 } else if (selectedRuntimes.length > 0) {
   if (!hasGlobal && !hasLocal) {
