@@ -218,6 +218,37 @@
                 transform: rotate(-45deg) translate(7px, -7px);
             }
 
+            /* Back to Top Button */
+            .back-to-top {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-color: var(--primary);
+                color: var(--dark-bg);
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+                z-index: 999;
+            }
+
+            .back-to-top.show {
+                display: flex;
+            }
+
+            .back-to-top:hover {
+                background-color: #00e074;
+                transform: translateY(-3px);
+                box-shadow: 0 6px 16px rgba(0, 255, 136, 0.3);
+            }
+
             /* Grid Layout */
             .features-section {
                 margin-bottom: 120px;
@@ -528,6 +559,7 @@
                     padding: 20px;
                     margin-top: 10px;
                     z-index: 1000;
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
                 }
 
                 nav.active {
@@ -1010,6 +1042,11 @@ $ npx fase-ai --all --global
                     coisas rápido.
                 </p>
             </footer>
+
+            <!-- Back to Top Button -->
+            <button id="back-to-top" class="back-to-top" title="Voltar ao topo">
+                ↑
+            </button>
         </div>
 
         <script>
@@ -1066,6 +1103,24 @@ $ npx fase-ai --all --global
                     hamburger.classList.remove("active");
                     navMenu.classList.remove("active");
                 }
+            });
+
+            // Back to Top Button
+            const backToTopBtn = document.getElementById("back-to-top");
+
+            window.addEventListener("scroll", () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add("show");
+                } else {
+                    backToTopBtn.classList.remove("show");
+                }
+            });
+
+            backToTopBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                });
             });
         </script>
     </body>
