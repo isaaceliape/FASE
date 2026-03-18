@@ -468,7 +468,7 @@ Erros que causam rewrites ou issues maiores.
 [URLs com níveis de confiança]
 ```
 
-## FEASIBILITY.md (modo feasibility apenas)
+## VIABILIDADE.md (modo feasibility apenas)
 
 ```markdown
 # Feasibility Assessment: [Goal]
@@ -535,7 +535,7 @@ Em `.planejamento/pesquisa/`:
 4. **ARQUITETURA.md** — Se patterns descobertos
 5. **ARMADILHAS.md** — Sempre
 6. **COMPARISON.md** — Se modo comparison
-7. **FEASIBILITY.md** — Se modo feasibility
+7. **VIABILIDADE.md** — Se modo feasibility
 
 ## Passo 6: Retornar Resultado Estruturado
 

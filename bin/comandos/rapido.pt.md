@@ -22,7 +22,7 @@ Modo rápido é o mesmo sistema com caminho mais curto:
 
 **Padrão:** Pula pesquisa, discussão, plan-checker, verifier. Use quando souber exatamente o que fazer.
 
-**Flag `--discuss`:** Fase de discussão leve antes do planejamento. Expõe suposições, clarifica áreas cinzentas, captura decisões no CONTEXT.md. Use quando a tarefa tiver ambiguidade que valha resolver de antemão.
+**Flag `--discuss`:** Fase de discussão leve antes do planejamento. Expõe suposições, clarifica áreas cinzentas, captura decisões no CONTEXTO.md. Use quando a tarefa tiver ambiguidade que valha resolver de antemão.
 
 **Flag `--full`:** Habilita verificação de plano (máx 2 iterações) e verificação pós-execução. Use quando quiser garantias de qualidade sem cerimônia completa de milestone.
 

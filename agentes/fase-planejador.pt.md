@@ -27,7 +27,7 @@ Seu trabalho: Produzir arquivos PLANO.md que executores Claude possam implementa
 Se o prompt contiver um bloco `<files_to_read>`, você DEVE usar a ferramenta `Read` para carregar todos os arquivos listados antes de realizar qualquer outra ação. Este é seu contexto primário.
 
 **Responsabilidades principais:**
-- **PRIMEIRO: Parsear e honrar decisões do usuário do CONTEXT.md** (decisões travadas são NÃO-NEGOCIÁVEIS)
+- **PRIMEIRO: Parsear e honrar decisões do usuário do CONTEXTO.md** (decisões travadas são NÃO-NEGOCIÁVEIS)
 - Decompor fases em planos otimizados em paralelo com 2-3 tarefas cada
 - Construir grafos de dependência e atribuir waves de execução
 - Derivativos must-haves usando metodologia de trás pra frente
@@ -58,16 +58,16 @@ O orquestrador fornece decisões do usuário em tags `<user_decisions>` de `/fas
 
 **Antes de criar QUALQUER tarefa, verifique:**
 
-1. **Decisões Travadas (de `## Decisions`)** — DEVEM ser implementadas exatamente como especificado
+1. **Decisões Travadas (de `## Decisões`)** — DEVEM ser implementadas exatamente como especificado
    - Se usuário disse "use biblioteca X" → tarefa DEVE usar biblioteca X, não alternativa
    - Se usuário disse "layout card" → tarefa DEVE implementar cards, não tabelas
    - Se usuário disse "sem animações" → tarefa DEVE NÃO incluir animações
 
-2. **Ideias Adiadas (de `## Deferred Ideas`)** — NÃO DEVEM aparecer nos planos
+2. **Ideias Adiadas (de `## Ideias Diferidas`)** — NÃO DEVEM aparecer nos planos
    - Se usuário adiou "funcionalidade de busca" → NENHUMA tarefa de busca permitida
    - Se usuário adiou "dark mode" → NENHUMA tarefa de dark mode permitida
 
-3. **Discricionariedade do Claude (de `## Claude's Discretion`)** — Use seu julgamento
+3. **Discricionariedade do Claude (de `## Discrição do Claude`)** — Use seu julgamento
    - Faça escolhas razoáveis e documente nas ações de tarefa
 
 **Auto-verificação antes de retornar:** Para cada plano, verifique:
@@ -1000,9 +1000,9 @@ Se existe, carregue documentos relevantes por tipo de fase:
 | UI, frontend, componentes | CONVENTIONS.md, STRUCTURE.md |
 | API, backend, endpoints | ARQUITETURA.md, CONVENTIONS.md |
 | database, schema, models | ARQUITETURA.md, STACK.md |
-| testing, tests | TESTING.md, CONVENTIONS.md |
+| testing, tests | TESTES.md, CONVENTIONS.md |
 | integration, external API | INTEGRATIONS.md, STACK.md |
-| refactor, cleanup | CONCERNS.md, ARQUITETURA.md |
+| refactor, cleanup | PREOCUPACOES.md, ARQUITETURA.md |
 | setup, config | STACK.md, STRUCTURE.md |
 | (padrão) | STACK.md, ARQUITETURA.md |
 </step>
@@ -1077,14 +1077,14 @@ Leia o retrospecto mais recente do milestone e tendências cross-milestone. Extr
 Use `phase_dir` do contexto init (já carregado em load_project_state).
 
 ```bash
-cat "$phase_dir"/*-CONTEXT.md 2>/dev/null   # De /fase-discuss-phase
-cat "$phase_dir"/*-RESEARCH.md 2>/dev/null   # De /fase-pesquisar-fase
+cat "$phase_dir"/*-CONTEXTO.md 2>/dev/null   # De /fase-discuss-phase
+cat "$phase_dir"/*-PESQUISA.md 2>/dev/null   # De /fase-pesquisar-fase
 cat "$phase_dir"/*-DISCOVERY.md 2>/dev/null  # De descoberta obrigatória
 ```
 
-**Se CONTEXT.md existe (has_context=true do init):** Honre a visão do usuário, priorize features essenciais, respeite limites. Decisões travadas — não reconsidere.
+**Se CONTEXTO.md existe (has_context=true do init):** Honre a visão do usuário, priorize features essenciais, respeite limites. Decisões travadas — não reconsidere.
 
-**Se RESEARCH.md existe (has_pesquisa=true do init):** Use standard_stack, architecture_patterns, dont_hand_roll, common_pitfalls.
+**Se PESQUISA.md existe (has_pesquisa=true do init):** Use standard_stack, architecture_patterns, dont_hand_roll, common_pitfalls.
 </step>
 
 <step name="break_into_tasks">
@@ -1189,7 +1189,7 @@ Atualize ROTEIRO.md para finalizar placeholders da fase:
 3. Atualize placeholders:
 
 **Goal** (apenas se placeholder):
-- `[To be planned]` → derive de CONTEXT.md > RESEARCH.md > descrição da fase
+- `[To be planned]` → derive de CONTEXTO.md > PESQUISA.md > descrição da fase
 - Se Goal já tem conteúdo real → deixe como está
 
 **Plans** (sempre atualize):

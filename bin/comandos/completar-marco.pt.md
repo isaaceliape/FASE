@@ -41,7 +41,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
 0. **Cheque por audit:**
 
-   - Procure por `.planejamento/v{{version}}-MILESTONE-AUDIT.md`
+   - Procure por `.planejamento/v{{version}}-MARCO-AUDITORIA.md`
    - Se ausente ou stale: recomenda `/fase-audit-milestone` primeiro
    - Se audit status é `gaps_found`: recomenda `/fase-plan-milestone-gaps` primeiro
    - Se audit status é `passed`: prossegue para passo 1
@@ -49,7 +49,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
    ```markdown
    ## Pre-flight Check
 
-   {Se não houver v{{version}}-MILESTONE-AUDIT.md:}
+   {Se não houver v{{version}}-MARCO-AUDITORIA.md:}
    ⚠ Nenhum audit de milestone encontrado. Rode `/fase-audit-milestone` primeiro para verificar
    cobertura de requisitos, integração cross-phase e fluxos E2E.
 
@@ -102,7 +102,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
 7. **Commit e tag:**
 
-   - Stage: MILESTONES.md, PROJETO.md, ROTEIRO.md, ESTADO.md, archive files
+   - Stage: MARCOS.md, PROJETO.md, ROTEIRO.md, ESTADO.md, archive files
    - Commit: `chore: archive v{{version}} milestone`
    - Tag: `git tag -a v{{version}} -m "[milestone summary]"`
    - Pergunte sobre push da tag

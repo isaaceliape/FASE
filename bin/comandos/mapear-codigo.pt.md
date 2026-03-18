@@ -54,8 +54,8 @@ Verifique por .planejamento/ESTADO.md - carrega contexto se projeto já iniciali
 3. Spawnar 4 agents faz-codebase-mapper paralelos:
    - Agent 1: foco tech → escreve STACK.md, INTEGRATIONS.md
    - Agent 2: foco arch → escreve ARQUITETURA.md, STRUCTURE.md
-   - Agent 3: foco quality → escreve CONVENTIONS.md, TESTING.md
-   - Agent 4: foco concerns → escreve CONCERNS.md
+   - Agent 3: foco quality → escreve CONVENTIONS.md, TESTES.md
+   - Agent 4: foco concerns → escreve PREOCUPACOES.md
 4. Aguardar agents completarem, coletar confirmações (NÃO conteúdos dos documentos)
 5. Verificar se todos os 7 documentos existem com contagem de linhas
 6. Commitar mapa do codebase

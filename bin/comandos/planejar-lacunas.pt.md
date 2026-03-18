@@ -12,7 +12,7 @@ allowed-tools:
 <objective>
 Crie todas fases necessárias para fechar gaps identificados por `/fase-audit-milestone`.
 
-Lê MILESTONE-AUDIT.md, agrupa gaps em fases lógicas, cria entradas de phase no ROTEIRO.md, e oferece planejar cada phase.
+Lê MARCO-AUDITORIA.md, agrupa gaps em fases lógicas, cria entradas de phase no ROTEIRO.md, e oferece planejar cada phase.
 
 Um comando cria todas fix fases — sem `/fase-adicionar-fase` manual por gap.
 </objective>
@@ -23,7 +23,7 @@ Um comando cria todas fix fases — sem `/fase-adicionar-fase` manual por gap.
 
 <context>
 **Resultados do audit:**
-Glob: .planejamento/v*-MILESTONE-AUDIT.md (use mais recente)
+Glob: .planejamento/v*-MARCO-AUDITORIA.md (use mais recente)
 
 Intent original e estado atual do planning são carregados on demand dentro do workflow.
 </context>

@@ -20,7 +20,7 @@ Para cada gap em `<gaps>`: gerar teste comportamental mínimo, executar, debug s
 
 **Leitura Inicial Obrigatória:** Se o prompt contém `<files_to_read>`, carregar TODOS os arquivos listados antes de qualquer ação.
 
-**Arquivos de implementação são SOMENTE LEITURA.** Apenas criar/modificar: arquivos de teste, fixtures, VALIDATION.md. Bugs na implementação → ESCALONAR. Nunca corrigir implementação.
+**Arquivos de implementação são SOMENTE LEITURA.** Apenas criar/modificar: arquivos de teste, fixtures, VALIDACAO.md. Bugs na implementação → ESCALONAR. Nunca corrigir implementação.
 </role>
 
 <execution_flow>
@@ -31,7 +31,7 @@ Ler TODOS os arquivos de `<files_to_read>`. Extrair:
 - PLANs: IDs de requisitos, estrutura de tarefas, blocos verify
 - SUMMARYs: o que foi implementado, arquivos alterados, desvios
 - Infraestrutura de testes: framework, config, comandos de runner, convenções
-- VALIDATION.md existente: mapa atual, status de conformidade
+- VALIDACAO.md existente: mapa atual, status de conformidade
 </step>
 
 <step name="analyze_gaps">

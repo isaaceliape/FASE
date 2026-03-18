@@ -30,11 +30,11 @@ Criar prompts executáveis da fase (arquivos PLANO.md) para uma fase do roteiro 
 Número da fase: $ARGUMENTS (opcional — auto-detecta próxima fase não planejada se omitido)
 
 **Flags:**
-- `--pesquisa` — Força re-pesquisa mesmo se RESEARCH.md existir
+- `--pesquisa` — Força re-pesquisa mesmo se PESQUISA.md existir
 - `--skip-pesquisa` — Pula pesquisa, vai direto para planejamento
 - `--gaps` — Modo de fechamento de gaps (lê VERIFICACAO.md, pula pesquisa)
 - `--skip-verify` — Pula loop de verificação
-- `--prd <arquivo>` — Usa um arquivo PRD/critérios de aceitação em vez de discuss-phase. Parseia requisitos em CONTEXT.md automaticamente. Pula discuss-phase completamente.
+- `--prd <arquivo>` — Usa um arquivo PRD/critérios de aceitação em vez de discuss-phase. Parseia requisitos em CONTEXTO.md automaticamente. Pula discuss-phase completamente.
 
 Normalizar input da fase no passo 2 antes de qualquer lookup de diretório.
 </context>

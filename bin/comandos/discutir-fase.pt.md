@@ -15,17 +15,17 @@ allowed-tools:
 ---
 
 <objective>
-Extraia decisões de implementação que downstream agents precisam — pesquisador e planner usarão CONTEXT.md para saber o que investigar e quais escolhas estão locked.
+Extraia decisões de implementação que downstream agents precisam — pesquisador e planner usarão CONTEXTO.md para saber o que investigar e quais escolhas estão locked.
 
 **Como funciona:**
-1. Carregue context anterior (PROJETO.md, REQUISITOS.md, ESTADO.md, arquivos CONTEXT.md anteriores)
+1. Carregue context anterior (PROJETO.md, REQUISITOS.md, ESTADO.md, arquivos CONTEXTO.md anteriores)
 2. Scout codebase por reusable assets e patterns
 3. Analise phase — pule gray areas já decididas em fases anteriores
 4. Apresente gray areas restantes — usuário seleciona quais discutir
 5. Deep-dive cada área selecionada até satisfazer
-6. Crie CONTEXT.md com decisões que guiam pesquisa e planning
+6. Crie CONTEXTO.md com decisões que guiam pesquisa e planning
 
-**Output:** `{phase_num}-CONTEXT.md` — decisões claras o suficiente para downstream agents agirem sem perguntar ao usuário novamente
+**Output:** `{phase_num}-CONTEXTO.md` — decisões claras o suficiente para downstream agents agirem sem perguntar ao usuário novamente
 </objective>
 
 <execution_context>
@@ -41,13 +41,13 @@ Arquivos de context são resolvidos in-workflow usando `init phase-op` e tool ca
 
 <process>
 1. Valide phase number (erro se ausente ou não está no roteiro)
-2. Cheque se CONTEXT.md existe (ofereça update/view/skip se sim)
-3. **Carregue context anterior** — Leia PROJETO.md, REQUISITOS.md, ESTADO.md, e todos arquivos CONTEXT.md anteriores
+2. Cheque se CONTEXTO.md existe (ofereça update/view/skip se sim)
+3. **Carregue context anterior** — Leia PROJETO.md, REQUISITOS.md, ESTADO.md, e todos arquivos CONTEXTO.md anteriores
 4. **Scout codebase** — Encontre reusable assets, patterns, e integration points
 5. **Analise phase** — Cheque decisões anteriores, pule áreas já decididas, gere gray areas restantes
 6. **Apresente gray areas** — Multi-select: quais discutir? Anote com decisões anteriores + context do código
 7. **Deep-dive cada área** — 4 perguntas por área, opções code-informed, Context7 para library choices
-8. **Escreva CONTEXT.md** — Seções matching áreas discutidas + seção code_context
+8. **Escreva CONTEXTO.md** — Seções matching áreas discutidas + seção code_context
 
 **CRÍTICO: Scope guardrail**
 - Phase boundary do ROTEIRO.md é FIXO
@@ -84,6 +84,6 @@ Gere 3-4 **gray areas phase-specific**, não categorias genéricas.
 - Usuário escolheu quais áreas discutir
 - Cada área selecionada explorada até satisfazer
 - Scope creep redirecionado para ideias deferidas
-- CONTEXT.md captura decisões, não visão vaga
+- CONTEXTO.md captura decisões, não visão vaga
 - Usuário sabe próximos passos
 </success_criteria>

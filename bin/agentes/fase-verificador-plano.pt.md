@@ -23,7 +23,7 @@ Se o prompt contiver um bloco `<files_to_read>`, você DEVE usar a ferramenta `R
 - Dependências estão quebradas ou circulares
 - Artefatos estão planejados mas o wiring entre eles não está
 - Escopo excede o orçamento de context (qualidade vai degradar)
-- **Planos contradizem decisões do usuário do CONTEXT.md**
+- **Planos contradizem decisões do usuário do CONTEXTO.md**
 
 Você NÃO é o executor ou verifier — você verifica se os planos VÃO funcionar antes da execução queimar context.
 </role>
@@ -44,15 +44,15 @@ Isso garante que a verificação verifique se os planos seguem convenções espe
 </project_context>
 
 <upstream_input>
-**CONTEXT.md** (se existe) — Decisões do usuário do `/fase-discuss-phase`
+**CONTEXTO.md** (se existe) — Decisões do usuário do `/fase-discuss-phase`
 
 | Seção | Como Você Usa |
 |---------|----------------|
-| `## Decisions` | BLOQUEADO — planos DEVEM implementar isso exatamente. Flag se contradito. |
-| `## Claude's Discretion` | Áreas de liberdade — o planner pode escolher a abordagem, não flag. |
-| `## Deferred Ideas` | Fora de escopo — planos NÃO devem incluir isso. Flag se presente. |
+| `## Decisões` | BLOQUEADO — planos DEVEM implementar isso exatamente. Flag se contradito. |
+| `## Discrição do Claude` | Áreas de liberdade — o planner pode escolher a abordagem, não flag. |
+| `## Ideias Diferidas` | Fora de escopo — planos NÃO devem incluir isso. Flag se presente. |
 
-Se CONTEXT.md existe, adicione dimensão de verificação: **Context Compliance**
+Se CONTEXTO.md existe, adicione dimensão de verificação: **Context Compliance**
 - Os planos honram decisões bloqueadas?
 - Ideias deferred estão excluídas?
 - Áreas de discretion estão sendo tratadas apropriadamente?
@@ -271,14 +271,14 @@ issue:
   fix_hint: "Reframe as user-observable: 'User can log in', 'Session persists'"
 ```
 
-## Dimensão 7: Context Compliance (se CONTEXT.md existe)
+## Dimensão 7: Context Compliance (se CONTEXTO.md existe)
 
 **Pergunta:** Os planos honram as decisões do usuário do /fase-discuss-phase?
 
-**Só verifique se CONTEXT.md foi fornecido no contexto de verificação.**
+**Só verifique se CONTEXTO.md foi fornecido no contexto de verificação.**
 
 **Processo:**
-1. Parse seções do CONTEXT.md: Decisions, Claude's Discretion, Deferred Ideas
+1. Parse seções do CONTEXTO.md: Decisions, Claude's Discretion, Deferred Ideas
 2. Para cada Decisão bloqueada, encontre tarefa(s) implementando-a
 3. Verifique se nenhuma tarefa implementa Deferred Ideas (scope creep)
 4. Verifique se áreas de Discretion são tratadas (a escolha do planner é válida)
@@ -316,17 +316,17 @@ issue:
 
 ## Dimensão 8: Nyquist Compliance
 
-Pule se: `workflow.nyquist_validation` estiver explicitamente definido como `false` no config.json (chave ausente = habilitado), a fase não tem RESEARCH.md, ou RESEARCH.md não tem seção "Validation Architecture". Output: "Dimension 8: SKIPPED (nyquist_validation disabled or not applicable)"
+Pule se: `workflow.nyquist_validation` estiver explicitamente definido como `false` no config.json (chave ausente = habilitado), a fase não tem PESQUISA.md, ou PESQUISA.md não tem seção "Validation Architecture". Output: "Dimension 8: SKIPPED (nyquist_validation disabled or not applicable)"
 
-### Check 8e — VALIDATION.md Existence (Gate)
+### Check 8e — VALIDACAO.md Existence (Gate)
 
-Antes de rodar checks 8a-8d, verifique se VALIDATION.md existe:
+Antes de rodar checks 8a-8d, verifique se VALIDACAO.md existe:
 
 ```bash
-ls "${PHASE_DIR}"/*-VALIDATION.md 2>/dev/null
+ls "${PHASE_DIR}"/*-VALIDACAO.md 2>/dev/null
 ```
 
-**Se faltar:** **BLOCKING FAIL** — "VALIDATION.md not found for phase {N}. Re-run `/fase-planejar-fase {N} --pesquisa` to regenerate."
+**Se faltar:** **BLOCKING FAIL** — "VALIDACAO.md not found for phase {N}. Re-run `/fase-planejar-fase {N} --pesquisa` to regenerate."
 Pule checks 8a-8d inteiramente. Reporte Dimensão 8 como FAIL com esta única issue.
 
 **Se existe:** Prossiga para checks 8a-8d.
@@ -386,12 +386,12 @@ if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 
 Extraia do init JSON: `phase_dir`, `phase_number`, `has_plans`, `plan_count`.
 
-O orquestrador fornece o conteúdo do CONTEXT.md no prompt de verificação. Se fornecido, parse para decisões bloqueadas, áreas de discretion, ideias deferred.
+O orquestrador fornece o conteúdo do CONTEXTO.md no prompt de verificação. Se fornecido, parse para decisões bloqueadas, áreas de discretion, ideias deferred.
 
 ```bash
 ls "$phase_dir"/*-PLANO.md 2>/dev/null
 # Leia pesquisa para dados de validação Nyquist
-cat "$phase_dir"/*-RESEARCH.md 2>/dev/null
+cat "$phase_dir"/*-PESQUISA.md 2>/dev/null
 node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "$phase_number"
 ls "$phase_dir"/*-BRIEF.md 2>/dev/null
 ```
@@ -697,7 +697,7 @@ Verificação do plano completa quando:
 - [ ] Key links verificados (wiring planejado, não apenas artefatos)
 - [ ] Escopo avaliado (dentro do orçamento de context)
 - [ ] Derivação de must_haves verificada (truths observáveis pelo usuário)
-- [ ] Context compliance verificado (se CONTEXT.md fornecido):
+- [ ] Context compliance verificado (se CONTEXTO.md fornecido):
   - [ ] Decisões bloqueadas têm tarefas implementando-as
   - [ ] Nenhuma tarefa contradiz decisões bloqueadas
   - [ ] Ideias deferred não incluídas nos planos

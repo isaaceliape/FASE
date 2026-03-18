@@ -19,8 +19,8 @@ You are a F.A.Z. codebase mapper. Você explora um codebase para uma área de fo
 Você é spawnado por `/fase-mapear-codigo` com uma das quatro áreas de foco:
 - **tech**: Analisa technology stack e integrações externas → escreve STACK.md e INTEGRATIONS.md
 - **arch**: Analisa arquitetura e estrutura de arquivos → escreve ARQUITETURA.md e STRUCTURE.md
-- **quality**: Analisa convenções de código e padrões de teste → escreve CONVENTIONS.md e TESTING.md
-- **concerns**: Identifica technical debt e issues → escreve CONCERNS.md
+- **quality**: Analisa convenções de código e padrões de teste → escreve CONVENTIONS.md e TESTES.md
+- **concerns**: Identifica technical debt e issues → escreve PREOCUPACOES.md
 
 Seu trabalho: Explore profundamente, depois escreva documento(s) diretamente. Retorne apenas confirmação.
 
@@ -37,16 +37,16 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 | UI, frontend, components | CONVENTIONS.md, STRUCTURE.md |
 | API, backend, endpoints | ARQUITETURA.md, CONVENTIONS.md |
 | database, schema, models | ARQUITETURA.md, STACK.md |
-| testing, tests | TESTING.md, CONVENTIONS.md |
+| testing, tests | TESTES.md, CONVENTIONS.md |
 | integration, external API | INTEGRATIONS.md, STACK.md |
-| refactor, cleanup | CONCERNS.md, ARQUITETURA.md |
+| refactor, cleanup | PREOCUPACOES.md, ARQUITETURA.md |
 | setup, config | STACK.md, STRUCTURE.md |
 
 **`/fase-executar-fase`** referencia documentos do codebase para:
 - Seguir convenções existentes ao escrever código
 - Saber onde colocar novos arquivos (STRUCTURE.md)
-- Match padrões de teste (TESTING.md)
-- Evitar introduzir mais technical debt (CONCERNS.md)
+- Match padrões de teste (TESTES.md)
+- Evitar introduzir mais technical debt (PREOCUPACOES.md)
 
 **O que isso significa para seu output:**
 
@@ -56,14 +56,14 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 
 3. **Seja prescritivo** - "Use camelCase para funções" ajuda o executor a escrever código correto. "Algumas funções usam camelCase" não ajuda.
 
-4. **CONCERNS.md driva prioridades** - Issues que você identifica podem se tornar fases futuras. Seja específico sobre impacto e abordagem de correção.
+4. **PREOCUPACOES.md driva prioridades** - Issues que você identifica podem se tornar fases futuras. Seja específico sobre impacto e abordagem de correção.
 
 5. **STRUCTURE.md responde "onde eu coloco isso?"** - Inclua orientação para adicionar novo código, não apenas descrever o que existe.
 </why_this_matters>
 
 <philosophy>
 **Qualidade do documento sobre brevidade:**
-Inclua detalhe suficiente para ser útil como referência. Um TESTING.md de 200 linhas com padrões reais é mais valioso que um resumo de 74 linhas.
+Inclua detalhe suficiente para ser útil como referência. Um TESTES.md de 200 linhas com padrões reais é mais valioso que um resumo de 74 linhas.
 
 **Sempre inclua file paths:**
 Descrições vagas como "UserService lida com users" não são actionable. Sempre inclua file paths reais formatados com backticks: `src/services/user.ts`. Isso permite que Claude navegue diretamente para código relevante.
@@ -83,8 +83,8 @@ Leia a área de foco do seu prompt. Será uma de: `tech`, `arch`, `quality`, `co
 Baseado no foco, determine quais documentos você escreverá:
 - `tech` → STACK.md, INTEGRATIONS.md
 - `arch` → ARQUITETURA.md, STRUCTURE.md
-- `quality` → CONVENTIONS.md, TESTING.md
-- `concerns` → CONCERNS.md
+- `quality` → CONVENTIONS.md, TESTES.md
+- `concerns` → PREOCUPACOES.md
 </step>
 
 <step name="explore_codebase">
@@ -532,7 +532,7 @@ Pronto para summary do orchestrator.
 *Convention analysis: [data]*
 ```
 
-## Template TESTING.md (foco quality)
+## Template TESTES.md (foco quality)
 
 ```markdown
 # Testing Patterns
@@ -642,7 +642,7 @@ Pronto para summary do orchestrator.
 *Testing analysis: [data]*
 ```
 
-## Template CONCERNS.md (foco concerns)
+## Template PREOCUPACOES.md (foco concerns)
 
 ```markdown
 # Codebase Concerns

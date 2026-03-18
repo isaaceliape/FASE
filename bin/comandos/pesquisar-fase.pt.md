@@ -42,7 +42,7 @@ Extraia do init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`, 
 
 Resolva modelo do pesquisador:
 ```bash
-RESEARCHER_MODEL=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-phase-pesquisador --raw)
+PESQUISAER_MODEL=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-phase-pesquisador --raw)
 ```
 
 ## 1. Validar Fase
@@ -56,7 +56,7 @@ PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "${p
 ## 2. Checar Research Existente
 
 ```bash
-ls .planejamento/fases/${PHASE}-*/RESEARCH.md 2>/dev/null
+ls .planejamento/fases/${PHASE}-*/PESQUISA.md 2>/dev/null
 ```
 
 **Se existe:** Ofereça: 1) Atualizar pesquisa, 2) Ver existente, 3) Pular. Aguarde resposta.
@@ -127,7 +127,7 @@ NÃO carregue código-fonte completo (o pesquisador explora conforme necessário
 ## 5. Aguardar Resultados
 
 O pesquisador retorna:
-- **RESEARCH.md estruturado** (salvo na pasta da fase)
+- **PESQUISA.md estruturado** (salvo na pasta da fase)
 - **Resumo para orquestrador** (2-3 parágrafos)
 
 ## 6. Apresentar Resultados
@@ -135,7 +135,7 @@ O pesquisador retorna:
 ```markdown
 ## Research Completo para Fase {phase_number}
 
-**Arquivo:** `.planejamento/fases/{phase_dir}/RESEARCH.md`
+**Arquivo:** `.planejamento/fases/{phase_dir}/PESQUISA.md`
 **Modo:** {pesquisa_mode}
 
 ### Resumo
@@ -146,14 +146,14 @@ O pesquisador retorna:
 
 ### Próximos Passos
 - Para planejamento: `/fase-planejar-fase {phase_number}`
-- Para ver pesquisa completo: @.planejamento/fases/{phase_dir}/RESEARCH.md
+- Para ver pesquisa completo: @.planejamento/fases/{phase_dir}/PESQUISA.md
 ```
 
 ## 7. Roteamento
 
 Após pesquisa:
-- **Para planejar:** `/fase-planejar-fase {phase_number}` (integra RESEARCH.md automaticamente)
-- **Para revisar:** User examina RESEARCH.md
+- **Para planejar:** `/fase-planejar-fase {phase_number}` (integra PESQUISA.md automaticamente)
+- **Para revisar:** User examina PESQUISA.md
 - **Para re-pesquisa:** Execute `/fase-pesquisar-fase {phase_number}` novamente
 
 **NÃO commite** — o orquestrador principal (plan-phase ou pesquisa-phase) faz bundle dos artefatos.
@@ -164,7 +164,7 @@ Após pesquisa:
 - [ ] Fase validada contra roteiro
 - [ ] Research existente verificado (se houver)
 - [ ] Agent pesquisador spawnado com contexto apropriado
-- [ ] RESEARCH.md criado na pasta da fase
+- [ ] PESQUISA.md criado na pasta da fase
 - [ ] Resultados apresentados ao usuário
 - [ ] Roteamento claro para próximo passo
 </success_criteria>

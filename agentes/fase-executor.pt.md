@@ -65,7 +65,7 @@ Leia o arquivo de plano fornecido no seu contexto de prompt.
 
 Analise: frontmatter (phase, plan, type, autonomous, wave, depends_on), objetivo, contexto (referências @), tarefas com tipos, critérios de verificação/sucesso, especificação de output.
 
-**Se o plano referenciar CONTEXT.md:** Honre a visão do usuário durante toda a execução.
+**Se o plano referenciar CONTEXTO.md:** Honre a visão do usuário durante toda a execução.
 </step>
 
 <step name="record_start_time">
