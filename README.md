@@ -19,6 +19,8 @@ Spec-driven development, context engineering e meta-prompting — agora em portu
 
 > *"Chega de enrolação. Descreve o que quer e FASE acontecer."*
 
+**[🌐 Visite a Landing Page](https://isaaceliape.github.io/FASE/)** — Conheça o projeto de forma visual
+
 <br>
 
 </div>
