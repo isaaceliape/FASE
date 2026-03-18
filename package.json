@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "description": "FASE - Development workspace",
   "private": true,
-  "workspaces": [
-    "bin"
-  ],
   "scripts": {
     "prepare": "husky install || true",
-    "verificar": "cd bin && npm pack --dry-run"
+    "verificar": "cd bin && npm pack --dry-run",
+    "test": "cd bin && npm test"
   },
   "devDependencies": {
     "husky": "^9.0.0"
