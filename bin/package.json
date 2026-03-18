@@ -1,7 +1,7 @@
 {
   "name": "fase-ai",
   "version": "2.6.0",
-  "description": "F.A.S.E. - Framework de Automação Sem Enrolação. Meta-prompting, context engineering, and spec-driven development for AI coding assistants.",
+  "description": "F.A.S.E. - Framework de Automação Sem Enrolação. Brazilian Portuguese translation of get-shit-done for AI coding assistants",
   "bin": {
     "fase-ai": "install.js",
     "fase": "install.js"
@@ -12,6 +12,8 @@
   },
   "keywords": [
     "fase",
+    "get-shit-done",
+    "gsd",
     "ai",
     "automation",
     "claude-code",
@@ -22,9 +24,7 @@
     "brazilian",
     "spec-driven",
     "context-engineering",
-    "meta-prompting",
-    "development-framework",
-    "coding-assistant"
+    "meta-prompting"
   ],
   "author": "Isaac Eliape",
   "license": "MIT",
