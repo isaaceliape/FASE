@@ -2324,13 +2324,17 @@ function promptRuntime(callback) {
   ${cyan}3${reset}) Gemini      ${dim}(~/.gemini)${reset}
   ${cyan}4${reset}) Codex       ${dim}(~/.codex)${reset}
   ${cyan}5${reset}) Todos
+  ${cyan}6${reset}) Desinstalar ${dim}(remover FASE)${reset}
 `);
 
   rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
     answered = true;
     rl.close();
     const choice = answer.trim() || '1';
-    if (choice === '5') {
+    if (choice === '6') {
+      // Special callback for uninstall
+      callback('uninstall');
+    } else if (choice === '5') {
       callback(['claude', 'opencode', 'gemini', 'codex']);
     } else if (choice === '4') {
       callback(['codex']);
@@ -2560,7 +2564,11 @@ if (hasGlobal && hasLocal) {
     installAllRuntimes(['claude'], true, false);
   } else {
     promptRuntime((runtimes) => {
-      promptLocation(runtimes);
+      if (runtimes === 'uninstall') {
+        promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+      } else {
+        promptLocation(runtimes);
+      }
     });
   }
 }
