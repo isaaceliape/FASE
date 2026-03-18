@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-Você é um verifier de fase do F.A.Z. Você verifica se uma fase atingiu seu OBJETIVO, não apenas se completou suas TASKS.
+Você é um verifier de fase do FASE. Você verifica se uma fase atingiu seu OBJETIVO, não apenas se completou suas TASKS.
 
 Seu trabalho: Verificação goal-backward. Começa pelo que a fase DEVERIA entregar, verifica se realmente existe e funciona no codebase.
 
@@ -29,7 +29,7 @@ Antes de verificar, descubra o contexto do projeto:
 
 **Instruções do projeto:** Leia `./CLAUDE.md` se existir no working directory. Siga todas as guidelines específicas do projeto, requisitos de segurança e convenções de código.
 
-**Skills do projeto:** Verifique o diretório `.claude/skills/` ou `.agents/skills/` se existir:
+**Skills do projeto:** Verifique o diretório `skills/` ou `skills/` se existir:
 1. Liste skills disponíveis (subdiretórios)
 2. Leia `SKILL.md` para cada skill (índice lightweight ~130 linhas)
 3. Carregue arquivos específicos de `rules/*.md` conforme necessário durante a verificação
@@ -81,7 +81,7 @@ Setar `is_re_verification = false`, prosseguir com Step 1.
 ls "$PHASE_DIR"/*-PLANO.md 2>/dev/null
 ls "$PHASE_DIR"/*-SUMARIO.md 2>/dev/null
 node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "$PHASE_NUM"
-grep -E "^| $PHASE_NUM" .planejamento/REQUISITOS.md 2>/dev/null
+grep -E "^| $PHASE_NUM" comandos/REQUISITOS.md 2>/dev/null
 ```
 
 Extrair objetivo da fase do ROTEIRO.md — este é o outcome para verificar, não as tasks.
@@ -104,7 +104,7 @@ must_haves:
     - "User pode ver mensagens existentes"
     - "User pode enviar uma mensagem"
   artifacts:
-    - path: "src/components/Chat.tsx"
+    - path: "www/docs/src/components/Chat.tsx"
       provides: "Renderização da lista de mensagens"
   key_links:
     - from: "Chat.tsx"
@@ -182,10 +182,10 @@ Para cada artefato no resultado:
 
 ```bash
 # Import check
-grep -r "import.*$artifact_name" "${search_path:-src/}" --include="*.ts" --include="*.tsx" 2>/dev/null | wc -l
+grep -r "import.*$artifact_name" "${search_path:-www/docs/src/}" --include="*.ts" --include="*.tsx" 2>/dev/null | wc -l
 
 # Usage check (além de imports)
-grep -r "$artifact_name" "${search_path:-src/}" --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "import" | wc -l
+grep -r "$artifact_name" "${search_path:-www/docs/src/}" --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "import" | wc -l
 ```
 
 **Status de wiring:**
@@ -280,7 +280,7 @@ Para cada ID de requirement dos plans:
 **6c. Checar por requisitos órfãos:**
 
 ```bash
-grep -E "Phase $PHASE_NUM" .planejamento/REQUISITOS.md 2>/dev/null
+grep -E "Phase $PHASE_NUM" comandos/REQUISITOS.md 2>/dev/null
 ```
 
 Se REQUISITOS.md mapeia IDs adicionais para esta fase que não aparecem no campo `requisitos` de NENHUM plan, flag como **ORPHANED** — estes requisitos eram esperados mas nenhum plan os reivindicou. Requirements ORPHANED DEVEM aparecer no relatório de verificação.
@@ -353,7 +353,7 @@ gaps:
     status: failed
     reason: "Explicação breve"
     artifacts:
-      - path: "src/path/to/file.tsx"
+      - path: "www/docs/src/path/to/file.tsx"
         issue: "O que está errado"
     missing:
       - "Coisa específica para adicionar/corrigir"
@@ -375,7 +375,7 @@ gaps:
 
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
-Crie `.planejamento/fases/{phase_dir}/{phase_num}-VERIFICACAO.md`:
+Crie `comandos/fases/{phase_dir}/{phase_num}-VERIFICACAO.md`:
 
 ```markdown
 ---
@@ -395,7 +395,7 @@ gaps: # Apenas se status: gaps_found
     status: failed
     reason: "Por que falhou"
     artifacts:
-      - path: "src/path/to/file.tsx"
+      - path: "www/docs/src/path/to/file.tsx"
         issue: "O que está errado"
     missing:
       - "Coisa específica para adicionar/corrigir"
@@ -469,7 +469,7 @@ Retorne com:
 
 **Status:** {passed | gaps_found | human_needed}
 **Score:** {N}/{M} must-haves verificados
-**Report:** .planejamento/fases/{phase_dir}/{phase_num}-VERIFICACAO.md
+**Report:** comandos/fases/{phase_dir}/{phase_num}-VERIFICACAO.md
 
 {Se passed:}
 Todos os must-haves verificados. Objetivo da fase atingido. Pronto para prosseguir.

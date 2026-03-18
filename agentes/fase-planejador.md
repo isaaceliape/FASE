@@ -41,7 +41,7 @@ Antes de planejar, descubra o contexto do projeto:
 
 **Instruções do projeto:** Leia `./CLAUDE.md` se existir no diretório de trabalho. Siga todas as diretrizes específicas do projeto, requisitos de segurança e convenções de código.
 
-**Skills do projeto:** Verifique o diretório `.claude/skills/` ou `.agents/skills/` se qualquer um existir:
+**Skills do projeto:** Verifique o diretório `skills/` ou `skills/` se qualquer um existir:
 1. Liste skills disponíveis (subdiretórios)
 2. Leia `SKILL.md` para cada skill (índice leve ~130 linhas)
 3. Carregue arquivos específicos `rules/*.md` conforme necessário durante o planejamento
@@ -158,7 +158,7 @@ Para nichos específicos (3D, jogos, áudio, shaders, ML), sugerir `/fase-pesqui
 Toda tarefa tem quatro campos obrigatórios:
 
 **<files>:** Caminhos exatos de arquivos criados ou modificados.
-- Bom: `src/app/api/auth/login/route.ts`, `prisma/schema.prisma`
+- Bom: `www/docs/www/docs/src/pages/auth/login/route.ts`, `prisma/schema.prisma`
 - Ruim: "os arquivos de auth", "componentes relevantes"
 
 **<action>:** Instruções específicas de implementação, incluindo o que evitar e POR QUÊ.
@@ -247,7 +247,7 @@ Isso previne o anti-padrão "caça ao tesouro" onde executores exploram a codeba
 ```xml
 <task type="auto" tdd="true">
   <name>Tarefa: [nome]</name>
-  <files>src/feature.ts, src/feature.test.ts</files>
+  <files>www/docs/src/feature.ts, www/docs/src/feature.test.ts</files>
   <behavior>
     - Test 1: [comportamento esperado]
     - Test 2: [edge case]
@@ -289,11 +289,11 @@ Registre no frontmatter `user_setup`. Inclua apenas o que Claude literalmente n�
 **Exemplo com 6 tarefas:**
 
 ```
-Tarefa A (Model User): needs nada, cria src/models/user.ts
-Tarefa B (Model Product): needs nada, cria src/models/product.ts
-Tarefa C (API User): needs Tarefa A, cria src/api/users.ts
-Tarefa D (API Product): needs Tarefa B, cria src/api/products.ts
-Tarefa E (Dashboard): needs Tarefa C + D, cria src/components/Dashboard.tsx
+Tarefa A (Model User): needs nada, cria www/docs/src/models/user.ts
+Tarefa B (Model Product): needs nada, cria www/docs/src/models/product.ts
+Tarefa C (API User): needs Tarefa A, cria www/docs/src/api/users.ts
+Tarefa D (API Product): needs Tarefa B, cria www/docs/src/api/products.ts
+Tarefa E (Dashboard): needs Tarefa C + D, cria www/docs/src/components/Dashboard.tsx
 Tarefa F (Verificar UI): checkpoint:human-verify, needs Tarefa E
 
 Grafo:
@@ -336,10 +336,10 @@ Propriedade exclusiva de arquivos previne conflitos:
 
 ```yaml
 # Frontmatter Plano 01
-files_modified: [src/models/user.ts, src/api/users.ts]
+files_modified: [www/docs/src/models/user.ts, www/docs/src/api/users.ts]
 
 # Frontmatter Plano 02 (sem overlap = paralelo)
-files_modified: [src/models/product.ts, src/api/products.ts]
+files_modified: [www/docs/src/models/product.ts, www/docs/src/api/products.ts]
 ```
 
 Sem overlap → pode rodar paralelo. Arquivo em múltiplos planos → plano posterior depende do anterior.
@@ -429,9 +429,9 @@ Output: [Artefatos criados]
 
 
 <context>
-@.planejamento/PROJETO.md
-@.planejamento/ROTEIRO.md
-@.planejamento/ESTADO.md
+@comandos/PROJETO.md
+@comandos/ROTEIRO.md
+@comandos/ESTADO.md
 
 # Apenas referencie SUMMARYs de planos anteriores se genuinamente necessário
 @path/to/relevant/source.ts
@@ -458,7 +458,7 @@ Output: [Artefatos criados]
 </success_criteria>
 
 <output>
-Após conclusão, crie `.planejamento/fases/XX-name/{phase}-{plan}-SUMARIO.md`
+Após conclusão, crie `comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md`
 </output>
 ```
 
@@ -500,7 +500,7 @@ Incorpore estes na seção `<context>` do plano como um bloco `<interfaces>`:
 <!-- Tipos e contratos chave que o executor precisa. Extraídos da codebase. -->
 <!-- Executor deve usar estes diretamente — sem necessidade de explorar codebase. -->
 
-De src/types/user.ts:
+De www/docs/src/types/user.ts:
 ```typescript
 export interface User {
   id: string;
@@ -510,7 +510,7 @@ export interface User {
 }
 ```
 
-De src/api/auth.ts:
+De www/docs/src/api/auth.ts:
 ```typescript
 export function validateToken(token: string): Promise<User | null>;
 export function createSession(user: User): Promise<SessionToken>;
@@ -524,7 +524,7 @@ Se este plano cria tipos/interfaces dos quais planos posteriores dependem, inclu
 ```xml
 <task type="auto">
   <name>Tarefa 0: Escrever contratos de interface</name>
-  <files>src/types/newFeature.ts</files>
+  <files>www/docs/src/types/newFeature.ts</files>
   <action>Criar definições de tipo que planos downstream implementarão contra. Estes são os contratos — implementação vem em tarefas posteriores.</action>
   <verify>Arquivo existe com tipos exportados, sem implementação</verify>
   <done>Arquivo de interface commitado, tipos exportados</done>
@@ -634,21 +634,21 @@ must_haves:
     - "Usuário pode enviar uma mensagem"
     - "Mensagens persistem após refresh"
   artifacts:
-    - path: "src/components/Chat.tsx"
+    - path: "www/docs/src/components/Chat.tsx"
       provides: "Renderização da lista de mensagens"
       min_lines: 30
-    - path: "src/app/api/chat/route.ts"
+    - path: "www/docs/www/docs/src/pages/chat/route.ts"
       provides: "Operações CRUD de mensagens"
       exports: ["GET", "POST"]
     - path: "prisma/schema.prisma"
       provides: "Modelo de Mensagem"
       contains: "model Message"
   key_links:
-    - from: "src/components/Chat.tsx"
+    - from: "www/docs/src/components/Chat.tsx"
       to: "/api/chat"
       via: "fetch em useEffect"
       pattern: "fetch.*api/chat"
-    - from: "src/app/api/chat/route.ts"
+    - from: "www/docs/www/docs/src/pages/chat/route.ts"
       to: "prisma.message"
       via: "query de banco de dados"
       pattern: "prisma\\.message\\.(find|create)"
@@ -662,7 +662,7 @@ must_haves:
 
 **Artefatos muito abstratos:**
 - Ruim: "Sistema de chat", "Módulo de auth"
-- Bom: "src/components/Chat.tsx", "src/app/api/auth/login/route.ts"
+- Bom: "www/docs/src/components/Chat.tsx", "www/docs/www/docs/src/pages/auth/login/route.ts"
 
 **Conexões faltando:**
 - Ruim: Listar componentes sem como eles conectam
@@ -881,7 +881,7 @@ Acionado quando orquestrador fornece `<revision_context>` com issues do checker.
 ### Passo 1: Carregar Planos Existentes
 
 ```bash
-cat .planejamento/fases/$PHASE-*/$PHASE-*-PLANO.md
+cat comandos/fases/$PHASE-*/$PHASE-*-PLANO.md
 ```
 
 Construa modelo mental da estrutura atual do plano, tarefas existentes, must_haves.
@@ -929,7 +929,7 @@ Agrupe por plano, dimensão, severidade.
 ### Passo 6: Commit
 
 ```bash
-node "$HOME/.claude/fase/bin/fase-tools.cjs" commit "fix($PHASE): revise plans based on checker feedback" --files .planejamento/fases/$PHASE-*/$PHASE-*-PLANO.md
+node "$HOME/.claude/fase/bin/fase-tools.cjs" commit "fix($PHASE): revise plans based on checker feedback" --files comandos/fases/$PHASE-*/$PHASE-*-PLANO.md
 ```
 
 ### Passo 7: Retornar Resumo de Revisão
@@ -948,8 +948,8 @@ node "$HOME/.claude/fase/bin/fase-tools.cjs" commit "fix($PHASE): revise plans b
 
 ### Arquivos Atualizados
 
-- .planejamento/fases/16-xxx/16-01-PLANO.md
-- .planejamento/fases/16-xxx/16-02-PLANO.md
+- comandos/fases/16-xxx/16-01-PLANO.md
+- comandos/fases/16-xxx/16-02-PLANO.md
 
 {Se houver issues NÃO endereçadas:}
 
@@ -976,17 +976,17 @@ Extraia do JSON init: `planner_model`, `pesquisador_model`, `checker_model`, `co
 
 Também leia ESTADO.md para posição, decisões, bloqueios:
 ```bash
-cat .planejamento/ESTADO.md 2>/dev/null
+cat comandos/ESTADO.md 2>/dev/null
 ```
 
-Se ESTADO.md faltando mas .planejamento/ existe, ofereça reconstruir ou continuar sem.
+Se ESTADO.md faltando mas comandos/ existe, ofereça reconstruir ou continuar sem.
 </step>
 
 <step name="load_codebase_context">
 Cheque por mapa da codebase:
 
 ```bash
-ls .planejamento/codigo/*.md 2>/dev/null
+ls comandos/codigo/*.md 2>/dev/null
 ```
 
 Se existe, carregue documentos relevantes por tipo de fase:
@@ -1005,8 +1005,8 @@ Se existe, carregue documentos relevantes por tipo de fase:
 
 <step name="identify_phase">
 ```bash
-cat .planejamento/ROTEIRO.md
-ls .planejamento/fases/
+cat comandos/ROTEIRO.md
+ls comandos/fases/
 ```
 
 Se múltiplas fases disponíveis, pergunte qual planejar. Se óbvio (primeira incompleta), prossiga.
@@ -1040,7 +1040,7 @@ Selecione top 2-4 fases. Pule fases sem sinal de relevância.
 
 **Passo 3 — Leia SUMMARYs completos das fases selecionadas:**
 ```bash
-cat .planejamento/fases/{fase-selecionada}/*-SUMARIO.md
+cat comandos/fases/{fase-selecionada}/*-SUMARIO.md
 ```
 
 Dos SUMMARYs completos extraia:
@@ -1060,7 +1060,7 @@ Para fases não selecionadas, retenha do digest:
 
 **De RETROSPECTIVE.md (se existe):**
 ```bash
-cat .planejamento/RETROSPECTIVE.md 2>/dev/null | tail -100
+cat comandos/RETROSPECTIVE.md 2>/dev/null | tail -100
 ```
 
 Leia o retrospecto mais recente do milestone e tendências cross-milestone. Extraia:
@@ -1144,7 +1144,7 @@ Use estrutura de template para cada PLANO.md.
 
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
-Escreva em `.planejamento/fases/XX-name/{phase}-{NN}-PLANO.md`
+Escreva em `comandos/fases/XX-name/{phase}-{NN}-PLANO.md`
 
 Inclua todos os campos do frontmatter.
 </step>
@@ -1180,7 +1180,7 @@ Retorna JSON: `{ valid, errors, warnings, task_count, tasks }`
 <step name="update_roteiro">
 Atualize ROTEIRO.md para finalizar placeholders da fase:
 
-1. Leia `.planejamento/ROTEIRO.md`
+1. Leia `comandos/ROTEIRO.md`
 2. Encontre entrada da fase (`### Phase {N}:`)
 3. Atualize placeholders:
 
@@ -1203,7 +1203,7 @@ Plans:
 
 <step name="git_commit">
 ```bash
-node "$HOME/.claude/fase/bin/fase-tools.cjs" commit "docs($PHASE): create phase plan" --files .planejamento/fases/$PHASE-*/$PHASE-*-PLANO.md .planejamento/ROTEIRO.md
+node "$HOME/.claude/fase/bin/fase-tools.cjs" commit "docs($PHASE): create phase plan" --files comandos/fases/$PHASE-*/$PHASE-*-PLANO.md comandos/ROTEIRO.md
 ```
 </step>
 

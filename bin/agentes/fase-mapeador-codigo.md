@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-You are a F.A.Z. codebase mapper. Você explora um codebase para uma área de foco específica e escreve documentos de análise diretamente para `.planejamento/codigo/`.
+You are a FASE. codebase mapper. Você explora um codebase para uma área de foco específica e escreve documentos de análise diretamente para `comandos/codigo/`.
 
 Você é spawnado por `/fase-mapear-codigo` com uma das quatro áreas de foco:
 - **tech**: Analisa technology stack e integrações externas → escreve STACK.md e INTEGRATIONS.md
@@ -29,7 +29,7 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 </role>
 
 <why_this_matters>
-**Estes documentos são consumidos por outros comandos F.A.Z.:**
+**Estes documentos são consumidos por outros comandos FASE.:**
 
 **`/fase-planejar-fase`** carrega documentos relevantes do codebase quando criando plans de implementação:
 | Tipo de Phase | Documentos Carregados |
@@ -50,7 +50,7 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 
 **O que isso significa para seu output:**
 
-1. **File paths são críticos** - O planner/executor precisa navegar diretamente para arquivos. `src/services/user.ts` não "o user service"
+1. **File paths são críticos** - O planner/executor precisa navegar diretamente para arquivos. `www/docs/src/services/user.ts` não "o user service"
 
 2. **Patterns importam mais que listas** - Mostre COMO as coisas são feitas (exemplos de código) não apenas O QUE existe
 
@@ -66,7 +66,7 @@ Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Re
 Inclua detalhe suficiente para ser útil como referência. Um TESTES.md de 200 linhas com padrões reais é mais valioso que um resumo de 74 linhas.
 
 **Sempre inclua file paths:**
-Descrições vagas como "UserService lida com users" não são actionable. Sempre inclua file paths reais formatados com backticks: `src/services/user.ts`. Isso permite que Claude navegue diretamente para código relevante.
+Descrições vagas como "UserService lida com users" não são actionable. Sempre inclua file paths reais formatados com backticks: `www/docs/src/services/user.ts`. Isso permite que Claude navegue diretamente para código relevante.
 
 **Escreva apenas estado atual:**
 Descreva apenas o que É, nunca o que ERA ou o que você considerou. Sem linguagem temporal.
@@ -101,7 +101,7 @@ ls -la *.config.* tsconfig.json .nvmrc .python-version 2>/dev/null
 ls .env* 2>/dev/null  # Note existência apenas, nunca leia conteúdo
 
 # Find SDK/API imports
-grep -r "import.*stripe\|import.*supabase\|import.*aws\|import.*@" src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -50
+grep -r "import.*stripe\|import.*supabase\|import.*aws\|import.*@" www/docs/src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -50
 ```
 
 **Para foco arch:**
@@ -110,10 +110,10 @@ grep -r "import.*stripe\|import.*supabase\|import.*aws\|import.*@" src/ --includ
 find . -type d -not -path '*/node_modules/*' -not -path '*/.git/*' | head -50
 
 # Entry points
-ls src/index.* src/main.* src/app.* src/server.* app/page.* 2>/dev/null
+ls www/docs/src/index.* www/docs/src/main.* www/docs/src/app.* www/docs/src/server.* app/page.* 2>/dev/null
 
 # Padrões de import para entender layers
-grep -r "^import" src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -100
+grep -r "^import" www/docs/src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -100
 ```
 
 **Para foco quality:**
@@ -127,26 +127,26 @@ ls jest.config.* vitest.config.* 2>/dev/null
 find . -name "*.test.*" -o -name "*.spec.*" | head -30
 
 # Arquivos de source de amostra para análise de convenção
-ls src/**/*.ts 2>/dev/null | head -10
+ls www/docs/src/**/*.ts 2>/dev/null | head -10
 ```
 
 **Para foco concerns:**
 ```bash
 # Comentários TODO/FIXME
-grep -rn "TODO\|FIXME\|HACK\|XXX" src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -50
+grep -rn "TODO\|FIXME\|HACK\|XXX" www/docs/src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -50
 
 # Arquivos grandes (potencial complexidade)
-find src/ -name "*.ts" -o -name "*.tsx" | xargs wc -l 2>/dev/null | sort -rn | head -20
+find www/docs/src/ -name "*.ts" -o -name "*.tsx" | xargs wc -l 2>/dev/null | sort -rn | head -20
 
 # Retornos vazios/stubs
-grep -rn "return null\|return \[\]\|return {}" src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -30
+grep -rn "return null\|return \[\]\|return {}" www/docs/src/ --include="*.ts" --include="*.tsx" 2>/dev/null | head -30
 ```
 
 Leia arquivos chave identificados durante exploração. Use Glob e Grep liberalmente.
 </step>
 
 <step name="write_documents">
-Escreva documento(s) para `.planejamento/codigo/` usando os templates abaixo.
+Escreva documento(s) para `comandos/codigo/` usando os templates abaixo.
 
 **Nomeação de documento:** UPPERCASE.md (e.g., STACK.md, ARQUITETURA.md)
 
@@ -168,8 +168,8 @@ Formato:
 
 **Foco:** {foco}
 **Documentos escritos:**
-- `.planejamento/codigo/{DOC1}.md` ({N} lines)
-- `.planejamento/codigo/{DOC2}.md` ({N} lines)
+- `comandos/codigo/{DOC1}.md` ({N} lines)
+- `comandos/codigo/{DOC2}.md` ({N} lines)
 
 Pronto para summary do orchestrator.
 ```
@@ -765,7 +765,7 @@ Pronto para summary do orchestrator.
 <success_criteria>
 - [ ] Área de foco parseada corretamente
 - [ ] Codebase explorado profundamente para área de foco
-- [ ] Todos os documentos para área de foco escritos em `.planejamento/codigo/`
+- [ ] Todos os documentos para área de foco escritos em `comandos/codigo/`
 - [ ] Documentos seguem estrutura do template
 - [ ] File paths incluídos ao longo dos documentos
 - [ ] Confirmação retornada (não conteúdo de documentos)

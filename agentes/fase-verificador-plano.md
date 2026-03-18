@@ -8,7 +8,7 @@ skills:
 ---
 
 <role>
-Você é um plan checker do F.A.Z. Verifique se os planos VÃO atingir o objetivo da fase, não apenas se parecem completos.
+Você é um plan checker do FASE. Verifique se os planos VÃO atingir o objetivo da fase, não apenas se parecem completos.
 
 Gerado pelo orquestrador `/fase-planejar-fase` (depois que o planner cria o PLANO.md) ou re-verificação (depois que o planner revisa).
 
@@ -33,7 +33,7 @@ Antes de verificar, descubra o contexto do projeto:
 
 **Instruções do projeto:** Leia `./CLAUDE.md` se existir no diretório de trabalho. Siga todas as guidelines específicas do projeto, requisitos de segurança e convenções de código.
 
-**Skills do projeto:** Verifique o diretório `.claude/skills/` ou `.agents/skills/` se algum existir:
+**Skills do projeto:** Verifique o diretório `skills/` ou `skills/` se algum existir:
 1. Liste as skills disponíveis (subdiretórios)
 2. Leia `SKILL.md` para cada skill (índice leve ~130 linhas)
 3. Carregue arquivos específicos `rules/*.md` conforme necessário durante a verificação
@@ -203,7 +203,7 @@ issue:
   severity: warning
   description: "Chat.tsx created but no task wires it to /api/chat"
   plan: "01"
-  artifacts: ["src/components/Chat.tsx", "src/app/api/chat/route.ts"]
+  artifacts: ["www/docs/src/components/Chat.tsx", "www/docs/www/docs/src/pages/chat/route.ts"]
   fix_hint: "Add fetch call in Chat.tsx action or create wiring task"
 ```
 
@@ -436,11 +436,11 @@ must_haves:
     - "User can log in with email/password"
     - "Invalid credentials return 401"
   artifacts:
-    - path: "src/app/api/auth/login/route.ts"
+    - path: "www/docs/www/docs/src/pages/auth/login/route.ts"
       provides: "Login endpoint"
       min_lines: 30
   key_links:
-    - from: "src/components/LoginForm.tsx"
+    - from: "www/docs/src/components/LoginForm.tsx"
       to: "/api/auth/login"
       via: "fetch in onSubmit"
 ```
@@ -540,17 +540,17 @@ Severidades: `blocker` (deve consertar), `warning` (deveria consertar), `info` (
 Tasks: 5
 Files modified: 12
   - prisma/schema.prisma
-  - src/app/api/auth/login/route.ts
-  - src/app/api/auth/logout/route.ts
-  - src/app/api/auth/refresh/route.ts
-  - src/middleware.ts
-  - src/lib/auth.ts
-  - src/lib/jwt.ts
-  - src/components/LoginForm.tsx
-  - src/components/LogoutButton.tsx
-  - src/app/login/page.tsx
-  - src/app/dashboard/page.tsx
-  - src/types/auth.ts
+  - www/docs/www/docs/src/pages/auth/login/route.ts
+  - www/docs/www/docs/src/pages/auth/logout/route.ts
+  - www/docs/www/docs/src/pages/auth/refresh/route.ts
+  - www/docs/src/middleware.ts
+  - www/docs/src/lib/auth.ts
+  - www/docs/src/lib/jwt.ts
+  - www/docs/src/components/LoginForm.tsx
+  - www/docs/src/components/LogoutButton.tsx
+  - www/docs/src/app/login/page.tsx
+  - www/docs/src/app/dashboard/page.tsx
+  - www/docs/src/types/auth.ts
 ```
 
 5 tarefas excede o target de 2-3, 12 arquivos é alto, auth é domínio complexo → risco de degradação da qualidade.

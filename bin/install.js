@@ -14,6 +14,10 @@ const dim = '\x1b[2m';
 const reset = '\x1b[0m';
 
 // Codex config.toml constants
+// Note: Agent TOML files are automatically fixed for escaping issues:
+// - Backticks in code blocks: \` → \\` (escape backslashes for TOML)
+// - Pipes in grep patterns: \| → | (pipes don't need escaping in grep -E)
+// - Parentheses in grep: \( → \\( (escape backslashes for TOML)
 const FASE_CODEX_MARKER = '# FASE Agent Configuration \u2014 managed by fase-ai installer';
 
 const CODEX_AGENT_SANDBOX = {
@@ -554,13 +558,35 @@ purpose: ${toSingleLine(description)}
 }
 
 /**
+ * Fix TOML escaping issues in agent instructions.
+ * Handles:
+ * - Backticks: converts \` to \\` (escapes backslashes for TOML)
+ * - Grep patterns: fixes invalid escape sequences like \| that are invalid in TOML
+ */
+function fixTomlEscaping(content) {
+  let fixed = content;
+
+  // Fix backtick escaping: \` becomes \\`
+  fixed = fixed.replace(/\\`/g, '\\\\`');
+
+  // Fix grep patterns: \| becomes | (pipes don't need escaping in grep -E)
+  // This handles patterns like: grep -E "export\|interface" or grep -r "import.*stripe\|import.*supabase"
+  fixed = fixed.replace(/\\|/g, '|');
+
+  return fixed;
+}
+
+/**
  * Generate a per-agent .toml config file for Codex.
  * Sets sandbox_mode and developer_instructions from the agent markdown body.
  */
 function generateCodexAgentToml(agentName, agentContent) {
   const sandboxMode = CODEX_AGENT_SANDBOX[agentName] || 'read-only';
   const { body } = extractFrontmatterAndBody(agentContent);
-  const instructions = body.trim();
+  let instructions = body.trim();
+
+  // Fix TOML escaping issues in the instructions
+  instructions = fixTomlEscaping(instructions);
 
   const lines = [
     `sandbox_mode = "${sandboxMode}"`,

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script para renomear commands do F.A.Z. para português brasileiro
+# Script para renomear commands do FASE. para português brasileiro
 # Usage: ./renomear-comandos.sh
 
 cd "$(dirname "$0")/../commands/fase"

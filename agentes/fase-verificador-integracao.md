@@ -42,7 +42,7 @@ Uma codebase "completa" com wiring quebrado é um produto quebrado.
 
 **Estrutura da Codebase:**
 
-- `src/` ou diretório source equivalente
+- `www/docs/src/` ou diretório source equivalente
 - Localização das rotas de API (`app/api/` ou `pages/api/`)
 - Localizações dos componentes
 
@@ -68,7 +68,7 @@ Para cada fase, extraia o que ela provê e o que deveria consumir.
 
 ```bash
 # Key exports de cada fase
-for summary in .planejamento/fases/*/*-SUMARIO.md; do
+for summary in comandos/fases/*/*-SUMARIO.md; do
   echo "=== $summary ==="
   grep -A 10 "Key Files\|Exports\|Provides" "$summary" 2>/dev/null
 done
@@ -100,7 +100,7 @@ Para cada export das fases, verifique se está sendo importado e usado.
 check_export_used() {
   local export_name="$1"
   local source_phase="$2"
-  local search_path="${3:-src/}"
+  local search_path="${3:-www/docs/src/}"
 
   # Encontre imports
   local imports=$(grep -r "import.*$export_name" "$search_path" \
@@ -137,15 +137,15 @@ Verifique se as rotas de API têm consumers.
 
 ```bash
 # Next.js App Router
-find src/app/api -name "route.ts" 2>/dev/null | while read route; do
+find www/docs/www/docs/src/pages -name "route.ts" 2>/dev/null | while read route; do
   # Extraia path da rota do path do arquivo
-  path=$(echo "$route" | sed 's|src/app/api||' | sed 's|/route.ts||')
+  path=$(echo "$route" | sed 's|www/docs/www/docs/src/pages||' | sed 's|/route.ts||')
   echo "/api$path"
 done
 
 # Next.js Pages Router
-find src/pages/api -name "*.ts" 2>/dev/null | while read route; do
-  path=$(echo "$route" | sed 's|src/pages/api||' | sed 's|\.ts||')
+find www/docs/www/docs/src/pages -name "*.ts" 2>/dev/null | while read route; do
+  path=$(echo "$route" | sed 's|www/docs/www/docs/src/pages||' | sed 's|\.ts||')
   echo "/api$path"
 done
 ```
@@ -155,7 +155,7 @@ done
 ```bash
 check_api_consumed() {
   local route="$1"
-  local search_path="${2:-src/}"
+  local search_path="${2:-www/docs/src/}"
 
   # Procure por chamadas fetch/axios para esta rota
   local fetches=$(grep -r "fetch.*['\"]$route\|axios.*['\"]$route" "$search_path" \
@@ -187,7 +187,7 @@ Verifique se rotas que requerem auth de fato verificam auth.
 protected_patterns="dashboard|settings|profile|account|user"
 
 # Encontre componentes/páginas que correspondem a esses padrões
-grep -r -l "$protected_patterns" src/ --include="*.tsx" 2>/dev/null
+grep -r -l "$protected_patterns" www/docs/src/ --include="*.tsx" 2>/dev/null
 ```
 
 **Verifique uso de auth em áreas protegidas:**
@@ -223,7 +223,7 @@ verify_auth_flow() {
   echo "=== Auth Flow ==="
 
   # Step 1: Login form exists
-  local login_form=$(grep -r -l "login\|Login" src/ --include="*.tsx" 2>/dev/null | head -1)
+  local login_form=$(grep -r -l "login\|Login" www/docs/src/ --include="*.tsx" 2>/dev/null | head -1)
   [ -n "$login_form" ] && echo "✓ Login form: $login_form" || echo "✗ Login form: MISSING"
 
   # Step 2: Form submits to API

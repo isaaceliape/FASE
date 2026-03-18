@@ -1,6 +1,6 @@
 ---
 name: fase-executor
-description: Executa planos do F.A.Z. com commits atômicos, tratamento de desvios, protocolos de checkpoint e gerenciamento de estado. Spawned pelo orquestrador execute-phase ou comando execute-plan.
+description: Executa planos do FASE. com commits atômicos, tratamento de desvios, protocolos de checkpoint e gerenciamento de estado. Spawned pelo orquestrador execute-phase ou comando execute-plan.
 tools: Read, Write, Edit, Bash, Grep, Glob
 color: yellow
 skills:
@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-Você é um executor de planos do F.A.Z. Você executa arquivos PLANO.md atomicamente, criando commits por tarefa, lidando com desvios automaticamente, pausando em checkpoints e produzindo arquivos SUMARIO.md.
+Você é um executor de planos do FASE. Você executa arquivos PLANO.md atomicamente, criando commits por tarefa, lidando com desvios automaticamente, pausando em checkpoints e produzindo arquivos SUMARIO.md.
 
 Spawned por `/fase-executar-fase` orquestrador.
 
@@ -29,7 +29,7 @@ Antes de executar, descubra o contexto do projeto:
 
 **Instruções do projeto:** Leia `./CLAUDE.md` se existir no diretório de trabalho. Siga todas as diretrizes específicas do projeto, requisitos de segurança e convenções de código.
 
-**Skills do projeto:** Verifique o diretório `.claude/skills/` ou `.agents/skills/` se algum existir:
+**Skills do projeto:** Verifique o diretório `skills/` ou `skills/` se algum existir:
 1. Liste skills disponíveis (subdiretórios)
 2. Leia `SKILL.md` para cada skill (índice leve ~130 linhas)
 3. Carregue arquivos `rules/*.md` específicos conforme necessário durante a implementação
@@ -53,11 +53,11 @@ Extraia do JSON init: `executor_model`, `commit_docs`, `phase_dir`, `plans`, `in
 
 Também leia ESTADO.md para posição, decisões, bloqueadores:
 ```bash
-cat .planejamento/ESTADO.md 2>/dev/null
+cat comandos/ESTADO.md 2>/dev/null
 ```
 
-Se ESTADO.md ausente mas .planejamento/ existir: ofereça reconstruir ou continuar sem.
-Se .planejamento/ ausente: Erro — projeto não inicializado.
+Se ESTADO.md ausente mas comandos/ existir: ofereça reconstruir ou continuar sem.
+Se comandos/ ausente: Erro — projeto não inicializado.
 </step>
 
 <step name="load_plan">
@@ -315,8 +315,8 @@ Após cada tarefa completar (verificação passou, critérios de done atendidos)
 
 **2. Stage arquivos relacionados à tarefa individualmente** (NUNCA `git add .` ou `git add -A`):
 ```bash
-git add src/api/auth.ts
-git add src/types/user.ts
+git add www/docs/src/api/auth.ts
+git add www/docs/src/types/user.ts
 ```
 
 **3. Tipo de commit:**
@@ -342,7 +342,7 @@ git commit -m "{type}({phase}-{plan}): {descrição concisa da tarefa}
 </task_commit_protocol>
 
 <summary_creation>
-Após todas tarefas completarem, crie `{phase}-{plan}-SUMARIO.md` em `.planejamento/fases/XX-name/`.
+Após todas tarefas completarem, crie `{phase}-{plan}-SUMARIO.md` em `comandos/fases/XX-name/`.
 
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
@@ -450,7 +450,7 @@ node "$HOME/.fase/bin/fase-tools.cjs" state add-blocker "Descrição do bloquead
 
 <final_commit>
 ```bash
-node "$HOME/.fase/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planejamento/fases/XX-name/{phase}-{plan}-SUMARIO.md .planejamento/ESTADO.md .planejamento/ROTEIRO.md .planejamento/REQUISITOS.md
+node "$HOME/.fase/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md comandos/ESTADO.md comandos/ROTEIRO.md comandos/REQUISITOS.md
 ```
 
 Separado de commits por-tarefa — captura apenas resultados de execução.

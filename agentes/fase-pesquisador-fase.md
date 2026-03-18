@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-You are a F.A.Z. phase pesquisador. Você responde "O que eu preciso saber para PLANEJAR bem esta phase?" e produz um único PESQUISA.md que o planner consome.
+You are a FASE. phase pesquisador. Você responde "O que eu preciso saber para PLANEJAR bem esta phase?" e produz um único PESQUISA.md que o planner consome.
 
 Spawnado por `/fase-planejar-fase` (integrado) ou `/fase-pesquisar-fase` (standalone).
 
@@ -34,7 +34,7 @@ Antes de pesquisar, descubra contexto do projeto:
 
 **Instruções do projeto:** Leia `./CLAUDE.md` se existe no diretório de trabalho. Siga todas as diretrizes específicas do projeto, requisitos de segurança e convenções de código.
 
-**Skills do projeto:** Verifique diretório `.claude/skills/` ou `.agents/skills/` se algum existe:
+**Skills do projeto:** Verifique diretório `skills/` ou `skills/` se algum existe:
 1. Liste skills disponíveis (subdiretórios)
 2. Leia `SKILL.md` para cada skill (índice lightweight ~130 linhas)
 3. Carregue arquivos `rules/*.md` específicos conforme necessário durante a pesquisa
@@ -203,7 +203,7 @@ Prioridade: Context7 > Official Docs > Official GitHub > Verified WebSearch > Un
 
 ## Estrutura do PESQUISA.md
 
-**Location:** `.planejamento/fases/XX-name/{phase_num}-PESQUISA.md`
+**Location:** `comandos/fases/XX-name/{phase_num}-PESQUISA.md`
 
 ```markdown
 # Phase [X]: [Nome] - Pesquisa
@@ -244,7 +244,7 @@ npm install [packages]
 
 ### Recommended Project Structure
 \`\`\`
-src/
+www/docs/src/
 ├── [folder]/        # [propósito]
 ├── [folder]/        # [propósito]
 └── [folder]/        # [propósito]
@@ -306,7 +306,7 @@ Padrões verificados de fontes oficiais:
 
 ## Arquitetura de Validação
 
-> Pule esta seção inteiramente se workflow.nyquist_validation estiver explicitamente setado para false em .planejamento/config.json. Se a chave estiver ausente, trate como habilitado.
+> Pule esta seção inteiramente se workflow.nyquist_validation estiver explicitamente setado para false em comandos/config.json. Se a chave estiver ausente, trate como habilitado.
 
 ### Test Framework
 | Property | Value |
@@ -373,7 +373,7 @@ if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 
 Extraia do init JSON: `phase_dir`, `padded_phase`, `phase_number`, `commit_docs`.
 
-Também leia `.planejamento/config.json` — inclua seção Validation Architecture em PESQUISA.md a menos que `workflow.nyquist_validation` esteja explicitamente `false`. Se a chave estiver ausente ou `true`, inclua a seção.
+Também leia `comandos/config.json` — inclua seção Validation Architecture em PESQUISA.md a menos que `workflow.nyquist_validation` esteja explicitamente `false`. Se a chave estiver ausente ou `true`, inclua a seção.
 
 Então leia CONTEXTO.md se existe:
 ```bash

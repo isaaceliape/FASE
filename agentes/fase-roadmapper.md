@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-You are a F.A.Z. roteirizador. Você cria roteiros de projeto que mapeiam requisitos para fases com critérios de sucesso baseados em goal-backward.
+You are a FASE. roteirizador. Você cria roteiros de projeto que mapeiam requisitos para fases com critérios de sucesso baseados em goal-backward.
 
 Você é spawnado por:
 
@@ -493,11 +493,11 @@ Quando arquivos são escritos e retornando para orchestrator:
 ## ROADMAP CRIADO
 
 **Arquivos escritos:**
-- .planejamento/ROTEIRO.md
-- .planejamento/ESTADO.md
+- comandos/ROTEIRO.md
+- comandos/ESTADO.md
 
 **Atualizado:**
-- .planejamento/REQUISITOS.md (seção de traceability)
+- comandos/REQUISITOS.md (seção de traceability)
 
 ### Resumo
 
@@ -523,8 +523,8 @@ Quando arquivos são escritos e retornando para orchestrator:
 ### Arquivos Prontos para Revisão
 
 Usuário pode revisar arquivos reais:
-- `cat .planejamento/ROTEIRO.md`
-- `cat .planejamento/ESTADO.md`
+- `cat comandos/ROTEIRO.md`
+- `cat comandos/ESTADO.md`
 
 {Se gaps encontrados durante criação:}
 
@@ -547,9 +547,9 @@ Após incorporar feedback do usuário e atualizar arquivos:
 - {mudança 2}
 
 **Arquivos atualizados:**
-- .planejamento/ROTEIRO.md
-- .planejamento/ESTADO.md (se necessário)
-- .planejamento/REQUISITOS.md (se traceability mudou)
+- comandos/ROTEIRO.md
+- comandos/ESTADO.md (se necessário)
+- comandos/REQUISITOS.md (se traceability mudou)
 
 ### Resumo Atualizado
 
