@@ -2036,11 +2036,22 @@ function install(isGlobal, runtime = 'claude') {
   // Write VERSION file
   const versionDest = path.join(targetDir, 'fase-ai', 'VERSION');
   const versionDir = path.dirname(versionDest);
-  fs.mkdirSync(versionDir, { recursive: true });
-  fs.writeFileSync(versionDest, pkg.version);
-  if (verifyFileInstalled(versionDest, 'VERSION')) {
-    console.log(`  ${green}✓${reset} Gravado VERSION (${pkg.version})`);
-  } else {
+  try {
+    // Ensure target directory exists with proper permissions
+    if (!fs.existsSync(versionDir)) {
+      fs.mkdirSync(versionDir, { recursive: true, mode: 0o755 });
+    }
+    // Verify directory is writable before writing
+    fs.accessSync(versionDir, fs.constants.W_OK);
+    fs.writeFileSync(versionDest, pkg.version);
+    if (verifyFileInstalled(versionDest, 'VERSION')) {
+      console.log(`  ${green}✓${reset} Gravado VERSION (${pkg.version})`);
+    } else {
+      failures.push('VERSION');
+    }
+  } catch (err) {
+    console.error(`  ${red}✗${reset} Erro ao gravar VERSION em ${versionDest}`);
+    console.error(`    ${dim}Verifique permissões de escrita: ${versionDir}${reset}`);
     failures.push('VERSION');
   }
 
@@ -2049,34 +2060,54 @@ function install(isGlobal, runtime = 'claude') {
     // Prevents "require is not defined" errors when project has "type": "module"
     // Node.js walks up looking for package.json - this stops inheritance from project
     const pkgJsonDest = path.join(targetDir, 'package.json');
-    fs.writeFileSync(pkgJsonDest, '{"type":"commonjs"}\n');
-    console.log(`  ${green}✓${reset} Gravado package.json (modo CommonJS)`);
+    try {
+      // Ensure target directory exists before writing
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true, mode: 0o755 });
+      }
+      fs.accessSync(targetDir, fs.constants.W_OK);
+      fs.writeFileSync(pkgJsonDest, '{"type":"commonjs"}\n');
+      console.log(`  ${green}✓${reset} Gravado package.json (modo CommonJS)`);
+    } catch (err) {
+      console.error(`  ${red}✗${reset} Erro ao gravar package.json em ${pkgJsonDest}`);
+      console.error(`    ${dim}Verifique permissões de escrita: ${targetDir}${reset}`);
+      failures.push('package.json');
+    }
 
     // Copy hooks from dist/ (bundled with dependencies)
     // Template paths for the target runtime (replaces '.claude' with correct config dir)
     const hooksSrc = path.join(src, 'hooks', 'dist');
     if (fs.existsSync(hooksSrc)) {
-      const hooksDest = path.join(targetDir, 'hooks');
-      fs.mkdirSync(hooksDest, { recursive: true });
-      const hookEntries = fs.readdirSync(hooksSrc);
-      const configDirReplacement = getConfigDirFromHome(runtime, isGlobal);
-      for (const entry of hookEntries) {
-        const srcFile = path.join(hooksSrc, entry);
-        if (fs.statSync(srcFile).isFile()) {
-          const destFile = path.join(hooksDest, entry);
-          // Template .js files to replace '.claude' with runtime-specific config dir
-          if (entry.endsWith('.js')) {
-            let content = fs.readFileSync(srcFile, 'utf8');
-            content = content.replace(/'\.claude'/g, configDirReplacement);
-            fs.writeFileSync(destFile, content);
-          } else {
-            fs.copyFileSync(srcFile, destFile);
+      try {
+        const hooksDest = path.join(targetDir, 'hooks');
+        if (!fs.existsSync(hooksDest)) {
+          fs.mkdirSync(hooksDest, { recursive: true, mode: 0o755 });
+        }
+        fs.accessSync(hooksDest, fs.constants.W_OK);
+        const hookEntries = fs.readdirSync(hooksSrc);
+        const configDirReplacement = getConfigDirFromHome(runtime, isGlobal);
+        for (const entry of hookEntries) {
+          const srcFile = path.join(hooksSrc, entry);
+          if (fs.statSync(srcFile).isFile()) {
+            const destFile = path.join(hooksDest, entry);
+            // Template .js files to replace '.claude' with runtime-specific config dir
+            if (entry.endsWith('.js')) {
+              let content = fs.readFileSync(srcFile, 'utf8');
+              content = content.replace(/'\.claude'/g, configDirReplacement);
+              fs.writeFileSync(destFile, content);
+            } else {
+              fs.copyFileSync(srcFile, destFile);
+            }
           }
         }
-      }
-      if (verifyInstalled(hooksDest, 'hooks')) {
-        console.log(`  ${green}✓${reset} Instalados hooks (empacotados)`);
-      } else {
+        if (verifyInstalled(hooksDest, 'hooks')) {
+          console.log(`  ${green}✓${reset} Instalados hooks (empacotados)`);
+        } else {
+          failures.push('hooks');
+        }
+      } catch (err) {
+        console.error(`  ${red}✗${reset} Erro ao instalar hooks`);
+        console.error(`    ${dim}Verifique permissões de escrita: ${targetDir}/hooks${reset}`);
         failures.push('hooks');
       }
     }
