@@ -50,6 +50,7 @@ npx fase-ai [opções]
 | `--codex` | Instalar apenas para Codex |
 | `--all` | Instalar para todos os runtimes |
 | `-u, --uninstall` | Desinstalar o FASE (remover todos os arquivos) |
+| `-v, --verificar` | Verificar instalação e gerar relatório |
 | `-c, --config-dir <caminho>` | Especificar diretório de configuração customizado |
 | `-h, --help` | Exibir ajuda |
 | `--force-statusline` | Substituir configuração de statusline existente |

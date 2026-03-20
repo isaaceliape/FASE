@@ -46,6 +46,7 @@ const hasCodex = args.includes('--codex');
 const hasBoth = args.includes('--both'); // Legacy flag, keeps working
 const hasAll = args.includes('--all');
 const hasUninstall = args.includes('--uninstall') || args.includes('-u');
+const hasVerificar = args.includes('--verificar-instalacao') || args.includes('--verificar') || args.includes('-v');
 
 // Runtime selection - can be set by flags or interactive prompt
 let selectedRuntimes = [];
@@ -219,9 +220,23 @@ const forceStatusline = args.includes('--force-statusline');
 
 console.log(banner);
 
+// Run verification if --verificar-instalacao flag is provided
+if (hasVerificar) {
+  const { execSync } = require('child_process');
+  const path = require('path');
+  
+  try {
+    const scriptPath = path.join(__dirname, 'verificar-instalacao.js');
+    execSync(`node "${scriptPath}"`, { stdio: 'inherit' });
+  } catch (e) {
+    // Verification script already output errors, just exit with its code
+    process.exit(e.status || 1);
+  }
+}
+
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n`);
   process.exit(0);
 }
 
