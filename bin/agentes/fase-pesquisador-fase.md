@@ -312,21 +312,21 @@ Padrões verificados de fontes oficiais:
 | Property | Value |
 |----------|-------|
 | Framework | {framework name + version} |
-| Config file | {path or "none — see Wave 0"} |
+| Config file | {path or "none — see Etapa 0"} |
 | Quick run command | `{command}` |
 | Full suite command | `{command}` |
 
 ### Fase Requirements → Test Map
 | Req ID | Behavior | Test Type | Automated Command | File Exists? |
 |--------|----------|-----------|-------------------|-------------|
-| REQ-XX | {behavior} | unit | `pytest tests/test_{module}.py::test_{name} -x` | ✅ / ❌ Wave 0 |
+| REQ-XX | {behavior} | unit | `pytest tests/test_{module}.py::test_{name} -x` | ✅ / ❌ Etapa 0 |
 
 ### Sampling Rate
 - **Por task commit:** `{quick run command}`
-- **Por wave merge:** `{full suite command}`
+- **Por etapa merge:** `{full suite command}`
 - **Fase gate:** Full suite green antes de `/fase-verify-work`
 
-### Wave 0 Gaps
+### Etapa 0 Gaps
 - [ ] `{tests/test_file.py}` — covers REQ-{XX}
 - [ ] `{tests/conftest.py}` — shared fixtures
 - [ ] Framework install: `{command}` — se nenhum detectado
@@ -417,7 +417,7 @@ Escaneie: arquivos de config de teste (pytest.ini, jest.config.*, vitest.config.
 ### Mapeie Requisitos para Tests
 Para cada requisito de fase: identifique behavior, determine tipo de teste (unit/integration/smoke/e2e/manual-only), especifique comando automatizado executável em < 30 segundos, flag manual-only com justificativa.
 
-### Identifique Gaps de Wave 0
+### Identifique Gaps de Etapa 0
 Liste arquivos de teste faltantes, config de framework, ou fixtures compartilhados necessários antes da implementação.
 
 ## Passo 5: Quality Check

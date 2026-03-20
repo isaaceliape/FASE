@@ -187,7 +187,7 @@ describe('frontmatter validate', () => {
 phase: 01
 plan: 01
 type: execute
-wave: 1
+etapa: 1
 depends_on: []
 files_modified: [src/auth.ts]
 autonomous: true
@@ -212,7 +212,7 @@ body`;
     const parsed = JSON.parse(result.output);
     assert.strictEqual(parsed.valid, false, 'Should be invalid');
     assert.ok(parsed.missing.length > 0, 'Should have missing fields');
-    // plan schema requires: phase, plan, type, wave, depends_on, files_modified, autonomous, must_haves
+    // plan schema requires: phase, plan, type, etapa, depends_on, files_modified, autonomous, must_haves
     // phase is present, so 7 should be missing
     assert.strictEqual(parsed.missing.length, 7, 'Should have 7 missing required fields');
     assert.ok(parsed.missing.includes('plan'), 'plan should be in missing');

@@ -171,7 +171,7 @@ describe('reconstructFrontmatter', () => {
   });
 
   test('round-trip: simple frontmatter', () => {
-    const original = '---\nname: test\ntype: execute\nwave: 1\n---\n';
+    const original = '---\nname: test\ntype: execute\netapa: 1\n---\n';
     const extracted1 = extractFrontmatter(original);
     const reconstructed = reconstructFrontmatter(extracted1);
     const roundTrip = `---\n${reconstructed}\n---\n`;
@@ -189,7 +189,7 @@ describe('reconstructFrontmatter', () => {
   });
 
   test('round-trip: multiple data types', () => {
-    const original = '---\nname: testplan\nwave: 2\ntags: [auth, api, db]\ndeps:\n  - dep1\n  - dep2\nconfig:\n  enabled: true\n  count: 5\n---\n';
+    const original = '---\nname: testplan\netapa: 2\ntags: [auth, api, db]\ndeps:\n  - dep1\n  - dep2\nconfig:\n  enabled: true\n  count: 5\n---\n';
     const extracted1 = extractFrontmatter(original);
     const reconstructed = reconstructFrontmatter(extracted1);
     const roundTrip = `---\n${reconstructed}\n---\n`;
@@ -203,14 +203,14 @@ describe('reconstructFrontmatter', () => {
 describe('spliceFrontmatter', () => {
   test('replaces existing frontmatter preserving body', () => {
     const content = '---\nphase: 01\ntype: execute\n---\n\n# Body Content\n\nParagraph here.';
-    const newObj = { phase: '02', type: 'tdd', wave: '1' };
+    const newObj = { phase: '02', type: 'tdd', etapa: '1' };
     const result = spliceFrontmatter(content, newObj);
 
     // New frontmatter should be present
     const extracted = extractFrontmatter(result);
     assert.strictEqual(extracted.phase, '02');
     assert.strictEqual(extracted.type, 'tdd');
-    assert.strictEqual(extracted.wave, '1');
+    assert.strictEqual(extracted.etapa, '1');
 
     // Body should be preserved
     assert.ok(result.includes('# Body Content'), 'body heading should be preserved');

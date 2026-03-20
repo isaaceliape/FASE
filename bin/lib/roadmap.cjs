@@ -7,10 +7,10 @@ const path = require('path');
 const { escapeRegex, normalizePhaseName, output, error, findPhaseInternal } = require('./core.cjs');
 
 function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
 
   if (!fs.existsSync(roadmapPath)) {
-    output({ found: false, error: 'ROADMAP.md not found' }, raw, '');
+    output({ found: false, error: 'ROADMAP.md não encontrado' }, raw, '');
     return;
   }
 
@@ -86,20 +86,20 @@ function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
       section
     );
   } catch (e) {
-    error('Failed to read ROADMAP.md: ' + e.message);
+    error('Falha ao ler ROADMAP.md: ' + e.message);
   }
 }
 
 function cmdRoadmapAnalyze(cwd, raw) {
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
 
   if (!fs.existsSync(roadmapPath)) {
-    output({ error: 'ROADMAP.md not found', milestones: [], phases: [], current_phase: null }, raw);
+    output({ error: 'ROADMAP.md não encontrado', milestones: [], phases: [], current_phase: null }, raw);
     return;
   }
 
   const content = fs.readFileSync(roadmapPath, 'utf-8');
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
 
   // Extract all phase headings: ## Phase N: Name or ### Phase N: Name
   const phasePattern = /#{2,4}\s*Phase\s+(\d+[A-Z]?(?:\.\d+)*)\s*:\s*([^\n]+)/gi;
@@ -222,7 +222,7 @@ function cmdRoadmapUpdatePlanProgress(cwd, phaseNum, raw) {
     error('phase number required for roadmap update-plan-progress');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
 
   const phaseInfo = findPhaseInternal(cwd, phaseNum);
   if (!phaseInfo) {
@@ -238,7 +238,7 @@ function cmdRoadmapUpdatePlanProgress(cwd, phaseNum, raw) {
   }
 
   const isComplete = summaryCount >= planCount;
-  const status = isComplete ? 'Complete' : summaryCount > 0 ? 'In Progress' : 'Planned';
+  const status = isComplete ? 'Completo' : summaryCount > 0 ? 'Em Progresso' : 'Planejado';
   const today = new Date().toISOString().split('T')[0];
 
   if (!fs.existsSync(roadmapPath)) {

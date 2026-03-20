@@ -13,6 +13,28 @@ function toPosixPath(p) {
   return p.split(path.sep).join('/');
 }
 
+/** Guardrail: validates that a file path is inside .planejamento directory */
+function ensureInsidePlanejamento(cwd, filePath, operation = 'file operation') {
+  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+  const planejPath = path.join(cwd, '.planejamento');
+  const normalizedFull = path.normalize(fullPath);
+  const normalizedPlanej = path.normalize(planejPath);
+  
+  if (!normalizedFull.startsWith(normalizedPlanej + path.sep) && normalizedFull !== normalizedPlanej) {
+    throw new Error(`${operation} must be inside .planejamento/: ${filePath}`);
+  }
+  return fullPath;
+}
+
+/** Check if a path is inside .planejamento without throwing */
+function isInsidePlanejamento(cwd, filePath) {
+  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+  const planejPath = path.join(cwd, '.planejamento');
+  const normalizedFull = path.normalize(fullPath);
+  const normalizedPlanej = path.normalize(planejPath);
+  return normalizedFull.startsWith(normalizedPlanej + path.sep) || normalizedFull === normalizedPlanej;
+}
+
 // ─── Model Profile Table ─────────────────────────────────────────────────────
 
 const MODEL_PROFILES = {
@@ -66,7 +88,7 @@ function safeReadFile(filePath) {
 }
 
 function loadConfig(cwd) {
-  const configPath = path.join(cwd, '.planning', 'config.json');
+  const configPath = path.join(cwd, '.planejamento', 'config.json');
   const defaults = {
     model_profile: 'balanced',
     commit_docs: true,
@@ -135,7 +157,7 @@ function isGitIgnored(cwd, targetPath) {
   try {
     // --no-index checks .gitignore rules regardless of whether the file is tracked.
     // Without it, git check-ignore returns "not ignored" for tracked files even when
-    // .gitignore explicitly lists them — a common source of confusion when .planning/
+    // .gitignore explicitly lists them — a common source of confusion when .planejamento/
     // was committed before being added to .gitignore.
     execSync('git check-ignore -q --no-index -- ' + targetPath.replace(/[^a-zA-Z0-9._\-/]/g, ''), {
       cwd,
@@ -259,15 +281,15 @@ function searchPhaseInDir(baseDir, relBase, normalized) {
 function findPhaseInternal(cwd, phase) {
   if (!phase) return null;
 
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalized = normalizePhaseName(phase);
 
   // Search current phases first
-  const current = searchPhaseInDir(phasesDir, '.planning/phases', normalized);
+  const current = searchPhaseInDir(phasesDir, '.planejamento/phases', normalized);
   if (current) return current;
 
   // Search archived milestone phases (newest first)
-  const milestonesDir = path.join(cwd, '.planning', 'milestones');
+  const milestonesDir = path.join(cwd, '.planejamento', 'milestones');
   if (!fs.existsSync(milestonesDir)) return null;
 
   try {
@@ -281,7 +303,7 @@ function findPhaseInternal(cwd, phase) {
     for (const archiveName of archiveDirs) {
       const version = archiveName.match(/^(v[\d.]+)-phases$/)[1];
       const archivePath = path.join(milestonesDir, archiveName);
-      const relBase = '.planning/milestones/' + archiveName;
+      const relBase = '.planejamento/milestones/' + archiveName;
       const result = searchPhaseInDir(archivePath, relBase, normalized);
       if (result) {
         result.archived = version;
@@ -294,7 +316,7 @@ function findPhaseInternal(cwd, phase) {
 }
 
 function getArchivedPhaseDirs(cwd) {
-  const milestonesDir = path.join(cwd, '.planning', 'milestones');
+  const milestonesDir = path.join(cwd, '.planejamento', 'milestones');
   const results = [];
 
   if (!fs.existsSync(milestonesDir)) return results;
@@ -318,7 +340,7 @@ function getArchivedPhaseDirs(cwd) {
         results.push({
           name: dir,
           milestone: version,
-          basePath: path.join('.planning', 'milestones', archiveName),
+          basePath: path.join('.planejamento', 'milestones', archiveName),
           fullPath: path.join(archivePath, dir),
         });
       }
@@ -332,7 +354,7 @@ function getArchivedPhaseDirs(cwd) {
 
 function getRoadmapPhaseInternal(cwd, phaseNum) {
   if (!phaseNum) return null;
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
   if (!fs.existsSync(roadmapPath)) return null;
 
   try {
@@ -400,7 +422,7 @@ function generateSlugInternal(text) {
 
 function getMilestoneInfo(cwd) {
   try {
-    const roadmap = fs.readFileSync(path.join(cwd, '.planning', 'ROADMAP.md'), 'utf-8');
+    const roadmap = fs.readFileSync(path.join(cwd, '.planejamento', 'ROADMAP.md'), 'utf-8');
 
     // First: check for list-format roadmaps using 🚧 (in-progress) marker
     // e.g. "- 🚧 **v2.1 Belgium** — Phases 24-28 (in progress)"
@@ -441,7 +463,7 @@ function getMilestoneInfo(cwd) {
 function getMilestonePhaseFilter(cwd) {
   const milestonePhaseNums = new Set();
   try {
-    const roadmap = fs.readFileSync(path.join(cwd, '.planning', 'ROADMAP.md'), 'utf-8');
+    const roadmap = fs.readFileSync(path.join(cwd, '.planejamento', 'ROADMAP.md'), 'utf-8');
     const phasePattern = /#{2,4}\s*Phase\s+(\d+[A-Z]?(?:\.\d+)*)\s*:/gi;
     let m;
     while ((m = phasePattern.exec(roadmap)) !== null) {
@@ -489,4 +511,6 @@ module.exports = {
   getMilestoneInfo,
   getMilestonePhaseFilter,
   toPosixPath,
+  ensureInsidePlanejamento,
+  isInsidePlanejamento,
 };

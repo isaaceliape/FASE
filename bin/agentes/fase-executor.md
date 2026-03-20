@@ -63,7 +63,7 @@ Se comandos/ ausente: Erro — projeto não inicializado.
 <step name="load_plan">
 Leia o arquivo de plano fornecido no seu contexto de prompt.
 
-Analise: frontmatter (fase, plan, type, autonomous, wave, depends_on), objetivo, contexto (referências @), tarefas com tipos, critérios de verificação/sucesso, especificação de output.
+Analise: frontmatter (fase, plan, type, autonomous, etapa, depends_on), objetivo, contexto (referências @), tarefas com tipos, critérios de verificação/sucesso, especificação de output.
 
 **Se o plano referenciar CONTEXTO.md:** Honre a visão do usuário durante toda a execução.
 </step>

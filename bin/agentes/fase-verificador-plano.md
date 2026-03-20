@@ -156,12 +156,12 @@ issue:
 - Plano referencia plano inexistente (`depends_on: ["99"]` quando 99 não existe)
 - Dependência circular (A -> B -> A)
 - Referência futura (plano 01 referenciando output do plano 03)
-- Atribuição de wave inconsistente com dependências
+- Atribuição de etapa inconsistente com dependências
 
 **Regras de dependência:**
-- `depends_on: []` = Wave 1 (pode rodar em paralelo)
-- `depends_on: ["01"]` = Wave 2 mínimo (deve esperar 01)
-- Número da wave = max(deps) + 1
+- `depends_on: []` = Etapa 1 (pode rodar em paralelo)
+- `depends_on: ["01"]` = Etapa 2 mínimo (deve esperar 01)
+- Número da etapa = max(deps) + 1
 
 **Exemplo de issue:**
 ```yaml
@@ -334,9 +334,9 @@ Pule checks 8a-8d inteiramente. Reporte Dimensão 8 como FAIL com esta única is
 ### Check 8a — Automated Verify Presence
 
 Para cada `<task>` em cada plano:
-- `<verify>` deve conter comando `<automated>`, OU uma dependência Wave 0 que cria o teste primeiro
-- Se `<automated>` está ausente sem dependência Wave 0 → **BLOCKING FAIL**
-- Se `<automated>` diz "MISSING", uma tarefa Wave 0 deve referenciar o mesmo caminho de arquivo de teste → **BLOCKING FAIL** se o link estiver quebrado
+- `<verify>` deve conter comando `<automated>`, OU uma dependência Etapa 0 que cria o teste primeiro
+- Se `<automated>` está ausente sem dependência Etapa 0 → **BLOCKING FAIL**
+- Se `<automated>` diz "MISSING", uma tarefa Etapa 0 deve referenciar o mesmo caminho de arquivo de teste → **BLOCKING FAIL** se o link estiver quebrado
 
 ### Check 8b — Feedback Latency Assessment
 
@@ -347,13 +347,13 @@ Para cada comando `<automated>`:
 
 ### Check 8c — Sampling Continuity
 
-Mapeie tarefas para waves. Por wave, qualquer janela consecutiva de 3 tarefas de implementação deve ter ≥2 com `<automated>` verify. 3 consecutivos sem → **BLOCKING FAIL**.
+Mapeie tarefas para etapas. Por etapa, qualquer janela consecutiva de 3 tarefas de implementação deve ter ≥2 com `<automated>` verify. 3 consecutivos sem → **BLOCKING FAIL**.
 
-### Check 8d — Wave 0 Completeness
+### Check 8d — Etapa 0 Completeness
 
 Para cada referência `<automated>MISSING</automated>`:
-- Tarefa Wave 0 deve existir com caminho `<files>` correspondente
-- Plano Wave 0 deve executar antes da tarefa dependente
+- Tarefa Etapa 0 deve existir com caminho `<files>` correspondente
+- Plano Etapa 0 deve executar antes da tarefa dependente
 - Match faltando → **BLOCKING FAIL**
 
 ### Dimension 8 Output
@@ -361,12 +361,12 @@ Para cada referência `<automated>MISSING</automated>`:
 ```
 ## Dimension 8: Nyquist Compliance
 
-| Task | Plan | Wave | Automated Command | Status |
+| Task | Plan | Etapa | Automated Command | Status |
 |------|------|------|-------------------|--------|
-| {task} | {plan} | {wave} | `{command}` | ✅ / ❌ |
+| {task} | {plan} | {etapa} | `{command}` | ✅ / ❌ |
 
-Sampling: Wave {N}: {X}/{Y} verified → ✅ / ❌
-Wave 0: {test file} → ✅ present / ❌ MISSING
+Sampling: Etapa {N}: {X}/{Y} verified → ✅ / ❌
+Etapa 0: {test file} → ✅ present / ❌ MISSING
 Overall: ✅ PASS / ❌ FAIL
 ```
 
@@ -415,7 +415,7 @@ Parse resultado JSON: `{ valid, errors, warnings, task_count, tasks: [{name, has
 Mapeie erros/warnings para dimensões de verificação:
 - Campo de frontmatter faltando → `task_completeness` ou `must_haves_derivation`
 - Elemento de tarefa faltando → `task_completeness`
-- Inconsistência wave/depends_on → `dependency_correctness`
+- Inconsistência etapa/depends_on → `dependency_correctness`
 - Mismatch checkpoint/autonomous → `task_completeness`
 
 ## Step 3: Parse must_haves
@@ -492,7 +492,7 @@ for plan in "$PHASE_DIR"/*-PLANO.md; do
 done
 ```
 
-Valide: todos os planos referenciados existem, sem ciclos, números de wave consistentes, sem referências pra frente. Se A -> B -> C -> A, reporte o ciclo.
+Valide: todos os planos referenciados existem, sem ciclos, números de etapa consistentes, sem referências pra frente. Se A -> B -> C -> A, reporte o ciclo.
 
 ## Step 7: Check Key Links
 
@@ -625,7 +625,7 @@ Retorne todas as issues como uma lista YAML estruturada `issues:` (veja exemplos
 
 ### Plan Summary
 
-| Plano | Tarefas | Arquivos | Wave | Status |
+| Plano | Tarefas | Arquivos | Etapa | Status |
 |------|-------|-------|------|--------|
 | 01   | 3     | 5     | 1    | Valid  |
 | 02   | 2     | 4     | 2    | Valid  |

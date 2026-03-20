@@ -9,7 +9,7 @@ const { extractFrontmatter } = require('./frontmatter.cjs');
 
 function cmdGenerateSlug(text, raw) {
   if (!text) {
-    error('texto obrigatório para geração de slug');
+    error('texto obrigatório para gerar slug');
   }
 
   const slug = text
@@ -42,7 +42,7 @@ function cmdCurrentTimestamp(format, raw) {
 }
 
 function cmdListTodos(cwd, area, raw) {
-  const pendingDir = path.join(cwd, '.planning', 'todos', 'pending');
+  const pendingDir = path.join(cwd, '.planejamento', 'todos', 'pending');
 
   let count = 0;
   const todos = [];
@@ -68,7 +68,7 @@ function cmdListTodos(cwd, area, raw) {
           created: createdMatch ? createdMatch[1].trim() : 'unknown',
           title: titleMatch ? titleMatch[1].trim() : 'Sem título',
           area: todoArea,
-          path: toPosixPath(path.join('.planning', 'todos', 'pending', file)),
+          path: toPosixPath(path.join('.planejamento', 'todos', 'pending', file)),
         });
       } catch {}
     }
@@ -97,7 +97,7 @@ function cmdVerifyPathExists(cwd, targetPath, raw) {
 }
 
 function cmdHistoryDigest(cwd, raw) {
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const digest = { phases: {}, decisions: [], tech_stack: new Set() };
 
   // Collect all phase directories: archived + current
@@ -193,13 +193,13 @@ function cmdHistoryDigest(cwd, raw) {
 
     output(digest, raw);
   } catch (e) {
-    error('Falha ao gerar resumo do histórico: ' + e.message);
+    error('Falha ao gerar histórico do projeto: ' + e.message);
   }
 }
 
 function cmdResolveModel(cwd, agentType, raw) {
   if (!agentType) {
-    error('agent-type obrigatório');
+    error('tipo-de-agente obrigatório');
   }
 
   const config = loadConfig(cwd);
@@ -215,7 +215,7 @@ function cmdResolveModel(cwd, agentType, raw) {
 
 function cmdCommit(cwd, message, files, raw, amend) {
   if (!message && !amend) {
-    error('mensagem de commit obrigatória');
+    error('mensagem de commit obrigatória ou --amend');
   }
 
   const config = loadConfig(cwd);
@@ -227,15 +227,15 @@ function cmdCommit(cwd, message, files, raw, amend) {
     return;
   }
 
-  // Check if .planning is gitignored
-  if (isGitIgnored(cwd, '.planning')) {
+  // Check if .planejamento is gitignored
+  if (isGitIgnored(cwd, '.planejamento')) {
     const result = { committed: false, hash: null, reason: 'skipped_gitignored' };
     output(result, raw, 'skipped');
     return;
   }
 
   // Stage files
-  const filesToStage = files && files.length > 0 ? files : ['.planning/'];
+  const filesToStage = files && files.length > 0 ? files : ['.planejamento/'];
   for (const file of filesToStage) {
     execGit(cwd, ['add', file]);
   }
@@ -263,7 +263,7 @@ function cmdCommit(cwd, message, files, raw, amend) {
 
 function cmdSummaryExtract(cwd, summaryPath, fields, raw) {
   if (!summaryPath) {
-    error('caminho-do-resumo obrigatório para extração de resumo');
+    error('caminho-do-resumo obrigatório');
   }
 
   const fullPath = path.join(cwd, summaryPath);
@@ -327,7 +327,7 @@ async function cmdWebsearch(query, options, raw) {
   }
 
   if (!query) {
-    output({ available: false, error: 'Consulta obrigatória' }, raw, '');
+    output({ available: false, error: 'Busca obrigatória' }, raw, '');
     return;
   }
 
@@ -380,8 +380,8 @@ async function cmdWebsearch(query, options, raw) {
 }
 
 function cmdProgressRender(cwd, format, raw) {
-  const phasesDir = path.join(cwd, '.planning', 'phases');
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
   const milestone = getMilestoneInfo(cwd);
 
   const phases = [];
@@ -404,10 +404,10 @@ function cmdProgressRender(cwd, format, raw) {
       totalSummaries += summaries;
 
       let status;
-      if (plans === 0) status = 'Pending';
-      else if (summaries >= plans) status = 'Complete';
-      else if (summaries > 0) status = 'In Progress';
-      else status = 'Planned';
+      if (plans === 0) status = 'Pendente';
+      else if (summaries >= plans) status = 'Completo';
+      else if (summaries > 0) status = 'Em Progresso';
+      else status = 'Planejado';
 
       phases.push({ number: phaseNum, name: phaseName, plans, summaries, status });
     }
@@ -421,9 +421,9 @@ function cmdProgressRender(cwd, format, raw) {
     const filled = Math.round((percent / 100) * barWidth);
     const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(barWidth - filled);
     let out = `# ${milestone.version} ${milestone.name}\n\n`;
-    out += `**Progress:** [${bar}] ${totalSummaries}/${totalPlans} plans (${percent}%)\n\n`;
-    out += `| Phase | Name | Plans | Status |\n`;
-    out += `|-------|------|-------|--------|\n`;
+    out += `**Progresso:** [${bar}] ${totalSummaries}/${totalPlans} planos (${percent}%)\n\n`;
+    out += `| Fase | Nome | Planos | Status |\n`;
+    out += `|------|------|--------|--------|\n`;
     for (const p of phases) {
       out += `| ${p.number} | ${p.name} | ${p.summaries}/${p.plans} | ${p.status} |\n`;
     }
@@ -432,7 +432,7 @@ function cmdProgressRender(cwd, format, raw) {
     const barWidth = 20;
     const filled = Math.round((percent / 100) * barWidth);
     const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(barWidth - filled);
-    const text = `[${bar}] ${totalSummaries}/${totalPlans} plans (${percent}%)`;
+    const text = `[${bar}] ${totalSummaries}/${totalPlans} planos (${percent}%)`;
     output({ bar: text, percent, completed: totalSummaries, total: totalPlans }, raw, text);
   } else {
     // JSON format
@@ -449,11 +449,11 @@ function cmdProgressRender(cwd, format, raw) {
 
 function cmdTodoComplete(cwd, filename, raw) {
   if (!filename) {
-    error('nome de arquivo obrigatório para completar tarefa');
+    error('nome de arquivo obrigatório');
   }
 
-  const pendingDir = path.join(cwd, '.planning', 'todos', 'pending');
-  const completedDir = path.join(cwd, '.planning', 'todos', 'completed');
+  const pendingDir = path.join(cwd, '.planejamento', 'todos', 'pending');
+  const completedDir = path.join(cwd, '.planejamento', 'todos', 'completed');
   const sourcePath = path.join(pendingDir, filename);
 
   if (!fs.existsSync(sourcePath)) {
@@ -507,19 +507,19 @@ function cmdScaffold(cwd, type, options, raw) {
     }
     case 'phase-dir': {
       if (!phase || !name) {
-        error('fase e nome são obrigatórios para o scaffold phase-dir');
+        error('fase e nome obrigatórios para scaffold phase-dir');
       }
       const slug = generateSlugInternal(name);
       const dirName = `${padded}-${slug}`;
-      const phasesParent = path.join(cwd, '.planning', 'phases');
+      const phasesParent = path.join(cwd, '.planejamento', 'phases');
       fs.mkdirSync(phasesParent, { recursive: true });
       const dirPath = path.join(phasesParent, dirName);
       fs.mkdirSync(dirPath, { recursive: true });
-      output({ created: true, directory: `.planning/phases/${dirName}`, path: dirPath }, raw, dirPath);
+      output({ created: true, directory: `.planejamento/phases/${dirName}`, path: dirPath }, raw, dirPath);
       return;
     }
     default:
-      error(`Tipo de scaffold desconhecido: ${type}. Disponíveis: context, uat, verification, phase-dir`);
+      error(`Tipo de scaffold desconhecido: ${type}. Tipos disponíveis: context, uat, verification, phase-dir`);
   }
 
   if (fs.existsSync(filePath)) {

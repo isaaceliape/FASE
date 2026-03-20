@@ -1,6 +1,6 @@
 ---
 name: fase:executar-fase
-description: Executa todos os planos de uma fase com paralelização em waves
+description: Executa todos os planos de uma fase com paralelização em etapas
 argument-hint: "<número-fase> [--gaps-only]"
 allowed-tools:
   - Read
@@ -14,9 +14,9 @@ allowed-tools:
   - AskUserQuestion
 ---
 <objective>
-Executar todos os planos de uma fase usando execução paralela em waves.
+Executar todos os planos de uma fase usando execução paralela em etapas.
 
-Orquestrador se mantém enxuto: descobrir planos, analisar dependências, agrupar em waves, spawnar subagents, coletar resultados. Cada subagent carrega o contexto completo de execute-plan e gerencia seu próprio plano.
+Orquestrador se mantém enxuto: descobrir planos, analisar dependências, agrupar em etapas, spawnar subagents, coletar resultados. Cada subagent carrega o contexto completo de execute-plan e gerencia seu próprio plano.
 
 Orçamento de contexto: ~15% orquestrador, 100% fresh por subagent.
 </objective>
@@ -37,5 +37,5 @@ Arquivos de contexto são resolvidos dentro do workflow via `fase-tools init exe
 
 <process>
 Execute o workflow execute-phase de @~/.claude/fase/workflows/execute-phase.md ponta a ponta.
-Preservar todos os gates do workflow (execução em waves, checkpoint handling, verificação, atualizações de estado, roteamento).
+Preservar todos os gates do workflow (execução em etapas, checkpoint handling, verificação, atualizações de estado, roteamento).
 </process>

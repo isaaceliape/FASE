@@ -115,7 +115,7 @@ function cmdVerifyPlanStructure(cwd, filePath, raw) {
   const warnings = [];
 
   // Check required frontmatter fields
-  const required = ['phase', 'plan', 'type', 'wave', 'depends_on', 'files_modified', 'autonomous', 'must_haves'];
+  const required = ['phase', 'plan', 'type', 'etapa', 'depends_on', 'files_modified', 'autonomous', 'must_haves'];
   for (const field of required) {
     if (fm[field] === undefined) errors.push(`Campo de frontmatter obrigatório ausente: ${field}`);
   }
@@ -144,9 +144,9 @@ function cmdVerifyPlanStructure(cwd, filePath, raw) {
 
   if (tasks.length === 0) warnings.push('Nenhum elemento <task> encontrado');
 
-  // Wave/depends_on consistency
-  if (fm.wave && parseInt(fm.wave) > 1 && (!fm.depends_on || (Array.isArray(fm.depends_on) && fm.depends_on.length === 0))) {
-    warnings.push('Wave > 1 mas depends_on está vazio');
+  // Etapa/depends_on consistency
+  if (fm.etapa && parseInt(fm.etapa) > 1 && (!fm.depends_on || (Array.isArray(fm.depends_on) && fm.depends_on.length === 0))) {
+    warnings.push('Etapa > 1 mas depends_on está vazio');
   }
 
   // Autonomous/checkpoint consistency
@@ -395,8 +395,8 @@ function cmdVerifyKeyLinks(cwd, planFilePath, raw) {
 }
 
 function cmdValidateConsistency(cwd, raw) {
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const errors = [];
   const warnings = [];
 
@@ -503,8 +503,8 @@ function cmdValidateConsistency(cwd, raw) {
         const content = fs.readFileSync(path.join(phasesDir, dir, plan), 'utf-8');
         const fm = extractFrontmatter(content);
 
-        if (!fm.wave) {
-          warnings.push(`${dir}/${plan}: ausência de 'wave' em frontmatter`);
+        if (!fm.etapa) {
+          warnings.push(`${dir}/${plan}: ausência de 'etapa' em frontmatter`);
         }
       }
     }
@@ -515,12 +515,12 @@ function cmdValidateConsistency(cwd, raw) {
 }
 
 function cmdValidateHealth(cwd, options, raw) {
-  const planningDir = path.join(cwd, '.planning');
-  const projectPath = path.join(planningDir, 'PROJECT.md');
-  const roadmapPath = path.join(planningDir, 'ROADMAP.md');
-  const statePath = path.join(planningDir, 'STATE.md');
-  const configPath = path.join(planningDir, 'config.json');
-  const phasesDir = path.join(planningDir, 'phases');
+  const planejamentoDir = path.join(cwd, '.planejamento');
+  const projectPath = path.join(planejamentoDir, 'PROJECT.md');
+  const roadmapPath = path.join(planejamentoDir, 'ROADMAP.md');
+  const statePath = path.join(planejamentoDir, 'STATE.md');
+  const configPath = path.join(planejamentoDir, 'config.json');
+  const phasesDir = path.join(planejamentoDir, 'phases');
 
   const errors = [];
   const warnings = [];
@@ -535,9 +535,9 @@ function cmdValidateHealth(cwd, options, raw) {
     else info.push(issue);
   };
 
-  // ─── Check 1: .planning/ exists ───────────────────────────────────────────
-  if (!fs.existsSync(planningDir)) {
-    addIssue('error', 'E001', 'diretório .planning/ não encontrado', 'Execute /gsd:novo-projeto para inicializar');
+  // ─── Check 1: .planejamento/ exists ───────────────────────────────────────────
+  if (!fs.existsSync(planejamentoDir)) {
+    addIssue('error', 'E001', 'diretório .planejamento/ não encontrado', 'Execute /gsd:novo-projeto para inicializar');
     output({
       status: 'quebrado',
       errors,
@@ -749,7 +749,7 @@ function cmdValidateHealth(cwd, options, raw) {
             const milestone = getMilestoneInfo(cwd);
             let stateContent = `# Estado da Sessão\n\n`;
             stateContent += `## Referência do Projeto\n\n`;
-            stateContent += `Veja: .planning/PROJECT.md\n\n`;
+            stateContent += `Veja: .planejamento/PROJECT.md\n\n`;
             stateContent += `## Posição\n\n`;
             stateContent += `**Marco:** ${milestone.version} ${milestone.name}\n`;
             stateContent += `**Fase atual:** (determinando...)\n`;

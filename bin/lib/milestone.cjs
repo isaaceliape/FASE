@@ -10,7 +10,7 @@ const { writeStateMd } = require('./state.cjs');
 
 function cmdRequirementsMarkComplete(cwd, reqIdsRaw, raw) {
   if (!reqIdsRaw || reqIdsRaw.length === 0) {
-    error('requirement IDs required. Usage: requirements mark-complete REQ-01,REQ-02 or REQ-01 REQ-02');
+    error('IDs de requisitos obrigatórios. Uso: requirements mark-complete REQ-01,REQ-02 ou REQ-01 REQ-02');
   }
 
   // Accept comma-separated, space-separated, or bracket-wrapped: [REQ-01, REQ-02]
@@ -22,12 +22,12 @@ function cmdRequirementsMarkComplete(cwd, reqIdsRaw, raw) {
     .filter(Boolean);
 
   if (reqIds.length === 0) {
-    error('no valid requirement IDs found');
+    error('nenhum ID de requisito válido encontrado');
   }
 
-  const reqPath = path.join(cwd, '.planning', 'REQUIREMENTS.md');
+  const reqPath = path.join(cwd, '.planejamento', 'REQUIREMENTS.md');
   if (!fs.existsSync(reqPath)) {
-    output({ updated: false, reason: 'REQUIREMENTS.md not found', ids: reqIds }, raw, 'no requirements file');
+    output({ updated: false, reason: 'REQUIREMENTS.md não encontrado', ids: reqIds }, raw, 'no requirements file');
     return;
   }
 
@@ -78,15 +78,15 @@ function cmdRequirementsMarkComplete(cwd, reqIdsRaw, raw) {
 
 function cmdMilestoneComplete(cwd, version, options, raw) {
   if (!version) {
-    error('version required for milestone complete (e.g., v1.0)');
+    error('versão obrigatória para completar marco (ex: v1.0)');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
-  const reqPath = path.join(cwd, '.planning', 'REQUIREMENTS.md');
-  const statePath = path.join(cwd, '.planning', 'STATE.md');
-  const milestonesPath = path.join(cwd, '.planning', 'MILESTONES.md');
-  const archiveDir = path.join(cwd, '.planning', 'milestones');
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
+  const reqPath = path.join(cwd, '.planejamento', 'REQUIREMENTS.md');
+  const statePath = path.join(cwd, '.planejamento', 'STATE.md');
+  const milestonesPath = path.join(cwd, '.planejamento', 'MILESTONES.md');
+  const archiveDir = path.join(cwd, '.planejamento', 'milestones');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const today = new Date().toISOString().split('T')[0];
   const milestoneName = options.name || version;
 
@@ -142,12 +142,12 @@ function cmdMilestoneComplete(cwd, version, options, raw) {
   // Archive REQUIREMENTS.md
   if (fs.existsSync(reqPath)) {
     const reqContent = fs.readFileSync(reqPath, 'utf-8');
-    const archiveHeader = `# Requirements Archive: ${version} ${milestoneName}\n\n**Archived:** ${today}\n**Status:** SHIPPED\n\nFor current requirements, see \`.planning/REQUIREMENTS.md\`.\n\n---\n\n`;
+    const archiveHeader = `# Arquivo de Requisitos: ${version} ${milestoneName}\n\n**Arquivado:** ${today}\n**Status:** ENTREGUE\n\nPara requisitos atuais, veja \`.planejamento/REQUIREMENTS.md\`.\n\n---\n\n`;
     fs.writeFileSync(path.join(archiveDir, `${version}-REQUIREMENTS.md`), archiveHeader + reqContent, 'utf-8');
   }
 
   // Archive audit file if exists
-  const auditFile = path.join(cwd, '.planning', `${version}-MILESTONE-AUDIT.md`);
+  const auditFile = path.join(cwd, '.planejamento', `${version}-MILESTONE-AUDIT.md`);
   if (fs.existsSync(auditFile)) {
     fs.renameSync(auditFile, path.join(archiveDir, `${version}-MILESTONE-AUDIT.md`));
   }

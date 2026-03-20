@@ -9,7 +9,7 @@ const { extractFrontmatter } = require('./frontmatter.cjs');
 const { writeStateMd } = require('./state.cjs');
 
 function cmdPhasesList(cwd, options, raw) {
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const { type, phase, includeArchived } = options;
 
   // If no phases directory, return empty
@@ -43,7 +43,7 @@ function cmdPhasesList(cwd, options, raw) {
       const normalized = normalizePhaseName(phase);
       const match = dirs.find(d => d.startsWith(normalized));
       if (!match) {
-        output({ files: [], count: 0, phase_dir: null, error: 'Phase not found' }, raw, '');
+        output({ files: [], count: 0, phase_dir: null, error: 'Fase não encontrada' }, raw, '');
         return;
       }
       dirs = [match];
@@ -80,12 +80,12 @@ function cmdPhasesList(cwd, options, raw) {
     // Default: list directories
     output({ directories: dirs, count: dirs.length }, raw, dirs.join('\n'));
   } catch (e) {
-    error('Failed to list phases: ' + e.message);
+    error('Falha ao listar fases: ' + e.message);
   }
 }
 
 function cmdPhaseNextDecimal(cwd, basePhase, raw) {
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalized = normalizePhaseName(basePhase);
 
   // Check if phases directory exists
@@ -145,16 +145,16 @@ function cmdPhaseNextDecimal(cwd, basePhase, raw) {
       nextDecimal
     );
   } catch (e) {
-    error('Failed to calculate next decimal phase: ' + e.message);
+    error('Falha ao calcular próxima etapa decimal: ' + e.message);
   }
 }
 
 function cmdFindPhase(cwd, phase, raw) {
   if (!phase) {
-    error('phase identifier required');
+    error('identificador de fase obrigatório');
   }
 
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalized = normalizePhaseName(phase);
 
   const notFound = { found: false, directory: null, phase_number: null, phase_name: null, plans: [], summaries: [] };
@@ -180,7 +180,7 @@ function cmdFindPhase(cwd, phase, raw) {
 
     const result = {
       found: true,
-      directory: toPosixPath(path.join('.planning', 'phases', match)),
+      directory: toPosixPath(path.join('.planejamento', 'phases', match)),
       phase_number: phaseNumber,
       phase_name: phaseName,
       plans,
@@ -200,10 +200,10 @@ function extractObjective(content) {
 
 function cmdPhasePlanIndex(cwd, phase, raw) {
   if (!phase) {
-    error('phase required for phase-plan-index');
+    error('fase obrigatória para phase-plan-index');
   }
 
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalized = normalizePhaseName(phase);
 
   // Find phase directory
@@ -222,7 +222,7 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
   }
 
   if (!phaseDir) {
-    output({ phase: normalized, error: 'Phase not found', plans: [], waves: {}, incomplete: [], has_checkpoints: false }, raw);
+    output({ phase: normalized, error: 'Fase não encontrada', plans: [], etapas: {}, incomplete: [], has_checkpoints: false }, raw);
     return;
   }
 
@@ -237,7 +237,7 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
   );
 
   const plans = [];
-  const waves = {};
+  const etapas = {};
   const incomplete = [];
   let hasCheckpoints = false;
 
@@ -252,8 +252,8 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
     const mdTasks = content.match(/##\s*Task\s*\d+/gi) || [];
     const taskCount = xmlTasks.length || mdTasks.length;
 
-    // Parse wave as integer
-    const wave = parseInt(fm.wave, 10) || 1;
+    // Parse etapa as integer
+    const etapa = parseInt(fm.etapa, 10) || 1;
 
     // Parse autonomous (default true if not specified)
     let autonomous = true;
@@ -279,7 +279,7 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
 
     const plan = {
       id: planId,
-      wave,
+      etapa,
       autonomous,
       objective: extractObjective(content) || fm.objective || null,
       files_modified: filesModified,
@@ -289,18 +289,18 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
 
     plans.push(plan);
 
-    // Group by wave
-    const waveKey = String(wave);
-    if (!waves[waveKey]) {
-      waves[waveKey] = [];
+    // Group by etapa
+    const etapaKey = String(etapa);
+    if (!etapas[etapaKey]) {
+      etapas[etapaKey] = [];
     }
-    waves[waveKey].push(planId);
+    etapas[etapaKey].push(planId);
   }
 
   const result = {
     phase: normalized,
     plans,
-    waves,
+    etapas,
     incomplete,
     has_checkpoints: hasCheckpoints,
   };
@@ -310,12 +310,12 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
 
 function cmdPhaseAdd(cwd, description, raw) {
   if (!description) {
-    error('description required for phase add');
+    error('descrição obrigatória para adicionar fase');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
   if (!fs.existsSync(roadmapPath)) {
-    error('ROADMAP.md not found');
+    error('ROADMAP.md não encontrado');
   }
 
   const content = fs.readFileSync(roadmapPath, 'utf-8');
@@ -333,14 +333,14 @@ function cmdPhaseAdd(cwd, description, raw) {
   const newPhaseNum = maxPhase + 1;
   const paddedNum = String(newPhaseNum).padStart(2, '0');
   const dirName = `${paddedNum}-${slug}`;
-  const dirPath = path.join(cwd, '.planning', 'phases', dirName);
+  const dirPath = path.join(cwd, '.planejamento', 'phases', dirName);
 
   // Create directory with .gitkeep so git tracks empty folders
   fs.mkdirSync(dirPath, { recursive: true });
   fs.writeFileSync(path.join(dirPath, '.gitkeep'), '');
 
   // Build phase entry
-  const phaseEntry = `\n### Phase ${newPhaseNum}: ${description}\n\n**Goal:** [To be planned]\n**Requirements**: TBD\n**Depends on:** Phase ${maxPhase}\n**Plans:** 0 plans\n\nPlans:\n- [ ] TBD (run /gsd:plan-phase ${newPhaseNum} to break down)\n`;
+  const phaseEntry = `\n### Fase ${newPhaseNum}: ${description}\n\n**Objetivo:** [A ser planejado]\n**Requisitos**: TBD\n**Depende de:** Fase ${maxPhase}\n**Planos:** 0 planos\n\nPlanos:\n- [ ] TBD (execute /gsd:plan-phase ${newPhaseNum} para quebrar)\n`;
 
   // Find insertion point: before last "---" or at end
   let updatedContent;
@@ -358,7 +358,7 @@ function cmdPhaseAdd(cwd, description, raw) {
     padded: paddedNum,
     name: description,
     slug,
-    directory: `.planning/phases/${dirName}`,
+    directory: `.planejamento/phases/${dirName}`,
   };
 
   output(result, raw, paddedNum);
@@ -366,12 +366,12 @@ function cmdPhaseAdd(cwd, description, raw) {
 
 function cmdPhaseInsert(cwd, afterPhase, description, raw) {
   if (!afterPhase || !description) {
-    error('after-phase and description required for phase insert');
+    error('fase-anterior e descrição obrigatórias para inserir fase');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
   if (!fs.existsSync(roadmapPath)) {
-    error('ROADMAP.md not found');
+    error('ROADMAP.md não encontrado');
   }
 
   const content = fs.readFileSync(roadmapPath, 'utf-8');
@@ -383,11 +383,11 @@ function cmdPhaseInsert(cwd, afterPhase, description, raw) {
   const afterPhaseEscaped = unpadded.replace(/\./g, '\\.');
   const targetPattern = new RegExp(`#{2,4}\\s*Phase\\s+0*${afterPhaseEscaped}:`, 'i');
   if (!targetPattern.test(content)) {
-    error(`Phase ${afterPhase} not found in ROADMAP.md`);
+    error(`Fase ${afterPhase} não encontrada em ROADMAP.md`);
   }
 
   // Calculate next decimal using existing logic
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalizedBase = normalizePhaseName(afterPhase);
   let existingDecimals = [];
 
@@ -404,20 +404,20 @@ function cmdPhaseInsert(cwd, afterPhase, description, raw) {
   const nextDecimal = existingDecimals.length === 0 ? 1 : Math.max(...existingDecimals) + 1;
   const decimalPhase = `${normalizedBase}.${nextDecimal}`;
   const dirName = `${decimalPhase}-${slug}`;
-  const dirPath = path.join(cwd, '.planning', 'phases', dirName);
+  const dirPath = path.join(cwd, '.planejamento', 'phases', dirName);
 
   // Create directory with .gitkeep so git tracks empty folders
   fs.mkdirSync(dirPath, { recursive: true });
   fs.writeFileSync(path.join(dirPath, '.gitkeep'), '');
 
   // Build phase entry
-  const phaseEntry = `\n### Phase ${decimalPhase}: ${description} (INSERTED)\n\n**Goal:** [Urgent work - to be planned]\n**Requirements**: TBD\n**Depends on:** Phase ${afterPhase}\n**Plans:** 0 plans\n\nPlans:\n- [ ] TBD (run /gsd:plan-phase ${decimalPhase} to break down)\n`;
+  const phaseEntry = `\n### Fase ${decimalPhase}: ${description} (INSERIDA)\n\n**Objetivo:** [Trabalho urgente - a ser planejado]\n**Requisitos**: TBD\n**Depende de:** Fase ${afterPhase}\n**Planos:** 0 planos\n\nPlanos:\n- [ ] TBD (execute /gsd:plan-phase ${decimalPhase} para quebrar)\n`;
 
   // Insert after the target phase section
   const headerPattern = new RegExp(`(#{2,4}\\s*Phase\\s+0*${afterPhaseEscaped}:[^\\n]*\\n)`, 'i');
   const headerMatch = content.match(headerPattern);
   if (!headerMatch) {
-    error(`Could not find Phase ${afterPhase} header`);
+    error(`Não foi possível encontrar cabeçalho da Fase ${afterPhase}`);
   }
 
   const headerIdx = content.indexOf(headerMatch[0]);
@@ -439,7 +439,7 @@ function cmdPhaseInsert(cwd, afterPhase, description, raw) {
     after_phase: afterPhase,
     name: description,
     slug,
-    directory: `.planning/phases/${dirName}`,
+    directory: `.planejamento/phases/${dirName}`,
   };
 
   output(result, raw, decimalPhase);
@@ -447,11 +447,11 @@ function cmdPhaseInsert(cwd, afterPhase, description, raw) {
 
 function cmdPhaseRemove(cwd, targetPhase, options, raw) {
   if (!targetPhase) {
-    error('phase number required for phase remove');
+    error('número da fase obrigatório para remover fase');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const force = options.force || false;
 
   if (!fs.existsSync(roadmapPath)) {
@@ -666,7 +666,7 @@ function cmdPhaseRemove(cwd, targetPhase, options, raw) {
   fs.writeFileSync(roadmapPath, roadmapContent, 'utf-8');
 
   // Update STATE.md phase count
-  const statePath = path.join(cwd, '.planning', 'STATE.md');
+  const statePath = path.join(cwd, '.planejamento', 'STATE.md');
   if (fs.existsSync(statePath)) {
     let stateContent = fs.readFileSync(statePath, 'utf-8');
     // Update "Total Phases" field
@@ -700,12 +700,12 @@ function cmdPhaseRemove(cwd, targetPhase, options, raw) {
 
 function cmdPhaseComplete(cwd, phaseNum, raw) {
   if (!phaseNum) {
-    error('phase number required for phase complete');
+    error('número da fase obrigatório para completar fase');
   }
 
-  const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
-  const statePath = path.join(cwd, '.planning', 'STATE.md');
-  const phasesDir = path.join(cwd, '.planning', 'phases');
+  const roadmapPath = path.join(cwd, '.planejamento', 'ROADMAP.md');
+  const statePath = path.join(cwd, '.planejamento', 'STATE.md');
+  const phasesDir = path.join(cwd, '.planejamento', 'phases');
   const normalized = normalizePhaseName(phaseNum);
   const today = new Date().toISOString().split('T')[0];
 
@@ -753,7 +753,7 @@ function cmdPhaseComplete(cwd, phaseNum, raw) {
     fs.writeFileSync(roadmapPath, roadmapContent, 'utf-8');
 
     // Update REQUIREMENTS.md traceability for this phase's requirements
-    const reqPath = path.join(cwd, '.planning', 'REQUIREMENTS.md');
+    const reqPath = path.join(cwd, '.planejamento', 'REQUIREMENTS.md');
     if (fs.existsSync(reqPath)) {
       // Extract Requirements line from roadmap for this phase
       const reqMatch = roadmapContent.match(
@@ -850,13 +850,13 @@ function cmdPhaseComplete(cwd, phaseNum, raw) {
     // Update Status
     stateContent = stateContent.replace(
       /(\*\*Status:\*\*\s*).*/,
-      `$1${isLastPhase ? 'Milestone complete' : 'Ready to plan'}`
+      `$1${isLastPhase ? 'Marco completo' : 'Pronto para planejar'}`
     );
 
     // Update Current Plan
     stateContent = stateContent.replace(
       /(\*\*Current Plan:\*\*\s*).*/,
-      `$1Not started`
+      `$1Não iniciado`
     );
 
     // Update Last Activity

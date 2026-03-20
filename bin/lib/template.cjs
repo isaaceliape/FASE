@@ -9,7 +9,7 @@ const { reconstructFrontmatter } = require('./frontmatter.cjs');
 
 function cmdTemplateSelect(cwd, planPath, raw) {
   if (!planPath) {
-    error('plan-path required');
+    error('caminho-do-plano obrigatório');
   }
 
   try {
@@ -54,11 +54,11 @@ function cmdTemplateSelect(cwd, planPath, raw) {
 }
 
 function cmdTemplateFill(cwd, templateType, options, raw) {
-  if (!templateType) { error('template type required: summary, plan, or verification'); }
-  if (!options.phase) { error('--phase required'); }
+  if (!templateType) { error('tipo de modelo obrigatório: summary, plan ou verification'); }
+  if (!options.phase) { error('--phase obrigatório'); }
 
   const phaseInfo = findPhaseInternal(cwd, options.phase);
-  if (!phaseInfo || !phaseInfo.found) { output({ error: 'Phase not found', phase: options.phase }, raw); return; }
+  if (!phaseInfo || !phaseInfo.found) { output({ error: 'Fase não encontrada', phase: options.phase }, raw); return; }
 
   const padded = normalizePhaseName(options.phase);
   const today = new Date().toISOString().split('T')[0];
@@ -88,42 +88,42 @@ function cmdTemplateFill(cwd, templateType, options, raw) {
         ...fields,
       };
       body = [
-        `# Phase ${options.phase}: ${phaseName} Summary`,
+        `# Fase ${options.phase}: ${phaseName} — Resumo`,
         '',
-        '**[Substantive one-liner describing outcome]**',
+        '**[Resumo substantivo descrevendo o resultado]**',
         '',
-        '## Performance',
-        '- **Duration:** [time]',
-        '- **Tasks:** [count completed]',
-        '- **Files modified:** [count]',
+        '## Desempenho',
+        '- **Duração:** [tempo]',
+        '- **Tarefas:** [contagem realizada]',
+        '- **Arquivos modificados:** [contagem]',
         '',
-        '## Accomplishments',
-        '- [Key outcome 1]',
-        '- [Key outcome 2]',
+        '## Realizações',
+        '- [Resultado-chave 1]',
+        '- [Resultado-chave 2]',
         '',
-        '## Task Commits',
-        '1. **Task 1: [task name]** - `hash`',
+        '## Commits de Tarefas',
+        '1. **Tarefa 1: [nome da tarefa]** - `hash`',
         '',
-        '## Files Created/Modified',
-        '- `path/to/file.ts` - What it does',
+        '## Arquivos Criados/Modificados',
+        '- `caminho/para/arquivo.ts` - O que faz',
         '',
-        '## Decisions & Deviations',
-        '[Key decisions or "None - followed plan as specified"]',
+        '## Decisões & Desvios',
+        '[Decisões-chave ou "Nenhuma - seguiu o plano conforme especificado"]',
         '',
-        '## Next Phase Readiness',
-        '[What\'s ready for next phase]',
+        '## Prontidão para Próxima Fase',
+        '[O que está pronto para próxima fase]',
       ].join('\n');
       fileName = `${padded}-${planNum}-SUMMARY.md`;
       break;
     }
     case 'plan': {
       const planType = options.type || 'execute';
-      const wave = parseInt(options.wave) || 1;
+      const etapa = parseInt(options.etapa) || 1;
       frontmatter = {
         phase: phaseId,
         plan: planNum,
         type: planType,
-        wave,
+        etapa,
         depends_on: [],
         files_modified: [],
         autonomous: true,
@@ -132,34 +132,34 @@ function cmdTemplateFill(cwd, templateType, options, raw) {
         ...fields,
       };
       body = [
-        `# Phase ${options.phase} Plan ${planNum}: [Title]`,
+        `# Fase ${options.phase} Plano ${planNum}: [Título]`,
         '',
-        '## Objective',
-        '- **What:** [What this plan builds]',
-        '- **Why:** [Why it matters for the phase goal]',
-        '- **Output:** [Concrete deliverable]',
+        '## Objetivo',
+        '- **O quê:** [O que este plano constrói]',
+        '- **Por quê:** [Por que importa para o objetivo da fase]',
+        '- **Saída:** [Entrega concreta]',
         '',
-        '## Context',
-        '@.planning/PROJECT.md',
-        '@.planning/ROADMAP.md',
-        '@.planning/STATE.md',
+        '## Contexto',
+        '@.planejamento/PROJECT.md',
+        '@.planejamento/ROADMAP.md',
+        '@.planejamento/STATE.md',
         '',
-        '## Tasks',
+        '## Tarefas',
         '',
         '<task type="code">',
-        '  <name>[Task name]</name>',
-        '  <files>[file paths]</files>',
-        '  <action>[What to do]</action>',
-        '  <verify>[How to verify]</verify>',
-        '  <done>[Definition of done]</done>',
+        '  <name>[Nome da tarefa]</name>',
+        '  <files>[caminhos de arquivo]</files>',
+        '  <action>[O que fazer]</action>',
+        '  <verify>[Como verificar]</verify>',
+        '  <done>[Definição de feito]</done>',
         '</task>',
         '',
-        '## Verification',
-        '[How to verify this plan achieved its objective]',
+        '## Verificação',
+        '[Como verificar que este plano atingiu seu objetivo]',
         '',
-        '## Success Criteria',
-        '- [ ] [Criterion 1]',
-        '- [ ] [Criterion 2]',
+        '## Critérios de Sucesso',
+        '- [ ] [Critério 1]',
+        '- [ ] [Critério 2]',
       ].join('\n');
       fileName = `${padded}-${planNum}-PLAN.md`;
       break;
@@ -173,36 +173,36 @@ function cmdTemplateFill(cwd, templateType, options, raw) {
         ...fields,
       };
       body = [
-        `# Phase ${options.phase}: ${phaseName} — Verification`,
+        `# Fase ${options.phase}: ${phaseName} — Verificação`,
         '',
-        '## Observable Truths',
-        '| # | Truth | Status | Evidence |',
-        '|---|-------|--------|----------|',
-        '| 1 | [Truth] | pending | |',
+        '## Verdades Observáveis',
+        '| # | Verdade | Status | Evidência |',
+        '|---|---------|--------|-----------|',
+        '| 1 | [Verdade] | pendente | |',
         '',
-        '## Required Artifacts',
-        '| Artifact | Expected | Status | Details |',
-        '|----------|----------|--------|---------|',
-        '| [path] | [what] | pending | |',
+        '## Artefatos Obrigatórios',
+        '| Artefato | Esperado | Status | Detalhes |',
+        '|----------|----------|--------|----------|',
+        '| [caminho] | [o quê] | pendente | |',
         '',
-        '## Key Link Verification',
-        '| From | To | Via | Status | Details |',
-        '|------|----|----|--------|---------|',
-        '| [source] | [target] | [connection] | pending | |',
+        '## Verificação de Links-Chave',
+        '| De | Para | Via | Status | Detalhes |',
+        '|----|------|-----|--------|----------|',
+        '| [origem] | [destino] | [conexão] | pendente | |',
         '',
-        '## Requirements Coverage',
-        '| Requirement | Status | Blocking Issue |',
-        '|-------------|--------|----------------|',
-        '| [req] | pending | |',
+        '## Cobertura de Requisitos',
+        '| Requisito | Status | Problema Bloqueador |',
+        '|-----------|--------|-------------------|',
+        '| [req] | pendente | |',
         '',
-        '## Result',
-        '[Pending verification]',
+        '## Resultado',
+        '[Verificação pendente]',
       ].join('\n');
       fileName = `${padded}-VERIFICATION.md`;
       break;
     }
     default:
-      error(`Unknown template type: ${templateType}. Available: summary, plan, verification`);
+      error(`Tipo de modelo desconhecido: ${templateType}. Disponíveis: summary, plan, verification`);
       return;
   }
 
@@ -210,7 +210,7 @@ function cmdTemplateFill(cwd, templateType, options, raw) {
   const outPath = path.join(cwd, phaseInfo.directory, fileName);
 
   if (fs.existsSync(outPath)) {
-    output({ error: 'File already exists', path: toPosixPath(path.relative(cwd, outPath)) }, raw);
+    output({ error: 'Arquivo já existe', path: toPosixPath(path.relative(cwd, outPath)) }, raw);
     return;
   }
 

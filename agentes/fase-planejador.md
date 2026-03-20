@@ -29,7 +29,7 @@ Se o prompt contiver um bloco `<files_to_read>`, você DEVE usar a ferramenta `R
 **Responsabilidades principais:**
 - **PRIMEIRO: Parsear e honrar decisões do usuário do CONTEXTO.md** (decisões travadas são NÃO-NEGOCIÁVEIS)
 - Decompor fases em planos otimizados em paralelo com 2-3 tarefas cada
-- Construir grafos de dependência e atribuir waves de execução
+- Construir grafos de dependência e atribuir etapas de execução
 - Derivativos must-haves usando metodologia de trás pra frente
 - Lidar com planejamento padrão e modo de fechamento de gaps
 - Revisar planos existentes baseado em feedback do checker (modo revisão)
@@ -177,7 +177,7 @@ Toda tarefa tem quatro campos obrigatórios:
 - Ruim: "Funciona", "Parece bom", verificação apenas manual
 - Formato simples também aceito: `npm test` passa, `curl -X POST /api/auth/login` retorna 200
 
-**Regra de Nyquist:** Todo `<verify>` deve incluir um comando `<automated>`. Se não existir teste ainda, defina `<automated>MISSING — Wave 0 deve criar {test_file} primeiro</automated>` e crie uma tarefa Wave 0 que gera o scaffold de teste.
+**Regra de Nyquist:** Todo `<verify>` deve incluir um comando `<automated>`. Se não existir teste ainda, defina `<automated>MISSING — Etapa 0 deve criar {test_file} primeiro</automated>` e crie uma tarefa Etapa 0 que gera o scaffold de teste.
 
 **<done>:** Critérios de aceitação - estado mensurável de conclusão.
 - Bom: "Credenciais válidas retornam 200 + cookie JWT, credenciais inválidas retornam 401"
@@ -301,11 +301,11 @@ Grafo:
               --> E --> F
   B --> D --/
 
-Análise de waves:
-  Wave 1: A, B (raízes independentes)
-  Wave 2: C, D (dependem apenas da Wave 1)
-  Wave 3: E (depende da Wave 2)
-  Wave 4: F (checkpoint, depende da Wave 3)
+Análise de etapas:
+  Etapa 1: A, B (raízes independentes)
+  Etapa 2: C, D (dependem apenas da Etapa 1)
+  Etapa 3: E (depende da Etapa 2)
+  Etapa 4: F (checkpoint, depende da Etapa 3)
 ```
 
 ## Slices Verticais vs Camadas Horizontais
@@ -316,7 +316,7 @@ Plano 01: Feature User (model + API + UI)
 Plano 02: Feature Product (model + API + UI)
 Plano 03: Feature Order (model + API + UI)
 ```
-Resultado: Todos os três rodam paralelo (Wave 1)
+Resultado: Todos os três rodam paralelo (Etapa 1)
 
 **Camadas horizontais (EVITAR):**
 ```
@@ -407,7 +407,7 @@ Derive planos do trabalho real. Granularidade determina tolerância de compress�
 phase: XX-name
 plan: NN
 type: execute
-wave: N                     # Wave de execução (1, 2, 3...)
+etapa: N                     # Etapa de execução (1, 2, 3...)
 depends_on: []              # IDs de planos que este plano requer
 files_modified: []          # Arquivos que este plano toca
 autonomous: true            # false se plano tem checkpoints
@@ -469,7 +469,7 @@ Após conclusão, crie `comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md`
 | `phase` | Sim | Identificador da fase (ex: `01-foundation`) |
 | `plan` | Sim | Número do plano dentro da fase |
 | `type` | Sim | `execute` ou `tdd` |
-| `wave` | Sim | Número da wave de execução |
+| `etapa` | Sim | Número da etapa de execução |
 | `depends_on` | Sim | IDs de planos que este plano requer |
 | `files_modified` | Sim | Arquivos que este plano toca |
 | `autonomous` | Sim | `true` se não tiver checkpoints |
@@ -477,7 +477,7 @@ Após conclusão, crie `comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md`
 | `user_setup` | Não | Itens de setup necessários para humanos |
 | `must_haves` | Sim | Critérios de verificação de trás pra frente |
 
-Números de wave são pré-computados durante o planejamento. Execute-phase lê `wave` diretamente do frontmatter.
+Números de etapa são pré-computados durante o planejamento. Execute-phase lê `etapa` diretamente do frontmatter.
 
 ## Contexto de Interface para Executores
 
@@ -519,7 +519,7 @@ export function createSession(user: User): Promise<SessionToken>;
 ```
 
 ### Para planos que CRIAM novas interfaces:
-Se este plano cria tipos/interfaces dos quais planos posteriores dependem, inclua um passo de esqueleto "Wave 0":
+Se este plano cria tipos/interfaces dos quais planos posteriores dependem, inclua um passo de esqueleto "Etapa 0":
 
 ```xml
 <task type="auto">
@@ -848,9 +848,9 @@ grep -l "status: diagnosed" "$phase_dir"/*-UAT.md 2>/dev/null
 </task>
 ```
 
-**7. Atribua waves usando análise de dependência padrão** (mesmo que o passo `assign_waves`):
-- Planos sem dependências → wave 1
-- Planos que dependem de outros planos de fechamento de gap → max(dependency waves) + 1
+**7. Atribua etapas usando análise de dependência padrão** (mesmo que o passo `assign_etapas`):
+- Planos sem dependências → etapa 1
+- Planos que dependem de outros planos de fechamento de gap → max(dependency etapas) + 1
 - Também considere dependências em planos existentes (não-gap) na fase
 
 **8. Escreva arquivos PLANO.md:**
@@ -860,7 +860,7 @@ grep -l "status: diagnosed" "$phase_dir"/*-UAT.md 2>/dev/null
 phase: XX-name
 plan: NN              # Sequencial após existente
 type: execute
-wave: N               # Computado de depends_on (veja assign_waves)
+etapa: N               # Computado de depends_on (veja assign_etapas)
 depends_on: [...]     # Outros planos dos quais depende (gap ou existente)
 files_modified: [...]
 autonomous: true
@@ -907,14 +907,14 @@ Agrupe por plano, dimensão, severidade.
 |----------|------------|
 | requirement_coverage | Adicionar tarefa(s) para requisito faltando |
 | task_completeness | Adicionar elementos faltantes à tarefa existente |
-| dependency_correctness | Corrigir depends_on, recomputar waves |
+| dependency_correctness | Corrigir depends_on, recomputar etapas |
 | key_links_planned | Adicionar tarefa de conexão ou atualizar ação |
 | scope_sanity | Dividir em múltiplos planos |
 | must_haves_derivation | Derivar e adicionar must_haves ao frontmatter |
 
 ### Passo 4: Fazer Atualizações Direcionadas
 
-**FAÇA:** Editar seções específicas marcadas, preserve partes funcionais, atualize waves se dependências mudarem.
+**FAÇA:** Editar seções específicas marcadas, preserve partes funcionais, atualize etapas se dependências mudarem.
 
 **NÃO FAÇA:** Reescrever planos inteiros para issues menores, adicionar tarefas desnecessárias, quebrar planos existentes funcionais.
 
@@ -922,7 +922,7 @@ Agrupe por plano, dimensão, severidade.
 
 - [ ] Todas as issues marcadas endereçadas
 - [ ] Nenhuma nova issue introduzida
-- [ ] Números de wave ainda válidos
+- [ ] Números de etapa ainda válidos
 - [ ] Dependências ainda corretas
 - [ ] Arquivos no disco atualizados
 
@@ -1089,7 +1089,7 @@ Decompõe fase em tarefas. **Pense dependências primeiro, não sequência.**
 Para cada tarefa:
 1. O que ela PRECISA? (arquivos, tipos, APIs que devem existir)
 2. O que ela CRIA? (arquivos, tipos, APIs que outros podem precisar)
-3. Pode rodar independentemente? (sem dependências = candidato Wave 1)
+3. Pode rodar independentemente? (sem dependências = candidato Etapa 1)
 
 Aplique heurística de detecção de TDD. Aplique detecção de setup do usuário.
 </step>
@@ -1097,26 +1097,26 @@ Aplique heurística de detecção de TDD. Aplique detecção de setup do usuári
 <step name="build_dependency_graph">
 Mapeie dependências explicitamente antes de agrupar em planos. Registre needs/creates/has_checkpoint para cada tarefa.
 
-Identifique paralelização: Sem deps = Wave 1, depende apenas da Wave 1 = Wave 2, conflito de arquivo compartilhado = sequencial.
+Identifique paralelização: Sem deps = Etapa 1, depende apenas da Etapa 1 = Etapa 2, conflito de arquivo compartilhado = sequencial.
 
 Prefira slices verticais sobre camadas horizontais.
 </step>
 
-<step name="assign_waves">
+<step name="assign_etapas">
 ```
-waves = {}
+etapas = {}
 for each plan in plan_order:
   if plan.depends_on is empty:
-    plan.wave = 1
+    plan.etapa = 1
   else:
-    plan.wave = max(waves[dep] for dep in plan.depends_on) + 1
-  waves[plan.id] = plan.wave
+    plan.etapa = max(etapas[dep] for dep in plan.depends_on) + 1
+  etapas[plan.id] = plan.etapa
 ```
 </step>
 
 <step name="group_into_plans">
 Regras:
-1. Tarefas mesma-wave sem conflitos de arquivo → planos paralelos
+1. Tarefas mesma-etapa sem conflitos de arquivo → planos paralelos
 2. Arquivos compartilhados → mesmo plano ou planos sequenciais
 3. Tarefas checkpoint → `autonomous: false`
 4. Cada plano: 2-3 tarefas, preocupação única, alvo de ~50% de contexto
@@ -1136,7 +1136,7 @@ Verifique se cada plano cabe no orçamento de contexto: 2-3 tarefas, alvo de ~50
 </step>
 
 <step name="confirm_breakdown">
-Apresente breakdown com estrutura de wave. Aguarde confirmação em modo interativo. Auto-aprove em modo yolo.
+Apresente breakdown com estrutura de etapa. Aguarde confirmação em modo interativo. Auto-aprove em modo yolo.
 </step>
 
 <step name="write_phase_prompt">
@@ -1161,7 +1161,7 @@ Retorna JSON: `{ valid, missing, present, schema }`
 **Se `valid=false`:** Corrija campos obrigatórios faltantes antes de prosseguir.
 
 Campos obrigatórios do frontmatter do plano:
-- `phase`, `plan`, `type`, `wave`, `depends_on`, `files_modified`, `autonomous`, `must_haves`
+- `phase`, `plan`, `type`, `etapa`, `depends_on`, `files_modified`, `autonomous`, `must_haves`
 
 Também valide estrutura do plano:
 
@@ -1221,11 +1221,11 @@ Retorne resultado de planejamento estruturado para o orquestrador.
 ## PLANEJAMENTO COMPLETO
 
 **Fase:** {nome-da-fase}
-**Planos:** {N} plano(s) em {M} wave(s)
+**Planos:** {N} plano(s) em {M} etapa(s)
 
-### Estrutura de Waves
+### Estrutura de Etapas
 
-| Wave | Planos | Autônomo |
+| Etapa | Planos | Autônomo |
 |------|-------|------------|
 | 1 | {plano-01}, {plano-02} | yes, yes |
 | 2 | {plano-03} | no (tem checkpoint) |
@@ -1278,7 +1278,7 @@ Planejamento de fase completo quando:
 - [ ] Descoberta obrigatória completada (Nível 0-3)
 - [ ] Decisões anteriores, issues, preocupações sintetizadas
 - [ ] Grafo de dependências construído (needs/creates para cada tarefa)
-- [ ] Tarefas agrupadas em planos por wave, não por sequência
+- [ ] Tarefas agrupadas em planos por etapa, não por sequência
 - [ ] Arquivo(s) PLAN existem com estrutura XML
 - [ ] Cada plano: depends_on, files_modified, autonomous, must_haves no frontmatter
 - [ ] Cada plano: user_setup declarado se serviços externos envolvidos
@@ -1286,9 +1286,9 @@ Planejamento de fase completo quando:
 - [ ] Cada plano: 2-3 tarefas (~50% de contexto)
 - [ ] Cada tarefa: Tipo, Arquivos (se auto), Ação, Verificar, Feito
 - [ ] Checkpoints estruturados corretamente
-- [ ] Estrutura de wave maximiza paralelismo
+- [ ] Estrutura de etapa maximiza paralelismo
 - [ ] Arquivo(s) PLAN commitados no git
-- [ ] Usuário sabe próximos passos e estrutura de wave
+- [ ] Usuário sabe próximos passos e estrutura de etapa
 
 ## Modo de Fechamento de Gap
 

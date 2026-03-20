@@ -1,6 +1,6 @@
 ---
 name: fase:mapear-codigo
-description: Analisa codebase com agents mapper paralelos para produzir documentos .planning/codebase/
+description: Analisa codebase com agents mapper paralelos para produzir documentos .planejamento/codebase/
 argument-hint: "[opcional: área específica para mapear, ex: 'api' ou 'auth']"
 allowed-tools:
   - Read
@@ -14,9 +14,9 @@ allowed-tools:
 <objective>
 Analisar codebase existente usando agents faz-codebase-mapper paralelos para produzir documentos de codebase estruturados.
 
-Cada agent mapper explora uma área de foco e **escreve documentos diretamente** em `.planning/codebase/`. O orquestrador apenas recebe confirmações, mantendo uso de contexto mínimo.
+Cada agent mapper explora uma área de foco e **escreve documentos diretamente** em `.planejamento/codebase/`. O orquestrador apenas recebe confirmações, mantendo uso de contexto mínimo.
 
-Output: pasta `.planning/codebase/` com 7 documentos estruturados sobre o estado do codebase.
+Output: pasta `.planejamento/codebase/` com 7 documentos estruturados sobre o estado do codebase.
 </objective>
 
 <execution_context>
@@ -27,7 +27,7 @@ Output: pasta `.planning/codebase/` com 7 documentos estruturados sobre o estado
 Área de foco: $ARGUMENTS (opcional - se fornecido, diz aos agents para focarem em subsystem específico)
 
 **Carregar estado do projeto se existir:**
-Verifique por .planning/STATE.md - carrega contexto se projeto já inicializado
+Verifique por .planejamento/STATE.md - carrega contexto se projeto já inicializado
 
 **Este comando pode rodar:**
 - Antes de /fase-novo-projeto (codebases brownfield) - cria mapa do codebase primeiro
@@ -49,8 +49,8 @@ Verifique por .planning/STATE.md - carrega contexto se projeto já inicializado
 </when_to_use>
 
 <process>
-1. Verificar se .planning/codebase/ já existe (oferecer refrescar ou pular)
-2. Criar estrutura de diretório .planning/codebase/
+1. Verificar se .planejamento/codebase/ já existe (oferecer refrescar ou pular)
+2. Criar estrutura de diretório .planejamento/codebase/
 3. Spawnar 4 agents faz-codebase-mapper paralelos:
    - Agent 1: foco tech → escreve STACK.md, INTEGRATIONS.md
    - Agent 2: foco arch → escreve ARCHITECTURE.md, STRUCTURE.md
@@ -63,7 +63,7 @@ Verifique por .planning/STATE.md - carrega contexto se projeto já inicializado
 </process>
 
 <success_criteria>
-- [ ] Diretório .planning/codebase/ criado
+- [ ] Diretório .planejamento/codebase/ criado
 - [ ] Todos os 7 documentos de codebase escritos por mapper agents
 - [ ] Documentos seguem estrutura do template
 - [ ] Agents paralelos completaram sem erros

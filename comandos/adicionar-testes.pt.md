@@ -31,8 +31,8 @@ Output: Arquivos de teste commitados com mensagem `test(phase-{N}): add unit and
 <context>
 Fase: $ARGUMENTS
 
-@.planning/STATE.md
-@.planning/ROADMAP.md
+@.planejamento/STATE.md
+@.planejamento/ROADMAP.md
 </context>
 
 <process>

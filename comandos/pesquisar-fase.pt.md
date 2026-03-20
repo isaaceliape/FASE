@@ -56,7 +56,7 @@ PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roadmap get-phase "${p
 ## 2. Checar Research Existente
 
 ```bash
-ls .planning/phases/${PHASE}-*/RESEARCH.md 2>/dev/null
+ls .planejamento/phases/${PHASE}-*/RESEARCH.md 2>/dev/null
 ```
 
 **Se existe:** Ofereça: 1) Atualizar research, 2) Ver existente, 3) Pular. Aguarde resposta.
@@ -100,9 +100,9 @@ Modo: ecosystem
 </objective>
 
 <files_to_read>
-@.planning/ROADMAP.md
-@.planning/REQUIREMENTS.md
-@.planning/STATE.md
+@.planejamento/ROADMAP.md
+@.planejamento/REQUIREMENTS.md
+@.planejamento/STATE.md
 </files_to_read>
 ```
 
@@ -135,7 +135,7 @@ O researcher retorna:
 ```markdown
 ## Research Completo para Fase {phase_number}
 
-**Arquivo:** `.planning/phases/{phase_dir}/RESEARCH.md`
+**Arquivo:** `.planejamento/phases/{phase_dir}/RESEARCH.md`
 **Modo:** {research_mode}
 
 ### Resumo
@@ -146,7 +146,7 @@ O researcher retorna:
 
 ### Próximos Passos
 - Para planejamento: `/fase-planejar-fase {phase_number}`
-- Para ver research completo: @.planning/phases/{phase_dir}/RESEARCH.md
+- Para ver research completo: @.planejamento/phases/{phase_dir}/RESEARCH.md
 ```
 
 ## 7. Roteamento
