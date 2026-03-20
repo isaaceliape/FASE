@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Pesquisar como implementar uma fase. Spawna agent faz-phase-pesquisador com contexto da fase.
+Pesquisar como implementar uma fase. Spawna agent faz-fase-pesquisador com contexto da fase.
 
 **Nota:** Este é um comando de pesquisa standalone. Para a maioria dos workflows, use `/fase-planejar-fase` que integra pesquisa automaticamente.
 
@@ -34,7 +34,7 @@ Normalize input da fase no passo 1 antes de qualquer lookup de diretório.
 ## 0. Inicializar Contexto
 
 ```bash
-INIT=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" init phase-op "$ARGUMENTS")
+INIT=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" init fase-op "$ARGUMENTS")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -42,13 +42,13 @@ Extraia do init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`, 
 
 Resolva modelo do pesquisador:
 ```bash
-PESQUISAER_MODEL=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-phase-pesquisador --raw)
+PESQUISAER_MODEL=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-fase-pesquisador --raw)
 ```
 
 ## 1. Validar Fase
 
 ```bash
-PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "${phase_number}")
+PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-fase "${phase_number}")
 ```
 
 **Se `found` é false:** Erro e exit. **Se `found` é true:** Extraia `phase_number`, `phase_name`, `goal` do JSON.
@@ -56,7 +56,7 @@ PHASE_INFO=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "${p
 ## 2. Checar Research Existente
 
 ```bash
-ls .planejamento/fases/${PHASE}-*/PESQUISA.md 2>/dev/null
+ls .planejamento/fases/${FASE}-*/PESQUISA.md 2>/dev/null
 ```
 
 **Se existe:** Ofereça: 1) Atualizar pesquisa, 2) Ver existente, 3) Pular. Aguarde resposta.
@@ -72,13 +72,13 @@ Use paths do INIT (não inline conteúdos de arquivos no contexto do orquestrado
 
 Apresente sumário com descrição da fase e quais arquivos o pesquisador vai carregar.
 
-## 4. Spawnar Agent faz-phase-pesquisador
+## 4. Spawnar Agent faz-fase-pesquisador
 
 Modos de pesquisa: ecosystem (padrão), feasibility, implementation, comparison.
 
 ```markdown
 <pesquisa_type>
-Phase Research — investigando COMO implementar uma fase específica bem.
+Fase Research — investigando COMO implementar uma fase específica bem.
 </pesquisa_type>
 
 <key_insight>
@@ -156,7 +156,7 @@ Após pesquisa:
 - **Para revisar:** User examina PESQUISA.md
 - **Para re-pesquisa:** Execute `/fase-pesquisar-fase {phase_number}` novamente
 
-**NÃO commite** — o orquestrador principal (plan-phase ou pesquisa-phase) faz bundle dos artefatos.
+**NÃO commite** — o orquestrador principal (plan-fase ou pesquisa-fase) faz bundle dos artefatos.
 
 </process>
 

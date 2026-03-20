@@ -30,12 +30,12 @@ Número da fase: $ARGUMENTS (opcional — auto-detecta próxima fase não planej
 - `--skip-pesquisa` — Pula pesquisa, vai direto para planejamento
 - `--gaps` — Modo de fechamento de gaps (lê VERIFICACAO.md, pula pesquisa)
 - `--skip-verify` — Pula loop de verificação
-- `--prd <arquivo>` — Usa um arquivo PRD/critérios de aceitação em vez de discuss-phase. Parseia requisitos em CONTEXTO.md automaticamente. Pula discuss-phase completamente.
+- `--prd <arquivo>` — Usa um arquivo PRD/critérios de aceitação em vez de discuss-fase. Parseia requisitos em CONTEXTO.md automaticamente. Pula discuss-fase completamente.
 
 Normalizar input da fase no passo 2 antes de qualquer lookup de diretório.
 </context>
 
 <process>
-Execute o workflow plan-phase ponta a ponta.
+Execute o workflow plan-fase ponta a ponta.
 Preservar todos os gates do workflow (validação, pesquisa, planejamento, loop de verificação, roteamento).
 </process>

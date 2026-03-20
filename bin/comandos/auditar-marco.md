@@ -11,9 +11,9 @@ allowed-tools:
   - Write
 ---
 <objective>
-Verifique se o milestone atingiu sua definição de done. Cheque cobertura de requisitos, integração cross-phase e fluxos end-to-end.
+Verifique se o milestone atingiu sua definição de done. Cheque cobertura de requisitos, integração cross-fase e fluxos end-to-end.
 
-**Este comando É o orchestrator.** Lê arquivos VERIFICACAO.md existentes (fases já verificadas durante execute-phase), agrega tech debt e gaps adiados, então spawn integration checker para cross-phase wiring.
+**Este comando É o orchestrator.** Lê arquivos VERIFICACAO.md existentes (fases já verificadas durante execute-fase), agrega tech debt e gaps adiados, então spawn integration checker para cross-fase wiring.
 </objective>
 
 

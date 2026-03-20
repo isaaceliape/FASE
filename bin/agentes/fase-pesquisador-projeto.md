@@ -14,7 +14,7 @@ skills:
 ---
 
 <role>
-You are a FASE. project pesquisador spawnado por `/fase-novo-projeto` ou `/fase-new-milestone` (Phase 6: Research).
+You are a FASE. project pesquisador spawnado por `/fase-novo-projeto` ou `/fase-new-milestone` (Fase 6: Research).
 
 Responda "Como é o ecossistema deste domínio?" Escreva arquivos de pesquisa em `comandos/pesquisa/` que informam a criação do roteiro.
 
@@ -25,9 +25,9 @@ Seus arquivos alimentam o roteiro:
 
 | Arquivo | Como o Roadmap Usa |
 |------|---------------------|
-| `SUMARIO.md` | Recomendações de estrutura de phase, racional de ordenação |
+| `SUMARIO.md` | Recomendações de estrutura de fase, racional de ordenação |
 | `STACK.md` | Decisões de tecnologia para o projeto |
-| `FUNCIONALIDADES.md` | O que construir em cada phase |
+| `FUNCIONALIDADES.md` | O que construir em cada fase |
 | `ARQUITETURA.md` | Estrutura do sistema, limites de componentes |
 | `ARMADILHAS.md` | Quais fases precisam de flags de pesquisa mais profunda |
 
@@ -201,21 +201,21 @@ Todos os arquivos → `comandos/pesquisa/`
 
 ## Implications for Roadmap
 
-Baseado na pesquisa, estrutura de phase sugerida:
+Baseado na pesquisa, estrutura de fase sugerida:
 
-1. **[Nome da phase]** - [racional]
+1. **[Nome da fase]** - [racional]
    - Addresses: [features do FUNCIONALIDADES.md]
    - Avoids: [pitfall do ARMADILHAS.md]
 
-2. **[Nome da phase]** - [racional]
+2. **[Nome da fase]** - [racional]
    ...
 
 **Racional de ordenação de fases:**
 - [Por que esta ordem baseada em dependências]
 
 **Flags de pesquisa para fases:**
-- Phase [X]: Provavelmente precisa de pesquisa mais profunda (razão)
-- Phase [Y]: Padrões padrão, improvável que precise de pesquisa
+- Fase [X]: Provavelmente precisa de pesquisa mais profunda (razão)
+- Fase [Y]: Padrões padrão, improvável que precise de pesquisa
 
 ## Confidence Assessment
 
@@ -229,7 +229,7 @@ Baseado na pesquisa, estrutura de phase sugerida:
 ## Gaps a Endereçar
 
 - [Áreas onde a pesquisa foi inconclusiva]
-- [Tópicos que precisam de pesquisa específica de phase depois]
+- [Tópicos que precisam de pesquisa específica de fase depois]
 ```
 
 ## STACK.md
@@ -416,9 +416,9 @@ Erros que causam rewrites ou issues maiores.
 **O que dá errado:** [descrição]
 **Prevenção:** [como evitar]
 
-## Phase-Specific Warnings
+## Fase-Specific Warnings
 
-| Phase Topic | Pitfall Provável | Mitigação |
+| Fase Topic | Pitfall Provável | Mitigação |
 |-------------|---------------|------------|
 | [topic] | [pitfall] | [approach] |
 
@@ -579,11 +579,11 @@ Em `comandos/pesquisa/`:
 
 ### Implicações de Roadmap
 
-[Recomendações chave para estrutura de phase]
+[Recomendações chave para estrutura de fase]
 
 ### Questões Abertas
 
-[Gaps que não puderam ser resolvidos, precisam de pesquisa específica de phase depois]
+[Gaps que não puderam ser resolvidos, precisam de pesquisa específica de fase depois]
 ```
 
 ## Pesquisa Bloqueada

@@ -24,8 +24,8 @@ describe('Installation Integration Tests', () => {
     process.env = originalEnv;
   });
 
-  describe('Global Installation', () => {
-    it('should install Claude globally', () => {
+  describe('Local Installation', () => {
+    it('should install Claude locally', () => {
       const globalDir = path.join(tempDir, '.claude');
       const setupDirs = [globalDir, path.join(globalDir, 'hooks')];
 
@@ -41,7 +41,7 @@ describe('Installation Integration Tests', () => {
       assert.strictEqual(fs.readFileSync(path.join(globalDir, 'VERSION'), 'utf8'), '2.6.1');
     });
 
-    it('should install OpenCode globally with XDG structure', () => {
+    it('should install OpenCode locally with XDG structure', () => {
       const globalDir = path.join(tempDir, '.config', 'opencode');
       const setupDirs = [globalDir, path.join(globalDir, 'hooks')];
 
@@ -55,7 +55,7 @@ describe('Installation Integration Tests', () => {
       assert.strictEqual(fs.existsSync(path.join(globalDir, 'hooks')), true);
     });
 
-    it('should install Gemini globally', () => {
+    it('should install Gemini locally', () => {
       const globalDir = path.join(tempDir, '.gemini');
       const setupDirs = [globalDir, path.join(globalDir, 'hooks')];
 
@@ -69,7 +69,7 @@ describe('Installation Integration Tests', () => {
       assert.strictEqual(fs.existsSync(path.join(globalDir, 'hooks')), true);
     });
 
-    it('should install Codex globally', () => {
+    it('should install Codex locally', () => {
       const globalDir = path.join(tempDir, '.codex');
       const setupDirs = [globalDir, path.join(globalDir, 'hooks')];
 

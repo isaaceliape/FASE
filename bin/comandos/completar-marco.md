@@ -45,7 +45,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
    {Se não houver v{{version}}-MARCO-AUDITORIA.md:}
    ⚠ Nenhum audit de milestone encontrado. Rode `/fase-audit-milestone` primeiro para verificar
-   cobertura de requisitos, integração cross-phase e fluxos E2E.
+   cobertura de requisitos, integração cross-fase e fluxos E2E.
 
    {Se audit tem gaps:}
    ⚠ Audit do milestone encontrou gaps. Rode `/fase-plan-milestone-gaps` para criar
@@ -70,7 +70,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
 3. **Extraia accomplishments:**
 
-   - Leia todos arquivos phase SUMARIO.md no range do milestone
+   - Leia todos arquivos fase SUMARIO.md no range do milestone
    - Extraia 4-6 key accomplishments
    - Apresente para aprovação
 

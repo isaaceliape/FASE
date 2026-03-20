@@ -11,7 +11,7 @@ allowed-tools:
 <objective>
 Adicionar uma nova fase inteira ao final do milestone atual no roteiro.
 
-Roteia para o workflow add-phase que gerencia:
+Roteia para o workflow add-fase que gerencia:
 - Cálculo do número da fase (próximo inteiro sequencial)
 - Criação de diretório com geração de slug
 - Atualizações na estrutura do roteiro
@@ -22,11 +22,11 @@ Roteia para o workflow add-phase que gerencia:
 <context>
 Argumentos: $ARGUMENTS (descrição da fase)
 
-Roadmap e state são resolvidos in-workflow via `init phase-op` e tool calls direcionadas.
+Roadmap e state são resolvidos in-workflow via `init fase-op` e tool calls direcionadas.
 </context>
 
 <process>
-**Siga o workflow add-phase** de .
+**Siga o workflow add-fase** de .
 
 O workflow gerencia toda a lógica incluindo:
 1. Parse e validação de argumentos

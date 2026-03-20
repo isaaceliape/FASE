@@ -19,10 +19,10 @@ Output: Fase deletada, todas fases subsequentes renumeradas, git commit como reg
 <context>
 Fase: $ARGUMENTS
 
-Roadmap e estado são resolvidos no-workflow via `init phase-op` e leituras direcionadas.
+Roadmap e estado são resolvidos no-workflow via `init fase-op` e leituras direcionadas.
 </context>
 
 <process>
-Executar workflow remove-phase em do início ao fim.
+Executar workflow remove-fase em do início ao fim.
 Preservar todos validation gates (checagem de fase futura, checagem de trabalho), lógica de renumeração e commit.
 </process>

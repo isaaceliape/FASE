@@ -1,7 +1,7 @@
 ---
 name: fase:listar-premissas
-description: Expõe suposições do Claude sobre abordagem da phase antes do planning
-argument-hint: "[phase]"
+description: Expõe suposições do Claude sobre abordagem da fase antes do planning
+argument-hint: "[fase]"
 allowed-tools:
   - Read
   - Bash
@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <objective>
-Analise uma phase e apresente suposições do Claude sobre abordagem técnica, ordem de implementação, limites de escopo, áreas de risco e dependências.
+Analise uma fase e apresente suposições do Claude sobre abordagem técnica, ordem de implementação, limites de escopo, áreas de risco e dependências.
 
 Propósito: Ajudar usuários a ver o que Claude pensa ANTES do planning começar — permitindo course correction cedo quando suposições estão erradas.
 Output: Apenas output conversacional (sem criação de arquivo) — termina com prompt "O que você acha?"
@@ -18,15 +18,15 @@ Output: Apenas output conversacional (sem criação de arquivo) — termina com 
 
 
 <context>
-Phase number: $ARGUMENTS (required)
+Fase number: $ARGUMENTS (required)
 
 Estado do projeto e roteiro são carregados in-workflow usando reads direcionados.
 </context>
 
 <process>
-1. Valide argumento phase number (erro se ausente ou inválido)
-2. Cheque se phase existe no roteiro
-3. Siga workflow list-phase-assumptions.md:
+1. Valide argumento fase number (erro se ausente ou inválido)
+2. Cheque se fase existe no roteiro
+3. Siga workflow list-fase-assumptions.md:
    - Analise descrição do roteiro
    - exponha suposições sobre: abordagem técnica, ordem de implementação, escopo, riscos, dependências
    - Apresente suposições claramente
@@ -36,8 +36,8 @@ Estado do projeto e roteiro são carregados in-workflow usando reads direcionado
 
 <success_criteria>
 
-- Phase validada contra roteiro
+- Fase validada contra roteiro
 - Suposições expostas em cinco áreas
 - Usuário prompted para feedback
-- Usuário sabe próximos passos (discutir context, planejar phase, ou corrigir suposições)
+- Usuário sabe próximos passos (discutir context, planejar fase, ou corrigir suposições)
   </success_criteria>

@@ -1,6 +1,6 @@
 <div align="center">
 
-# F.A.S.E. v2.7.1
+# F.A.S.E. v3.0.0
 
 ## Framework de Automação Sem Enrolação
 
@@ -62,28 +62,25 @@ npx fase-ai
 
 O instalador perguntará:
 1. **Runtime** — qual assistente você quer usar (Claude Code, OpenCode, Gemini, Codex, ou todos)
-2. **Escopo** — global (todos os projetos) ou local (apenas projeto atual)
+2. **Escopo** — local (apenas projeto atual)
 
 ### Instalação Direta por Runtime
 
 ```bash
-# Claude Code global (padrão)
-npx fase-ai --claude --global
+# Claude Code
+npx fase-ai --claude
 
-# OpenCode global
-npx fase-ai --opencode --global
+# OpenCode
+npx fase-ai --opencode
 
-# Gemini global
-npx fase-ai --gemini --global
+# Gemini
+npx fase-ai --gemini
 
-# Codex global
-npx fase-ai --codex --global
+# Codex
+npx fase-ai --codex
 
 # Todos os runtimes
-npx fase-ai --all --global
-
-# Instalação local (apenas no projeto atual)
-npx fase-ai --claude --local
+npx fase-ai --all
 ```
 
 ### Verificar Instalação

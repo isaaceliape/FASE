@@ -21,7 +21,7 @@ Gerar testes unit e E2E para uma fase completada, usando seu SUMARIO.md, CONTEXT
 
 Analisa arquivos de implementação, classifica em TDD (unit), E2E (browser), ou Skip categories, apresenta um plano de teste para aprovação do usuário, então gera testes seguindo convenções RED-GREEN.
 
-Output: Arquivos de teste commitados com mensagem `test(phase-{N}): add unit and E2E tests from add-tests command`
+Output: Arquivos de teste commitados com mensagem `test(fase-{N}): add unit and E2E tests from add-tests command`
 </objective>
 
 

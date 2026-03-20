@@ -248,7 +248,7 @@ O FASE armazena configurações do projeto em `.planning/config.json`. Configure
   },
   "git": {
     "branching_strategy": "none",
-    "phase_branch_template": "fase/fase-{phase}-{slug}",
+    "phase_branch_template": "fase/fase-{fase}-{slug}",
     "milestone_branch_template": "fase/{milestone}-{slug}"
   }
 }
@@ -286,8 +286,8 @@ Desabilite essas opções para acelerar fases em domínios familiares ou para ec
 
 | Configuração | Opções | Padrão | O que Controla |
 |-------------|--------|--------|----------------|
-| `git.branching_strategy` | `none`, `phase`, `milestone` | `none` | Quando e como as branches são criadas |
-| `git.phase_branch_template` | String template | `fase/fase-{phase}-{slug}` | Nome da branch para estratégia por fase |
+| `git.branching_strategy` | `none`, `fase`, `milestone` | `none` | Quando e como as branches são criadas |
+| `git.phase_branch_template` | String template | `fase/fase-{fase}-{slug}` | Nome da branch para estratégia por fase |
 | `git.milestone_branch_template` | String template | `fase/{milestone}-{slug}` | Nome da branch para estratégia por marco |
 
 **Estratégias de ramificação explicadas:**
@@ -295,10 +295,10 @@ Desabilite essas opções para acelerar fases em domínios familiares ou para ec
 | Estratégia | Cria Branch | Escopo | Melhor Para |
 |------------|------------|--------|-------------|
 | `none` | Nunca | N/A | Desenvolvimento solo, projetos simples |
-| `phase` | Em cada `executar-fase` | Uma fase por branch | Revisão de código por fase, reversão granular |
+| `fase` | Em cada `executar-fase` | Uma fase por branch | Revisão de código por fase, reversão granular |
 | `milestone` | No primeiro `executar-fase` | Todas as fases compartilham uma branch | Branches de lançamento, PR por versão |
 
-**Variáveis de modelo:** `{phase}` = número com zero à esquerda (ex.: "03"), `{slug}` = nome em minúsculas com hífens, `{milestone}` = versão (ex.: "v1.0").
+**Variáveis de modelo:** `{fase}` = número com zero à esquerda (ex.: "03"), `{slug}` = nome em minúsculas com hífens, `{milestone}` = versão (ex.: "v1.0").
 
 ### Perfis de Modelo (Por Agente)
 
@@ -307,7 +307,7 @@ Desabilite essas opções para acelerar fases em domínios familiares ou para ec
 | fase-planner | Opus | Opus | Sonnet |
 | fase-roadmapper | Opus | Sonnet | Sonnet |
 | fase-executor | Opus | Sonnet | Sonnet |
-| fase-phase-researcher | Opus | Sonnet | Haiku |
+| fase-fase-researcher | Opus | Sonnet | Haiku |
 | fase-project-researcher | Opus | Sonnet | Haiku |
 | fase-research-synthesizer | Sonnet | Sonnet | Haiku |
 | fase-debugger | Opus | Sonnet | Sonnet |

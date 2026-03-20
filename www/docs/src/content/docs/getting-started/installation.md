@@ -16,26 +16,26 @@ npx fase-ai
 O instalador vai te perguntar:
 
 1. **Runtime** — Claude Code, OpenCode, Gemini, Codex, ou todos
-2. **Localização** — Global (todos os projetos) ou local (projeto atual)
+2. **Localização** — local (projeto atual) - FASE agora exige instalação local por padrão
 
 ## Instalação com Flags (Não-Interativa)
 
-### Claude Code Global
+### Claude Code
 
 ```bash
-npx fase-ai --claude --global
+npx fase-ai --claude
 ```
 
-### OpenCode Local
+### OpenCode
 
 ```bash
-npx fase-ai --opencode --local
+npx fase-ai --opencode
 ```
 
-### Todos os Runtimes Global
+### Todos os Runtimes
 
 ```bash
-npx fase-ai --all --global
+npx fase-ai --all
 ```
 
 ## Verificar Instalação
@@ -50,15 +50,14 @@ Se o comando de ajuda funcionar, FASE está pronto para usar!
 
 ## Via CLI Diretamente
 
-Se instalado globalmente, você pode usar:
+FASE é instalado localmente no seu projeto. Para usar dentro do seu projeto:
 
 ```bash
-fase-tools <comando> [args]
+node .claude/fase/bin/fase-tools.cjs <comando> [args]
 
 # Exemplos:
-fase-tools state json
-fase-tools resolve-model planner
-fase-tools find-phase 1
+node .claude/fase/bin/fase-tools.cjs state json
+node .claude/fase/bin/fase-tools.cjs resolve-model planner
 ```
 
 ## Requisitos
