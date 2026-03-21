@@ -75,6 +75,22 @@ docs/
 
 ## 📈 Melhorias Documentadas
 
+### v3.2.0 (Março 2026)
+
+**Path Standardization & Multi-Runtime Architecture**
+- ✅ Todos os comandos e agentes agora usam padrão universal `@~/.fase/`
+- ✅ Installer converte automaticamente para caminhos específicos de cada runtime
+- ✅ 129 testes unitários com cobertura completa
+- ✅ Documentação expandida sobre path standardization
+- ✅ Renomeação de arquivos: `.pt.md` → `.md` para consistência
+
+**Novos Documentos:**
+- 📚 [TEST_UPDATES_SUMMARY.md](../TEST_UPDATES_SUMMARY.md) - Rastreamento detalhado de mudanças
+- 📚 [COMMAND_PATHS.md](../COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
+- 📚 Seções expandidas em [bin/test/README.md](../bin/test/README.md) e [bin/test/TESTING.md](../bin/test/TESTING.md)
+
+**Ver também:** [CHANGELOG.md](../CHANGELOG.md) para histórico completo de versões
+
 ### v2.4.0 (Março 2026)
 
 - ✅ Adicionado pre-commit hooks para validação de pacote npm

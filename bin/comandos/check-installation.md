@@ -34,26 +34,26 @@ For each runtime, verify if directory exists:
 
 **Claude Code:**
 ```bash
-test -d ~/.claude && echo "EXISTS" || echo "NOT_EXISTS"
-test -f ~/.claude/settings.json && echo "EXISTS" || echo "NOT_EXISTS"
+test -d ./.claude && echo "EXISTS" || echo "NOT_EXISTS"
+test -f ./.claude/settings.json && echo "EXISTS" || echo "NOT_EXISTS"
 ```
 
 **OpenCode:**
 ```bash
-test -d ~/.config/opencode && echo "EXISTS" || echo "NOT_EXISTS"
-test -f ~/.config/opencode/opencode.json && echo "EXISTS" || echo "NOT_EXISTS"
+test -d ./.opencode && echo "EXISTS" || echo "NOT_EXISTS"
+test -f ./.opencode/opencode.json && echo "EXISTS" || echo "NOT_EXISTS"
 ```
 
 **Gemini:**
 ```bash
-test -d ~/.gemini && echo "EXISTS" || echo "NOT_EXISTS"
-test -f ~/.gemini/settings.json && echo "EXISTS" || echo "NOT_EXISTS"
+test -d ./.gemini && echo "EXISTS" || echo "NOT_EXISTS"
+test -f ./.gemini/settings.json && echo "EXISTS" || echo "NOT_EXISTS"
 ```
 
 **Codex:**
 ```bash
-test -d ~/.codex && echo "EXISTS" || echo "NOT_EXISTS"
-test -f ~/.codex/config.toml && echo "EXISTS" || echo "NOT_EXISTS"
+test -d ./.codex && echo "EXISTS" || echo "NOT_EXISTS"
+test -f ./.codex/config.toml && echo "EXISTS" || echo "NOT_EXISTS"
 ```
 
 ### 4. Check Installed FASE Commands
@@ -61,27 +61,27 @@ For each configured runtime, list FASE commands:
 
 **Claude Code:**
 ```bash
-ls ~/.claude/commands/fase-*.md 2>/dev/null | wc -l || echo "0"
+ls ./.claude/commands/fase-*.md 2>/dev/null | wc -l || echo "0"
 ```
 
 **OpenCode:**
 ```bash
-ls ~/.config/opencode/command/fase-*.md 2>/dev/null | wc -l || echo "0"
+ls ./.opencode/command/fase-*.md 2>/dev/null | wc -l || echo "0"
 ```
 
 **Gemini:**
 ```bash
-ls ~/.gemini/commands/fase-*.toml 2>/dev/null | wc -l || echo "0"
+ls ./.gemini/commands/fase-*.toml 2>/dev/null | wc -l || echo "0"
 ```
 
 **Codex:**
 ```bash
-ls ~/.codex/skills/fase-*/SKILL.md 2>/dev/null | wc -l || echo "0"
+ls ./.codex/skills/fase-*/SKILL.md 2>/dev/null | wc -l || echo "0"
 ```
 
 ### 5. Check FASE Hooks (if applicable)
 ```bash
-ls ~/.claude/hooks/fase-*.js 2>/dev/null | wc -l || echo "0"
+ls ./.claude/hooks/fase-*.js 2>/dev/null | wc -l || echo "0"
 ```
 
 ### 6. Check Workflows Files

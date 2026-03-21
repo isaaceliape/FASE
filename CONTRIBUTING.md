@@ -40,7 +40,7 @@ comandos-{idioma}/
 
 Adicionar um novo comando ao FASE:
 
-1. **Criar arquivo** em `bin/comandos/seu-comando.pt.md`
+1. **Criar arquivo** em `comandos/seu-comando.md`
 
 ```markdown
 ---

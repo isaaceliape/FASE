@@ -915,6 +915,9 @@ function convertClaudeToOpencodeFrontmatter(content) {
   // Replace ~/.claude and $HOME/.claude with OpenCode's config location
   convertedContent = convertedContent.replace(/~\/\.claude\b/g, '~/.config/opencode');
   convertedContent = convertedContent.replace(/\$HOME\/\.claude\b/g, '$HOME/.config/opencode');
+  // Replace ~/.fase and $HOME/.fase with OpenCode's config location
+  convertedContent = convertedContent.replace(/~\/\.fase\b/g, '~/.config/opencode/fase');
+  convertedContent = convertedContent.replace(/\$HOME\/\.fase\b/g, '$HOME/.config/opencode/fase');
   // Replace general-purpose subagent type with OpenCode's equivalent "general"
   convertedContent = convertedContent.replace(/subagent_type="general-purpose"/g, 'subagent_type="general"');
 
@@ -1099,10 +1102,14 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       const globalClaudeHomeRegex = /\$HOME\/\.claude\//g;
       const localClaudeRegex = /\.\/\.claude\//g;
       const opencodeDirRegex = /~\/\.opencode\//g;
+      const globalFaseRegex = /~\/\.fase\//g;
+      const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(opencodeDirRegex, pathPrefix);
+      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
+      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeToOpencodeFrontmatter(content);
 
@@ -1160,10 +1167,14 @@ function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtim
       const globalClaudeHomeRegex = /\$HOME\/\.claude\//g;
       const localClaudeRegex = /\.\/\.claude\//g;
       const codexDirRegex = /~\/\.codex\//g;
+      const globalFaseRegex = /~\/\.fase\//g;
+      const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(codexDirRegex, pathPrefix);
+      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
+      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeCommandToCodexSkill(content, skillName);
 
@@ -1207,9 +1218,13 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
       const globalClaudeRegex = /~\/\.claude\//g;
       const globalClaudeHomeRegex = /\$HOME\/\.claude\//g;
       const localClaudeRegex = /\.\/\.claude\//g;
+      const globalFaseRegex = /~\/\.fase\//g;
+      const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${dirName}/`);
+      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
+      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
       content = processAttribution(content, getCommitAttribution(runtime));
 
       // Convert frontmatter for opencode compatibility

@@ -1,6 +1,6 @@
 <div align="center">
 
-# F.A.S.E. v3.0.0
+# F.A.S.E. v3.2.0
 
 ## Framework de Automação Sem Enrolação
 
@@ -116,6 +116,30 @@ Ou via npm:
 ```bash
 npm install -g fase-ai@latest
 ```
+
+---
+
+## ✨ Novidades em v3.2.0
+
+### 🎯 Path Standardization
+Todos os comandos e agentes agora usam um padrão universal `@~/.fase/` que é convertido automaticamente para caminhos específicos de cada runtime durante a instalação:
+
+- **Claude Code**: `~/.claude/fase/`
+- **OpenCode**: `~/.config/opencode/fase/`
+- **Gemini**: `~/.gemini/fase/`
+- **Codex**: `~/.codex/fase/`
+
+Isso garante que FASE funciona identicamente em todos os 4 runtimes, sem duplicação de código.
+
+### 📈 Melhorias de Testes
+- ✅ 129 testes unitários com cobertura completa
+- ✅ Testes para path standardization em todos os runtimes
+- ✅ Documentação expandida de testes
+
+### 📚 Documentação Melhorada
+- ✅ Novos documentos explicando path standardization
+- ✅ TEST_UPDATES_SUMMARY.md com rastreamento detalhado
+- ✅ Seções expandidas em guias de testes
 
 ---
 

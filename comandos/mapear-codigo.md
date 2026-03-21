@@ -20,7 +20,7 @@ Output: pasta `.planejamento/codebase/` com 7 documentos estruturados sobre o es
 </objective>
 
 <execution_context>
-@~/.claude/fase/workflows/map-codebase.md
+@~/.fase/workflows/map-codebase.md
 </execution_context>
 
 <context>

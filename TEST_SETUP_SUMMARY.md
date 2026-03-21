@@ -67,6 +67,42 @@ Comprehensive unit test suite for FASE (Framework de Automação Sem Enrolação
 - **`bin/test/README.md`** - Quick start guide with examples
 - **`bin/test/TESTING.md`** - Comprehensive testing guide (2000+ lines)
 
+## 🔄 Path Standardization & Installer Tests
+
+As of March 2026, FASE commands use standardized, environment-agnostic path references:
+
+### Path Convention
+- **Source files** (`comandos/*.md`, `agentes/*.md`): Use `@~/.fase/` pattern for universal workflow/template references
+- **Installation**: The installer (`bin/install.js`) converts `@~/.fase/` to runtime-specific paths:
+  - **Claude Code**: `~/.claude/fase/`
+  - **OpenCode**: `~/.config/opencode/fase/`
+  - **Gemini**: `~/.gemini/fase/`
+  - **Codex**: `~/.codex/fase/`
+
+### Installer Path Replacement Logic
+The installer applies path replacements in three functions:
+
+1. **`copyFlattenedCommands`** - for OpenCode (flat structure)
+2. **`copyCommandsAsCodexSkills`** - for Codex (skill structure)
+3. **`copyWithPathReplacement`** - for Claude Code and Gemini
+
+Replacement patterns:
+- `~/\.fase/` → `<pathPrefix>fase/` (runtime-specific path)
+- `$HOME/.fase/` → `<homePrefix>fase/` (home-relative path)
+
+### Test Coverage for Path Standardization
+- ✅ Path replacement in all three copy functions
+- ✅ OpenCode-specific path conversion (`~/.config/opencode/`)
+- ✅ Multi-runtime compatibility verification
+- ✅ Command file consistency (32 commands all using `@~/.fase/`)
+- ✅ Agent file consistency (12 agents all using `@~/.fase/`)
+- ✅ No remaining `.pt.md` file references (all renamed to `.md`)
+
+### Related Test Files
+- **`testes/phase.test.cjs`** - Validates execution context paths
+- **`testes/agent-frontmatter.test.cjs`** - Validates agent path references
+- **`bin/test/install.test.js`** - Basic installation tests
+
 ## 📊 Test Statistics
 
 ```

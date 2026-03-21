@@ -22,7 +22,7 @@ elif [ -d "$HOME/.opencode/fase-local-patches" ]; then
 elif [ -d "$HOME/.gemini/fase-local-patches" ]; then
   PATCHES_DIR="$HOME/.gemini/fase-local-patches"
 else
-  PATCHES_DIR="$HOME/.claude/fase-local-patches"
+  PATCHES_DIR="$HOME/.fase-local-patches"
 fi
 # Fallback para instalação local — verificar todos os diretórios runtime
 if [ ! -d "$PATCHES_DIR" ]; then

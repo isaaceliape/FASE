@@ -1,46 +1,48 @@
 #!/bin/bash
 
-# Script para renomear commands do FASE. para português brasileiro
+# Script para renomear commands do FASE para português brasileiro
+# NOTA: Este script é histórico. Os comandos já estão nomeados em PT-BR
+# Usar este script como referência para novas traduções de idiomas
 # Usage: ./renomear-comandos.sh
 
-cd "$(dirname "$0")/../commands/fase"
+cd "$(dirname "$0")/../comandos"
 
 echo "🔄 Renomeando commands para PT-BR..."
 echo ""
 
-# Mapeamento: original → novo
+# Mapeamento: original (English) → novo (Português BR)
 declare -A MAPEAMENTO=(
-    ["help.pt.md"]="ajuda.pt.md"
-    ["new-project.pt.md"]="novo-projeto.pt.md"
-    ["plan-phase.pt.md"]="planejar-fase.pt.md"
-    ["execute-phase.pt.md"]="executar-fase.pt.md"
-    ["settings.pt.md"]="configuracoes.pt.md"
-    ["new-milestone.pt.md"]="novo-marco.pt.md"
-    ["add-phase.pt.md"]="adicionar-fase.pt.md"
-    ["insert-phase.pt.md"]="inserir-fase.pt.md"
-    ["remove-phase.pt.md"]="remover-fase.pt.md"
-    ["pause-work.pt.md"]="pausar-trabalho.pt.md"
-    ["resume-work.pt.md"]="retomar-trabalho.pt.md"
-    ["progress.pt.md"]="progresso.pt.md"
-    ["research-phase.pt.md"]="pesquisar-fase.pt.md"
-    ["map-codebase.pt.md"]="mapear-codigo.pt.md"
-    ["list-phase-assumptions.pt.md"]="listar-premissas.pt.md"
-    ["verify-work.pt.md"]="verificar-trabalho.pt.md"
-    ["validate-phase.pt.md"]="validar-fase.pt.md"
-    ["audit-milestone.pt.md"]="auditar-marco.pt.md"
-    # debug.pt.md permanece igual
-    ["check-todos.pt.md"]="checar-todos.pt.md"
-    ["add-todo.pt.md"]="adicionar-todo.pt.md"
-    ["add-tests.pt.md"]="adicionar-testes.pt.md"
-    ["discuss-phase.pt.md"]="discutir-fase.pt.md"
-    ["complete-milestone.pt.md"]="completar-marco.pt.md"
-    ["plan-milestone-gaps.pt.md"]="planejar-lacunas.pt.md"
-    ["cleanup.pt.md"]="limpar.pt.md"
-    ["health.pt.md"]="saude.pt.md"
-    ["update.pt.md"]="atualizar.pt.md"
-    ["quick.pt.md"]="rapido.pt.md"
-    ["reapply-patches.pt.md"]="reaplicar-patches.pt.md"
-    ["set-profile.pt.md"]="definir-perfil.pt.md"
+    ["help.md"]="ajuda.md"
+    ["new-project.md"]="novo-projeto.md"
+    ["plan-phase.md"]="planejar-fase.md"
+    ["execute-phase.md"]="executar-fase.md"
+    ["settings.md"]="configuracoes.md"
+    ["new-milestone.md"]="novo-marco.md"
+    ["add-phase.md"]="adicionar-fase.md"
+    ["insert-phase.md"]="inserir-fase.md"
+    ["remove-phase.md"]="remover-fase.md"
+    ["pause-work.md"]="pausar-trabalho.md"
+    ["resume-work.md"]="retomar-trabalho.md"
+    ["progress.md"]="progresso.md"
+    ["research-phase.md"]="pesquisar-fase.md"
+    ["map-codebase.md"]="mapear-codigo.md"
+    ["list-phase-assumptions.md"]="listar-premissas.md"
+    ["verify-work.md"]="verificar-trabalho.md"
+    ["validate-phase.md"]="validar-fase.md"
+    ["audit-milestone.md"]="auditar-marco.md"
+    # debug.md permanece igual
+    ["check-todos.md"]="checar-tarefas.md"
+    ["add-todo.md"]="adicionar-tarefa.md"
+    ["add-tests.md"]="adicionar-testes.md"
+    ["discuss-phase.md"]="discutir-fase.md"
+    ["complete-milestone.md"]="completar-marco.md"
+    ["plan-milestone-gaps.md"]="planejar-lacunas.md"
+    ["cleanup.md"]="limpar.md"
+    ["health.md"]="saude.md"
+    ["update.md"]="atualizar.md"
+    ["quick.md"]="rapido.md"
+    ["reapply-patches.md"]="reaplicar-patches.md"
+    ["set-profile.md"]="definir-perfil.md"
 )
 
 # Renomear arquivos
@@ -58,4 +60,4 @@ echo ""
 echo "🎉 Renomeação completa!"
 echo ""
 echo "📋 Lista de novos comandos:"
-ls -1 *.pt.md | sort
+ls -1 *.md | sort

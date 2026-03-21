@@ -17,11 +17,11 @@ const AGENTS_DIR = path.join(__dirname, '..', 'agentes');
 const COMMANDS_DIR = path.join(__dirname, '..', 'comandos');
 
 const ALL_AGENTS = fs.readdirSync(AGENTS_DIR)
-  .filter(f => f.startsWith('fase-') && f.endsWith('.pt.md'))
-  .map(f => f.replace('.pt.md', ''));
+  .filter(f => f.startsWith('fase-') && f.endsWith('.md'))
+  .map(f => f.replace('.md', ''));
 
 const FILE_WRITING_AGENTS = ALL_AGENTS.filter(name => {
-  const content = fs.readFileSync(path.join(AGENTS_DIR, name + '.pt.md'), 'utf-8');
+  const content = fs.readFileSync(path.join(AGENTS_DIR, name + '.md'), 'utf-8');
   const toolsMatch = content.match(/^tools:\s*(.+)$/m);
   return toolsMatch && toolsMatch[1].includes('Write');
 });
@@ -33,7 +33,7 @@ const READ_ONLY_AGENTS = ALL_AGENTS.filter(name => !FILE_WRITING_AGENTS.includes
 describe('HDOC: anti-heredoc instruction', () => {
   for (const agent of FILE_WRITING_AGENTS) {
     test(`${agent} has anti-heredoc instruction`, () => {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       assert.ok(
         content.includes("never use `Bash(cat << 'EOF')` or heredoc"),
         `${agent} missing anti-heredoc instruction`
@@ -43,7 +43,7 @@ describe('HDOC: anti-heredoc instruction', () => {
 
   test('no active heredoc patterns in any agent file', () => {
     for (const agent of ALL_AGENTS) {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       // Match actual heredoc commands (not references in anti-heredoc instruction)
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
@@ -64,7 +64,7 @@ describe('HDOC: anti-heredoc instruction', () => {
 describe('SKILL: skills frontmatter', () => {
   for (const agent of ALL_AGENTS) {
     test(`${agent} has skills: in frontmatter`, () => {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       const frontmatter = content.split('---')[1] || '';
       assert.ok(
         frontmatter.includes('skills:'),
@@ -75,7 +75,7 @@ describe('SKILL: skills frontmatter', () => {
 
   test('skill references follow naming convention', () => {
     for (const agent of ALL_AGENTS) {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       const frontmatter = content.split('---')[1] || '';
       const skillLines = frontmatter.split('\n').filter(l => l.trim().startsWith('- fase-'));
       for (const line of skillLines) {
@@ -91,7 +91,7 @@ describe('SKILL: skills frontmatter', () => {
 describe('HOOK: hooks frontmatter pattern', () => {
   for (const agent of FILE_WRITING_AGENTS) {
     test(`${agent} has commented hooks pattern`, () => {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       const frontmatter = content.split('---')[1] || '';
       assert.ok(
         frontmatter.includes('# hooks:'),
@@ -102,7 +102,7 @@ describe('HOOK: hooks frontmatter pattern', () => {
 
   for (const agent of READ_ONLY_AGENTS) {
     test(`${agent} (read-only) does not need hooks`, () => {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       const frontmatter = content.split('---')[1] || '';
       // Read-only agents may or may not have hooks — just verify they parse
       assert.ok(frontmatter.includes('name:'), `${agent} has valid frontmatter`);
@@ -120,7 +120,7 @@ describe('SPAWN: spawn type consistency', () => {
       const files = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
       for (const file of files) {
         const content = fs.readFileSync(path.join(dir, file), 'utf-8');
-        const hasWorkaround = content.includes('First, read ~/.claude/agentes/fase-');
+        const hasWorkaround = content.includes('First, read @~/.fase/agentes/fase-');
         assert.ok(
           !hasWorkaround,
           `${file} still has "First, read agent .md" workaround — use named subagent_type instead`
@@ -159,7 +159,7 @@ describe('SPAWN: spawn type consistency', () => {
 describe('AGENT: required frontmatter fields', () => {
   for (const agent of ALL_AGENTS) {
     test(`${agent} has name, description, tools, color`, () => {
-      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.pt.md'), 'utf-8');
+      const content = fs.readFileSync(path.join(AGENTS_DIR, agent + '.md'), 'utf-8');
       const frontmatter = content.split('---')[1] || '';
       assert.ok(frontmatter.includes('name:'), `${agent} missing name:`);
       assert.ok(frontmatter.includes('description:'), `${agent} missing description:`);

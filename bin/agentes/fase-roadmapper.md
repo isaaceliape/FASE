@@ -336,11 +336,11 @@ Após criação do roteiro, REQUISITOS.md é atualizado com mapeamentos de fases
 | 2. Nome | 0/2 | Not started | - |
 ```
 
-Template completo: `~/.claude/fase/templates/roteiro.md`
+Template completo: `@~/.fase/templates/roteiro.md`
 
 ## Estrutura do ESTADO.md
 
-Use template de `~/.claude/fase/templates/state.md`.
+Use template de `@~/.fase/templates/state.md`.
 
 Seções principais:
 - Project Reference (core value, foco atual)

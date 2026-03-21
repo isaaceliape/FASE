@@ -21,7 +21,7 @@ Roteia para o workflow check-todos que gerencia:
 </objective>
 
 <execution_context>
-@~/.claude/fase/workflows/check-todos.md
+@~/.fase/workflows/check-todos.md
 </execution_context>
 
 <context>
@@ -31,7 +31,7 @@ Estado de tarefas e correlação com roadmap são carregados in-workflow usando 
 </context>
 
 <process>
-**Siga o workflow check-todos** de `@~/.claude/fase/workflows/check-todos.md`.
+**Siga o workflow check-todos** de `@~/.fase/workflows/check-todos.md`.
 
 O workflow gerencia toda a lógica incluindo:
 1. Checagem de existência de tarefas

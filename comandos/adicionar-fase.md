@@ -19,7 +19,7 @@ Roteia para o workflow add-phase que gerencia:
 </objective>
 
 <execution_context>
-@~/.claude/fase/workflows/add-phase.md
+@~/.fase/workflows/add-phase.md
 </execution_context>
 
 <context>
@@ -29,7 +29,7 @@ Roadmap e state são resolvidos in-workflow via `init phase-op` e tool calls dir
 </context>
 
 <process>
-**Siga o workflow add-phase** de `@~/.claude/fase/workflows/add-phase.md`.
+**Siga o workflow add-phase** de `@~/.fase/workflows/add-phase.md`.
 
 O workflow gerencia toda a lógica incluindo:
 1. Parse e validação de argumentos

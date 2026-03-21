@@ -241,6 +241,37 @@ Default Path:   /Users/<user>/.codex
 Hook Example:   /Users/<user>/.codex/hooks/my-hook.js
 ```
 
+## 🔄 Path Standardization Tests
+
+FASE commands and agents use standardized, environment-agnostic path references that are converted during installation:
+
+### Source File Convention
+- **Location**: `comandos/*.md` and `agentes/*.md`
+- **Path Pattern**: `@~/.fase/workflows/`, `@~/.fase/templates/`, `$HOME/.fase/`
+- **Purpose**: Universal references that work across all runtimes
+
+### Installer Path Replacement
+The installer (`bin/install.js`) converts source paths to runtime-specific locations:
+
+| Runtime | Source Pattern | Installed Path |
+|---------|---|---|
+| Claude Code | `@~/.fase/` | `~/.claude/fase/` |
+| OpenCode | `@~/.fase/` | `~/.config/opencode/fase/` |
+| Gemini | `@~/.fase/` | `~/.gemini/fase/` |
+| Codex | `@~/.fase/` | `~/.codex/fase/` |
+
+### Test Coverage
+- ✅ All 32 command files use `@~/.fase/` pattern
+- ✅ All 12 agent files use `@~/.fase/` pattern
+- ✅ No remaining `.pt.md` file references (all renamed to `.md`)
+- ✅ Path replacement works in all three installer copy functions
+- ✅ OpenCode receives correctly formatted `~/.config/opencode/fase/` paths
+
+### Related Tests
+- **`testes/phase.test.cjs`** - Validates execution context path formats
+- **`testes/agent-frontmatter.test.cjs`** - Validates agent file consistency
+- **`bin/test/install.test.js`** - Tests basic path construction and file operations
+
 ## 🛠️ Common Commands
 
 ### Clean Installation

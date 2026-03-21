@@ -25,7 +25,7 @@ Output: Arquivos de teste commitados com mensagem `test(phase-{N}): add unit and
 </objective>
 
 <execution_context>
-@~/.claude/fase/workflows/add-tests.md
+@~/.fase/workflows/add-tests.md
 </execution_context>
 
 <context>
@@ -36,6 +36,6 @@ Fase: $ARGUMENTS
 </context>
 
 <process>
-Execute o workflow add-tests de @~/.claude/fase/workflows/add-tests.md ponta a ponta.
+Execute o workflow add-tests de @~/.fase/workflows/add-tests.md ponta a ponta.
 Preserve todos os gates do workflow (aprovação de classificação, aprovação de plano de teste, verificação RED-GREEN, relatório de gaps).
 </process>

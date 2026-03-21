@@ -106,6 +106,28 @@ npm run test:coverage
 - Environment Variable: `CODEX_HOME`
 - Config File: `settings.json`
 
+## Path Standardization
+
+FASE uses standardized path references in all command and agent files:
+
+### Standard Paths
+- **Commands**: `comandos/*.md` use `@~/.fase/` for all workflow references
+- **Agents**: `agentes/*.md` use `@~/.fase/` for all template references
+- **Installer**: Converts `@~/.fase/` to runtime-specific paths during installation
+
+### Installation Paths
+The installer (`bin/install.js`) converts source paths:
+- Claude Code: `~/.claude/fase/`
+- OpenCode: `~/.config/opencode/fase/`
+- Gemini: `~/.gemini/fase/`
+- Codex: `~/.codex/fase/`
+
+### Test Verification
+- All 32 commands follow the `@~/.fase/` convention
+- All 12 agents follow the `@~/.fase/` convention
+- Path replacement tested in install.test.js
+- File naming convention: all `.md` (no `.pt.md` files)
+
 ## Docker Testing
 
 ### Build and Test in Docker

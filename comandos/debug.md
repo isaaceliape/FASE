@@ -31,13 +31,13 @@ ls .planejamento/debug/*.md 2>/dev/null | grep -v resolved | head -5
 ## 0. Inicializar Contexto
 
 ```bash
-INIT=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" state load)
+INIT=$(node "$HOME/.fase/bin/fase-tools.cjs" state load)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
 Extraia `commit_docs` do init JSON. Resolva modelo do debugger:
 ```bash
-debugger_model=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" resolve-model faz-debugger --raw)
+debugger_model=$(node "$HOME/.fase/bin/fase-tools.cjs" resolve-model faz-debugger --raw)
 ```
 
 ## 1. Verificar Sessões Ativas

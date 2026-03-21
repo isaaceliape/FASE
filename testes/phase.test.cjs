@@ -536,7 +536,7 @@ Output: Chat component, API endpoints.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/execute-plan.md
+@~/.fase/workflows/execute-plan.md
 </execution_context>
 
 <context>

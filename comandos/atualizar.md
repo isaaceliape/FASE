@@ -20,8 +20,12 @@ Direciona para o workflow update que lida com:
 - Lembrete de restart e verificação de instalação
 </objective>
 
+<execution_context>
+@~/.fase/workflows/update.md
+</execution_context>
+
 <process>
-**Seguir workflow update**.
+**Seguir workflow update** em `@~/.fase/workflows/update.md`.
 
 O workflow lida com toda lógica incluindo:
 

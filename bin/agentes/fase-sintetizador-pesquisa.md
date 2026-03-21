@@ -132,7 +132,7 @@ Identifique gaps que não puderam ser resolvidos e precisam de atenção durante
 
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
-Use template: ~/.claude/fase/templates/pesquisa-project/SUMARIO.md
+Use template: @~/.fase/templates/pesquisa-project/SUMARIO.md
 
 Escreva em `comandos/pesquisa/SUMARIO.md`
 
@@ -152,7 +152,7 @@ Retorne breve confirmação com pontos-chave para o orquestrador.
 
 <output_format>
 
-Use template: ~/.claude/fase/templates/pesquisa-project/SUMARIO.md
+Use template: @~/.fase/templates/pesquisa-project/SUMARIO.md
 
 Seções principais:
 - Executive Summary (2-3 parágrafos)

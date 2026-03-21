@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-03-21
+
+### Added
+- Path standardization documentation across all test files
+- TEST_UPDATES_SUMMARY.md with comprehensive change tracking
+- Path standardization sections in bin/test/README.md and bin/test/TESTING.md
+- Extended TEST_SETUP_SUMMARY.md with installer path conversion details
+
+### Changed
+- **Internal**: Standardized all command path references to use `@~/.fase/` pattern
+- **Internal**: Standardized all agent path references to use `@~/.fase/` pattern
+- Updated installer (bin/install.js) path replacement logic for all 4 runtimes
+- Renamed all command files from `.pt.md` to `.md` for consistency
+- Updated test files to reflect new standardized path conventions
+- Enhanced documentation for path standardization mechanism
+
+### Fixed
+- Fixed test data in testes/phase.test.cjs to use standardized paths
+- Updated test assertions in testes/agent-frontmatter.test.cjs
+- Corrected path references in agent files (fase-roadmapper.md, fase-sintetizador-pesquisa.md)
+
+### Technical Details
+- Path standardization ensures commands work identically across Claude Code, OpenCode, Gemini, and Codex
+- Installer transparently converts `@~/.fase/` to runtime-specific paths during installation
+- All 129 unit tests passing with new path conventions
+- No breaking changes - transparent to end users
+
+## [3.1.0] - 2026-03-20
+
+### Fixed
+- Fixed agent reference in planejar-fase command
+
 ## [3.0.0] - 2026-03-20
 
 ### Changed
