@@ -2460,10 +2460,10 @@ function promptRuntime(callback) {
     }
   });
 
-  console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n\n  ${cyan}1${reset}) Claude Code ${dim}(~/.claude)${reset}
-  ${cyan}2${reset}) OpenCode    ${dim}(~/.config/opencode)${reset} - código aberto, modelos gratuitos
-  ${cyan}3${reset}) Gemini      ${dim}(~/.gemini)${reset}
-  ${cyan}4${reset}) Codex       ${dim}(~/.codex)${reset}
+  console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n\n  ${cyan}1${reset}) Claude Code
+  ${cyan}2${reset}) OpenCode ${dim}- código aberto, modelos gratuitos${reset}
+  ${cyan}3${reset}) Gemini
+  ${cyan}4${reset}) Codex
   ${cyan}5${reset}) Todos
   ${cyan}6${reset}) Desinstalar ${dim}(remover FASE)${reset}
 `);
