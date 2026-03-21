@@ -16,7 +16,9 @@ Validar features construídas através de testing conversacional com estado pers
 
 Propósito: Confirmar que o que o Claude construiu realmente funciona da perspectiva do usuário. Um teste por vez, respostas em texto simples, sem interrogação. Quando issues são encontradas, automaticamente diagnosticar, planejar correções, e preparar para execução.
 
-Output: {phase_num}-UAT.md rastreando todos os resultados de teste. Se issues encontradas: gaps diagnosticados, planos de correção verificados prontos para /fase-executar-fase
+Output: {phase_num}-UAT.md rastreando todos os resultados de teste. Se issues encontradas: gaps diagnosticados (PARALELO para múltiplas falhas), planos de correção verificados prontos para /fase-executar-fase
+
+**Paralelização:** Se múltiplos testes falham, o diagnóstico de cada falha é feito em paralelo por agentes independentes, cada um lendo o código relevante e produzindo um PLANO.md de correção. Speedup esperado: N× para N falhas paralelas.
 </objective>
 
 <execution_context>
@@ -33,6 +35,16 @@ Arquivos de contexto são resolvidos dentro do workflow (`init verify-work`) e d
 </context>
 
 <process>
-Execute o workflow verify-work de @~/.fase/workflows/verify-work.md ponta a ponta.
-Preserve todos os gates do workflow (gerenciamento de sessão, apresentação de testes, diagnóstico, planejamento de correções, roteamento).
+**Fluxo com Paralelização de Diagnóstico:**
+1. Execute o workflow verify-work até coleta de todos os resultados de teste
+2. Se N testes falharem (N ≥ 2):
+   - Não diagnosticar sequencialmente
+   - Ao invés: agrupar falhas por area de código relacionada
+   - Spawn N agentes em paralelo: cada um diagnostica uma falha
+   - Coletar N PLANOs de correção simultaneamente
+   - Agregar em UAT.md único
+3. Se 1 teste falhar: diagnosticar inline (compatibilidade)
+4. Preserve todos os gates do workflow (gerenciamento de sessão, apresentação de testes, diagnóstico paralelo, planejamento de correções, roteamento).
+
+Caso contrário, execute o workflow verify-work de @~/.fase/workflows/verify-work.md ponta a ponta.
 </process>

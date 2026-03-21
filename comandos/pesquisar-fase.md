@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <objective>
-Pesquisar como implementar uma fase. Spawna agent faz-phase-researcher com contexto da fase.
+Pesquisar como implementar uma fase. Spawna agent(s) faz-phase-researcher com contexto da fase.
 
 **Nota:** Este é um comando de research standalone. Para a maioria dos workflows, use `/fase-planejar-fase` que integra research automaticamente.
 
@@ -17,14 +17,19 @@ Pesquisar como implementar uma fase. Spawna agent faz-phase-researcher com conte
 - Quer pesquisar sem planejar ainda
 - Quer re-research após planejamento estar completo
 - Precisa investigar antes de decidir se uma fase é viável
+- Quer research profunda com múltiplos modos (`--deep`)
 
-**Papel do orquestrador:** Parsear fase, validar contra roadmap, checar research existente, coletar contexto, spawnar agent researcher, apresentar resultados.
+**Papel do orquestrador:** Parsear fase, validar contra roadmap, checar research existente, coletar contexto, spawnar agent(s) researcher, sintetizar resultados (se múltiplos), apresentar resultados.
 
 **Por que subagent:** Research queima contexto rápido (WebSearch, queries Context7, verificação de sources). Contexto fresh de 200k para investigação. Contexto principal permanece enxuto para interação com usuário.
+
+**Paralelização:** Use `--deep` para spawnar múltiplos researchers em paralelo (um por modo: ecosystem, comparison, feasibility, implementation) e sintetizar em RESEARCH.md único. Speedup esperado: 3–4× para research profunda.
 </objective>
 
 <context>
 Número da fase: $ARGUMENTS (obrigatório)
+Flags:
+- `--deep` — Spawn múltiplos researchers em paralelo (um por modo), sintetizar resultados
 
 Normalize input da fase no passo 1 antes de qualquer lookup de diretório.
 </context>
@@ -117,6 +122,9 @@ Modo: ecosystem
 
 ### 4b. Spawn com Contexto Enxuto
 
+**Modo Serial (padrão, sem `--deep`):**
+Spawn um único researcher no modo determinado (4a).
+
 Carregue apenas arquivos essenciais no `<files_to_read>`:
 - ROADMAP.md (goal da fase)
 - REQUIREMENTS.md (requisitos)
@@ -124,11 +132,25 @@ Carregue apenas arquivos essenciais no `<files_to_read>`:
 
 NÃO carregue código-fonte completo (o researcher explora conforme necessário).
 
+**Modo Paralelo (com `--deep`):**
+Spawn 4 researchers em paralelo, um por modo (ecosystem, comparison, feasibility, implementation). Cada um recebe:
+- Mesmos `<files_to_read>` (ROADMAP, REQUIREMENTS, STATE)
+- `<research_mode>` específico (não permita ao researcher escolher)
+- `<output_file>` = `RESEARCH-{mode}.md` (não sobrescrever RESEARCH.md principal)
+
 ## 5. Aguardar Resultados
 
+**Modo Serial:**
 O researcher retorna:
 - **RESEARCH.md estruturado** (salvo na pasta da fase)
 - **Resumo para orquestrador** (2-3 parágrafos)
+
+**Modo Paralelo:**
+4 researchers retornam em paralelo:
+- **RESEARCH-{mode}.md** (each returns to specific file)
+- **Resumos parciais** (um por modo)
+
+Após todos completos: Spawn **fase-sintetizador-pesquisa** que lê os 4 RESEARCH-*.md e escreve RESEARCH.md único, consolidando insights e recomendações.
 
 ## 6. Apresentar Resultados
 
