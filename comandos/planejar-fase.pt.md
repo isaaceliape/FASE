@@ -2,7 +2,7 @@
 name: fase:planejar-fase
 description: Cria plano detalhado da fase (PLAN.md) com loop de verificação
 argument-hint: "[fase] [--auto] [--research] [--skip-research] [--gaps] [--skip-verify] [--prd <arquivo>]"
-agent: faz-planner
+agent: fase-planejador
 allowed-tools:
   - Read
   - Write
