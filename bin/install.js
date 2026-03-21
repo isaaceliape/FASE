@@ -1965,10 +1965,10 @@ function reportLocalPatches(configDir, runtime = 'claude') {
 
   if (meta.files && meta.files.length > 0) {
     const reapplyCommand = runtime === 'opencode'
-      ? '/fase-reapply-patches'
+      ? '/fase-reaplicar-patches'
       : runtime === 'codex'
-        ? '$fase-reapply-patches'
-        : '/fase:reapply-patches';
+        ? '$fase-reaplicar-patches'
+        : '/fase:reaplicar-patches';
     console.log('');
     console.log('  ' + yellow + 'Patches locais detectados' + reset + ' (da v' + meta.from_version + '):');
     for (const f of meta.files) {
