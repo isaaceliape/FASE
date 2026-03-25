@@ -1,194 +1,194 @@
-# FASE Testing Guide
+# Guia de Testes do FASE
 
-Complete testing suite for FASE (Framework de Automação Sem Enrolação) across all supported providers and installation methods.
+Suite completa de testes para FASE (Framework de Automação Sem Enrolação) em todos os provedores suportados e métodos de instalação.
 
-## 📋 Overview
+## 📋 Visão Geral
 
-This testing suite provides comprehensive coverage for:
-- **4 Providers**: Claude Code, OpenCode, Gemini, Codex
-- **3 Installation Methods**: Global, Local, Custom directories
-- **Multiple Environments**: Alpine, Ubuntu, macOS, Windows paths
-- **Edge Cases**: Symlinks, long paths, special characters, permissions
+Esta suite de testes oferece cobertura abrangente para:
+- **4 Provedores**: Claude Code, OpenCode, Gemini, Codex
+- **3 Métodos de Instalação**: Global, Local, Diretórios customizados
+- **Múltiplos Ambientes**: Alpine, Ubuntu, macOS, caminhos Windows
+- **Casos Extremos**: Symlinks, caminhos longos, caracteres especiais, permissões
 
-## 🚀 Quick Start
+## 🚀 Início Rápido
 
-### Run All Tests
+### Executar Todos os Testes
 ```bash
 npm test
 ```
 
-### Run Specific Test Suite
+### Executar Suite Específica de Testes
 ```bash
-npm run test:install      # Installation tests
-npm run test:providers    # Provider configuration tests
-npm run test:integration  # Integration tests
-npm run test:docker       # Docker environment simulations
-npm run test:edge-cases   # Edge cases and complex scenarios
+npm run test:install      # Testes de instalação
+npm run test:providers    # Testes de configuração de provedor
+npm run test:integration  # Testes de integração
+npm run test:docker       # Simulações de ambiente Docker
+npm run test:edge-cases   # Casos extremos e cenários complexos
 ```
 
-### Watch Mode (Auto-reload on changes)
+### Modo Watch (Auto-reload em mudanças)
 ```bash
 npm run test:watch
 ```
 
-## 🐳 Docker Testing
+## 🐳 Testes com Docker
 
-### Prerequisites
-- Docker installed and running
-- Docker Compose (optional, for advanced tests)
+### Pré-requisitos
+- Docker instalado e rodando
+- Docker Compose (opcional, para testes avançados)
 
-### Run Tests in Docker
+### Executar Testes em Docker
 ```bash
-# Run all tests in Docker
+# Executar todos os testes em Docker
 npm run test:docker:all
 
-# Run specific provider tests
+# Executar testes específicos de provedor
 cd test && bash run-docker-tests.sh --claude
 cd test && bash run-docker-tests.sh --opencode
 cd test && bash run-docker-tests.sh --gemini
 cd test && bash run-docker-tests.sh --codex
 
-# Test all providers
+# Testar todos os provedores
 cd test && bash run-docker-tests.sh --all-providers
 
-# Test on specific OS
+# Testar em SO específico
 cd test && bash run-docker-tests.sh --ubuntu
 cd test && bash run-docker-tests.sh --alpine
 
-# Cleanup test containers
+# Limpar containers de teste
 npm run test:docker:clean
 ```
 
-### Using Docker Compose
+### Usando Docker Compose
 ```bash
-# Run specific service
+# Executar serviço específico
 docker-compose -f test/docker-compose.yml run --rm claude-test
 
-# Run all services
+# Executar todos os serviços
 docker-compose -f test/docker-compose.yml up --abort-on-container-exit
 
-# View logs
+# Ver logs
 docker-compose -f test/docker-compose.yml logs -f
 ```
 
-## 📁 Test Files
+## 📁 Arquivos de Teste
 
-### `install.test.js` (Basic Installation)
-- Directory creation
-- File writing and error handling
-- package.json configuration
-- Path construction
-- Error handling and messaging
+### `install.test.js` (Instalação Básica)
+- Criação de diretórios
+- Escrita de arquivos e tratamento de erros
+- Configuração de package.json
+- Construção de caminhos
+- Tratamento de erros e mensagens
 
-**Run:** `npm run test:install`
+**Executar:** `npm run test:install`
 
-### `providers.test.js` (Provider Configuration)
-- Directory structure per provider
-- Environment variables (CLAUDE_CONFIG_DIR, OPENCODE_CONFIG_DIR, GEMINI_CONFIG_DIR, CODEX_HOME)
-- Settings file formats (JSON, INI compatibility)
-- Attribution settings and commit messages
-- Hook file management
-- Path expansion (~/.claude, ~/.config/opencode, etc.)
-- Duplicate prevention
-- Permission handling
-- Mixed provider installations
+### `providers.test.js` (Configuração de Provedor)
+- Estrutura de diretório por provedor
+- Variáveis de ambiente (CLAUDE_CONFIG_DIR, OPENCODE_CONFIG_DIR, GEMINI_CONFIG_DIR, CODEX_HOME)
+- Formatos de arquivo de configuração (JSON, compatibilidade INI)
+- Configurações de atribuição e mensagens de commit
+- Gerenciamento de arquivos de hook
+- Expansão de caminhos (~/.claude, ~/.config/opencode, etc.)
+- Prevenção de duplicatas
+- Tratamento de permissões
+- Instalações multi-provedor
 
-**Run:** `npm run test:providers`
+**Executar:** `npm run test:providers`
 
-### `integration.test.js` (End-to-End)
-- Global installations
-- Local/project installations
-- Custom config directories
-- Multiple provider installations
-- Version management and updates
-- Configuration persistence
-- Uninstallation and cleanup
-- Error recovery scenarios
+### `integration.test.js` (Ponta-a-Ponta)
+- Instalações globais
+- Instalações locais/de projeto
+- Diretórios de configuração customizados
+- Instalações multi-provedor
+- Gerenciamento de versão e atualizações
+- Persistência de configuração
+- Desinstalação e limpeza
+- Cenários de recuperação de erros
 
-**Run:** `npm run test:integration`
+**Executar:** `npm run test:integration`
 
-### `docker-test.js` (Docker Simulations)
-- Clean Alpine container installs
-- Clean Ubuntu container installs
-- macOS ARM64 environments
-- Multi-stage Docker builds
-- Environment variables in containers
-- Volume mounting scenarios
-- Installation scripts
-- Cross-platform path handling
+### `docker-test.js` (Simulações Docker)
+- Instalações limpas em container Alpine
+- Instalações limpas em container Ubuntu
+- Ambientes macOS ARM64
+- Builds Docker multi-estágio
+- Variáveis de ambiente em containers
+- Cenários de volume mounting
+- Scripts de instalação
+- Tratamento de caminhos multiplataforma
 - Health checks
 
-**Run:** `npm run test:docker`
+**Executar:** `npm run test:docker`
 
-### `edge-cases.test.js` (Complex Scenarios)
-- Symlink handling
-- Long path names (30+ levels deep)
-- Special characters (spaces, hyphens, dots)
-- Large configuration files (10KB+)
-- Concurrent operations
-- Migration scenarios and rollback
-- Disk space edge cases
-- Permission constraints
-- Race conditions
-- UTF-8 and emoji handling
-- Backward compatibility
+### `edge-cases.test.js` (Cenários Complexos)
+- Tratamento de symlinks
+- Nomes de caminho longos (30+ níveis de profundidade)
+- Caracteres especiais (espaços, hífens, pontos)
+- Arquivos de configuração grandes (10KB+)
+- Operações concorrentes
+- Cenários de migração e rollback
+- Casos extremos de espaço em disco
+- Restrições de permissão
+- Condições de corrida
+- Tratamento de UTF-8 e emoji
+- Compatibilidade retroativa
 
-**Run:** `npm run test:edge-cases`
+**Executar:** `npm run test:edge-cases`
 
-## 🏗️ Docker Files
+## 🏗️ Arquivos Docker
 
 ### `Dockerfile.test`
-Alpine-based test image that:
-- Installs dependencies
-- Runs full test suite
-- Tests each provider individually
-- Verifies all installations
+Imagem de teste baseada em Alpine que:
+- Instala dependências
+- Executa suite completa de testes
+- Testa cada provedor individualmente
+- Verifica todas as instalações
 
-Build and run:
+Compilar e executar:
 ```bash
 docker build -f test/Dockerfile.test -t fase-test ..
 docker run --rm fase-test
 ```
 
 ### `docker-compose.yml`
-Services for testing different scenarios:
-- `test`: Full test suite
-- `claude-test`: Claude installation only
-- `opencode-test`: OpenCode installation only
-- `gemini-test`: Gemini installation only
-- `codex-test`: Codex installation only
-- `all-test`: All providers simultaneously
-- `ubuntu-test`: Ubuntu-based tests
-- `alpine-test`: Alpine-based tests
+Serviços para testar diferentes cenários:
+- `test`: Suite completa de testes
+- `claude-test`: Instalação apenas do Claude
+- `opencode-test`: Instalação apenas do OpenCode
+- `gemini-test`: Instalação apenas do Gemini
+- `codex-test`: Instalação apenas do Codex
+- `all-test`: Todos os provedores simultaneamente
+- `ubuntu-test`: Testes baseados em Ubuntu
+- `alpine-test`: Testes baseados em Alpine
 
 ### `run-docker-tests.sh`
-Smart test runner script with options:
+Script runner inteligente com opções:
 
 ```bash
 ./test/run-docker-tests.sh --help
 
-# Examples:
-./test/run-docker-tests.sh --all              # Run everything
-./test/run-docker-tests.sh --claude --opencode # Specific providers
-./test/run-docker-tests.sh --ubuntu           # Specific OS
-./test/run-docker-tests.sh --cleanup          # Remove test data
+# Exemplos:
+./test/run-docker-tests.sh --all              # Executar tudo
+./test/run-docker-tests.sh --claude --opencode # Provedores específicos
+./test/run-docker-tests.sh --ubuntu           # SO específico
+./test/run-docker-tests.sh --cleanup          # Remover dados de teste
 ```
 
-## 📊 Test Structure
+## 📊 Estrutura de Teste
 
-Each test file follows this pattern:
+Cada arquivo de teste segue este padrão:
 
 ```javascript
-describe('Feature Group', () => {
+describe('Grupo de Funcionalidade', () => {
   beforeEach(() => {
-    // Setup (create temp directory, etc.)
+    // Setup (criar diretório temporário, etc.)
   });
 
   afterEach(() => {
-    // Cleanup (remove temp files, restore env)
+    // Limpeza (remover arquivos temporários, restaurar env)
   });
 
-  describe('Specific Test Suite', () => {
+  describe('Suite de Teste Específica', () => {
     it('should do something specific', () => {
       // Arrange
       const expectedResult = 'value';
@@ -203,7 +203,7 @@ describe('Feature Group', () => {
 });
 ```
 
-## 🔍 Provider Details
+## 🔍 Detalhes de Provedor
 
 ### Claude Code
 ```
@@ -216,7 +216,7 @@ Hook Example:   /Users/<user>/.claude/hooks/my-hook.js
 
 ### OpenCode
 ```
-Config Dir:     ~/.config/opencode (XDG standard)
+Config Dir:     ~/.config/opencode (padrão XDG)
 Env Vars:       OPENCODE_CONFIG_DIR, OPENCODE_CONFIG, XDG_CONFIG_HOME
 Config File:    opencode.json
 Default Path:   /Users/<user>/.config/opencode
@@ -241,131 +241,131 @@ Default Path:   /Users/<user>/.codex
 Hook Example:   /Users/<user>/.codex/hooks/my-hook.js
 ```
 
-## 🔄 Path Standardization Tests
+## 🔄 Testes de Padronização de Caminhos
 
-FASE commands and agents use standardized, environment-agnostic path references that are converted during installation:
+Comandos e agentes do FASE usam referências de caminho padronizadas e agnósticas de ambiente que são convertidas durante a instalação:
 
-### Source File Convention
-- **Location**: `comandos/*.md` and `agentes/*.md`
-- **Path Pattern**: `@~/.fase/workflows/`, `@~/.fase/templates/`, `$HOME/.fase/`
-- **Purpose**: Universal references that work across all runtimes
+### Convenção de Arquivo Fonte
+- **Localização**: `comandos/*.md` e `agentes/*.md`
+- **Padrão de Caminho**: `@~/.fase/workflows/`, `@~/.fase/templates/`, `$HOME/.fase/`
+- **Propósito**: Referências universais que funcionam em todos os runtimes
 
-### Installer Path Replacement
-The installer (`bin/install.js`) converts source paths to runtime-specific locations:
+### Substituição de Caminho do Installer
+O installer (`bin/install.js`) converte caminhos de origem para localizações específicas de runtime:
 
-| Runtime | Source Pattern | Installed Path |
+| Runtime | Padrão de Origem | Caminho Instalado |
 |---------|---|---|
 | Claude Code | `@~/.fase/` | `~/.claude/fase/` |
 | OpenCode | `@~/.fase/` | `~/.config/opencode/fase/` |
 | Gemini | `@~/.fase/` | `~/.gemini/fase/` |
 | Codex | `@~/.fase/` | `~/.codex/fase/` |
 
-### Test Coverage
-- ✅ All 32 command files use `@~/.fase/` pattern
-- ✅ All 12 agent files use `@~/.fase/` pattern
-- ✅ No remaining `.pt.md` file references (all renamed to `.md`)
-- ✅ Path replacement works in all three installer copy functions
-- ✅ OpenCode receives correctly formatted `~/.config/opencode/fase/` paths
+### Cobertura de Testes
+- ✅ Todos os 32 arquivos de comando usam padrão `@~/.fase/`
+- ✅ Todos os 12 arquivos de agente usam padrão `@~/.fase/`
+- ✅ Nenhuma referência de arquivo `.pt.md` restante (todos renomeados para `.md`)
+- ✅ Substituição de caminho funciona nas três funções de cópia do installer
+- ✅ OpenCode recebe caminhos corretamente formatados `~/.config/opencode/fase/`
 
-### Related Tests
-- **`testes/phase.test.cjs`** - Validates execution context path formats
-- **`testes/agent-frontmatter.test.cjs`** - Validates agent file consistency
-- **`bin/test/install.test.js`** - Tests basic path construction and file operations
+### Testes Relacionados
+- **`testes/phase.test.cjs`** - Valida formatos de caminho de contexto de execução
+- **`testes/agent-frontmatter.test.cjs`** - Valida consistência de arquivo de agente
+- **`bin/test/install.test.js`** - Testa construção básica de caminho e operações de arquivo
 
-## 🛠️ Common Commands
+## 🛠️ Comandos Comuns
 
-### Clean Installation
+### Instalação Limpa
 ```bash
-npm test                    # Run all tests
-npm run test:providers      # Verify provider setup
-npm run test:integration    # Test full workflow
+npm test                    # Executar todos os testes
+npm run test:providers      # Verificar setup de provedor
+npm run test:integration    # Testar fluxo completo
 ```
 
-### CI/CD Pipeline
+### Pipeline CI/CD
 ```bash
-npm test                           # Unit tests
-npm run test:docker:all           # Docker tests
-npm run test:coverage             # Generate report
+npm test                           # Testes unitários
+npm run test:docker:all           # Testes Docker
+npm run test:coverage             # Gerar relatório
 ```
 
-### Development
+### Desenvolvimento
 ```bash
-npm run test:watch                # Watch mode
-npm run test:providers            # Quick provider check
-npm run test:edge-cases           # Edge case validation
+npm run test:watch                # Modo watch
+npm run test:providers            # Verificação rápida de provedor
+npm run test:edge-cases           # Validação de casos extremos
 ```
 
-### Debugging
+### Debug
 ```bash
-# Run single test
+# Executar teste único
 npx mocha test/install.test.js --grep "Directory Creation"
 
-# Verbose output
+# Output verboso
 npm test -- --reporter spec
 
-# Show slow tests
+# Mostrar testes lentos
 npm test -- --reporter spec --slow 100
 ```
 
-## 📈 Coverage Goals
+## 📈 Metas de Cobertura
 
-Current coverage:
-- ✅ Installation methods: Local, Global, Custom
-- ✅ Providers: Claude, OpenCode, Gemini, Codex
-- ✅ Environments: Alpine, Ubuntu, macOS
-- ✅ Error scenarios: Permissions, missing dirs, corrupt files
-- ✅ Edge cases: Symlinks, long paths, special chars
-- ✅ Concurrency: Multiple installs, rapid cycles
+Cobertura atual:
+- ✅ Métodos de instalação: Local, Global, Customizado
+- ✅ Provedores: Claude, OpenCode, Gemini, Codex
+- ✅ Ambientes: Alpine, Ubuntu, macOS
+- ✅ Cenários de erro: Permissões, diretórios faltantes, arquivos corrompidos
+- ✅ Casos extremos: Symlinks, caminhos longos, caracteres especiais
+- ✅ Concorrência: Múltiplas instalações, ciclos rápidos
 
-Target: >90% code coverage
+Alvo: >90% de cobertura de código
 
-Generate coverage report:
+Gerar relatório de cobertura:
 ```bash
 npm run test:coverage
 ```
 
-## 🐛 Troubleshooting
+## 🐛 Resolução de Problemas
 
-### Tests fail with permission errors
+### Testes falham com erros de permissão
 ```bash
-# Check temp directory permissions
+# Verificar permissões do diretório temporário
 ls -la /tmp | grep fase-test
 
-# Clear stale test directories
+# Limpar diretórios de teste antigos
 rm -rf /tmp/fase-*
 ```
 
-### Docker tests fail
+### Testes Docker falham
 ```bash
-# Check Docker is running
+# Verificar se Docker está rodando
 docker ps
 
-# Pull fresh images
+# Puxar imagens atualizadas
 docker-compose pull
 
-# Rebuild images
+# Recompilar imagens
 docker-compose build --no-cache
 ```
 
-### Environment variable conflicts
-Tests automatically save and restore `process.env`:
+### Conflitos de variáveis de ambiente
+Testes salvam e restauram automaticamente `process.env`:
 ```javascript
 originalEnv = { ...process.env };
-// ... tests run ...
+// ... testes rodam ...
 process.env = originalEnv;
 ```
 
-### Timeout issues
-Increase Mocha timeout (default 2000ms):
+### Problemas de timeout
+Aumentar timeout do Mocha (padrão 2000ms):
 ```bash
 npx mocha test/*.test.js --timeout 10000
 ```
 
-## 📝 Adding New Tests
+## 📝 Adicionando Novos Testes
 
-1. **Create test file** in `test/` directory
-2. **Follow naming**: `feature.test.js`
-3. **Use standard pattern**:
+1. **Criar arquivo de teste** no diretório `test/`
+2. **Seguir nomenclatura**: `feature.test.js`
+3. **Usar padrão padrão**:
    ```javascript
    const assert = require('assert');
    describe('Feature', () => {
@@ -374,13 +374,13 @@ npx mocha test/*.test.js --timeout 10000
      });
    });
    ```
-4. **Add to package.json scripts**:
+4. **Adicionar aos scripts do package.json**:
    ```json
    "test:feature": "mocha test/feature.test.js"
    ```
-5. **Update this file** with test documentation
+5. **Atualizar este arquivo** com documentação de teste
 
-## 🔗 Integration with CI/CD
+## 🔗 Integração com CI/CD
 
 ### GitHub Actions
 ```yaml
@@ -401,21 +401,21 @@ test:
     - npm test
 ```
 
-## 📚 Related Documentation
+## 📚 Documentação Relacionada
 
-- [Installation Guide](../../README.md)
-- [Contributing Guidelines](../../CONTRIBUTING.md)
-- [Provider Documentation](../../www/docs)
+- [Guia de Instalação](../../README.md)
+- [Diretrizes de Contribuição](../../CONTRIBUTING.md)
+- [Documentação de Provedor](../../www/docs)
 
-## 📞 Support
+## 📞 Suporte
 
-For test issues or improvements:
-- Check [Troubleshooting](#-troubleshooting) section
-- Review test output for specific error messages
-- Open an issue on GitHub with test logs
+Para problemas de teste ou melhorias:
+- Verificar seção [Resolução de Problemas](#-resolução-de-problemas)
+- Revisar output de teste para mensagens de erro específicas
+- Abrir uma issue no GitHub com logs de teste
 
 ---
 
-**Last Updated:** 2026-03-18
-**Test Suite Version:** 1.0.0
-**Supported Providers:** Claude Code, OpenCode, Gemini, Codex
+**Última Atualização:** 2026-03-18
+**Versão da Suite de Testes:** 1.0.0
+**Provedores Suportados:** Claude Code, OpenCode, Gemini, Codex

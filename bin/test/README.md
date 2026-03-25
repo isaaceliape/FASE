@@ -1,189 +1,189 @@
-# FASE Installation Tests
+# Testes de Instalação do FASE
 
-Comprehensive test suite for FASE installations across different providers (Claude Code, OpenCode, Gemini, and Codex).
+Suite abrangente de testes para instalações do FASE em diferentes provedores (Claude Code, OpenCode, Gemini e Codex).
 
-## Test Files
+## Arquivos de Teste
 
 ### `install.test.js`
-Core installation tests covering:
-- Directory creation
-- File writing and error handling
-- package.json configuration
-- Path construction
-- Error messages and debugging
+Testes de instalação central cobrindo:
+- Criação de diretórios
+- Escrita de arquivos e tratamento de erros
+- Configuração de package.json
+- Construção de caminhos
+- Mensagens de erro e debug
 
-**Run with:**
+**Executar com:**
 ```bash
 npm run test:install
 ```
 
 ### `providers.test.js`
-Provider-specific configuration tests covering:
-- Directory structure for each provider
-- Environment variable handling
-- Settings file formats
-- Attribution settings
-- Hook files
-- Path expansion
-- Duplicate configuration prevention
-- Permission handling
-- Mixed provider installations
+Testes de configuração específica de provedor cobrindo:
+- Estrutura de diretório para cada provedor
+- Tratamento de variáveis de ambiente
+- Formatos de arquivo de configuração
+- Configurações de atribuição
+- Arquivos de hook
+- Expansão de caminhos
+- Prevenção de configuração duplicada
+- Tratamento de permissões
+- Instalações multi-provedor
 
-**Run with:**
+**Executar com:**
 ```bash
 npm run test:providers
 ```
 
 ### `integration.test.js`
-Integration tests covering:
-- Global installations
-- Local (project) installations
-- Custom config directories
-- Multiple provider installations
-- Version management
-- Configuration persistence
-- Uninstallation
-- Error handling scenarios
+Testes de integração cobrindo:
+- Instalações globais
+- Instalações locais (de projeto)
+- Diretórios de configuração customizados
+- Múltiplas instalações de provedor
+- Gerenciamento de versão
+- Persistência de configuração
+- Desinstalação
+- Cenários de tratamento de erro
 
-**Run with:**
+**Executar com:**
 ```bash
 npm run test:integration
 ```
 
 ### `docker-test.js`
-Docker environment simulation tests covering:
-- Alpine container installations
-- Ubuntu container installations
-- macOS ARM64 installations
-- Multi-stage Docker builds
-- Environment variables in containers
-- Volume mounting configurations
-- Installation scripts
-- Cross-platform support
+Testes de simulação de ambiente Docker cobrindo:
+- Instalações em container Alpine
+- Instalações em container Ubuntu
+- Instalações macOS ARM64
+- Builds Docker multi-estágio
+- Variáveis de ambiente em containers
+- Configurações de volume mounting
+- Scripts de instalação
+- Suporte multiplataforma
 - Health checks
 
-**Run with:**
+**Executar com:**
 ```bash
 npm run test:docker
 ```
 
-## Running All Tests
+## Executando Todos os Testes
 
-Run the complete test suite:
+Executar a suite completa de testes:
 ```bash
 npm test
 ```
 
-Watch mode (re-run on file changes):
+Modo watch (re-executar em mudanças de arquivo):
 ```bash
 npm run test:watch
 ```
 
-Generate test coverage report:
+Gerar relatório de cobertura de testes:
 ```bash
 npm run test:coverage
 ```
 
-## Provider Support
+## Suporte de Provedor
 
 ### Claude Code
-- Directory: `~/.claude`
-- Environment Variable: `CLAUDE_CONFIG_DIR`
-- Config File: `settings.json`
+- Diretório: `~/.claude`
+- Variável de Ambiente: `CLAUDE_CONFIG_DIR`
+- Arquivo de Configuração: `settings.json`
 
 ### OpenCode
-- Directory: `~/.config/opencode` (XDG standard)
-- Environment Variables: `OPENCODE_CONFIG_DIR`, `OPENCODE_CONFIG`, `XDG_CONFIG_HOME`
-- Config File: `opencode.json`
+- Diretório: `~/.config/opencode` (padrão XDG)
+- Variáveis de Ambiente: `OPENCODE_CONFIG_DIR`, `OPENCODE_CONFIG`, `XDG_CONFIG_HOME`
+- Arquivo de Configuração: `opencode.json`
 
 ### Gemini
-- Directory: `~/.gemini`
-- Environment Variable: `GEMINI_CONFIG_DIR`
-- Config File: `settings.json`
+- Diretório: `~/.gemini`
+- Variável de Ambiente: `GEMINI_CONFIG_DIR`
+- Arquivo de Configuração: `settings.json`
 
 ### Codex
-- Directory: `~/.codex`
-- Environment Variable: `CODEX_HOME`
-- Config File: `settings.json`
+- Diretório: `~/.codex`
+- Variável de Ambiente: `CODEX_HOME`
+- Arquivo de Configuração: `settings.json`
 
-## Path Standardization
+## Padronização de Caminhos
 
-FASE uses standardized path references in all command and agent files:
+FASE usa referências de caminho padronizadas em todos os arquivos de comando e agente:
 
-### Standard Paths
-- **Commands**: `comandos/*.md` use `@~/.fase/` for all workflow references
-- **Agents**: `agentes/*.md` use `@~/.fase/` for all template references
-- **Installer**: Converts `@~/.fase/` to runtime-specific paths during installation
+### Caminhos Padrão
+- **Comandos**: `comandos/*.md` usam `@~/.fase/` para todas as referências de workflow
+- **Agentes**: `agentes/*.md` usam `@~/.fase/` para todas as referências de template
+- **Installer**: Converte `@~/.fase/` para caminhos específicos de runtime durante a instalação
 
-### Installation Paths
-The installer (`bin/install.js`) converts source paths:
+### Caminhos de Instalação
+O installer (`bin/install.js`) converte caminhos de origem:
 - Claude Code: `~/.claude/fase/`
 - OpenCode: `~/.config/opencode/fase/`
 - Gemini: `~/.gemini/fase/`
 - Codex: `~/.codex/fase/`
 
-### Test Verification
-- All 32 commands follow the `@~/.fase/` convention
-- All 12 agents follow the `@~/.fase/` convention
-- Path replacement tested in install.test.js
-- File naming convention: all `.md` (no `.pt.md` files)
+### Verificação de Teste
+- Todos os 32 comandos seguem a convenção `@~/.fase/`
+- Todos os 12 agentes seguem a convenção `@~/.fase/`
+- Substituição de caminho testada em install.test.js
+- Convenção de nomenclatura de arquivo: todos `.md` (sem arquivos `.pt.md`)
 
-## Docker Testing
+## Testes com Docker
 
-### Build and Test in Docker
+### Compilar e Testar em Docker
 
-Run tests in Alpine Linux container:
+Executar testes em container Alpine Linux:
 ```bash
 docker run --rm -v $(pwd):/app -w /app node:18-alpine npm test
 ```
 
-Run tests in Ubuntu container:
+Executar testes em container Ubuntu:
 ```bash
 docker run --rm -v $(pwd):/app -w /app node:18-ubuntu npm test
 ```
 
-### Installation Testing in Docker
+### Teste de Instalação em Docker
 
-Test Claude installation:
+Testar instalação do Claude:
 ```bash
 docker run --rm node:18-alpine sh -c "npm install -g fase-ai && fase-ai --claude --global"
 ```
 
-Test all providers:
+Testar todos os provedores:
 ```bash
 docker run --rm node:18-alpine sh -c "npm install -g fase-ai && fase-ai --all --global"
 ```
 
-## Simulating Clean Environments
+## Simulando Ambientes Limpos
 
-The test suite simulates clean Docker environments without requiring actual Docker:
+A suite de testes simula ambientes Docker limpos sem requerer Docker real:
 
 ```javascript
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fase-test-'));
-// Tests run in isolated temp directory
+// Testes rodam em diretório temporário isolado
 fs.rmSync(tempDir, { recursive: true });
 ```
 
-This approach allows:
-- ✓ Fast test execution
-- ✓ No Docker installation required
-- ✓ Cross-platform compatibility
-- ✓ Easy CI/CD integration
+Esta abordagem permite:
+- ✓ Execução rápida de testes
+- ✓ Sem instalação de Docker necessária
+- ✓ Compatibilidade multiplataforma
+- ✓ Fácil integração com CI/CD
 
-## Test Coverage
+## Cobertura de Testes
 
-Current coverage:
-- **Installation Methods**: Local, Global, Custom directories
-- **Providers**: Claude Code, OpenCode, Gemini, Codex
-- **Scenarios**: Fresh installs, upgrades, uninstalls, multiple providers
-- **Environments**: Alpine, Ubuntu, macOS, Windows paths
-- **Error Cases**: Permission errors, missing directories, corrupt files
+Cobertura atual:
+- **Métodos de Instalação**: Local, Global, Diretórios customizados
+- **Provedores**: Claude Code, OpenCode, Gemini, Codex
+- **Cenários**: Instalações limpas, upgrades, desinstalações, múltiplos provedores
+- **Ambientes**: Alpine, Ubuntu, macOS, caminhos Windows
+- **Casos de Erro**: Erros de permissão, diretórios faltantes, arquivos corrompidos
 
-## Adding New Tests
+## Adicionando Novos Testes
 
-To add tests for a new provider:
+Para adicionar testes para um novo provedor:
 
-1. Add provider configuration to `providers.test.js`:
+1. Adicionar configuração de provedor a `providers.test.js`:
 ```javascript
 {
   name: 'newprovider',
@@ -192,26 +192,26 @@ To add tests for a new provider:
 }
 ```
 
-2. Add installation tests to `integration.test.js`
+2. Adicionar testes de instalação a `integration.test.js`
 
-3. Add Docker simulation tests to `docker-test.js`
+3. Adicionar testes de simulação Docker a `docker-test.js`
 
-## Troubleshooting
+## Resolução de Problemas
 
-### Tests fail with permission errors
-Ensure the temp directory is writable:
+### Testes falham com erros de permissão
+Garantir que o diretório temporário seja gravável:
 ```bash
 ls -la /tmp | grep fase-test
 ```
 
-### Tests timeout
-Increase Mocha timeout:
+### Testes expiram (timeout)
+Aumentar timeout do Mocha:
 ```bash
 npm test -- --timeout 10000
 ```
 
-### Environment variables interfere
-Tests save and restore original environment:
+### Variáveis de ambiente interferem
+Testes salvam e restauram o ambiente original:
 ```javascript
 beforeEach(() => {
   originalEnv = { ...process.env };
@@ -222,9 +222,9 @@ afterEach(() => {
 });
 ```
 
-## CI/CD Integration
+## Integração com CI/CD
 
-### GitHub Actions Example
+### Exemplo GitHub Actions
 
 ```yaml
 name: Tests
@@ -245,8 +245,8 @@ jobs:
       - run: cd bin && npm test
 ```
 
-## Related Documentation
+## Documentação Relacionada
 
-- [Installation Guide](../../README.md)
-- [Architecture Documentation](../../www/docs)
-- [Contributing Guidelines](../../CONTRIBUTING.md)
+- [Guia de Instalação](../../README.md)
+- [Documentação de Arquitetura](../../www/docs)
+- [Diretrizes de Contribuição](../../CONTRIBUTING.md)
