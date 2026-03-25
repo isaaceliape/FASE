@@ -2,7 +2,7 @@
 
 > **Versão**: 3.2.0 | Última atualização: 2026-03-25
 
-Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o [README](../README.md).
+Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o [README](readme.html).
 
 ---
 

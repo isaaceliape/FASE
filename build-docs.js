@@ -21,10 +21,15 @@ const docs = [
 ];
 
 const htmlTemplate = (title, currentFile, content) => {
+  // Determine depth of current file (how many directories deep)
+  const currentDepth = (currentFile.match(/\//g) || []).length;
+  const pathPrefix = currentDepth > 0 ? "../".repeat(currentDepth) : "";
+
   const sidebarLinks = docs
     .map((doc) => {
       const isActive = doc.file === currentFile ? "active" : "";
-      return `<a href="${doc.file}" class="sidebar-link ${isActive}">${doc.icon} ${doc.label}</a>`;
+      const linkPath = pathPrefix + doc.file;
+      return `<a href="${linkPath}" class="sidebar-link ${isActive}">${doc.icon} ${doc.label}</a>`;
     })
     .join("\n");
 
@@ -361,7 +366,7 @@ const htmlTemplate = (title, currentFile, content) => {
   <div class="header">
     <div class="logo">fase<span>-</span>ai</div>
     <div class="nav-links">
-      <a href="index.html">Home</a>
+      <a href="${pathPrefix}index.html">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
     </div>
   </div>
@@ -434,7 +439,10 @@ markdownFiles.forEach(({ file, path: filePath, prefix, fullPath }) => {
     ? path.join(docsDir, prefix, htmlFileName)
     : path.join(docsDir, htmlFileName);
 
-  fs.writeFileSync(htmlFile, htmlTemplate(title, htmlFileName, html));
+  // For subdirectory files, include the prefix in the htmlFileName
+  const fullHtmlFileName = prefix ? `${prefix}/${htmlFileName}` : htmlFileName;
+
+  fs.writeFileSync(htmlFile, htmlTemplate(title, fullHtmlFileName, html));
   console.log(`✅ ${fullPath} → ${htmlFile.replace(docsDir, "docs")}`);
 });
 
