@@ -16,7 +16,7 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 
 | Documento | Descrição |
 |-----------|-----------|
-| [**CONTRIBUTING.md**](../CONTRIBUTING.md) | Como contribuir para o FASE (bugs, features, traduções) |
+| [**CONTRIBUTING.md**](https://github.com/isaaceliape/FASE/blob/main/CONTRIBUTING.md) | Como contribuir para o FASE (bugs, features, traduções) |
 | [**Git Hooks**](HOOKS.html) | Git hooks e verificações de segurança |
 | [**Path Standardization**](technical/COMMAND_PATHS.md) | Mecanismo de path standardization |
 
@@ -30,7 +30,7 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 ### Quero Contribuir
 
 1. Abra uma issue descrevendo sua ideia
-2. Leia [CONTRIBUTING.md](../CONTRIBUTING.md)
+2. Leia [CONTRIBUTING.md](https://github.com/isaaceliape/FASE/blob/main/CONTRIBUTING.md)
 3. Siga o setup local
 4. Abra um Pull Request
 
@@ -86,9 +86,9 @@ docs/
 
 **Novos Documentos:**
 - 📚 [Path Standardization](technical/COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
-- 📚 Seções expandidas em [bin/test/README.md](../bin/test/README.md) e [bin/test/TESTING.md](../bin/test/TESTING.md)
+- 📚 Seções expandidas em [bin/test/README.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/README.md) e [bin/test/TESTING.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/TESTING.md)
 
-**Ver também:** [CHANGELOG.md](../CHANGELOG.md) para histórico completo de versões
+**Ver também:** [CHANGELOG.md](https://github.com/isaaceliape/FASE/blob/main/CHANGELOG.md) para histórico completo de versões
 
 ### v2.4.0 (Março 2026)
 
