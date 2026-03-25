@@ -37,6 +37,9 @@ const CODEX_AGENT_SANDBOX = {
 // Get version from package.json
 const pkg = require('./package.json');
 
+// Shared prompts directory (v3.2.0+)
+const SHARED_DIR = path.join(os.homedir(), '.fase-ai');
+
 // Parse args
 const args = process.argv.slice(2);
 const hasOpencode = args.includes('--opencode');
@@ -1105,12 +1108,14 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       const opencodeDirRegex = /~\/\.opencode\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(opencodeDirRegex, pathPrefix);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeToOpencodeFrontmatter(content);
 
@@ -1170,12 +1175,14 @@ function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtim
       const codexDirRegex = /~\/\.codex\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(codexDirRegex, pathPrefix);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeCommandToCodexSkill(content, skillName);
 
@@ -1221,11 +1228,13 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
       const localClaudeRegex = /\.\/\.claude\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${dirName}/`);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
 
       // Convert frontmatter for opencode compatibility
@@ -1984,6 +1993,63 @@ function reportLocalPatches(configDir, runtime = 'claude') {
   return meta.files || [];
 }
 
+/**
+ * Recursively copy directory (helper for shared content)
+ */
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return;
+
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
+ * Install shared FASE content to ~/.fase-ai/ (v3.2.0+)
+ * Templates, references, and VERSION/CHANGELOG shared across all runtimes
+ */
+function installSharedContent() {
+  const src = path.join(__dirname, 'fase-shared');
+  if (!fs.existsSync(src)) {
+    return; // source dir not present, gracefully skip
+  }
+
+  // Copy templates/ and references/ to ~/.fase-ai/
+  copyDir(src, SHARED_DIR);
+
+  // Write VERSION to shared dir
+  const versionDest = path.join(SHARED_DIR, 'VERSION');
+  try {
+    fs.writeFileSync(versionDest, pkg.version);
+  } catch (e) {
+    console.error(`  ${red}✗${reset} Erro ao gravar VERSION em ${versionDest}`);
+  }
+
+  // Copy CHANGELOG to shared dir
+  const changelogSrc = path.join(__dirname, 'CHANGELOG.md');
+  if (fs.existsSync(changelogSrc)) {
+    try {
+      fs.copyFileSync(changelogSrc, path.join(SHARED_DIR, 'CHANGELOG.md'));
+    } catch (e) {
+      // CHANGELOG copy is optional
+    }
+  }
+
+  console.log(`  ${green}✓${reset} Instalado ~/.fase-ai/ (compartilhado)`);
+}
+
 function install(isGlobal, runtime = 'claude') {
   const isOpencode = runtime === 'opencode';
   const isGemini = runtime === 'gemini';
@@ -2098,8 +2164,14 @@ function install(isGlobal, runtime = 'claude') {
         // Replace ~/.claude/ and $HOME/.claude/ as they are the source of truth in the repo
         const dirRegex = /~\/\.claude\//g;
         const homeDirRegex = /\$HOME\/\.claude\//g;
+        const globalFaseRegex = /~\/\.fase\//g;
+        const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+        const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+        const sharedHomePath = '$HOME/.fase-ai/';
         content = content.replace(dirRegex, pathPrefix);
         content = content.replace(homeDirRegex, toHomePrefix(pathPrefix));
+        content = content.replace(globalFaseRegex, sharedPath);
+        content = content.replace(globalFaseHomeRegex, sharedHomePath);
         content = processAttribution(content, getCommitAttribution(runtime));
         // Convert frontmatter for runtime compatibility
         if (isOpencode) {
@@ -2700,6 +2772,9 @@ function atualizar(runtimesArg) {
  * Install FASE for all selected runtimes
  */
 function installAllRuntimes(runtimes, isGlobal, isInteractive) {
+  // Install shared content once before per-runtime installations
+  installSharedContent();
+
   const results = [];
 
   for (const runtime of runtimes) {

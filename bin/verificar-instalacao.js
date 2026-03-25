@@ -240,7 +240,42 @@ for (const runtime of runtimes) {
 
 console.log('\n');
 
-// 3. Check workflows
+// 3. Check shared FASE files (~/.fase-ai/)
+console.log(bold + '📁 CONTEÚDO COMPARTILHADO (FASE v3.2+)' + reset);
+const sharedDir = path.join(os.homedir(), '.fase-ai');
+const hasSharedDir = dirExists(sharedDir);
+const versionFile = path.join(sharedDir, 'VERSION');
+const changelogFile = path.join(sharedDir, 'CHANGELOG.md');
+const templatesDir = path.join(sharedDir, 'templates');
+const referencesDir = path.join(sharedDir, 'references');
+
+if (hasSharedDir) {
+  console.log(`  ${green}✓${reset} Diretório ~/.fase-ai: EXISTS`);
+
+  if (fileExists(versionFile)) {
+    try {
+      const versionContent = require('fs').readFileSync(versionFile, 'utf8').trim();
+      console.log(`  ${green}✓${reset} VERSION: ${versionContent}`);
+    } catch (e) {
+      console.log(`  ${yellow}⚠${reset} VERSION: não legível`);
+    }
+  } else {
+    console.log(`  ${yellow}⚠${reset} VERSION: não encontrado`);
+  }
+
+  const templateCount = dirExists(templatesDir) ? countFiles(templatesDir, /\.md$/) : 0;
+  const referenceCount = dirExists(referencesDir) ? countFiles(referencesDir, /\.md$/) : 0;
+
+  console.log(`  ${templateCount > 0 ? green : yellow}${templateCount > 0 ? '✓' : '⚠'}${reset} Templates: ${templateCount > 0 ? templateCount + ' encontrados' : 'nenhum'}`);
+  console.log(`  ${referenceCount > 0 ? green : yellow}${referenceCount > 0 ? '✓' : '⚠'}${reset} References: ${referenceCount > 0 ? referenceCount + ' encontrados' : 'nenhum'}`);
+} else {
+  console.log(`  ${yellow}⚠${reset} Diretório ~/.fase-ai: ${yellow}NÃO ENCONTRADO${reset}`);
+  console.log(`  ${dim}(Será criado na próxima instalação/atualização)${reset}`);
+}
+
+console.log('\n');
+
+// 4. Check workflows (legacy)
 console.log(bold + '📁 WORKFLOWS FASE' + reset);
 const workflowsDir = path.join(os.homedir(), '.fase', 'workflows');
 const hasWorkflowsDir = dirExists(path.join(os.homedir(), '.fase'));
@@ -276,7 +311,7 @@ if (hasWorkflowsDir && hasWorkflowsSubdir) {
 
 console.log('\n');
 
-// 4. Summary
+// 5. Summary
 console.log(cyan + '═══════════════════════════════════════════════════════════' + reset);
 
 if (issues.length === 0) {
