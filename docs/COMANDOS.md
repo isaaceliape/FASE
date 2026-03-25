@@ -567,7 +567,7 @@ Define o perfil de modelo a ser usado.
 
 **Problemas com algum comando?**
 
-- 📖 [Guia do Usuário](guia-do-usuario.md)
+- 📖 [Guia do Usuário](guia-do-usuario.html)
 - 🐛 [Reportar bug](https://github.com/isaaceliape/FASE/issues)
 
 ---

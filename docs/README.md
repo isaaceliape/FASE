@@ -8,24 +8,24 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 
 | Documento | Descrição |
 |-----------|-----------|
-| [**guia-do-usuario.md**](guia-do-usuario.md) | Guia completo de instalação e uso do FASE |
-| [**COMANDOS.md**](COMANDOS.md) | Lista com todos os 32 comandos disponíveis |
-| [**NPM-REGISTRY.md**](NPM-REGISTRY.md) | Configuração do npm registry e instalação |
+| [**Guia do Usuário**](guia-do-usuario.html) | Guia completo de instalação e uso do FASE |
+| [**Comandos**](COMANDOS.html) | Lista com todos os 32 comandos disponíveis |
+| [**NPM Registry**](NPM-REGISTRY.html) | Configuração do npm registry e instalação |
 
 ### Para Desenvolvedores
 
 | Documento | Descrição |
 |-----------|-----------|
 | [**CONTRIBUTING.md**](../CONTRIBUTING.md) | Como contribuir para o FASE (bugs, features, traduções) |
-| [**HOOKS.md**](HOOKS.md) | Git hooks e verificações de segurança |
-| [**technical/COMMAND_PATHS.md**](technical/COMMAND_PATHS.md) | Mecanismo de path standardization |
+| [**Git Hooks**](HOOKS.html) | Git hooks e verificações de segurança |
+| [**Path Standardization**](technical/COMMAND_PATHS.md) | Mecanismo de path standardization |
 
 ## 🎯 Começar Por Aqui
 
 ### Sou um Usuário
 
-1. Leia [guia-do-usuario.md](guia-do-usuario.md) para instalação
-2. Explore [COMANDOS.md](COMANDOS.md) para ver o que está disponível
+1. Leia [Guia do Usuário](guia-do-usuario.html) para instalação
+2. Explore [Comandos](COMANDOS.html) para ver o que está disponível
 
 ### Quero Contribuir
 
@@ -85,7 +85,7 @@ docs/
 - ✅ Renomeação de arquivos: `.pt.md` → `.md` para consistência
 
 **Novos Documentos:**
-- 📚 [technical/COMMAND_PATHS.md](technical/COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
+- 📚 [Path Standardization](technical/COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
 - 📚 Seções expandidas em [bin/test/README.md](../bin/test/README.md) e [bin/test/TESTING.md](../bin/test/TESTING.md)
 
 **Ver também:** [CHANGELOG.md](../CHANGELOG.md) para histórico completo de versões
