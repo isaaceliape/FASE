@@ -1280,6 +1280,24 @@ function cleanupOrphanedFiles(configDir) {
       console.log(`  ${green}✓${reset} Removido arquivo obsoleto ${relPath}`);
     }
   }
+
+  // Migration v3.2.0: remove per-provider template/reference copies
+  // These now live in shared ~/.fase-ai/ (installed once by installSharedContent)
+  const faseDir = path.join(configDir, 'fase');
+  if (fs.existsSync(faseDir)) {
+    const migratedDirs = ['templates', 'references'];
+    for (const dirName of migratedDirs) {
+      const dirPath = path.join(faseDir, dirName);
+      if (fs.existsSync(dirPath)) {
+        try {
+          fs.rmSync(dirPath, { recursive: true });
+          console.log(`  ${green}✓${reset} Removido ${dirName} obsoleto de fase/ (agora em ~/.fase-ai/)`);
+        } catch (e) {
+          // Silently ignore if already deleted or permission issues
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -1645,10 +1663,47 @@ function uninstall(isGlobal, runtime = 'claude') {
     console.log(`  ${yellow}⚠${reset} Nenhum arquivo FASE encontrado para remover.`);
   }
 
-  console.log(`
-  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
-  Seus outros arquivos e configurações foram preservados.
-`);
+  // Check if shared ~/.fase-ai/ should be removed (v3.2.0+)
+  // Only offer removal if this is the last installed runtime
+  const remaining = detectInstalledRuntimes();
+  if (remaining.length === 0) {
+    console.log();
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    let answered = false;
+    rl.on('close', () => {
+      if (!answered) {
+        answered = true;
+        console.log(`\n  ${dim}~/.fase-ai/ preservado${reset}\n`);
+      }
+    });
+
+    rl.question(`  ${yellow}Remover ~/.fase-ai/ (compartilhado)?${reset} [s/N]: `, (answer) => {
+      answered = true;
+      rl.close();
+
+      if (answer.trim().toLowerCase() === 's') {
+        try {
+          if (fs.existsSync(SHARED_DIR)) {
+            fs.rmSync(SHARED_DIR, { recursive: true });
+            console.log(`  ${green}✓${reset} ~/.fase-ai/ removido\n`);
+          }
+        } catch (e) {
+          console.log(`  ${yellow}⚠${reset} Erro ao remover ~/.fase-ai/: ${e.message}\n`);
+        }
+      } else {
+        console.log(`  ${dim}~/.fase-ai/ preservado${reset}\n`);
+      }
+    });
+  } else {
+    console.log(`\n  ${dim}~/.fase-ai/ preservado (usado por: ${remaining.join(', ')})${reset}\n`);
+  }
+
+  console.log(`  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
+  Seus outros arquivos e configurações foram preservados.\n`);
 }
 
 /**
@@ -2191,39 +2246,8 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
 
-  // Copy CHANGELOG.md
-  const changelogSrc = path.join(src, 'CHANGELOG.md');
-  const changelogDest = path.join(targetDir, 'fase-ai', 'CHANGELOG.md');
-  if (fs.existsSync(changelogSrc)) {
-    fs.copyFileSync(changelogSrc, changelogDest);
-    if (verifyFileInstalled(changelogDest, 'CHANGELOG.md')) {
-      console.log(`  ${green}✓${reset} Instalado CHANGELOG.md`);
-    } else {
-      failures.push('CHANGELOG.md');
-    }
-  }
-
-  // Write VERSION file
-  const versionDest = path.join(targetDir, 'fase-ai', 'VERSION');
-  const versionDir = path.dirname(versionDest);
-  try {
-    // Ensure target directory exists with proper permissions
-    if (!fs.existsSync(versionDir)) {
-      fs.mkdirSync(versionDir, { recursive: true, mode: 0o755 });
-    }
-    // Verify directory is writable before writing
-    fs.accessSync(versionDir, fs.constants.W_OK);
-    fs.writeFileSync(versionDest, pkg.version);
-    if (verifyFileInstalled(versionDest, 'VERSION')) {
-      console.log(`  ${green}✓${reset} Gravado VERSION (${pkg.version})`);
-    } else {
-      failures.push('VERSION');
-    }
-  } catch (err) {
-    console.error(`  ${red}✗${reset} Erro ao gravar VERSION em ${versionDest}`);
-    console.error(`    ${dim}Verifique permissões de escrita: ${versionDir}${reset}`);
-    failures.push('VERSION');
-  }
+  // VERSION and CHANGELOG now live in shared ~/.fase-ai/ (installed once via installSharedContent)
+  // Per-provider copies removed in v3.2.0 for reduced duplication
 
   if (!isCodex) {
     // Write package.json to force CommonJS mode for FASE scripts
