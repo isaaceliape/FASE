@@ -8,9 +8,8 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 
 | Documento | Descrição |
 |-----------|-----------|
-| [**USER-GUIDE.md**](USER-GUIDE.md) | Guia completo de instalação e uso do FASE |
+| [**guia-do-usuario.md**](guia-do-usuario.md) | Guia completo de instalação e uso do FASE |
 | [**COMANDOS.md**](COMANDOS.md) | Lista com todos os 32 comandos disponíveis |
-| [**FAQ.md**](FAQ.md) | Perguntas frequentes e respostas |
 | [**NPM-REGISTRY.md**](NPM-REGISTRY.md) | Configuração do npm registry e instalação |
 
 ### Para Desenvolvedores
@@ -19,15 +18,14 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 |-----------|-----------|
 | [**CONTRIBUTING.md**](../CONTRIBUTING.md) | Como contribuir para o FASE (bugs, features, traduções) |
 | [**HOOKS.md**](HOOKS.md) | Git hooks e verificações de segurança |
-| [**SECURITY.md**](../SECURITY.md) | Política de segurança e relatório de vulnerabilidades |
+| [**technical/COMMAND_PATHS.md**](technical/COMMAND_PATHS.md) | Mecanismo de path standardization |
 
 ## 🎯 Começar Por Aqui
 
 ### Sou um Usuário
 
-1. Leia [USER-GUIDE.md](USER-GUIDE.md) para instalação
+1. Leia [guia-do-usuario.md](guia-do-usuario.md) para instalação
 2. Explore [COMANDOS.md](COMANDOS.md) para ver o que está disponível
-3. Verifique [FAQ.md](FAQ.md) se tiver dúvidas
 
 ### Quero Contribuir
 
@@ -38,19 +36,22 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 
 ### Encontrei um Bug
 
-1. Verifique [FAQ.md](FAQ.md) - talvez já haja solução
-2. Procure em [GitHub Issues](https://github.com/isaaceliape/FASE/issues) por issue similar
-3. Abra uma nova issue com os detalhes
+1. Procure em [GitHub Issues](https://github.com/isaaceliape/FASE/issues) por issue similar
+2. Abra uma nova issue com os detalhes
 
 ## 📋 Estrutura de Arquivos
 
 ```
 docs/
 ├── README.md              # Este arquivo (índice)
-├── USER-GUIDE.md          # Guia para usuários
+├── guia-do-usuario.md     # Guia para usuários
 ├── COMANDOS.md            # Lista de comandos
-├── FAQ.md                 # Perguntas frequentes
-└── HOOKS.md               # Git hooks documentation
+├── HOOKS.md               # Git hooks documentation
+├── NPM-REGISTRY.md        # Configuração npm
+├── technical/
+│   └── COMMAND_PATHS.md   # Path standardization
+└── maintainers/
+    └── MAINTAINERS.md     # Informações para maintainers
 ```
 
 ## 🌐 Documentos em Português
@@ -69,7 +70,6 @@ docs/
 ## 🆘 Precisa de Ajuda?
 
 - **Problema técnico**: Abra uma [issue](https://github.com/isaaceliape/FASE/issues) com tag `[help]`
-- **Dúvida geral**: Verifique [FAQ.md](FAQ.md) primeiro
 - **Bug descoberto**: Reporte com template `bug_report.md`
 - **Sugestão**: Use template `feature_request.md`
 
@@ -85,8 +85,7 @@ docs/
 - ✅ Renomeação de arquivos: `.pt.md` → `.md` para consistência
 
 **Novos Documentos:**
-- 📚 [TEST_UPDATES_SUMMARY.md](../TEST_UPDATES_SUMMARY.md) - Rastreamento detalhado de mudanças
-- 📚 [COMMAND_PATHS.md](../COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
+- 📚 [technical/COMMAND_PATHS.md](technical/COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
 - 📚 Seções expandidas em [bin/test/README.md](../bin/test/README.md) e [bin/test/TESTING.md](../bin/test/TESTING.md)
 
 **Ver também:** [CHANGELOG.md](../CHANGELOG.md) para histórico completo de versões
@@ -97,7 +96,6 @@ docs/
 - ✅ Criado GitHub Actions para publicação automática
 - ✅ Templates de issues para bug reports e features
 - ✅ CONTRIBUTING.md com instruções detalhadas
-- ✅ SECURITY.md com política de segurança
 - ✅ Este índice de documentação
 
 ## 📞 Contato

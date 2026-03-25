@@ -101,7 +101,7 @@ git push origin main --tags
 4. **Publicar** — Release com fix
 5. **Divulgar** — Comunicar a vulnerabilidade após fix publicado
 
-Ver [SECURITY.md](SECURITY.md) para mais detalhes.
+Para reportar vulnerabilidades, abra uma [issue privada de segurança](https://github.com/isaaceliape/FASE/security/advisories).
 
 ## 📚 Documentação
 
