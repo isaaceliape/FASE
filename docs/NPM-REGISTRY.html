@@ -330,8 +330,11 @@
       <a href="readme.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link ">📋 Comandos</a>
 <a href="guia-do-usuario.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link active">📦 NPM Registry</a>
+<a href="technical/COMMAND_PATHS.html" class="sidebar-link ">🛣️ Path Standardization</a>
+<a href="maintainers/MAINTAINERS.html" class="sidebar-link ">👨‍💼 Guia Maintainers</a>
 <a href="context-monitor.html" class="sidebar-link ">📊 Context Monitor</a>
     </aside>
 
@@ -387,26 +390,6 @@ npm install
 node bin/install.js --help
 </code></pre>
 <p>O arquivo <code>.npmrc</code> garante que todos os contribuidores usem o mesmo registry.</p>
-<hr>
-<h2>🔐 Publicação</h2>
-<p>Quando publicamos no npm:</p>
-<ol>
-<li>✅ GitHub Actions valida o pacote</li>
-<li>✅ Autentica com <code>NPM_TOKEN</code> secret</li>
-<li>✅ Publica em <code>https://registry.npmjs.org/</code></li>
-<li>✅ Fica disponível globalmente em minutos</li>
-</ol>
-<hr>
-<h2>🌍 Para Usuários Chineses</h2>
-<p>Se você está na China e a instalação é lenta:</p>
-<h3>Opção 1: Usar cnpm</h3>
-<pre><code class="language-bash">cnpm install -g fase-ai
-</code></pre>
-<h3>Opção 2: Configurar como default</h3>
-<pre><code class="language-bash">npm config set registry https://registry.npmmirror.com
-# Depois restaurar
-npm config set registry https://registry.npmjs.org/
-</code></pre>
 <hr>
 <h2>📊 Informações do Pacote</h2>
 <ul>

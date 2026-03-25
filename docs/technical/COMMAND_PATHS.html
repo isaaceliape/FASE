@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>context-monitor - FASE Docs</title>
+  <title>COMMAND_PATHS - FASE Docs</title>
   <style>
     :root {
       --primary: #00ff88;
@@ -335,129 +335,123 @@
 <a href="NPM-REGISTRY.html" class="sidebar-link ">📦 NPM Registry</a>
 <a href="technical/COMMAND_PATHS.html" class="sidebar-link ">🛣️ Path Standardization</a>
 <a href="maintainers/MAINTAINERS.html" class="sidebar-link ">👨‍💼 Guia Maintainers</a>
-<a href="context-monitor.html" class="sidebar-link active">📊 Context Monitor</a>
+<a href="context-monitor.html" class="sidebar-link ">📊 Context Monitor</a>
     </aside>
 
     <main class="main">
-      <h1>Monitor de Janela de Contexto</h1>
-<p>Um hook post-tool (<code>PostToolUse</code> para Claude Code, <code>AfterTool</code> para Gemini CLI) que avisa o agente quando o uso da janela de contexto está alto.</p>
-<h2>Problema</h2>
-<p>A statusline mostra o uso do contexto ao <strong>usuário</strong>, mas o <strong>agente</strong> não tem consciência dos limites de contexto. Quando o contexto está baixo, o agente continua trabalhando até atingir o limite — possivelmente no meio de uma tarefa sem nenhum estado salvo.</p>
-<h2>Como Funciona</h2>
+      <h1>Command Path Standardization</h1>
+<h2>Overview</h2>
+<p>FASE commands use environment-agnostic path references that are converted to runtime-specific paths during installation. This allows the same command definitions to work across multiple environments (Claude Code, OpenCode, Gemini, Codex).</p>
+<h2>Path Convention</h2>
+<h3>Source Files (<code>comandos/*.md</code>)</h3>
+<p>Source command files use universal path references:</p>
+<ul>
+<li><strong>Workflows</strong>: <code>@~/.fase/workflows/workflow-name.md</code></li>
+<li><strong>Templates</strong>: <code>@~/.fase/templates/template-name.md</code></li>
+<li><strong>References</strong>: <code>@~/.fase/references/reference-name.md</code></li>
+<li><strong>Runtime tools</strong>: <code>$HOME/.fase/bin/fase-tools.cjs</code></li>
+</ul>
+<p>These paths are <strong>environment-agnostic</strong> and used in:</p>
 <ol>
-<li>O hook de statusline escreve métricas de contexto em <code>/tmp/claude-ctx-{session_id}.json</code></li>
-<li>Após cada uso de ferramenta, o monitor de contexto lê essas métricas</li>
-<li>Quando o contexto restante cai abaixo dos limites, ele injeta um aviso como <code>additionalContext</code></li>
-<li>O agente recebe o aviso em sua conversa e pode agir de acordo</li>
+<li><code>&lt;execution_context&gt;</code> blocks (for Claude Code context loading)</li>
+<li>Inline references within <code>&lt;process&gt;</code> sections</li>
+<li>Bash code blocks for script execution</li>
 </ol>
-<h2>Limites</h2>
+<h3>Path Conversion During Installation</h3>
+<p>When FASE is installed via <code>npx fase-ai [--runtime]</code>, the installer (<code>bin/install.js</code>) converts these universal paths to runtime-specific locations:</p>
 <table>
 <thead>
 <tr>
-<th>Nível</th>
-<th>Restante</th>
-<th>Comportamento do Agente</th>
+<th>Runtime</th>
+<th>Converted Path</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Normal</td>
-<td>&gt; 35%</td>
-<td>Sem aviso</td>
+<td><strong>Claude Code</strong></td>
+<td><code>~/.claude/fase/</code></td>
 </tr>
 <tr>
-<td>AVISO</td>
-<td>&lt;= 35%</td>
-<td>Encerrar tarefa atual, evitar iniciar trabalho complexo novo</td>
+<td><strong>Gemini</strong></td>
+<td><code>~/.gemini/fase/</code></td>
 </tr>
 <tr>
-<td>CRÍTICO</td>
-<td>&lt;= 25%</td>
-<td>Parar imediatamente, salvar estado (<code>/fase-pausar-trabalho</code>)</td>
+<td><strong>OpenCode</strong></td>
+<td><code>~/.config/opencode/fase/</code></td>
+</tr>
+<tr>
+<td><strong>Codex</strong></td>
+<td><code>~/.codex/fase/</code></td>
 </tr>
 </tbody></table>
-<h2>Debounce</h2>
-<p>Para evitar spam de avisos repetidos ao agente:</p>
+<h4>Example Conversions</h4>
+<p><strong>For Gemini Installation:</strong></p>
+<pre><code>Source:     @~/.fase/workflows/plan-phase.md
+Installed:  @~/.gemini/fase/workflows/plan-phase.md
+</code></pre>
+<p><strong>For OpenCode Installation:</strong></p>
+<pre><code>Source:     $HOME/.fase/bin/fase-tools.cjs
+Installed:  $HOME/.config/opencode/fase/bin/fase-tools.cjs
+</code></pre>
+<p><strong>For Claude Code Installation:</strong></p>
+<pre><code>Source:     ~/.fase/workflows/add-phase.md
+Installed:  ~/.claude/fase/workflows/add-phase.md
+</code></pre>
+<h2>Implementation Details</h2>
+<h3>Installer Path Replacement Rules</h3>
+<p>The installer applies path replacements in three functions:</p>
+<ol>
+<li><strong><code>copyFlattenedCommands</code></strong> - for OpenCode (flat command structure)</li>
+<li><strong><code>copyCommandsAsCodexSkills</code></strong> - for Codex (skill structure)</li>
+<li><strong><code>copyWithPathReplacement</code></strong> - for Claude Code and Gemini</li>
+</ol>
+<p>Replacement patterns:</p>
 <ul>
-<li>O primeiro aviso sempre dispara imediatamente</li>
-<li>Avisos subsequentes exigem 5 usos de ferramenta entre eles</li>
-<li>Escalada de severidade (AVISO -&gt; CRÍTICO) ignora o debounce</li>
+<li><code>~/\.fase/</code> → <code>&lt;pathPrefix&gt;fase/</code> (e.g., <code>~/.claude/fase/</code>)</li>
+<li><code>$HOME/.fase/</code> → <code>&lt;homePrefix&gt;fase/</code> (e.g., <code>$HOME/.claude/fase/</code>)</li>
 </ul>
-<h2>Arquitetura</h2>
-<pre><code>Hook de Statusline (fase-statusline.js)
-    | escreve
-    v
-/tmp/claude-ctx-{session_id}.json
-    ^ lê
-    |
-Monitor de Contexto (fase-context-monitor.js, PostToolUse/AfterTool)
-    | injeta
-    v
-additionalContext -&gt; Agente vê o aviso
-</code></pre>
-<p>O arquivo bridge é um objeto JSON simples:</p>
-<pre><code class="language-json">{
-  &quot;session_id&quot;: &quot;abc123&quot;,
-  &quot;remaining_percentage&quot;: 28.5,
-  &quot;used_pct&quot;: 71,
-  &quot;timestamp&quot;: 1708200000
-}
-</code></pre>
-<h2>Integração com o FASE</h2>
-<p>O comando <code>/fase-pausar-trabalho</code> salva o estado de execução. A mensagem de AVISO sugere usá-lo. A mensagem CRÍTICA instrui o salvamento imediato do estado.</p>
-<h2>Configuração</h2>
-<p>Ambos os hooks são registrados automaticamente durante a instalação via <code>npx fase-ai</code>:</p>
+<p>For OpenCode specifically:</p>
 <ul>
-<li><strong>Statusline</strong> (escreve o arquivo bridge): Registrado como <code>statusLine</code> no settings.json</li>
-<li><strong>Monitor de Contexto</strong> (lê o arquivo bridge): Registrado como hook <code>PostToolUse</code> no settings.json (<code>AfterTool</code> para Gemini)</li>
+<li><code>~/.fase</code> → <code>~/.config/opencode/fase</code></li>
+<li><code>$HOME/.fase</code> → <code>$HOME/.config/opencode/fase</code></li>
 </ul>
-<p><strong>Nota:</strong> Se os arquivos de hooks não existirem no diretório de instalação, os hooks não serão registrados automaticamente para evitar erros.</p>
-<p>Registro manual em <code>~/.claude/settings.json</code> (Claude Code):</p>
-<pre><code class="language-json">{
-  &quot;statusLine&quot;: {
-    &quot;type&quot;: &quot;command&quot;,
-    &quot;command&quot;: &quot;node ~/.claude/hooks/fase-statusline.js&quot;
-  },
-  &quot;hooks&quot;: {
-    &quot;PostToolUse&quot;: [
-      {
-        &quot;hooks&quot;: [
-          {
-            &quot;type&quot;: &quot;command&quot;,
-            &quot;command&quot;: &quot;node ~/.claude/hooks/fase-context-monitor.js&quot;
-          }
-        ]
-      }
-    ]
-  }
-}
-</code></pre>
-<p>Para Gemini CLI (<code>~/.gemini/settings.json</code>), use <code>AfterTool</code> em vez de <code>PostToolUse</code>:</p>
-<pre><code class="language-json">{
-  &quot;statusLine&quot;: {
-    &quot;type&quot;: &quot;command&quot;,
-    &quot;command&quot;: &quot;node ~/.gemini/hooks/fase-statusline.js&quot;
-  },
-  &quot;hooks&quot;: {
-    &quot;AfterTool&quot;: [
-      {
-        &quot;hooks&quot;: [
-          {
-            &quot;type&quot;: &quot;command&quot;,
-            &quot;command&quot;: &quot;node ~/.gemini/hooks/fase-context-monitor.js&quot;
-          }
-        ]
-      }
-    ]
-  }
-}
-</code></pre>
-<h2>Segurança</h2>
+<h3>Distributed Files (<code>bin/comandos/*.md</code>)</h3>
+<p>The <code>bin/</code> directory contains pre-built command files distributed via NPM. These files:</p>
 <ul>
-<li>O hook envolve tudo em try/catch e sai silenciosamente em caso de erro</li>
-<li>Nunca bloqueia a execução de ferramentas — um monitor com problema não deve quebrar o fluxo de trabalho do agente</li>
-<li>Métricas obsoletas (mais de 60s) são ignoradas</li>
-<li>Arquivos bridge ausentes são tratados graciosamente (subagentes, sessões novas)</li>
+<li>Have <code>&lt;execution_context&gt;</code> blocks <strong>removed</strong> (not needed after installation)</li>
+<li>Have inline <code>~/.fase/</code> references <strong>preserved</strong> for installer to replace</li>
+<li>Contain fully translated Portuguese text</li>
+<li>Are installed to runtime-specific locations by the installer</li>
 </ul>
+<h2>Workflow/Template Files</h2>
+<p>The actual workflow, template, and reference files are provided by:</p>
+<ol>
+<li><strong>GSD (upstream project)</strong> - provides the core workflow files</li>
+<li><strong>FASE</strong> - provides Portuguese-localized versions</li>
+</ol>
+<p>These files are installed to the converted path location (e.g., <code>~/.claude/fase/workflows/</code>, <code>~/.gemini/fase/workflows/</code>).</p>
+<h2>Development Usage</h2>
+<p>When developing locally with FASE command source files (<code>comandos/*.md</code>), you need workflow files available at <code>~/.fase/</code> for Claude Code to load via <code>&lt;execution_context&gt;</code> blocks. Options:</p>
+<ol>
+<li><p><strong>Symlink to GSD installation:</strong></p>
+<pre><code class="language-bash">ln -s ~/.claude/fase ~/.fase
+</code></pre>
+</li>
+<li><p><strong>Point to development workflows:</strong>
+If working on GSD workflows locally, adjust the symlink to point to your local GSD <code>workflows/</code> directory</p>
+</li>
+<li><p><strong>Install GSD first:</strong>
+Ensure GSD is installed in your runtime environment before developing FASE commands</p>
+</li>
+</ol>
+<h2>Consistency Across Environments</h2>
+<p>All 32 FASE commands now follow the same path convention:</p>
+<ul>
+<li>✅ 13 commands with workflow references use <code>@~/.fase/</code></li>
+<li>✅ 19 commands with no external references (self-contained)</li>
+<li>✅ Installer properly converts paths for each runtime</li>
+<li>✅ OpenCode receives correctly formatted <code>~/.config/opencode/fase/</code> paths</li>
+</ul>
+<p>This ensures command compatibility across Claude Code, OpenCode, Gemini, and Codex without environment-specific branching in command logic.</p>
 
     </main>
   </div>

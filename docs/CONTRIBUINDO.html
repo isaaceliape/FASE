@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>context-monitor - FASE Docs</title>
+  <title>CONTRIBUINDO - FASE Docs</title>
   <style>
     :root {
       --primary: #00ff88;
@@ -330,134 +330,218 @@
       <a href="readme.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link ">📋 Comandos</a>
 <a href="guia-do-usuario.html" class="sidebar-link ">📘 Guia do Usuário</a>
-<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link active">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link ">📦 NPM Registry</a>
 <a href="technical/COMMAND_PATHS.html" class="sidebar-link ">🛣️ Path Standardization</a>
 <a href="maintainers/MAINTAINERS.html" class="sidebar-link ">👨‍💼 Guia Maintainers</a>
-<a href="context-monitor.html" class="sidebar-link active">📊 Context Monitor</a>
+<a href="context-monitor.html" class="sidebar-link ">📊 Context Monitor</a>
     </aside>
 
     <main class="main">
-      <h1>Monitor de Janela de Contexto</h1>
-<p>Um hook post-tool (<code>PostToolUse</code> para Claude Code, <code>AfterTool</code> para Gemini CLI) que avisa o agente quando o uso da janela de contexto está alto.</p>
-<h2>Problema</h2>
-<p>A statusline mostra o uso do contexto ao <strong>usuário</strong>, mas o <strong>agente</strong> não tem consciência dos limites de contexto. Quando o contexto está baixo, o agente continua trabalhando até atingir o limite — possivelmente no meio de uma tarefa sem nenhum estado salvo.</p>
-<h2>Como Funciona</h2>
+      <h1>🤝 Guia de Contribuição</h1>
+<p>Obrigado por considerar contribuir ao FASE! Este documento oferece diretrizes e instruções para participar do projeto.</p>
+<h2>📋 Código de Conduta</h2>
+<p>Este projeto adere a um Código de Conduta. Ao participar, você concorda em manter um ambiente respeitoso e inclusivo. Comportamento abusivo deve ser reportado para maintainers.</p>
+<h2>🎯 Tipos de Contribuição</h2>
+<h3>1. <strong>Traduções</strong> (Novos idiomas)</h3>
+<p>Se quiser traduzir FASE para outro idioma:</p>
+<pre><code class="language-bash"># Duplicar estrutura para novo idioma
+cp -r bin/agentes bin/agentes-es    # Exemplo: espanhol
+cp -r bin/comandos bin/comandos-es
+</code></pre>
 <ol>
-<li>O hook de statusline escreve métricas de contexto em <code>/tmp/claude-ctx-{session_id}.json</code></li>
-<li>Após cada uso de ferramenta, o monitor de contexto lê essas métricas</li>
-<li>Quando o contexto restante cai abaixo dos limites, ele injeta um aviso como <code>additionalContext</code></li>
-<li>O agente recebe o aviso em sua conversa e pode agir de acordo</li>
+<li>Traduzir os arquivos <code>.md</code> no novo idioma</li>
+<li>Criar issue descrevendo o idioma</li>
+<li>Abrir PR com a tradução</li>
+<li>Aguardar revisão</li>
 </ol>
-<h2>Limites</h2>
-<table>
-<thead>
-<tr>
-<th>Nível</th>
-<th>Restante</th>
-<th>Comportamento do Agente</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Normal</td>
-<td>&gt; 35%</td>
-<td>Sem aviso</td>
-</tr>
-<tr>
-<td>AVISO</td>
-<td>&lt;= 35%</td>
-<td>Encerrar tarefa atual, evitar iniciar trabalho complexo novo</td>
-</tr>
-<tr>
-<td>CRÍTICO</td>
-<td>&lt;= 25%</td>
-<td>Parar imediatamente, salvar estado (<code>/fase-pausar-trabalho</code>)</td>
-</tr>
-</tbody></table>
-<h2>Debounce</h2>
-<p>Para evitar spam de avisos repetidos ao agente:</p>
+<p><strong>Estrutura esperada:</strong></p>
+<pre><code>agentes-{idioma}/
+  ├── fase-planejador.{idioma}.md
+  ├── fase-executor.{idioma}.md
+  └── ...
+
+comandos-{idioma}/
+  ├── ajuda.{idioma}.md
+  ├── novo-projeto.{idioma}.md
+  └── ...
+</code></pre>
+<h3>2. <strong>Novos Comandos</strong></h3>
+<p>Adicionar um novo comando ao FASE:</p>
+<ol>
+<li><strong>Criar arquivo</strong> em <code>comandos/seu-comando.md</code></li>
+</ol>
+<pre><code class="language-markdown">---
+name: seu-comando
+description: Descrição breve do que o comando faz
+type: command
+---
+
+# /fase-seu-comando
+
+Descrição detalhada.
+
+## Uso
+
+```bash
+/fase-seu-comando [opções]
+</code></pre>
+<h2>Opções</h2>
 <ul>
-<li>O primeiro aviso sempre dispara imediatamente</li>
-<li>Avisos subsequentes exigem 5 usos de ferramenta entre eles</li>
-<li>Escalada de severidade (AVISO -&gt; CRÍTICO) ignora o debounce</li>
+<li><code>--flag</code>: Descrição</li>
 </ul>
-<h2>Arquitetura</h2>
-<pre><code>Hook de Statusline (fase-statusline.js)
-    | escreve
-    v
-/tmp/claude-ctx-{session_id}.json
-    ^ lê
-    |
-Monitor de Contexto (fase-context-monitor.js, PostToolUse/AfterTool)
-    | injeta
-    v
-additionalContext -&gt; Agente vê o aviso
+<h2>Exemplos</h2>
+<p>[Exemplos de uso]</p>
+<pre><code>
+2. **Atualizar** `bin/lib/commands.cjs` para registrar o comando
+3. **Testar** localmente antes de submeter PR
+4. **Documentar** em `docs/COMANDOS.md`
+
+### 3. **Correções de Bugs**
+
+1. Abrir issue descrevendo o bug
+2. Forkar o repositório
+3. Criar branch: `git checkout -b fix/descricao-do-bug`
+4. Fazer commit com mensagem descritiva
+5. Push para a branch: `git push origin fix/descricao-do-bug`
+6. Abrir PR com detalhes
+
+### 4. **Melhorias e Features**
+
+1. Discutir no issue primeiro (para evitar trabalho duplicado)
+2. Forkar e criar branch descritiva
+3. Implementar com mensagens de commit claras
+4. Adicionar testes se aplicável
+5. Abrir PR com contextualização
+
+## 🔧 Setup Local
+
+### Pré-requisitos
+
+- Node.js &gt;= 14.0.0
+- Git
+- npm ou yarn
+
+### Instalação
+
+```bash
+# Clonar repositório
+git clone https://github.com/seu-usuario/FASE.git
+cd FASE
+
+# Instalar dependências
+npm install
+
+# Instalar git hooks
+npx husky install
 </code></pre>
-<p>O arquivo bridge é um objeto JSON simples:</p>
-<pre><code class="language-json">{
-  &quot;session_id&quot;: &quot;abc123&quot;,
-  &quot;remaining_percentage&quot;: 28.5,
-  &quot;used_pct&quot;: 71,
-  &quot;timestamp&quot;: 1708200000
-}
+<h3>Teste o Instalador Localmente</h3>
+<pre><code class="language-bash"># Teste com flags
+node bin/install.js --help
+node bin/install.js --claude --local
+
+# Verifique se o pacote foi criado corretamente
+npm run verificar
 </code></pre>
-<h2>Integração com o FASE</h2>
-<p>O comando <code>/fase-pausar-trabalho</code> salva o estado de execução. A mensagem de AVISO sugere usá-lo. A mensagem CRÍTICA instrui o salvamento imediato do estado.</p>
-<h2>Configuração</h2>
-<p>Ambos os hooks são registrados automaticamente durante a instalação via <code>npx fase-ai</code>:</p>
+<h2>📝 Convenções de Commit</h2>
+<p>Siga o formato <a href="https://www.conventionalcommits.org/pt-br/">Conventional Commits</a>:</p>
+<pre><code>&lt;tipo&gt;(&lt;escopo&gt;): &lt;descrição curta&gt;
+
+&lt;descrição detalhada opcional&gt;
+
+&lt;footer opcional&gt;
+</code></pre>
+<h3>Tipos</h3>
 <ul>
-<li><strong>Statusline</strong> (escreve o arquivo bridge): Registrado como <code>statusLine</code> no settings.json</li>
-<li><strong>Monitor de Contexto</strong> (lê o arquivo bridge): Registrado como hook <code>PostToolUse</code> no settings.json (<code>AfterTool</code> para Gemini)</li>
+<li><code>feat:</code> Nova feature</li>
+<li><code>fix:</code> Correção de bug</li>
+<li><code>docs:</code> Mudanças em documentação</li>
+<li><code>style:</code> Formatação, sem mudança lógica</li>
+<li><code>refactor:</code> Refatoração de código</li>
+<li><code>test:</code> Adicionar ou atualizar testes</li>
+<li><code>chore:</code> Tarefas de build, dependências</li>
 </ul>
-<p><strong>Nota:</strong> Se os arquivos de hooks não existirem no diretório de instalação, os hooks não serão registrados automaticamente para evitar erros.</p>
-<p>Registro manual em <code>~/.claude/settings.json</code> (Claude Code):</p>
-<pre><code class="language-json">{
-  &quot;statusLine&quot;: {
-    &quot;type&quot;: &quot;command&quot;,
-    &quot;command&quot;: &quot;node ~/.claude/hooks/fase-statusline.js&quot;
-  },
-  &quot;hooks&quot;: {
-    &quot;PostToolUse&quot;: [
-      {
-        &quot;hooks&quot;: [
-          {
-            &quot;type&quot;: &quot;command&quot;,
-            &quot;command&quot;: &quot;node ~/.claude/hooks/fase-context-monitor.js&quot;
-          }
-        ]
-      }
-    ]
-  }
-}
+<h3>Exemplos</h3>
+<pre><code class="language-bash"># Feature nova
+git commit -m &quot;feat(comandos): adicionar /fase-novo-comando
+
+Implementa novo comando que permite...&quot;
+
+# Correção
+git commit -m &quot;fix(install.js): corrigir bug ao criar diretório
+
+Problema: o hook falhava ao criar .claude/
+Solução: verificar se diretório existe antes&quot;
+
+# Documentação
+git commit -m &quot;docs: atualizar guia de instalação&quot;
 </code></pre>
-<p>Para Gemini CLI (<code>~/.gemini/settings.json</code>), use <code>AfterTool</code> em vez de <code>PostToolUse</code>:</p>
-<pre><code class="language-json">{
-  &quot;statusLine&quot;: {
-    &quot;type&quot;: &quot;command&quot;,
-    &quot;command&quot;: &quot;node ~/.gemini/hooks/fase-statusline.js&quot;
-  },
-  &quot;hooks&quot;: {
-    &quot;AfterTool&quot;: [
-      {
-        &quot;hooks&quot;: [
-          {
-            &quot;type&quot;: &quot;command&quot;,
-            &quot;command&quot;: &quot;node ~/.gemini/hooks/fase-context-monitor.js&quot;
-          }
-        ]
-      }
-    ]
-  }
-}
+<h2>🧪 Testing</h2>
+<h3>Verificar Integridade do Pacote</h3>
+<pre><code class="language-bash">cd bin
+npm pack --dry-run
 </code></pre>
-<h2>Segurança</h2>
+<p>Isso simula a publicação no npm e mostra:</p>
 <ul>
-<li>O hook envolve tudo em try/catch e sai silenciosamente em caso de erro</li>
-<li>Nunca bloqueia a execução de ferramentas — um monitor com problema não deve quebrar o fluxo de trabalho do agente</li>
-<li>Métricas obsoletas (mais de 60s) são ignoradas</li>
-<li>Arquivos bridge ausentes são tratados graciosamente (subagentes, sessões novas)</li>
+<li>✅ Quais arquivos serão inclusos</li>
+<li>❌ Erros de configuração</li>
+<li>📊 Tamanho do pacote</li>
 </ul>
+<h3>Testar Instalação</h3>
+<pre><code class="language-bash"># Instalação local (projeto atual)
+node bin/install.js --claude --local
+
+# Instalar globalmente (seu computador)
+node bin/install.js --claude --global
+
+# Uninstall
+node bin/install.js --uninstall
+</code></pre>
+<h2>📖 Documentação</h2>
+<h3>Padrão de Escrita</h3>
+<ul>
+<li><strong>Português brasileiro</strong> em toda documentação em <code>.md</code></li>
+<li><strong>Inglês</strong> apenas para termos técnicos consagrados</li>
+<li><strong>Código e comandos</strong> sempre em inglês (invariável)</li>
+</ul>
+<h3>Estrutura de Documentação</h3>
+<pre><code>docs/
+├── guia-do-usuario.md       # Guia para usuários
+├── COMANDOS.md              # Lista de comandos
+├── HOOKS.md                 # Git hooks setup
+├── CONTRIBUINDO.md          # Este arquivo
+└── technical/
+    └── COMMAND_PATHS.md     # Path standardization
+</code></pre>
+<h2>✅ Checklist para PRs</h2>
+<p>Antes de submeter um PR, verifique:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Branch criada a partir de <code>main</code></li>
+<li><input disabled="" type="checkbox"> Commits seguem Conventional Commits</li>
+<li><input disabled="" type="checkbox"> Documentação atualizada</li>
+<li><input disabled="" type="checkbox"> Sem conflitos com <code>main</code></li>
+<li><input disabled="" type="checkbox"> <code>npm pack --dry-run</code> passa sem erros</li>
+<li><input disabled="" type="checkbox"> Pre-commit hooks não falharam</li>
+</ul>
+<h2>🚀 Processo de Review</h2>
+<ol>
+<li><strong>Automático</strong>: GitHub Actions verifica integridade do pacote</li>
+<li><strong>Automático</strong>: Pre-commit hooks validam mudanças</li>
+<li><strong>Manual</strong>: Um maintainer revisa o código</li>
+<li><strong>Merge</strong>: Se aprovado, seu PR será merged</li>
+</ol>
+<h2>📞 Precisa de Ajuda?</h2>
+<ul>
+<li><strong>Issues</strong>: <a href="https://github.com/isaaceliape/FASE/issues">GitHub Issues</a></li>
+<li><strong>Discussões</strong>: <a href="https://github.com/isaaceliape/FASE/discussions">GitHub Discussions</a></li>
+<li><strong>Email</strong>: Abrir issue para contato</li>
+</ul>
+<h2>📜 Licença</h2>
+<p>Ao contribuir, você concorda que suas contribuições serão licenciadas sob a <a href="https://github.com/isaaceliape/FASE/blob/main/LICENSE">MIT License</a>.</p>
+<hr>
+<p><strong>Obrigado por contribuir! 🙌</strong></p>
+<p>Cada contribuição, pequena ou grande, ajuda a melhorar FASE para a comunidade brasileira.</p>
 
     </main>
   </div>
