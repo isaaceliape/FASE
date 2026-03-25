@@ -8,8 +8,11 @@ const docs = [
   { file: "readme.html", label: "README", icon: "📖" },
   { file: "COMANDOS.html", label: "Comandos", icon: "📋" },
   { file: "guia-do-usuario.html", label: "Guia do Usuário", icon: "📘" },
+  { file: "CONTRIBUINDO.html", label: "Guia de Contribuição", icon: "🤝" },
   { file: "HOOKS.html", label: "Git Hooks", icon: "🔧" },
   { file: "NPM-REGISTRY.html", label: "NPM Registry", icon: "📦" },
+  { file: "technical/COMMAND_PATHS.html", label: "Path Standardization", icon: "🛣️" },
+  { file: "maintainers/MAINTAINERS.html", label: "Guia Maintainers", icon: "👨‍💼" },
   { file: "context-monitor.html", label: "Context Monitor", icon: "📊" },
 ];
 
@@ -361,26 +364,61 @@ const htmlTemplate = (title, currentFile, content) => {
 </html>`;
 };
 
-// Get all markdown files in docs folder
+// Get all markdown files in docs folder (including subdirectories)
 const docsDir = path.join(__dirname, "docs");
-const markdownFiles = fs.readdirSync(docsDir).filter((f) => f.endsWith(".md"));
+
+function getAllMarkdownFiles(dir, prefix = "") {
+  const files = [];
+  const items = fs.readdirSync(dir);
+
+  items.forEach((item) => {
+    const itemPath = path.join(dir, item);
+    const stat = fs.statSync(itemPath);
+
+    if (stat.isDirectory()) {
+      // Recursively get files from subdirectories
+      files.push(...getAllMarkdownFiles(itemPath, prefix ? `${prefix}/${item}` : item));
+    } else if (item.endsWith(".md")) {
+      files.push({
+        file: item,
+        path: itemPath,
+        prefix: prefix,
+        fullPath: prefix ? `${prefix}/${item}` : item
+      });
+    }
+  });
+
+  return files;
+}
+
+const markdownFiles = getAllMarkdownFiles(docsDir);
 
 // Create HTML files
 console.log(
   "🔨 Building documentation pages with proper markdown parsing...\n",
 );
 
-markdownFiles.forEach((file) => {
-  const filePath = path.join(docsDir, file);
+markdownFiles.forEach(({ file, path: filePath, prefix, fullPath }) => {
   const markdown = fs.readFileSync(filePath, "utf-8");
   const title = file.replace(".md", "");
   const htmlFileName =
     file === "README.md" ? "readme.html" : file.replace(".md", ".html");
   const html = marked(markdown);
 
-  const htmlFile = path.join(docsDir, htmlFileName);
+  // Create subdirectory if it doesn't exist
+  if (prefix) {
+    const subDir = path.join(docsDir, prefix);
+    if (!fs.existsSync(subDir)) {
+      fs.mkdirSync(subDir, { recursive: true });
+    }
+  }
+
+  const htmlFile = prefix
+    ? path.join(docsDir, prefix, htmlFileName)
+    : path.join(docsDir, htmlFileName);
+
   fs.writeFileSync(htmlFile, htmlTemplate(title, htmlFileName, html));
-  console.log(`✅ ${file} → ${htmlFileName}`);
+  console.log(`✅ ${fullPath} → ${htmlFile.replace(docsDir, "docs")}`);
 });
 
 console.log("\n✨ Documentation build complete!");

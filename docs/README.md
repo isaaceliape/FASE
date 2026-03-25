@@ -18,7 +18,7 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 |-----------|-----------|
 | [**Guia de Contribuição**](CONTRIBUINDO.html) | Como contribuir para o FASE (bugs, features, traduções) |
 | [**Git Hooks**](HOOKS.html) | Git hooks e verificações de segurança |
-| [**Path Standardization**](technical/COMMAND_PATHS.md) | Mecanismo de path standardization |
+| [**Path Standardization**](technical/COMMAND_PATHS.html) | Mecanismo de path standardization |
 
 ## 🎯 Começar Por Aqui
 
@@ -46,6 +46,7 @@ docs/
 ├── README.md              # Este arquivo (índice)
 ├── guia-do-usuario.md     # Guia para usuários
 ├── COMANDOS.md            # Lista de comandos
+├── CONTRIBUINDO.md        # Guia de contribuição
 ├── HOOKS.md               # Git hooks documentation
 ├── NPM-REGISTRY.md        # Configuração npm
 ├── technical/
@@ -85,7 +86,7 @@ docs/
 - ✅ Renomeação de arquivos: `.pt.md` → `.md` para consistência
 
 **Novos Documentos:**
-- 📚 [Path Standardization](technical/COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
+- 📚 [Path Standardization](technical/COMMAND_PATHS.html) - Explicação do mecanismo de path standardization
 - 📚 Seções expandidas em [bin/test/README.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/README.md) e [bin/test/TESTING.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/TESTING.md)
 
 **Ver também:** [CHANGELOG.md](https://github.com/isaaceliape/FASE/blob/main/CHANGELOG.md) para histórico completo de versões
