@@ -1,5 +1,7 @@
 # 🔧 Comandos do F.A.S.E.
 
+> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+
 **32 comandos em português brasileiro para Claude Code.**
 
 ---
@@ -567,7 +569,7 @@ Define o perfil de modelo a ser usado.
 
 **Problemas com algum comando?**
 
-- 📖 [Guia do Usuário](guia-do-usuario.md)
+- 📖 [Guia do Usuário](guia-do-usuario.html)
 - 🐛 [Reportar bug](https://github.com/isaaceliape/FASE/issues)
 
 ---

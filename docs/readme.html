@@ -258,6 +258,18 @@
       margin: 30px 0;
     }
 
+    .version-badge {
+      display: inline-block;
+      background-color: rgba(0, 255, 136, 0.15);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      margin-bottom: 20px;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -327,16 +339,23 @@
   <div class="content-wrapper">
     <aside class="sidebar">
       <h3>📚 Documentação</h3>
-      <a href="readme.html" class="sidebar-link active">📖 README</a>
+      <a href="index.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link ">📋 Comandos</a>
 <a href="guia-do-usuario.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link ">📦 NPM Registry</a>
-<a href="context-monitor.html" class="sidebar-link ">📊 Context Monitor</a>
+<a href="technical/padronizacao-caminhos.html" class="sidebar-link ">🛣️ Padronização de Caminhos</a>
+<a href="maintainers/MANTENEDORES.html" class="sidebar-link ">👨‍💼 Guia de Maintainers</a>
+<a href="monitor-contexto.html" class="sidebar-link ">📊 Monitor de Contexto</a>
     </aside>
 
     <main class="main">
+      <div class="version-badge">📦 Versão 3.2.0</div>
       <h1>📚 Documentação do FASE</h1>
+<blockquote>
+<p><strong>Versão</strong>: 3.2.0 | Última atualização: 2026-03-25</p>
+</blockquote>
 <p>Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que precisa para instalar, usar e contribuir ao projeto.</p>
 <h2>📖 Documentos Principais</h2>
 <h3>Para Usuários</h3>
@@ -348,19 +367,15 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="USER-GUIDE.md"><strong>USER-GUIDE.md</strong></a></td>
+<td><a href="guia-do-usuario.html"><strong>Guia do Usuário</strong></a></td>
 <td>Guia completo de instalação e uso do FASE</td>
 </tr>
 <tr>
-<td><a href="COMANDOS.md"><strong>COMANDOS.md</strong></a></td>
+<td><a href="COMANDOS.html"><strong>Comandos</strong></a></td>
 <td>Lista com todos os 32 comandos disponíveis</td>
 </tr>
 <tr>
-<td><a href="FAQ.md"><strong>FAQ.md</strong></a></td>
-<td>Perguntas frequentes e respostas</td>
-</tr>
-<tr>
-<td><a href="NPM-REGISTRY.md"><strong>NPM-REGISTRY.md</strong></a></td>
+<td><a href="NPM-REGISTRY.html"><strong>NPM Registry</strong></a></td>
 <td>Configuração do npm registry e instalação</td>
 </tr>
 </tbody></table>
@@ -373,45 +388,48 @@
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="../CONTRIBUTING.md"><strong>CONTRIBUTING.md</strong></a></td>
+<td><a href="CONTRIBUINDO.html"><strong>Guia de Contribuição</strong></a></td>
 <td>Como contribuir para o FASE (bugs, features, traduções)</td>
 </tr>
 <tr>
-<td><a href="HOOKS.md"><strong>HOOKS.md</strong></a></td>
+<td><a href="HOOKS.html"><strong>Git Hooks</strong></a></td>
 <td>Git hooks e verificações de segurança</td>
 </tr>
 <tr>
-<td><a href="../SECURITY.md"><strong>SECURITY.md</strong></a></td>
-<td>Política de segurança e relatório de vulnerabilidades</td>
+<td><a href="technical/padronizacao-caminhos.html"><strong>Padronização de Caminhos</strong></a></td>
+<td>Mecanismo de padronização de caminhos</td>
 </tr>
 </tbody></table>
 <h2>🎯 Começar Por Aqui</h2>
 <h3>Sou um Usuário</h3>
 <ol>
-<li>Leia <a href="USER-GUIDE.md">USER-GUIDE.md</a> para instalação</li>
-<li>Explore <a href="COMANDOS.md">COMANDOS.md</a> para ver o que está disponível</li>
-<li>Verifique <a href="FAQ.md">FAQ.md</a> se tiver dúvidas</li>
+<li>Leia <a href="guia-do-usuario.html">Guia do Usuário</a> para instalação</li>
+<li>Explore <a href="COMANDOS.html">Comandos</a> para ver o que está disponível</li>
 </ol>
 <h3>Quero Contribuir</h3>
 <ol>
 <li>Abra uma issue descrevendo sua ideia</li>
-<li>Leia <a href="../CONTRIBUTING.md">CONTRIBUTING.md</a></li>
+<li>Leia <a href="CONTRIBUINDO.html">Guia de Contribuição</a></li>
 <li>Siga o setup local</li>
 <li>Abra um Pull Request</li>
 </ol>
 <h3>Encontrei um Bug</h3>
 <ol>
-<li>Verifique <a href="FAQ.md">FAQ.md</a> - talvez já haja solução</li>
 <li>Procure em <a href="https://github.com/isaaceliape/FASE/issues">GitHub Issues</a> por issue similar</li>
 <li>Abra uma nova issue com os detalhes</li>
 </ol>
 <h2>📋 Estrutura de Arquivos</h2>
 <pre><code>docs/
 ├── README.md              # Este arquivo (índice)
-├── USER-GUIDE.md          # Guia para usuários
+├── guia-do-usuario.md     # Guia para usuários
 ├── COMANDOS.md            # Lista de comandos
-├── FAQ.md                 # Perguntas frequentes
-└── HOOKS.md               # Git hooks documentation
+├── CONTRIBUINDO.md        # Guia de contribuição
+├── HOOKS.md               # Git hooks documentation
+├── NPM-REGISTRY.md        # Configuração npm
+├── technical/
+│   └── padronizacao-caminhos.md   # Path standardization
+└── maintainers/
+    └── MANTENEDORES.md     # Informações para maintainers
 </code></pre>
 <h2>🌐 Documentos em Português</h2>
 <p><strong>Toda documentação do FASE é em português brasileiro:</strong></p>
@@ -430,18 +448,31 @@
 <h2>🆘 Precisa de Ajuda?</h2>
 <ul>
 <li><strong>Problema técnico</strong>: Abra uma <a href="https://github.com/isaaceliape/FASE/issues">issue</a> com tag <code>[help]</code></li>
-<li><strong>Dúvida geral</strong>: Verifique <a href="FAQ.md">FAQ.md</a> primeiro</li>
 <li><strong>Bug descoberto</strong>: Reporte com template <code>bug_report.md</code></li>
 <li><strong>Sugestão</strong>: Use template <code>feature_request.md</code></li>
 </ul>
 <h2>📈 Melhorias Documentadas</h2>
+<h3>v3.2.0 (Março 2026)</h3>
+<p><strong>Path Standardization &amp; Multi-Runtime Architecture</strong></p>
+<ul>
+<li>✅ Todos os comandos e agentes agora usam padrão universal <code>@~/.fase/</code></li>
+<li>✅ Installer converte automaticamente para caminhos específicos de cada runtime</li>
+<li>✅ 129 testes unitários com cobertura completa</li>
+<li>✅ Documentação expandida sobre path standardization</li>
+<li>✅ Renomeação de arquivos: <code>.pt.md</code> → <code>.md</code> para consistência</li>
+</ul>
+<p><strong>Novos Documentos:</strong></p>
+<ul>
+<li>📚 <a href="technical/padronizacao-caminhos.html">Padronização de Caminhos</a> - Explicação do mecanismo de padronização de caminhos</li>
+<li>📚 Seções expandidas em <a href="https://github.com/isaaceliape/FASE/blob/main/bin/test/README.md">bin/test/README.md</a> e <a href="https://github.com/isaaceliape/FASE/blob/main/bin/test/TESTING.md">bin/test/TESTING.md</a></li>
+</ul>
+<p><strong>Ver também:</strong> <a href="https://github.com/isaaceliape/FASE/blob/main/CHANGELOG.md">CHANGELOG.md</a> para histórico completo de versões</p>
 <h3>v2.4.0 (Março 2026)</h3>
 <ul>
 <li>✅ Adicionado pre-commit hooks para validação de pacote npm</li>
 <li>✅ Criado GitHub Actions para publicação automática</li>
 <li>✅ Templates de issues para bug reports e features</li>
 <li>✅ CONTRIBUTING.md com instruções detalhadas</li>
-<li>✅ SECURITY.md com política de segurança</li>
 <li>✅ Este índice de documentação</li>
 </ul>
 <h2>📞 Contato</h2>
@@ -451,7 +482,7 @@
 <li><strong>Email</strong>: Via issue (por favor, não compartilhar emails publicamente)</li>
 </ul>
 <hr>
-<p><strong>Versão</strong>: 1.0
+<p><strong>Versão</strong>: 3.2.0
 <strong>Última atualização</strong>: 2026-03-13</p>
 
     </main>

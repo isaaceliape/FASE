@@ -1,82 +1,82 @@
 # CHANGELOG
 
-All notable changes to this project will be documented in this file.
+Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
+e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
 ## [3.2.0] - 2026-03-21
 
-### Added
-- Path standardization documentation across all test files
-- TEST_UPDATES_SUMMARY.md with comprehensive change tracking
-- Path standardization sections in bin/test/README.md and bin/test/TESTING.md
-- Extended TEST_SETUP_SUMMARY.md with installer path conversion details
+### Adicionado
+- Documentação de padronização de caminhos em todos os arquivos de teste
+- TEST_UPDATES_SUMMARY.md com rastreamento abrangente de mudanças
+- Seções de padronização de caminhos em bin/test/README.md e bin/test/TESTING.md
+- TEST_SETUP_SUMMARY.md estendido com detalhes de conversão de caminhos do instalador
 
-### Changed
-- **Internal**: Standardized all command path references to use `@~/.fase/` pattern
-- **Internal**: Standardized all agent path references to use `@~/.fase/` pattern
-- Updated installer (bin/install.js) path replacement logic for all 4 runtimes
-- Renamed all command files from `.pt.md` to `.md` for consistency
-- Updated test files to reflect new standardized path conventions
-- Enhanced documentation for path standardization mechanism
+### Alterado
+- **Interno**: Padronizados todos os referencias de caminhos de comandos para usar padrão `@~/.fase/`
+- **Interno**: Padronizados todos os referencias de caminhos de agentes para usar padrão `@~/.fase/`
+- Atualizada lógica de substituição de caminhos do instalador (bin/install.js) para os 4 runtimes
+- Renomeados todos os arquivos de comandos de `.pt.md` para `.md` para consistência
+- Atualizados arquivos de teste para refletir novas convenções de caminho padronizadas
+- Melhorada documentação do mecanismo de padronização de caminhos
 
-### Fixed
-- Fixed test data in testes/phase.test.cjs to use standardized paths
-- Updated test assertions in testes/agent-frontmatter.test.cjs
-- Corrected path references in agent files (fase-roadmapper.md, fase-sintetizador-pesquisa.md)
+### Corrigido
+- Corrigidos dados de teste em testes/phase.test.cjs para usar caminhos padronizados
+- Atualizadas asserções de teste em testes/agent-frontmatter.test.cjs
+- Corrigidas referencias de caminhos em arquivos de agentes (fase-roadmapper.md, fase-sintetizador-pesquisa.md)
 
-### Technical Details
-- Path standardization ensures commands work identically across Claude Code, OpenCode, Gemini, and Codex
-- Installer transparently converts `@~/.fase/` to runtime-specific paths during installation
-- All 129 unit tests passing with new path conventions
-- No breaking changes - transparent to end users
+### Detalhes Técnicos
+- Padronização de caminhos garante que comandos funcionem identicamente em Claude Code, OpenCode, Gemini e Codex
+- Instalador converte transparentemente `@~/.fase/` para caminhos específicos de runtime durante a instalação
+- Todos os 129 testes unitários passando com novas convenções de caminho
+- Sem mudanças que quebram compatibilidade - transparente para usuários finais
 
 ## [3.1.0] - 2026-03-20
 
-### Fixed
-- Fixed agent reference in planejar-fase command
+### Corrigido
+- Corrigida referência de agente no comando planejar-fase
 
 ## [3.0.0] - 2026-03-20
 
-### Changed
-- **Breaking**: Removed global installation support - FASE now only installs locally
-- **Breaking**: Removed `--global` flag (now ignored)
-- **Breaking**: Removed `--local` flag (redundant, installation is always local)
+### Alterado
+- **Que quebra compatibilidade**: Removido suporte para instalação global - FASE agora só instala localmente
+- **Que quebra compatibilidade**: Removido flag `--global` (agora ignorado)
+- **Que quebra compatibilidade**: Removido flag `--local` (redundante, instalação é sempre local)
 
-### Added
-- Agentes "fase" renamed to "fase" in all documentation
-- Commands with "phase" in names updated to "fase"
+### Adicionado
+- Agentes "fase" renomeados para "fase" em toda documentação
+- Comandos com "phase" nos nomes atualizados para "fase"
 
 ## [2.5.0] - 2026-03-13
 
-### Added
+### Adicionado
 - Pre-commit hooks com husky para validar integridade do pacote npm
-- GitHub Actions workflow para publicação automática no npm
+- Workflow do GitHub Actions para publicação automática no npm
 - Templates de issues do GitHub (bug reports, feature requests, traduções)
-- CONTRIBUTING.md com guia completo para contribuidores
-- SECURITY.md com política de segurança
-- scripts/verificar-release.sh para checklist pre-release
+- CONTRIBUINDO.md com guia completo para contribuidores
+- SEGURANÇA.md com política de segurança
+- scripts/verificar-release.sh para checklist pré-lançamento
 - scripts/testar-local.sh para testes locais
 - .npmignore para otimizar pacote publicado
 - docs/README.md como índice centralizado de documentação
 
-### Changed
-- Reorganized npm package structure for better distribution
-- Updated pre-commit validation to check for essential files
+### Alterado
+- Reorganizada estrutura do pacote npm para melhor distribuição
+- Atualizada validação pré-commit para verificar arquivos essenciais
 
 ## [2.4.0] - 2026-03-13
 
-### Changed
-- Reorganized npm package file structure for better distribution
-- Updated bin/package.json to correctly include `agentes/` and `comandos/` directories in npm package
-- Fixed bin entry points to use correct relative paths (removed `./` prefix from install.js references)
+### Alterado
+- Reorganizada estrutura de arquivos do pacote npm para melhor distribuição
+- Atualizado bin/package.json para incluir corretamente diretórios `agentes/` e `comandos/` no pacote npm
+- Corrigidos pontos de entrada bin para usar caminhos relativos corretos (removido prefixo `./` de referencias do install.js)
 
-### Fixed
-- Fixed installer to use correct file structure for agents and commands during installation
-- Ensured all 12 agent definitions are included in published npm package
-- Ensured all 32 command definitions are included in published npm package
+### Corrigido
+- Corrigido instalador para usar estrutura correta de arquivos de agentes e comandos durante instalação
+- Garantido que todas as 12 definições de agentes sejam incluídas no pacote npm publicado
+- Garantido que todos os 32 definições de comandos sejam incluídas no pacote npm publicado
 
-## [2.3.0] - Earlier versions
+## [2.3.0] - Versões anteriores
 
-See Git history for complete changelog of earlier versions.
+Veja o histórico do Git para changelog completo de versões anteriores.
