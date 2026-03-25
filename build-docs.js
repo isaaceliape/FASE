@@ -421,7 +421,30 @@ console.log(
 );
 
 markdownFiles.forEach(({ file, path: filePath, prefix, fullPath }) => {
-  const markdown = fs.readFileSync(filePath, "utf-8");
+  let markdown = fs.readFileSync(filePath, "utf-8");
+
+  // Replace hardcoded version strings with actual version from package.json
+  // Matches patterns like:
+  // > **Versão**: 3.2.0 | Última atualização: 2026-03-25
+  // **Versão**: 1.0
+  markdown = markdown.replace(
+    /> \*\*Versão\*\*:\s*[\d.]+\s*\|/g,
+    `> **Versão**: ${version} |`
+  );
+  markdown = markdown.replace(
+    /\*\*Versão\*\*:\s*[\d.]+/g,
+    `**Versão**: ${version}`
+  );
+  // Also handle English version markers for non-Portuguese docs
+  markdown = markdown.replace(
+    /> \*\*Version\*\*:\s*[\d.]+\s*\|/g,
+    `> **Version**: ${version} |`
+  );
+  markdown = markdown.replace(
+    /\*\*Version\*\*:\s*[\d.]+/g,
+    `**Version**: ${version}`
+  );
+
   const title = file.replace(".md", "");
   const htmlFileName =
     file === "README.md" ? "readme.html" : file.replace(".md", ".html");
