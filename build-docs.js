@@ -9,7 +9,7 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "package.jso
 const version = packageJson.version;
 
 const docs = [
-  { file: "readme.html", label: "README", icon: "📖" },
+  { file: "index.html", label: "README", icon: "📖" },
   { file: "COMANDOS.html", label: "Comandos", icon: "📋" },
   { file: "guia-do-usuario.html", label: "Guia do Usuário", icon: "📘" },
   { file: "CONTRIBUINDO.html", label: "Guia de Contribuição", icon: "🤝" },
@@ -17,7 +17,7 @@ const docs = [
   { file: "NPM-REGISTRY.html", label: "NPM Registry", icon: "📦" },
   { file: "technical/COMMAND_PATHS.html", label: "Padronização de Caminhos", icon: "🛣️" },
   { file: "maintainers/MAINTAINERS.html", label: "Guia Maintainers", icon: "👨‍💼" },
-  { file: "context-monitor.html", label: "Context Monitor", icon: "📊" },
+  { file: "context-monitor.html", label: "Monitor de Contexto", icon: "📊" },
 ];
 
 const htmlTemplate = (title, currentFile, content) => {
@@ -444,6 +444,13 @@ markdownFiles.forEach(({ file, path: filePath, prefix, fullPath }) => {
 
   fs.writeFileSync(htmlFile, htmlTemplate(title, fullHtmlFileName, html));
   console.log(`✅ ${fullPath} → ${htmlFile.replace(docsDir, "docs")}`);
+
+  // For README.md, also create index.html as the main entry point
+  if (file === "README.md") {
+    const indexFile = path.join(docsDir, "index.html");
+    fs.writeFileSync(indexFile, htmlTemplate(title, "index.html", html));
+    console.log(`✅ ${fullPath} → ${indexFile.replace(docsDir, "docs")} (index)`);
+  }
 });
 
 console.log("\n✨ Documentation build complete!");
