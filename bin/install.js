@@ -37,6 +37,9 @@ const CODEX_AGENT_SANDBOX = {
 // Get version from package.json
 const pkg = require('./package.json');
 
+// Shared prompts directory (v3.2.0+)
+const SHARED_DIR = path.join(os.homedir(), '.fase-ai');
+
 // Parse args
 const args = process.argv.slice(2);
 const hasOpencode = args.includes('--opencode');
@@ -47,6 +50,7 @@ const hasBoth = args.includes('--both'); // Legacy flag, keeps working
 const hasAll = args.includes('--all');
 const hasUninstall = args.includes('--uninstall') || args.includes('-u');
 const hasVerificar = args.includes('--verificar-instalacao') || args.includes('--verificar') || args.includes('-v');
+const hasAtualizar = args.includes('--atualizar') || args.includes('--update');
 
 // Runtime selection - can be set by flags or interactive prompt
 let selectedRuntimes = [];
@@ -236,7 +240,7 @@ if (hasVerificar) {
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.\n`);
   process.exit(0);
 }
 
@@ -1104,12 +1108,14 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       const opencodeDirRegex = /~\/\.opencode\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(opencodeDirRegex, pathPrefix);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeToOpencodeFrontmatter(content);
 
@@ -1169,12 +1175,14 @@ function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtim
       const codexDirRegex = /~\/\.codex\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${getDirName(runtime)}/`);
       content = content.replace(codexDirRegex, pathPrefix);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
       content = convertClaudeCommandToCodexSkill(content, skillName);
 
@@ -1220,11 +1228,13 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
       const localClaudeRegex = /\.\/\.claude\//g;
       const globalFaseRegex = /~\/\.fase\//g;
       const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+      const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+      const sharedHomePath = '$HOME/.fase-ai/';
       content = content.replace(globalClaudeRegex, pathPrefix);
       content = content.replace(globalClaudeHomeRegex, toHomePrefix(pathPrefix));
       content = content.replace(localClaudeRegex, `./${dirName}/`);
-      content = content.replace(globalFaseRegex, pathPrefix + 'fase/');
-      content = content.replace(globalFaseHomeRegex, toHomePrefix(pathPrefix) + 'fase/');
+      content = content.replace(globalFaseRegex, sharedPath);
+      content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
 
       // Convert frontmatter for opencode compatibility
@@ -1268,6 +1278,24 @@ function cleanupOrphanedFiles(configDir) {
     if (fs.existsSync(fullPath)) {
       fs.unlinkSync(fullPath);
       console.log(`  ${green}✓${reset} Removido arquivo obsoleto ${relPath}`);
+    }
+  }
+
+  // Migration v3.2.0: remove per-provider template/reference copies
+  // These now live in shared ~/.fase-ai/ (installed once by installSharedContent)
+  const faseDir = path.join(configDir, 'fase');
+  if (fs.existsSync(faseDir)) {
+    const migratedDirs = ['templates', 'references'];
+    for (const dirName of migratedDirs) {
+      const dirPath = path.join(faseDir, dirName);
+      if (fs.existsSync(dirPath)) {
+        try {
+          fs.rmSync(dirPath, { recursive: true });
+          console.log(`  ${green}✓${reset} Removido ${dirName} obsoleto de fase/ (agora em ~/.fase-ai/)`);
+        } catch (e) {
+          // Silently ignore if already deleted or permission issues
+        }
+      }
     }
   }
 }
@@ -1635,10 +1663,47 @@ function uninstall(isGlobal, runtime = 'claude') {
     console.log(`  ${yellow}⚠${reset} Nenhum arquivo FASE encontrado para remover.`);
   }
 
-  console.log(`
-  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
-  Seus outros arquivos e configurações foram preservados.
-`);
+  // Check if shared ~/.fase-ai/ should be removed (v3.2.0+)
+  // Only offer removal if this is the last installed runtime
+  const remaining = detectInstalledRuntimes();
+  if (remaining.length === 0) {
+    console.log();
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    let answered = false;
+    rl.on('close', () => {
+      if (!answered) {
+        answered = true;
+        console.log(`\n  ${dim}~/.fase-ai/ preservado${reset}\n`);
+      }
+    });
+
+    rl.question(`  ${yellow}Remover ~/.fase-ai/ (compartilhado)?${reset} [s/N]: `, (answer) => {
+      answered = true;
+      rl.close();
+
+      if (answer.trim().toLowerCase() === 's') {
+        try {
+          if (fs.existsSync(SHARED_DIR)) {
+            fs.rmSync(SHARED_DIR, { recursive: true });
+            console.log(`  ${green}✓${reset} ~/.fase-ai/ removido\n`);
+          }
+        } catch (e) {
+          console.log(`  ${yellow}⚠${reset} Erro ao remover ~/.fase-ai/: ${e.message}\n`);
+        }
+      } else {
+        console.log(`  ${dim}~/.fase-ai/ preservado${reset}\n`);
+      }
+    });
+  } else {
+    console.log(`\n  ${dim}~/.fase-ai/ preservado (usado por: ${remaining.join(', ')})${reset}\n`);
+  }
+
+  console.log(`  ${green}Pronto!${reset} FASE foi desinstalado de ${runtimeLabel}.
+  Seus outros arquivos e configurações foram preservados.\n`);
 }
 
 /**
@@ -1983,6 +2048,63 @@ function reportLocalPatches(configDir, runtime = 'claude') {
   return meta.files || [];
 }
 
+/**
+ * Recursively copy directory (helper for shared content)
+ */
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return;
+
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
+ * Install shared FASE content to ~/.fase-ai/ (v3.2.0+)
+ * Templates, references, and VERSION/CHANGELOG shared across all runtimes
+ */
+function installSharedContent() {
+  const src = path.join(__dirname, 'fase-shared');
+  if (!fs.existsSync(src)) {
+    return; // source dir not present, gracefully skip
+  }
+
+  // Copy templates/ and references/ to ~/.fase-ai/
+  copyDir(src, SHARED_DIR);
+
+  // Write VERSION to shared dir
+  const versionDest = path.join(SHARED_DIR, 'VERSION');
+  try {
+    fs.writeFileSync(versionDest, pkg.version);
+  } catch (e) {
+    console.error(`  ${red}✗${reset} Erro ao gravar VERSION em ${versionDest}`);
+  }
+
+  // Copy CHANGELOG to shared dir
+  const changelogSrc = path.join(__dirname, 'CHANGELOG.md');
+  if (fs.existsSync(changelogSrc)) {
+    try {
+      fs.copyFileSync(changelogSrc, path.join(SHARED_DIR, 'CHANGELOG.md'));
+    } catch (e) {
+      // CHANGELOG copy is optional
+    }
+  }
+
+  console.log(`  ${green}✓${reset} Instalado ~/.fase-ai/ (compartilhado)`);
+}
+
 function install(isGlobal, runtime = 'claude') {
   const isOpencode = runtime === 'opencode';
   const isGemini = runtime === 'gemini';
@@ -2097,8 +2219,14 @@ function install(isGlobal, runtime = 'claude') {
         // Replace ~/.claude/ and $HOME/.claude/ as they are the source of truth in the repo
         const dirRegex = /~\/\.claude\//g;
         const homeDirRegex = /\$HOME\/\.claude\//g;
+        const globalFaseRegex = /~\/\.fase\//g;
+        const globalFaseHomeRegex = /\$HOME\/\.fase\//g;
+        const sharedPath = SHARED_DIR.replace(/\\/g, '/') + '/';
+        const sharedHomePath = '$HOME/.fase-ai/';
         content = content.replace(dirRegex, pathPrefix);
         content = content.replace(homeDirRegex, toHomePrefix(pathPrefix));
+        content = content.replace(globalFaseRegex, sharedPath);
+        content = content.replace(globalFaseHomeRegex, sharedHomePath);
         content = processAttribution(content, getCommitAttribution(runtime));
         // Convert frontmatter for runtime compatibility
         if (isOpencode) {
@@ -2118,39 +2246,8 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
 
-  // Copy CHANGELOG.md
-  const changelogSrc = path.join(src, 'CHANGELOG.md');
-  const changelogDest = path.join(targetDir, 'fase-ai', 'CHANGELOG.md');
-  if (fs.existsSync(changelogSrc)) {
-    fs.copyFileSync(changelogSrc, changelogDest);
-    if (verifyFileInstalled(changelogDest, 'CHANGELOG.md')) {
-      console.log(`  ${green}✓${reset} Instalado CHANGELOG.md`);
-    } else {
-      failures.push('CHANGELOG.md');
-    }
-  }
-
-  // Write VERSION file
-  const versionDest = path.join(targetDir, 'fase-ai', 'VERSION');
-  const versionDir = path.dirname(versionDest);
-  try {
-    // Ensure target directory exists with proper permissions
-    if (!fs.existsSync(versionDir)) {
-      fs.mkdirSync(versionDir, { recursive: true, mode: 0o755 });
-    }
-    // Verify directory is writable before writing
-    fs.accessSync(versionDir, fs.constants.W_OK);
-    fs.writeFileSync(versionDest, pkg.version);
-    if (verifyFileInstalled(versionDest, 'VERSION')) {
-      console.log(`  ${green}✓${reset} Gravado VERSION (${pkg.version})`);
-    } else {
-      failures.push('VERSION');
-    }
-  } catch (err) {
-    console.error(`  ${red}✗${reset} Erro ao gravar VERSION em ${versionDest}`);
-    console.error(`    ${dim}Verifique permissões de escrita: ${versionDir}${reset}`);
-    failures.push('VERSION');
-  }
+  // VERSION and CHANGELOG now live in shared ~/.fase-ai/ (installed once via installSharedContent)
+  // Per-provider copies removed in v3.2.0 for reduced duplication
 
   if (!isCodex) {
     // Write package.json to force CommonJS mode for FASE scripts
@@ -2590,9 +2687,118 @@ function promptUninstallConfirmation(runtimes, isGlobal) {
 }
 
 /**
+ * Detect which runtimes have FASE installed in the current directory.
+ * Looks for fase-* agent files in each runtime's agents/ directory.
+ */
+function detectInstalledRuntimes() {
+  const runtimes = ['claude', 'opencode', 'gemini', 'codex'];
+  const detected = [];
+
+  for (const runtime of runtimes) {
+    const dirName = getDirName(runtime);
+    const dir = path.join(process.cwd(), dirName);
+
+    // Primary: check for FASE agent files
+    const agentsDir = path.join(dir, 'agents');
+    if (fs.existsSync(agentsDir)) {
+      const hasFaseAgent = fs.readdirSync(agentsDir).some(
+        f => f.startsWith('fase-') && (f.endsWith('.md') || f.endsWith('.toml'))
+      );
+      if (hasFaseAgent) {
+        detected.push(runtime);
+        continue;
+      }
+    }
+
+    // Fallback: check for Codex skills/fase-* directory
+    if (runtime === 'codex') {
+      const skillsDir = path.join(dir, 'skills');
+      if (fs.existsSync(skillsDir)) {
+        const hasFaseSkill = fs.readdirSync(skillsDir).some(f => f.startsWith('fase-'));
+        if (hasFaseSkill) { detected.push(runtime); continue; }
+      }
+    }
+
+    // Fallback: check for OpenCode flat commands
+    if (runtime === 'opencode') {
+      const commandDir = path.join(dir, 'command');
+      if (fs.existsSync(commandDir)) {
+        const hasFaseCmd = fs.readdirSync(commandDir).some(f => f.startsWith('fase-') && f.endsWith('.md'));
+        if (hasFaseCmd) { detected.push(runtime); continue; }
+      }
+    }
+  }
+
+  return detected;
+}
+
+/**
+ * Update FASE for the given (or auto-detected) runtimes.
+ * Checks npm for the latest version, shows a diff summary, then reinstalls.
+ * @param {string[]} runtimesArg - runtimes to update (empty = auto-detect)
+ */
+function atualizar(runtimesArg) {
+  const { execSync } = require('child_process');
+
+  // --- 1. Version check ---
+  let latestVersion = null;
+  try {
+    latestVersion = execSync('npm view fase-ai version', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch (_) {
+    // offline or npm unavailable — continue anyway
+  }
+
+  const currentVersion = pkg.version;
+
+  if (latestVersion && latestVersion !== currentVersion) {
+    console.log(`  ${yellow}Atualização disponível!${reset}`);
+    console.log(`  Versão atual:      ${dim}v${currentVersion}${reset}`);
+    console.log(`  Versão disponível: ${cyan}v${latestVersion}${reset}\n`);
+    console.log(`  ${dim}Execute ${cyan}npm install -g fase-ai@latest${reset}${dim} ou ${cyan}npx fase-ai@latest${reset}${dim} para obter a nova versão.${reset}`);
+    console.log(`  Continuando com reinstalação da versão atual (v${currentVersion})...\n`);
+  } else if (latestVersion) {
+    console.log(`  ${green}✓${reset} Versão atual ${cyan}v${currentVersion}${reset} é a mais recente.\n`);
+    console.log(`  Reinstalando para garantir integridade dos arquivos...\n`);
+  } else {
+    console.log(`  ${yellow}⚠${reset} Não foi possível verificar versão no npm (sem conectividade?).\n`);
+    console.log(`  Reinstalando versão ${cyan}v${currentVersion}${reset}...\n`);
+  }
+
+  // --- 2. Detect runtimes ---
+  const runtimes = runtimesArg.length > 0 ? runtimesArg : detectInstalledRuntimes();
+
+  if (runtimes.length === 0) {
+    console.log(`  ${yellow}⚠${reset} Nenhuma instalação do FASE detectada neste diretório.\n`);
+    console.log(`  Execute ${cyan}npx fase-ai${reset} para instalar.\n`);
+    process.exit(0);
+  }
+
+  const runtimeLabels = { claude: 'Claude Code', opencode: 'OpenCode', gemini: 'Gemini', codex: 'Codex' };
+  const labels = runtimes.map(r => runtimeLabels[r] || r).join(', ');
+  console.log(`  Atualizando: ${cyan}${labels}${reset}\n`);
+
+  // --- 3. Reinstall ---
+  installAllRuntimes(runtimes, false, false);
+
+  // --- 4. Post-update verification ---
+  console.log(`\n  ${cyan}Verificando instalação pós-atualização...${reset}\n`);
+  try {
+    const scriptPath = path.join(__dirname, 'verificar-instalacao.js');
+    execSync(`node "${scriptPath}"`, { stdio: 'inherit' });
+  } catch (_) {
+    // verificar-instalacao already printed its own errors
+  }
+
+  console.log(`\n  ${yellow}Lembrete:${reset} Reinicie o runtime (${labels}) para carregar os novos comandos e agentes.\n`);
+}
+
+/**
  * Install FASE for all selected runtimes
  */
 function installAllRuntimes(runtimes, isGlobal, isInteractive) {
+  // Install shared content once before per-runtime installations
+  installSharedContent();
+
   const results = [];
 
   for (const runtime of runtimes) {
@@ -2644,6 +2850,8 @@ if (process.env.FASE_TEST_MODE) {
 if (explicitConfigDir) {
   console.error(`  ${yellow}Não é possível usar --config-dir. Instalação agora é sempre local.${reset}`);
   process.exit(1);
+} else if (hasAtualizar) {
+  atualizar(selectedRuntimes);
 } else if (hasUninstall) {
   if (selectedRuntimes.length > 0) {
     const runtimes = selectedRuntimes;
