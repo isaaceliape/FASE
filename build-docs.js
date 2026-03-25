@@ -21,14 +21,34 @@ const docs = [
 ];
 
 const htmlTemplate = (title, currentFile, content) => {
-  // Determine depth of current file (how many directories deep)
-  const currentDepth = (currentFile.match(/\//g) || []).length;
-  const pathPrefix = currentDepth > 0 ? "../".repeat(currentDepth) : "";
+  // Get directory of current file
+  const currentDir = currentFile.includes('/') ? currentFile.split('/')[0] : '';
 
   const sidebarLinks = docs
     .map((doc) => {
       const isActive = doc.file === currentFile ? "active" : "";
-      const linkPath = pathPrefix + doc.file;
+      let linkPath;
+
+      // Calculate relative path for the link
+      if (currentDir === '') {
+        // Current file is at root level (index.html, COMANDOS.html, etc.)
+        linkPath = doc.file;
+      } else {
+        // Current file is in a subdirectory (technical/, maintainers/)
+        const docDir = doc.file.includes('/') ? doc.file.split('/')[0] : '';
+
+        if (docDir === currentDir) {
+          // Same subdirectory - just use filename
+          linkPath = doc.file.split('/').pop();
+        } else if (docDir === '') {
+          // Target is at root - go up one level
+          linkPath = '../' + doc.file;
+        } else {
+          // Target is in different subdirectory - go up and then into subdirectory
+          linkPath = '../' + doc.file;
+        }
+      }
+
       return `<a href="${linkPath}" class="sidebar-link ${isActive}">${doc.icon} ${doc.label}</a>`;
     })
     .join("\n");
@@ -366,7 +386,7 @@ const htmlTemplate = (title, currentFile, content) => {
   <div class="header">
     <div class="logo">fase<span>-</span>ai</div>
     <div class="nav-links">
-      <a href="${pathPrefix}index.html">Home</a>
+      <a href="${currentDir === '' ? 'index.html' : '../index.html'}">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
     </div>
   </div>
