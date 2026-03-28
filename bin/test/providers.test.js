@@ -360,9 +360,10 @@ describe('Provider Configuration', () => {
     it('should set correct permissions for Claude config dir', () => {
       const configPath = path.join(tempDir, '.claude');
       fs.mkdirSync(configPath, { recursive: true, mode: 0o755 });
+      fs.chmodSync(configPath, 0o755);
 
       const stat = fs.statSync(configPath);
-      assert.strictEqual((stat.mode & 0o777) >= 0o755, true);
+      assert.strictEqual((stat.mode & 0o777), 0o755);
     });
 
     it('should set correct permissions for hook files', () => {
