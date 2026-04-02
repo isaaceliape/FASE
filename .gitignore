@@ -38,3 +38,9 @@ STATE.md
 
 # Keep bin package lock
 !.bin/package-lock.json
+
+# Claude Code - local configuration
+/.claude/*
+!/.claude/skills/
+!/.claude/launch.json
+!/.claude/settings.json

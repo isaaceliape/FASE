@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "hooks": {
+        "Stop": [
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "cd ${workspaceFolder} && git status --porcelain | grep -q . && echo '\n⚠️  There are uncommitted changes in the repository. Please commit and push these changes to the remote branch. Do not create a pull request unless the user has explicitly asked for one.' || true"
+                    }
+                ]
+            }
+        ]
+    },
+    "permissions": {
+        "allow": ["Skill"]
+    }
+}
