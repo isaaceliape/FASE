@@ -2557,12 +2557,69 @@ function promptRuntime(callback) {
     }
   });
 
+  // Check if FASE is already installed
+  const installedRuntimes = detectInstalledRuntimes();
+
+  if (installedRuntimes.length > 0) {
+    const runtimeLabels = { claude: 'Claude Code', opencode: 'OpenCode', gemini: 'Gemini', codex: 'Codex' };
+    const labels = installedRuntimes.map(r => runtimeLabels[r] || r).join(', ');
+    console.log(`\n  ${green}✓${reset} FASE já está instalado para: ${cyan}${labels}${reset}\n`);
+    console.log(`  ${yellow}O que deseja fazer?${reset}\n\n  ${cyan}1${reset}) Atualizar instalação existente
+  ${cyan}2${reset}) Instalar para outro(s) runtime(s)
+  ${cyan}3${reset}) Desinstalar ${dim}(remover FASE)${reset}
+  ${cyan}4${reset}) Cancelar
+`);
+
+    rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
+      answered = true;
+      rl.close();
+      const choice = answer.trim() || '1';
+      if (choice === '1') {
+        // Update existing runtimes
+        atualizar(installedRuntimes);
+      } else if (choice === '2') {
+        // Show runtime selection for new installs
+        promptRuntimeSelection(callback);
+      } else if (choice === '3') {
+        // Uninstall
+        callback('uninstall');
+      } else {
+        // Cancel
+        console.log(`\n  ${yellow}Operação cancelada${reset}\n`);
+        process.exit(0);
+      }
+    });
+  } else {
+    // FASE not installed, show regular runtime selection
+    promptRuntimeSelection(callback);
+  }
+}
+
+/**
+ * Show runtime selection menu (used when FASE is not installed or user chooses to install for other runtimes)
+ */
+function promptRuntimeSelection(callback) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  let answered = false;
+
+  rl.on('close', () => {
+    if (!answered) {
+      answered = true;
+      console.log(`\n  ${yellow}Instalação cancelada${reset}\n`);
+      process.exit(0);
+    }
+  });
+
   console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n\n  ${cyan}1${reset}) Claude Code
   ${cyan}2${reset}) OpenCode ${dim}- código aberto, modelos gratuitos${reset}
   ${cyan}3${reset}) Gemini
   ${cyan}4${reset}) Codex
   ${cyan}5${reset}) Todos
-  ${cyan}6${reset}) Desinstalar ${dim}(remover FASE)${reset}
+  ${cyan}6${reset}) Cancelar
 `);
 
   rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
@@ -2570,8 +2627,8 @@ function promptRuntime(callback) {
     rl.close();
     const choice = answer.trim() || '1';
     if (choice === '6') {
-      // Special callback for uninstall
-      callback('uninstall');
+      console.log(`\n  ${yellow}Instalação cancelada${reset}\n`);
+      process.exit(0);
     } else if (choice === '5') {
       callback(['claude', 'opencode', 'gemini', 'codex']);
     } else if (choice === '4') {
