@@ -212,6 +212,13 @@ O auditor nunca modifica o código de implementação — apenas arquivos de tes
 | `/fase-planejar-lacunas` | Criar fases para lacunas da auditoria | Após auditoria encontrar itens faltando |
 | `/fase-pesquisar-fase [N]` | Pesquisa profunda do ecossistema apenas | Domínio complexo ou desconhecido |
 
+### Arquitetura e Contexto
+
+| Comando | Propósito | Quando Usar |
+|---------|----------|-------------|
+| `/fase-arquitetar [tema]` | Registrar ADRs e decisões arquiteturais | Antes de planejar fases com escolhas técnicas não-triviais |
+| `/fase-contexto` | Ver/limpar/resumir contexto da sessão atual | Verificar o que o agente lembra, ou iniciar sessão limpa |
+
 ### Brownfield e Utilitários
 
 | Comando | Propósito | Quando Usar |
@@ -306,17 +313,19 @@ Desabilite essas opções para acelerar fases em domínios familiares ou para ec
 
 | Agente | `quality` | `balanced` | `budget` |
 |--------|-----------|------------|----------|
-| fase-planner | Opus | Opus | Sonnet |
+| fase-planejador | Opus | Opus | Sonnet |
 | fase-roadmapper | Opus | Sonnet | Sonnet |
 | fase-executor | Opus | Sonnet | Sonnet |
-| fase-fase-researcher | Opus | Sonnet | Haiku |
-| fase-project-researcher | Opus | Sonnet | Haiku |
-| fase-research-synthesizer | Sonnet | Sonnet | Haiku |
-| fase-debugger | Opus | Sonnet | Sonnet |
-| fase-codebase-mapper | Sonnet | Haiku | Haiku |
-| fase-verifier | Sonnet | Sonnet | Haiku |
-| fase-plan-checker | Sonnet | Sonnet | Haiku |
-| fase-integration-checker | Sonnet | Sonnet | Haiku |
+| fase-pesquisador-fase | Opus | Sonnet | Haiku |
+| fase-pesquisador-projeto | Opus | Sonnet | Haiku |
+| fase-sintetizador-pesquisa | Sonnet | Sonnet | Haiku |
+| fase-depurador | Opus | Sonnet | Sonnet |
+| fase-arquiteto | Opus | Sonnet | Sonnet |
+| fase-mapeador-codigo | Sonnet | Haiku | Haiku |
+| fase-verificador | Sonnet | Sonnet | Haiku |
+| fase-verificador-plano | Sonnet | Sonnet | Haiku |
+| fase-verificador-integracao | Sonnet | Sonnet | Haiku |
+| fase-auditor-nyquist | Sonnet | Sonnet | Haiku |
 
 **Filosofia dos perfis:**
 - **quality** — Opus para todos os agentes de tomada de decisão, Sonnet para verificação somente-leitura. Use quando há cota disponível e o trabalho é crítico.
@@ -441,6 +450,12 @@ Defina `commit_docs: false` durante `/fase-novo-projeto` ou via `/fase-configura
 
 Desde a v1.17, o instalador faz backup de arquivos modificados localmente em `fase-local-patches/`. Execute `/fase-reaplicar-patches` para mesclar suas mudanças de volta.
 
+### Gap Closure em Loop / "Escalação Humana Necessária"
+
+Após 3 tentativas de gap closure sem sucesso, o FASE para automaticamente e exibe uma seção `## ⚠️ Escalação Humana Necessária` no `VERIFICACAO.md`. Isso significa que o gap é resistente à automação — normalmente por bloqueio arquitetural ou dependência externa.
+
+Leia a seção de escalação para entender o que foi tentado, depois resolva manualmente antes de tentar novamente com `/fase-planejar-fase --gaps`.
+
 ### Subagente Parece Ter Falhado Mas o Trabalho Foi Feito
 
 Existe uma solução conhecida para um bug de classificação do Claude Code. Os orquestradores do FASE (executar-fase, rapido) verificam a saída real antes de reportar falha. Se você vir uma mensagem de falha mas commits foram feitos, verifique `git log` — o trabalho pode ter sido bem-sucedido.
@@ -451,9 +466,10 @@ Existe uma solução conhecida para um bug de classificação do Claude Code. Os
 
 | Problema | Solução |
 |---------|---------|
-| Contexto perdido / nova sessão | `/fase-retomar-trabalho` ou `/fase-progresso` |
+| Contexto perdido / nova sessão | `/fase-retomar-trabalho`, `/fase-progresso` ou `/fase-contexto` |
 | Fase deu errado | `git revert` nos commits da fase, depois replaneje |
 | Precisa mudar escopo | `/fase-adicionar-fase`, `/fase-inserir-fase` ou `/fase-remover-fase` |
+| Gap closure travado após 3 tentativas | Resolver manualmente, depois `/fase-planejar-fase --gaps` |
 | Auditoria de marco encontrou lacunas | `/fase-planejar-lacunas` |
 | Algo quebrou | `/fase-debug "descrição"` |
 | Correção pontual rápida | `/fase-rapido` |
@@ -473,6 +489,7 @@ Para referência, aqui está o que o FASE cria no seu projeto:
   REQUISITOS.md           # Requisitos v1/v2 com escopo e IDs
   PLANO-ENTREGAS.md       # Divisão de fases com rastreamento de status
   ESTADO.md               # Decisões, bloqueadores, memória de sessão
+  CONTEXTO.md             # Contexto persistente da última sessão de agente
   config.json             # Configuração de fluxo de trabalho
   MARCOS.md               # Arquivo de marcos concluídos
   pesquisa/               # Pesquisa de domínio do /fase-novo-projeto

@@ -2,7 +2,7 @@
 
 > **Versão**: 3.2.0 | Última atualização: 2026-03-25
 
-**32 comandos em português brasileiro para Claude Code.**
+**34 comandos em português brasileiro para Claude Code.**
 
 ---
 
@@ -14,6 +14,7 @@
 - [Verificação](#verificação) — Verificação e validação
 - [Depuração](#depuração) — Debug e troubleshooting
 - [Discussão](#discussão) — Discussão e conclusão
+- [Arquitetura e Contexto](#arquitetura-e-contexto) — Decisões arquiteturais e contexto de sessão
 - [Utilitários](#utilitários) — Utilitários diversos
 
 ---
@@ -455,6 +456,46 @@ Identifica e planeja como fechar lacunas de um marco.
 **Exemplo:**
 ```bash
 /fase-planejar-lacunas "MVP"
+```
+
+---
+
+## Arquitetura e Contexto
+
+Comandos para decisões arquiteturais e gerenciamento de contexto de sessão.
+
+### `/fase-arquitetar`
+
+Registra e gerencia decisões arquiteturais do projeto.
+
+**O que faz:**
+- Analisa o estado atual do projeto
+- Propõe ADRs (Architecture Decision Records)
+- Documenta contratos de API, limites de módulo e modelo de dados
+- Produz `ARQUITETURA.md` com decisões justificadas
+
+**Exemplo:**
+```bash
+/fase-arquitetar "Definir estratégia de autenticação"
+/fase-arquitetar                    # Revisar decisões existentes
+```
+
+---
+
+### `/fase-contexto`
+
+Exibe e gerencia o contexto persistente da sessão atual.
+
+**O que faz:**
+- Sem argumentos: mostra o `.fase-ai-local/CONTEXTO.md` atual
+- `--limpar`: apaga o contexto da sessão
+- `--resumo`: gera um resumo compacto do estado atual
+
+**Exemplo:**
+```bash
+/fase-contexto                      # Ver contexto atual
+/fase-contexto --limpar             # Apagar contexto
+/fase-contexto --resumo             # Gerar resumo
 ```
 
 ---
