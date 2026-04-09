@@ -1,5 +1,7 @@
 # 🔧 Comandos do F.A.S.E.
 
+> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+
 **32 comandos em português brasileiro para Claude Code.**
 
 ---
@@ -39,7 +41,7 @@ Mostra ajuda geral e lista de comandos disponíveis.
 Inicia um novo projeto F.A.S.E. no diretório atual.
 
 **O que faz:**
-- Cria estrutura de pastas `.planejamento/`
+- Cria estrutura de pastas `.fase-ai-local/`
 - Inicializa STATE.md, ROADMAP.md, REQUIREMENTS.md
 - Configura contexto do projeto
 
@@ -567,7 +569,7 @@ Define o perfil de modelo a ser usado.
 
 **Problemas com algum comando?**
 
-- 📖 [Guia do Usuário](GUIA-DO-USUARIO.md)
+- 📖 [Guia do Usuário](guia-do-usuario.html)
 - 🐛 [Reportar bug](https://github.com/isaaceliape/FASE/issues)
 
 ---

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>NPM-REGISTRY - FASE Docs</title>
   <style>
     :root {
@@ -46,10 +49,22 @@
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      color: var(--primary);
     }
 
     .logo span {
       color: var(--primary);
+    }
+
+    .logo:hover span {
+      color: var(--secondary);
     }
 
     .nav-links {
@@ -258,6 +273,18 @@
       margin: 30px 0;
     }
 
+    .version-badge {
+      display: inline-block;
+      background-color: rgba(0, 255, 136, 0.15);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      margin-bottom: 20px;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -317,7 +344,7 @@
 </head>
 <body>
   <div class="header">
-    <div class="logo">fase<span>-</span>ai</div>
+    <a href="index.html" class="logo">fase<span>-</span>ai</a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
@@ -327,16 +354,23 @@
   <div class="content-wrapper">
     <aside class="sidebar">
       <h3>📚 Documentação</h3>
-      <a href="readme.html" class="sidebar-link ">📖 README</a>
+      <a href="index.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link ">📋 Comandos</a>
-<a href="GUIA-DO-USUARIO.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="guia-do-usuario.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link active">📦 NPM Registry</a>
-<a href="CONTEXT-MONITOR.html" class="sidebar-link ">📊 Context Monitor</a>
+<a href="technical/padronizacao-caminhos.html" class="sidebar-link ">🛣️ Padronização de Caminhos</a>
+<a href="maintainers/MANTENEDORES.html" class="sidebar-link ">👨‍💼 Guia de Maintainers</a>
+<a href="monitor-contexto.html" class="sidebar-link ">📊 Monitor de Contexto</a>
     </aside>
 
     <main class="main">
+      <div class="version-badge">📦 Versão 3.2.0</div>
       <h1>📦 Configuração do npm Registry</h1>
+<blockquote>
+<p><strong>Versão</strong>: 3.2.0 | Última atualização: 2026-03-25</p>
+</blockquote>
 <p>O FASE está configurado para usar o <strong>npm registry oficial</strong> como fonte única de verdade para publicação e instalação.</p>
 <h2>🔧 Configuração Atual</h2>
 <h3>Arquivo: <code>.npmrc</code> (raiz)</h3>
@@ -350,25 +384,20 @@ audit=true
 </code></pre>
 <hr>
 <h2>🚀 Instalação do FASE</h2>
-<h3>Via npx (recomendado)</h3>
-<pre><code class="language-bash"># Usar npx - sempre busca a versão mais recente do registry oficial
-npx fase-ai
+<h3>Via npm (recomendado)</h3>
+<pre><code class="language-bash"># Usar npm padrão - sempre busca do registry oficial
+npm install -g fase-ai
 
-# Ou específico para um runtime
-npx fase-ai --claude
-npx fase-ai --opencode
-npx fase-ai --gemini
-npx fase-ai --codex
+# Ou específico
+npm install -g fase-ai@latest
 </code></pre>
-<h3>Observação sobre instalação global</h3>
-<p>FASE agora é instalado <strong>apenas localmente</strong> (por projeto) via <code>npx</code>. Isso garante:</p>
-<ul>
-<li>✅ Cada projeto usa a versão de FASE que foi testada com ele</li>
-<li>✅ Sem conflitos entre diferentes versões do FASE</li>
-<li>✅ Atualizações controladas por projeto</li>
-<li>✅ Menos poluição global no sistema</li>
-</ul>
-<p>Para atualizar, basta usar <code>npx fase-ai@latest</code> que sempre baixa a versão mais recente.</p>
+<h3>Se estiver usando cnpm</h3>
+<pre><code class="language-bash"># Especificar registry explicitamente
+npm install -g fase-ai --registry=https://registry.npmjs.org/
+
+# Ou configurar como default
+npm config set registry https://registry.npmjs.org/
+</code></pre>
 <hr>
 <h2>✅ Verificação</h2>
 <p>Para confirmar que está usando o registry correto:</p>
@@ -393,29 +422,6 @@ node bin/install.js --help
 </code></pre>
 <p>O arquivo <code>.npmrc</code> garante que todos os contribuidores usem o mesmo registry.</p>
 <hr>
-<h2>🔐 Publicação</h2>
-<p>Quando publicamos no npm:</p>
-<ol>
-<li>✅ GitHub Actions valida o pacote</li>
-<li>✅ Autentica com <code>NPM_TOKEN</code> secret</li>
-<li>✅ Publica em <code>https://registry.npmjs.org/</code></li>
-<li>✅ Fica disponível globalmente em minutos</li>
-</ol>
-<hr>
-<h2>🌍 Para Usuários Chineses</h2>
-<p>Se você está na China e a instalação é lenta:</p>
-<h3>Opção 1: Usar cnpm</h3>
-<pre><code class="language-bash">cnpm install -g fase-ai
-</code></pre>
-<h3>Opção 2: Configurar npm temporariamente</h3>
-<pre><code class="language-bash">npm install -g fase-ai --registry=https://registry.npmmirror.com
-</code></pre>
-<h3>Opção 3: Configurar como default</h3>
-<pre><code class="language-bash">npm config set registry https://registry.npmmirror.com
-# Depois restaurar
-npm config set registry https://registry.npmjs.org/
-</code></pre>
-<hr>
 <h2>📊 Informações do Pacote</h2>
 <ul>
 <li><strong>Pacote</strong>: fase-ai</li>
@@ -424,7 +430,7 @@ npm config set registry https://registry.npmjs.org/
 <li><strong>Escopo</strong>: Public (qualquer um pode instalar)</li>
 </ul>
 <hr>
-<p><strong>Versão</strong>: 1.0
+<p><strong>Versão</strong>: 3.2.0
 <strong>Última atualização</strong>: 2026-03-13</p>
 
     </main>

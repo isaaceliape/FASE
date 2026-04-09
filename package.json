@@ -1,7 +1,7 @@
 {
   "name": "fase-development",
   "version": "3.2.0",
-  "description": "FASE - Development workspace",
+  "description": "FASE - Workspace de desenvolvimento",
   "private": true,
   "scripts": {
     "prepare": "husky install || true",

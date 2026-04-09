@@ -1,5 +1,7 @@
 # 🤝 Guia de Contribuição
 
+> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+
 Obrigado por considerar contribuir ao FASE! Este documento oferece diretrizes e instruções para participar do projeto.
 
 ## 📋 Código de Conduta
@@ -201,10 +203,11 @@ node bin/install.js --uninstall
 
 ```
 docs/
-├── GUIA-DO-USUARIO.md  # Guia para usuários
-├── COMANDOS.md         # Lista de comandos
-├── HOOKS.md            # Git hooks setup
-└── CONTEXT-MONITOR.md  # Monitoramento de contexto
+├── GUIA-DO-USUARIO.md       # Guia para usuários
+├── COMANDOS.md              # Lista de comandos
+├── HOOKS.md                 # Git hooks setup
+├── CONTEXT-MONITOR.md       # Monitoramento de contexto
+└── CONTRIBUINDO.md          # Este arquivo
 ```
 
 ## ✅ Checklist para PRs
@@ -233,7 +236,7 @@ Antes de submeter um PR, verifique:
 
 ## 📜 Licença
 
-Ao contribuir, você concorda que suas contribuições serão licenciadas sob a [MIT License](LICENSE).
+Ao contribuir, você concorda que suas contribuições serão licenciadas sob a [MIT License](https://github.com/isaaceliape/FASE/blob/main/LICENSE).
 
 ---
 

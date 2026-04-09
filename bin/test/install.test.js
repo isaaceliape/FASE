@@ -334,6 +334,41 @@ tools:
       assert.strictEqual(settings.hooks, undefined, 'hooks should not be added when directory does not exist');
     });
   });
+
+  describe('Shared Content (v3.2.0)', () => {
+    it('should have fase-shared directory with template files', () => {
+      const faseSharedDir = path.join(__dirname, '..', 'fase-shared');
+      assert.strictEqual(fs.existsSync(faseSharedDir), true, 'fase-shared directory should exist');
+
+      const templatesDir = path.join(faseSharedDir, 'templates');
+      assert.strictEqual(fs.existsSync(templatesDir), true, 'templates directory should exist');
+
+      const templates = ['summary.md', 'roteiro.md', 'state.md'];
+      for (const template of templates) {
+        const filePath = path.join(templatesDir, template);
+        assert.strictEqual(fs.existsSync(filePath), true, `${template} should exist`);
+      }
+    });
+
+    it('should have references directory with checkpoint documentation', () => {
+      const referencesDir = path.join(__dirname, '..', 'fase-shared', 'references');
+      assert.strictEqual(fs.existsSync(referencesDir), true, 'references directory should exist');
+
+      const checkpointsPath = path.join(referencesDir, 'checkpoints.md');
+      assert.strictEqual(fs.existsSync(checkpointsPath), true, 'checkpoints.md should exist');
+
+      const content = fs.readFileSync(checkpointsPath, 'utf8');
+      assert.ok(content.includes('checkpoint'), 'checkpoints.md should contain checkpoint patterns');
+    });
+
+    it('should have pesquisa-project subdirectory with research template', () => {
+      const pesquisaDir = path.join(__dirname, '..', 'fase-shared', 'templates', 'pesquisa-project');
+      assert.strictEqual(fs.existsSync(pesquisaDir), true, 'pesquisa-project directory should exist');
+
+      const sumariosPath = path.join(pesquisaDir, 'SUMARIO.md');
+      assert.strictEqual(fs.existsSync(sumariosPath), true, 'SUMARIO.md should exist');
+    });
+  });
 });
 
 // Run tests if executed directly

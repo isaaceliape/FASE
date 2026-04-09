@@ -1,5 +1,7 @@
 # 📚 Documentação do FASE
 
+> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+
 Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que precisa para instalar, usar e contribuir ao projeto.
 
 ## 📖 Documentos Principais
@@ -8,45 +10,51 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 
 | Documento | Descrição |
 |-----------|-----------|
-| [**GUIA-DO-USUARIO.md**](GUIA-DO-USUARIO.md) | Guia completo de instalação e uso do FASE |
-| [**COMANDOS.md**](COMANDOS.md) | Lista com todos os 32 comandos disponíveis |
-| [**NPM-REGISTRY.md**](NPM-REGISTRY.md) | Configuração do npm registry e instalação |
+| [**Guia do Usuário**](guia-do-usuario.html) | Guia completo de instalação e uso do FASE |
+| [**Comandos**](COMANDOS.html) | Lista com todos os 32 comandos disponíveis |
+| [**NPM Registry**](NPM-REGISTRY.html) | Configuração do npm registry e instalação |
 
 ### Para Desenvolvedores
 
 | Documento | Descrição |
 |-----------|-----------|
-| [**CONTRIBUTING.md**](../CONTRIBUTING.md) | Como contribuir para o FASE (bugs, features, traduções) |
-| [**HOOKS.md**](HOOKS.md) | Git hooks e verificações de segurança |
-| [**SECURITY.md**](../SECURITY.md) | Política de segurança e relatório de vulnerabilidades |
+| [**Guia de Contribuição**](CONTRIBUINDO.html) | Como contribuir para o FASE (bugs, features, traduções) |
+| [**Git Hooks**](HOOKS.html) | Git hooks e verificações de segurança |
+| [**Padronização de Caminhos**](technical/padronizacao-caminhos.html) | Mecanismo de padronização de caminhos |
 
 ## 🎯 Começar Por Aqui
 
 ### Sou um Usuário
 
-1. Leia [GUIA-DO-USUARIO.md](GUIA-DO-USUARIO.md) para instalação
-2. Explore [COMANDOS.md](COMANDOS.md) para ver o que está disponível
+1. Leia [Guia do Usuário](guia-do-usuario.html) para instalação
+2. Explore [Comandos](COMANDOS.html) para ver o que está disponível
 
 ### Quero Contribuir
 
 1. Abra uma issue descrevendo sua ideia
-2. Leia [CONTRIBUTING.md](../CONTRIBUTING.md)
+2. Leia [Guia de Contribuição](CONTRIBUINDO.html)
 3. Siga o setup local
 4. Abra um Pull Request
 
 ### Encontrei um Bug
 
 1. Procure em [GitHub Issues](https://github.com/isaaceliape/FASE/issues) por issue similar
-3. Abra uma nova issue com os detalhes
+2. Abra uma nova issue com os detalhes
 
 ## 📋 Estrutura de Arquivos
 
 ```
 docs/
 ├── README.md              # Este arquivo (índice)
-├── GUIA-DO-USUARIO.md     # Guia para usuários
+├── guia-do-usuario.md     # Guia para usuários
 ├── COMANDOS.md            # Lista de comandos
-└── HOOKS.md               # Git hooks documentation
+├── CONTRIBUINDO.md        # Guia de contribuição
+├── HOOKS.md               # Git hooks documentation
+├── NPM-REGISTRY.md        # Configuração npm
+├── technical/
+│   └── padronizacao-caminhos.md   # Path standardization
+└── maintainers/
+    └── MANTENEDORES.md     # Informações para maintainers
 ```
 
 ## 🌐 Documentos em Português
@@ -80,11 +88,10 @@ docs/
 - ✅ Renomeação de arquivos: `.pt.md` → `.md` para consistência
 
 **Novos Documentos:**
-- 📚 [TEST_UPDATES_SUMMARY.md](../TEST_UPDATES_SUMMARY.md) - Rastreamento detalhado de mudanças
-- 📚 [COMMAND_PATHS.md](../COMMAND_PATHS.md) - Explicação do mecanismo de path standardization
-- 📚 Seções expandidas em [bin/test/README.md](../bin/test/README.md) e [bin/test/TESTING.md](../bin/test/TESTING.md)
+- 📚 [Padronização de Caminhos](technical/padronizacao-caminhos.html) - Explicação do mecanismo de padronização de caminhos
+- 📚 Seções expandidas em [bin/test/README.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/README.md) e [bin/test/TESTING.md](https://github.com/isaaceliape/FASE/blob/main/bin/test/TESTING.md)
 
-**Ver também:** [CHANGELOG.md](../CHANGELOG.md) para histórico completo de versões
+**Ver também:** [CHANGELOG.md](https://github.com/isaaceliape/FASE/blob/main/CHANGELOG.md) para histórico completo de versões
 
 ### v2.4.0 (Março 2026)
 
@@ -92,7 +99,6 @@ docs/
 - ✅ Criado GitHub Actions para publicação automática
 - ✅ Templates de issues para bug reports e features
 - ✅ CONTRIBUTING.md com instruções detalhadas
-- ✅ SECURITY.md com política de segurança
 - ✅ Este índice de documentação
 
 ## 📞 Contato

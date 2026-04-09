@@ -1,5 +1,7 @@
 # 📦 Configuração do npm Registry
 
+> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+
 O FASE está configurado para usar o **npm registry oficial** como fonte única de verdade para publicação e instalação.
 
 ## 🔧 Configuração Atual
@@ -80,40 +82,6 @@ node bin/install.js --help
 ```
 
 O arquivo `.npmrc` garante que todos os contribuidores usem o mesmo registry.
-
----
-
-## 🔐 Publicação
-
-Quando publicamos no npm:
-
-1. ✅ GitHub Actions valida o pacote
-2. ✅ Autentica com `NPM_TOKEN` secret
-3. ✅ Publica em `https://registry.npmjs.org/`
-4. ✅ Fica disponível globalmente em minutos
-
----
-
-## 🌍 Para Usuários Chineses
-
-Se você está na China e a instalação é lenta:
-
-### Opção 1: Usar cnpm
-```bash
-cnpm install -g fase-ai
-```
-
-### Opção 2: Configurar npm temporariamente
-```bash
-npm install -g fase-ai --registry=https://registry.npmmirror.com
-```
-
-### Opção 3: Configurar como default
-```bash
-npm config set registry https://registry.npmmirror.com
-# Depois restaurar
-npm config set registry https://registry.npmjs.org/
-```
 
 ---
 

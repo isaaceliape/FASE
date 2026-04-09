@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>COMANDOS - FASE Docs</title>
   <style>
     :root {
@@ -46,10 +49,22 @@
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      color: var(--primary);
     }
 
     .logo span {
       color: var(--primary);
+    }
+
+    .logo:hover span {
+      color: var(--secondary);
     }
 
     .nav-links {
@@ -258,6 +273,18 @@
       margin: 30px 0;
     }
 
+    .version-badge {
+      display: inline-block;
+      background-color: rgba(0, 255, 136, 0.15);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      margin-bottom: 20px;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -317,7 +344,7 @@
 </head>
 <body>
   <div class="header">
-    <div class="logo">fase<span>-</span>ai</div>
+    <a href="index.html" class="logo">fase<span>-</span>ai</a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
@@ -327,16 +354,23 @@
   <div class="content-wrapper">
     <aside class="sidebar">
       <h3>📚 Documentação</h3>
-      <a href="readme.html" class="sidebar-link ">📖 README</a>
+      <a href="index.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link active">📋 Comandos</a>
-<a href="GUIA-DO-USUARIO.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="guia-do-usuario.html" class="sidebar-link ">📘 Guia do Usuário</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link ">📦 NPM Registry</a>
-<a href="CONTEXT-MONITOR.html" class="sidebar-link ">📊 Context Monitor</a>
+<a href="technical/padronizacao-caminhos.html" class="sidebar-link ">🛣️ Padronização de Caminhos</a>
+<a href="maintainers/MANTENEDORES.html" class="sidebar-link ">👨‍💼 Guia de Maintainers</a>
+<a href="monitor-contexto.html" class="sidebar-link ">📊 Monitor de Contexto</a>
     </aside>
 
     <main class="main">
+      <div class="version-badge">📦 Versão 3.2.0</div>
       <h1>🔧 Comandos do F.A.S.E.</h1>
+<blockquote>
+<p><strong>Versão</strong>: 3.2.0 | Última atualização: 2026-03-25</p>
+</blockquote>
 <p><strong>32 comandos em português brasileiro para Claude Code.</strong></p>
 <hr>
 <h2>📋 Índice</h2>
@@ -364,7 +398,7 @@
 <p>Inicia um novo projeto F.A.S.E. no diretório atual.</p>
 <p><strong>O que faz:</strong></p>
 <ul>
-<li>Cria estrutura de pastas <code>.planejamento/</code></li>
+<li>Cria estrutura de pastas <code>.fase-ai-local/</code></li>
 <li>Inicializa STATE.md, ROADMAP.md, REQUIREMENTS.md</li>
 <li>Configura contexto do projeto</li>
 </ul>
@@ -760,7 +794,7 @@
 <h2>📞 Suporte</h2>
 <p><strong>Problemas com algum comando?</strong></p>
 <ul>
-<li>📖 <a href="GUIA-DO-USUARIO.md">Guia do Usuário</a></li>
+<li>📖 <a href="guia-do-usuario.html">Guia do Usuário</a></li>
 <li>🐛 <a href="https://github.com/isaaceliape/FASE/issues">Reportar bug</a></li>
 </ul>
 <hr>

@@ -138,7 +138,7 @@ Isso garante que FASE funciona identicamente em todos os 4 runtimes, sem duplica
 
 ### 📚 Documentação Melhorada
 - ✅ Novos documentos explicando path standardization
-- ✅ TEST_UPDATES_SUMMARY.md com rastreamento detalhado
+- ✅ Documentação expandida em bin/test/ com rastreamento detalhado
 - ✅ Seções expandidas em guias de testes
 
 ---
@@ -278,15 +278,16 @@ FASE oferece **32 comandos em português brasileiro**, organizados por função:
 ### Guias Essenciais
 - [📖 Guia do Usuário](docs/GUIA-DO-USUARIO.md) — Como usar FASE passo-a-passo
 - [🔧 Todos os Comandos](docs/COMANDOS.md) — Referência completa com exemplos
-- [📊 Agentes Disponíveis](AGENTS.md) — Como cada agente funciona
+- [🔌 System Hooks](docs/HOOKS.md) — Como adicionar automações
 
 ### Para Contribuidores
 - [🤝 Como Contribuir](CONTRIBUTING.md) — Instruções para contribuições
-- [🔌 System Hooks](docs/HOOKS.md) — Como adicionar automações
+- [🔧 Path Standardization](docs/technical/COMMAND_PATHS.md) — Como comandos funcionam em diferentes runtimes
+- [📚 Testes](bin/test/) — Cobertura completa e como rodar testes
 
 ### Informações do Projeto
 - [📊 Histórico de Mudanças](CHANGELOG.md) — Todas as versões
-- [👥 Maintainers](MAINTAINERS.md) — Quem cuida do projeto
+- [👥 Maintainers](docs/maintainers/MAINTAINERS.md) — Quem cuida do projeto
 
 ---
 

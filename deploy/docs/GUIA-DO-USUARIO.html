@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GUIA-DO-USUARIO - FASE Docs</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>guia-do-usuario - FASE Docs</title>
   <style>
     :root {
       --primary: #00ff88;
@@ -46,10 +49,22 @@
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      color: var(--primary);
     }
 
     .logo span {
       color: var(--primary);
+    }
+
+    .logo:hover span {
+      color: var(--secondary);
     }
 
     .nav-links {
@@ -258,6 +273,18 @@
       margin: 30px 0;
     }
 
+    .version-badge {
+      display: inline-block;
+      background-color: rgba(0, 255, 136, 0.15);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      margin-bottom: 20px;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -317,7 +344,7 @@
 </head>
 <body>
   <div class="header">
-    <div class="logo">fase<span>-</span>ai</div>
+    <a href="index.html" class="logo">fase<span>-</span>ai</a>
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
@@ -327,17 +354,24 @@
   <div class="content-wrapper">
     <aside class="sidebar">
       <h3>📚 Documentação</h3>
-      <a href="readme.html" class="sidebar-link ">📖 README</a>
+      <a href="index.html" class="sidebar-link ">📖 README</a>
 <a href="COMANDOS.html" class="sidebar-link ">📋 Comandos</a>
-<a href="GUIA-DO-USUARIO.html" class="sidebar-link active">📘 Guia do Usuário</a>
+<a href="guia-do-usuario.html" class="sidebar-link active">📘 Guia do Usuário</a>
+<a href="CONTRIBUINDO.html" class="sidebar-link ">🤝 Guia de Contribuição</a>
 <a href="HOOKS.html" class="sidebar-link ">🔧 Git Hooks</a>
 <a href="NPM-REGISTRY.html" class="sidebar-link ">📦 NPM Registry</a>
-<a href="CONTEXT-MONITOR.html" class="sidebar-link ">📊 Context Monitor</a>
+<a href="technical/padronizacao-caminhos.html" class="sidebar-link ">🛣️ Padronização de Caminhos</a>
+<a href="maintainers/MANTENEDORES.html" class="sidebar-link ">👨‍💼 Guia de Maintainers</a>
+<a href="monitor-contexto.html" class="sidebar-link ">📊 Monitor de Contexto</a>
     </aside>
 
     <main class="main">
+      <div class="version-badge">📦 Versão 3.2.0</div>
       <h1>Guia do Usuário — FASE</h1>
-<p>Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o <a href="../README.md">README</a>.</p>
+<blockquote>
+<p><strong>Versão</strong>: 3.2.0 | Última atualização: 2026-03-25</p>
+</blockquote>
+<p>Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o <a href="readme.html">README</a>.</p>
 <hr>
 <h2>Índice</h2>
 <ul>
@@ -664,7 +698,7 @@
 </tbody></table>
 <hr>
 <h2>Referência de Configuração</h2>
-<p>O FASE armazena configurações do projeto em <code>.planejamento/config.json</code>. Configure durante <code>/fase-novo-projeto</code> ou atualize depois com <code>/fase-configuracoes</code>.</p>
+<p>O FASE armazena configurações do projeto em <code>.fase-ai-local/config.json</code>. Configure durante <code>/fase-novo-projeto</code> ou atualize depois com <code>/fase-configuracoes</code>.</p>
 <h3>Esquema Completo do config.json</h3>
 <pre><code class="language-json">{
   &quot;mode&quot;: &quot;interactive&quot;,
@@ -730,17 +764,17 @@
 <td><code>planning.commit_docs</code></td>
 <td><code>true</code>, <code>false</code></td>
 <td><code>true</code></td>
-<td>Se os arquivos de <code>.planejamento/</code> são commitados no git</td>
+<td>Se os arquivos de <code>.fase-ai-local/</code> são commitados no git</td>
 </tr>
 <tr>
 <td><code>planning.search_gitignored</code></td>
 <td><code>true</code>, <code>false</code></td>
 <td><code>false</code></td>
-<td>Adiciona <code>--no-ignore</code> a buscas amplas para incluir <code>.planejamento/</code></td>
+<td>Adiciona <code>--no-ignore</code> a buscas amplas para incluir <code>.fase-ai-local/</code></td>
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Nota:</strong> Se <code>.planejamento/</code> está no <code>.gitignore</code>, <code>commit_docs</code> é automaticamente <code>false</code> independente do valor da configuração.</p>
+<p><strong>Nota:</strong> Se <code>.fase-ai-local/</code> está no <code>.gitignore</code>, <code>commit_docs</code> é automaticamente <code>false</code> independente do valor da configuração.</p>
 </blockquote>
 <h3>Opções de Fluxo de Trabalho</h3>
 <table>
@@ -1011,7 +1045,7 @@
 <hr>
 <h2>Resolução de Problemas</h2>
 <h3>&quot;Projeto já inicializado&quot;</h3>
-<p>Você executou <code>/fase-novo-projeto</code> mas <code>.planejamento/PROJETO.md</code> já existe. Esse é um mecanismo de segurança. Se quiser recomeçar, delete o diretório <code>.planejamento/</code> primeiro.</p>
+<p>Você executou <code>/fase-novo-projeto</code> mas <code>.fase-ai-local/PROJETO.md</code> já existe. Esse é um mecanismo de segurança. Se quiser recomeçar, delete o diretório <code>.fase-ai-local/</code> primeiro.</p>
 <h3>Degradação de Contexto em Sessões Longas</h3>
 <p>Limpe sua janela de contexto entre comandos principais: <code>/clear</code> no Claude Code. O FASE é projetado em torno de contextos frescos — cada subagente recebe uma janela limpa de 200K. Se a qualidade estiver caindo na sessão principal, limpe e use <code>/fase-retomar-trabalho</code> ou <code>/fase-progresso</code> para restaurar o estado.</p>
 <h3>Planos Parecem Errados ou Desalinhados</h3>
@@ -1025,7 +1059,7 @@
 <h3>Custos de Modelo Muito Altos</h3>
 <p>Mude para o perfil budget: <code>/fase-definir-perfil budget</code>. Desabilite os agentes de pesquisa e verificação de plano via <code>/fase-configuracoes</code> se o domínio for familiar para você (ou para o Claude).</p>
 <h3>Trabalhando em Projeto Sensível/Privado</h3>
-<p>Defina <code>commit_docs: false</code> durante <code>/fase-novo-projeto</code> ou via <code>/fase-configuracoes</code>. Adicione <code>.planejamento/</code> ao seu <code>.gitignore</code>. Os artefatos de planejamento ficam locais e nunca tocam o git.</p>
+<p>Defina <code>commit_docs: false</code> durante <code>/fase-novo-projeto</code> ou via <code>/fase-configuracoes</code>. Adicione <code>.fase-ai-local/</code> ao seu <code>.gitignore</code>. Os artefatos de planejamento ficam locais e nunca tocam o git.</p>
 <h3>Atualização do FASE Sobrescreveu Minhas Mudanças Locais</h3>
 <p>Desde a v1.17, o instalador faz backup de arquivos modificados localmente em <code>fase-local-patches/</code>. Execute <code>/fase-reaplicar-patches</code> para mesclar suas mudanças de volta.</p>
 <h3>Subagente Parece Ter Falhado Mas o Trabalho Foi Feito</h3>
@@ -1079,7 +1113,7 @@
 <hr>
 <h2>Estrutura de Arquivos do Projeto</h2>
 <p>Para referência, aqui está o que o FASE cria no seu projeto:</p>
-<pre><code>.planejamento/
+<pre><code>.fase-ai-local/
   PROJETO.md              # Visão e contexto do projeto (sempre carregado)
   REQUISITOS.md           # Requisitos v1/v2 com escopo e IDs
   PLANO-ENTREGAS.md       # Divisão de fases com rastreamento de status

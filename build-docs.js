@@ -4,20 +4,52 @@ const fs = require("fs");
 const path = require("path");
 const { marked } = require("marked");
 
+// Read version from package.json
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf-8"));
+const version = packageJson.version;
+
 const docs = [
-  { file: "readme.html", label: "README", icon: "📖" },
+  { file: "index.html", label: "README", icon: "📖" },
   { file: "COMANDOS.html", label: "Comandos", icon: "📋" },
   { file: "GUIA-DO-USUARIO.html", label: "Guia do Usuário", icon: "📘" },
+  { file: "CONTRIBUINDO.html", label: "Guia de Contribuição", icon: "🤝" },
   { file: "HOOKS.html", label: "Git Hooks", icon: "🔧" },
   { file: "NPM-REGISTRY.html", label: "NPM Registry", icon: "📦" },
-  { file: "CONTEXT-MONITOR.html", label: "Context Monitor", icon: "📊" },
+  { file: "technical/padronizacao-caminhos.html", label: "Padronização de Caminhos", icon: "🛣️" },
+  { file: "maintainers/MANTENEDORES.html", label: "Guia de Maintainers", icon: "👨‍💼" },
+  { file: "CONTEXT-MONITOR.html", label: "Monitor de Contexto", icon: "📊" },
 ];
 
 const htmlTemplate = (title, currentFile, content) => {
+  // Get directory of current file
+  const currentDir = currentFile.includes('/') ? currentFile.split('/')[0] : '';
+
   const sidebarLinks = docs
     .map((doc) => {
       const isActive = doc.file === currentFile ? "active" : "";
-      return `<a href="${doc.file}" class="sidebar-link ${isActive}">${doc.icon} ${doc.label}</a>`;
+      let linkPath;
+
+      // Calculate relative path for the link
+      if (currentDir === '') {
+        // Current file is at root level (index.html, COMANDOS.html, etc.)
+        linkPath = doc.file;
+      } else {
+        // Current file is in a subdirectory (technical/, maintainers/)
+        const docDir = doc.file.includes('/') ? doc.file.split('/')[0] : '';
+
+        if (docDir === currentDir) {
+          // Same subdirectory - just use filename
+          linkPath = doc.file.split('/').pop();
+        } else if (docDir === '') {
+          // Target is at root - go up one level
+          linkPath = '../' + doc.file;
+        } else {
+          // Target is in different subdirectory - go up and then into subdirectory
+          linkPath = '../' + doc.file;
+        }
+      }
+
+      return `<a href="${linkPath}" class="sidebar-link ${isActive}">${doc.icon} ${doc.label}</a>`;
     })
     .join("\n");
 
@@ -26,6 +58,9 @@ const htmlTemplate = (title, currentFile, content) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>${title} - FASE Docs</title>
   <style>
     :root {
@@ -69,10 +104,22 @@ const htmlTemplate = (title, currentFile, content) => {
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.5px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .logo:hover {
+      color: var(--primary);
     }
 
     .logo span {
       color: var(--primary);
+    }
+
+    .logo:hover span {
+      color: var(--secondary);
     }
 
     .nav-links {
@@ -281,6 +328,18 @@ const htmlTemplate = (title, currentFile, content) => {
       margin: 30px 0;
     }
 
+    .version-badge {
+      display: inline-block;
+      background-color: rgba(0, 255, 136, 0.15);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+      margin-bottom: 20px;
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -340,9 +399,9 @@ const htmlTemplate = (title, currentFile, content) => {
 </head>
 <body>
   <div class="header">
-    <div class="logo">fase<span>-</span>ai</div>
+    <a href="${currentDir === '' ? 'index.html' : '../index.html'}" class="logo">fase<span>-</span>ai</a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
+      <a href="${currentDir === '' ? 'index.html' : '../index.html'}">Home</a>
       <a href="https://github.com/isaaceliape/FASE">GitHub</a>
     </div>
   </div>
@@ -354,6 +413,7 @@ const htmlTemplate = (title, currentFile, content) => {
     </aside>
 
     <main class="main">
+      <div class="version-badge">📦 Versão ${version}</div>
       ${content}
     </main>
   </div>
@@ -361,37 +421,95 @@ const htmlTemplate = (title, currentFile, content) => {
 </html>`;
 };
 
-// Get all markdown files in docs folder
+// Get all markdown files in docs folder (including subdirectories)
 const docsDir = path.join(__dirname, "docs");
-const markdownFiles = fs.readdirSync(docsDir).filter((f) => f.endsWith(".md"));
+
+function getAllMarkdownFiles(dir, prefix = "") {
+  const files = [];
+  const items = fs.readdirSync(dir);
+
+  items.forEach((item) => {
+    const itemPath = path.join(dir, item);
+    const stat = fs.statSync(itemPath);
+
+    if (stat.isDirectory()) {
+      // Recursively get files from subdirectories
+      files.push(...getAllMarkdownFiles(itemPath, prefix ? `${prefix}/${item}` : item));
+    } else if (item.endsWith(".md")) {
+      files.push({
+        file: item,
+        path: itemPath,
+        prefix: prefix,
+        fullPath: prefix ? `${prefix}/${item}` : item
+      });
+    }
+  });
+
+  return files;
+}
+
+const markdownFiles = getAllMarkdownFiles(docsDir);
 
 // Create HTML files
 console.log(
   "🔨 Building documentation pages with proper markdown parsing...\n",
 );
 
-markdownFiles.forEach((file) => {
-  const filePath = path.join(docsDir, file);
-  const markdown = fs.readFileSync(filePath, "utf-8");
+markdownFiles.forEach(({ file, path: filePath, prefix, fullPath }) => {
+  let markdown = fs.readFileSync(filePath, "utf-8");
+
+  // Replace hardcoded version strings with actual version from package.json
+  // Matches patterns like:
+  // > **Versão**: 3.2.0 | Última atualização: 2026-03-25
+  // **Versão**: 1.0
+  markdown = markdown.replace(
+    /> \*\*Versão\*\*:\s*[\d.]+\s*\|/g,
+    `> **Versão**: ${version} |`
+  );
+  markdown = markdown.replace(
+    /\*\*Versão\*\*:\s*[\d.]+/g,
+    `**Versão**: ${version}`
+  );
+  // Also handle English version markers for non-Portuguese docs
+  markdown = markdown.replace(
+    /> \*\*Version\*\*:\s*[\d.]+\s*\|/g,
+    `> **Version**: ${version} |`
+  );
+  markdown = markdown.replace(
+    /\*\*Version\*\*:\s*[\d.]+/g,
+    `**Version**: ${version}`
+  );
+
   const title = file.replace(".md", "");
   const htmlFileName =
     file === "README.md" ? "readme.html" : file.replace(".md", ".html");
   const html = marked(markdown);
 
-  const htmlFile = path.join(docsDir, htmlFileName);
-  fs.writeFileSync(htmlFile, htmlTemplate(title, htmlFileName, html));
-  console.log(`✅ ${file} → ${htmlFileName}`);
-});
+  // Create subdirectory if it doesn't exist
+  if (prefix) {
+    const subDir = path.join(docsDir, prefix);
+    if (!fs.existsSync(subDir)) {
+      fs.mkdirSync(subDir, { recursive: true });
+    }
+  }
 
-// Sync HTML files to deploy/docs/
-const deployDocsDir = path.join(__dirname, "deploy", "docs");
-if (fs.existsSync(deployDocsDir)) {
-  const htmlFiles = fs.readdirSync(docsDir).filter((f) => f.endsWith(".html"));
-  htmlFiles.forEach((file) => {
-    fs.copyFileSync(path.join(docsDir, file), path.join(deployDocsDir, file));
-  });
-  console.log(`\n📦 Synced ${htmlFiles.length} HTML files to deploy/docs/`);
-}
+  const htmlFile = prefix
+    ? path.join(docsDir, prefix, htmlFileName)
+    : path.join(docsDir, htmlFileName);
+
+  // For subdirectory files, include the prefix in the htmlFileName
+  const fullHtmlFileName = prefix ? `${prefix}/${htmlFileName}` : htmlFileName;
+
+  fs.writeFileSync(htmlFile, htmlTemplate(title, fullHtmlFileName, html));
+  console.log(`✅ ${fullPath} → ${htmlFile.replace(docsDir, "docs")}`);
+
+  // For README.md, also create index.html as the main entry point
+  if (file === "README.md") {
+    const indexFile = path.join(docsDir, "index.html");
+    fs.writeFileSync(indexFile, htmlTemplate(title, "index.html", html));
+    console.log(`✅ ${fullPath} → ${indexFile.replace(docsDir, "docs")} (index)`);
+  }
+});
 
 console.log("\n✨ Documentation build complete!");
 console.log("📂 HTML files created in", docsDir);
