@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import { execSync } from 'child_process';
 
 import { fileURLToPath } from 'url';
+import { saveAnalyticsConfig } from './lib/analytics.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -2593,6 +2594,43 @@ function promptRuntime(callback) {
 }
 
 /**
+ * Prompt user for analytics opt-in
+ */
+function promptAnalyticsOptIn(callback) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  console.log(`
+  ${yellow}📊 Análise de Uso Anônima${reset}
+
+  FASE pode rastrear quais comandos você usa (sem código ou conteúdo do projeto).
+  Isso ajuda a melhorar o framework.
+
+  ${dim}O que é rastreado:${reset}
+    • Nome do comando (/fase-novo-projeto, /fase-planejar-fase, etc)
+    • Qual runtime você usa (Claude Code, OpenCode, etc)
+    • Um ID anônimo da instalação
+
+  ${dim}O que NÃO é rastreado:${reset}
+    ❌ Código ou conteúdo do projeto
+    ❌ Prompts ou conversas
+    ❌ Informações pessoais
+
+  ${dim}Quando é enviado:${reset}
+    • Uma vez a cada 7 dias
+    • Você pode desabilitar a qualquer momento editando ~/.fase-ai/config.json
+`);
+
+  rl.question(`  Habilitar análise anônima? ${dim}[n]${reset}: `, (answer) => {
+    rl.close();
+    const choice = (answer.trim() || 'n').toLowerCase();
+    callback(choice === 'y' || choice === 's' || choice === 'sim');
+  });
+}
+
+/**
  * Prompt for install location
  */
 function promptLocation(runtimes) {
@@ -2826,6 +2864,20 @@ function installAllRuntimes(runtimes, isGlobal, isInteractive) {
         result.runtime,
         isGlobal
       );
+    }
+
+    // Prompt for analytics opt-in after installation completes
+    if (isInteractive) {
+      promptAnalyticsOptIn((analyticsEnabled) => {
+        const installId = crypto.randomUUID();
+        saveAnalyticsConfig(analyticsEnabled, installId);
+
+        if (analyticsEnabled) {
+          console.log(`\n  ${green}✓${reset} Análise anônima habilitada (ID: ${installId.slice(0, 8)}...)\n`);
+        } else {
+          console.log(`\n  ${dim}Análise desabilitada. Você pode habilitar depois editando ~/.fase-ai/config.json\n${reset}`);
+        }
+      });
     }
   };
 
