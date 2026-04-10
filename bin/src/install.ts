@@ -9,6 +9,7 @@ import { execSync } from 'child_process';
 
 import { fileURLToPath } from 'url';
 import { saveAnalyticsConfig } from './lib/analytics.js';
+import { checkAndPromptForUpdate } from './lib/version-check.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -2275,9 +2276,9 @@ function install(isGlobal, runtime = 'claude') {
       failures.push('package.json');
     }
 
-    // Copy hooks from dist/ (bundled with dependencies)
+    // Copy hooks from hooks/ (compiled alongside install.js)
     // Template paths for the target runtime (replaces '.claude' with correct config dir)
-    const hooksSrc = path.join(src, 'hooks', 'dist');
+    const hooksSrc = path.join(src, 'hooks');
     if (fs.existsSync(hooksSrc)) {
       try {
         const hooksDest = path.join(targetDir, 'hooks');
@@ -2905,34 +2906,41 @@ if (process.env.FASE_TEST_MODE) {
 } else {
 
 // Main logic
-if (explicitConfigDir) {
-  console.error(`  ${yellow}Não é possível usar --config-dir. Instalação agora é sempre local.${reset}`);
-  process.exit(1);
-} else if (hasAtualizar) {
-  atualizar(selectedRuntimes);
-} else if (hasUninstall) {
-  if (selectedRuntimes.length > 0) {
-    const runtimes = selectedRuntimes;
-    promptUninstallConfirmation(runtimes, false);
-  } else {
-    promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+(async () => {
+  // Check for updates at session start (unless we're already updating)
+  if (!hasAtualizar && !hasUninstall && !hasVerificar) {
+    await checkAndPromptForUpdate(pkg.version);
   }
-} else if (selectedRuntimes.length > 0) {
-  installAllRuntimes(selectedRuntimes, false, false);
-} else {
-  // Interactive - always local now
-  if (!process.stdin.isTTY) {
-    console.log(`  ${yellow}Terminal não interativo detectado, usando instalação local do Claude Code por padrão${reset}\n`);
-    installAllRuntimes(['claude'], false, false);
+
+  if (explicitConfigDir) {
+    console.error(`  ${yellow}Não é possível usar --config-dir. Instalação agora é sempre local.${reset}`);
+    process.exit(1);
+  } else if (hasAtualizar) {
+    atualizar(selectedRuntimes);
+  } else if (hasUninstall) {
+    if (selectedRuntimes.length > 0) {
+      const runtimes = selectedRuntimes;
+      promptUninstallConfirmation(runtimes, false);
+    } else {
+      promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+    }
+  } else if (selectedRuntimes.length > 0) {
+    installAllRuntimes(selectedRuntimes, false, false);
   } else {
-    promptRuntime((runtimes) => {
-      if (runtimes === 'uninstall') {
-        promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
-      } else {
-        promptLocation(runtimes);
-      }
-    });
+    // Interactive - always local now
+    if (!process.stdin.isTTY) {
+      console.log(`  ${yellow}Terminal não interativo detectado, usando instalação local do Claude Code por padrão${reset}\n`);
+      installAllRuntimes(['claude'], false, false);
+    } else {
+      promptRuntime((runtimes) => {
+        if (runtimes === 'uninstall') {
+          promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+        } else {
+          promptLocation(runtimes);
+        }
+      });
+    }
   }
-}
+})();
 
 } // end of else block for FASE_TEST_MODE

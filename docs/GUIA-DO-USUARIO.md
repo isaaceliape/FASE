@@ -1,6 +1,6 @@
 # Guia do Usuário — FASE
 
-> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+> **Versão**: 3.3.0 | Última atualização: 2026-04-10
 
 Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o [README](readme.html).
 
@@ -449,6 +449,24 @@ Defina `commit_docs: false` durante `/fase-novo-projeto` ou via `/fase-configura
 ### Atualização do FASE Sobrescreveu Minhas Mudanças Locais
 
 Desde a v1.17, o instalador faz backup de arquivos modificados localmente em `fase-local-patches/`. Execute `/fase-reaplicar-patches` para mesclar suas mudanças de volta.
+
+### Verificação de Versão Automática
+
+O FASE verifica automaticamente por atualizações em cada sessão:
+
+**Como funciona:**
+- Hook `SessionStart` verifica silenciosamente no npm registry
+- Resultado é cacheado em `~/.claude/cache/fase-update-check.json`
+- Se houver atualização, uma caixa estilizada é exibida
+- Você é perguntado se deseja atualizar automaticamente
+
+**Para verificar manualmente:**
+```bash
+node ~/.claude/fase-ai/fase-tools.js check-update $(cat ~/.claude/fase-ai/VERSION)
+```
+
+**Para desabilitar a verificação:**
+Edite seu `~/.claude/settings.json` e remova o hook `fase-check-update.js` da seção `SessionStart`.
 
 ### Gap Closure em Loop / "Escalação Humana Necessária"
 

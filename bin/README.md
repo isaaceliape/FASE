@@ -1,6 +1,6 @@
 # fase-ai
 
-**F.A.S.E.** — Framework de Automação Sem Enrolação
+**F.A.S.E. v3.3.0** — Framework de Automação Sem Enrolação
 
 Instalador do sistema de meta-prompting, context engineering e desenvolvimento spec-driven para Claude Code, OpenCode, Gemini e Codex. Tradução brasileira do [get-shit-done-cc](https://www.npmjs.com/package/get-shit-done-cc).
 
@@ -49,6 +49,7 @@ npx fase-ai [opções]
 | `--all` | Instalar para todos os runtimes |
 | `-u, --uninstall` | Desinstalar o FASE (remover todos os arquivos) |
 | `-v, --verificar` | Verificar instalação e gerar relatório |
+| `--atualizar` | Atualizar FASE para versão mais recente |
 | `-c, --config-dir <caminho>` | Especificar diretório de configuração customizado |
 | `-h, --help` | Exibir ajuda |
 | `--force-statusline` | Substituir configuração de statusline existente |
@@ -126,11 +127,32 @@ O instalador configura:
 - E 25+ comandos...
 
 ### Hooks
-- Statusline com uso de contexto
-- Check de atualizações
-- Monitor de contexto
+- **Statusline** com uso de contexto e tarefa atual
+- **Check de atualizações** — verifica automaticamente no npm registry
+- **Monitor de contexto** — alerta quando o contexto está acabando
 
 ---
+
+## 🔄 Verificação Automática de Versão
+
+O FASE verifica automaticamente por atualizações:
+
+### Como funciona
+
+1. **Hook SessionStart**: Executa em segundo plano a cada sessão
+2. **Cache local**: Salva resultado em `~/.claude/cache/fase-update-check.json`
+3. **Notificação**: Mostra caixa estilizada quando há atualização disponível
+4. **Prompt interativo**: Pergunta se deseja atualizar (`npx fase-ai --atualizar`)
+
+### Verificação manual
+
+```bash
+# Via fase-tools
+node ~/.claude/fase-ai/fase-tools.js check-update 3.3.0
+
+# Ou diretamente
+node ~/.claude/fase-ai/hooks/fase-check-update.js
+```
 
 ## 🎯 Verificar Instalação
 

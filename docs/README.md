@@ -1,6 +1,6 @@
 # 📚 Documentação do FASE
 
-> **Versão**: 3.2.0 | Última atualização: 2026-03-25
+> **Versão**: 3.3.0 | Última atualização: 2026-04-10
 
 Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que precisa para instalar, usar e contribuir ao projeto.
 
@@ -13,6 +13,7 @@ Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que prec
 | [**Guia do Usuário**](guia-do-usuario.html) | Guia completo de instalação e uso do FASE |
 | [**Comandos**](COMANDOS.html) | Lista com todos os 32 comandos disponíveis |
 | [**NPM Registry**](NPM-REGISTRY.html) | Configuração do npm registry e instalação |
+| [**Verificação de Versão**](VERIFICAR-VERSAO.html) | Sistema automático de verificação de atualizações |
 
 ### Para Desenvolvedores
 
@@ -77,6 +78,15 @@ docs/
 - **Sugestão**: Use template `feature_request.md`
 
 ## 📈 Melhorias Documentadas
+
+### v3.3.0 (Abril 2026)
+
+**Verificação Automática de Versão**
+- ✅ Hook `SessionStart` verifica automaticamente por atualizações no npm
+- ✅ Notificação estilizada mostra versão atual vs disponível
+- ✅ Prompt interativo pergunta se deseja atualizar
+- ✅ Statusline mostra indicador `⬆ /fase:atualizar` quando há atualização
+- ✅ Cache local em `~/.claude/cache/fase-update-check.json`
 
 ### v3.2.0 (Março 2026)
 

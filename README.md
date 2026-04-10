@@ -119,6 +119,20 @@ Ou via npx (sempre usa a versão mais recente):
 npx fase-ai@latest
 ```
 
+### Verificação Automática de Versão
+
+O FASE verifica automaticamente por atualizações em cada sessão:
+
+- **Hook em background**: Um hook `SessionStart` verifica silenciosamente se há novas versões no npm
+- **Notificação**: Quando há atualização disponível, você verá uma mensagem ao iniciar
+- **Prompt interativo**: O FASE pergunta se deseja atualizar automaticamente
+- **Statusline**: A versão disponível também aparece na statusline (`⬆ /fase:atualizar`)
+
+Para verificar manualmente:
+```bash
+node ~/.claude/fase-ai/hooks/fase-check-update.js
+```
+
 ---
 
 ## 📚 Exemplos de Uso
@@ -181,7 +195,14 @@ asciinema rec assets/demo-workflow.cast
 
 ---
 
-## ✨ Novidades em v3.2.0
+## ✨ Novidades em v3.3.0
+
+### 🔔 Verificação Automática de Versão
+O FASE agora verifica automaticamente por atualizações:
+- **Hook SessionStart**: Verifica silenciosamente no npm registry
+- **Notificação visível**: Caixa estilizada mostra versão atual e disponível
+- **Prompt interativo**: Pergunta se deseja atualizar automaticamente
+- **Statusline integrada**: Mostra `⬆ /fase:atualizar` quando há atualização
 
 ### 🎯 Path Standardization
 Todos os comandos e agentes agora usam um padrão universal `@~/.fase/` que é convertido automaticamente para caminhos específicos de cada runtime durante a instalação:

@@ -9,7 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { error } from './lib/core.js';
+import { error, output } from './lib/core.js';
 import * as state from './lib/state.js';
 import { trackEvent } from './lib/analytics.js';
 import * as etapa from './lib/etapa.js';
@@ -21,6 +21,14 @@ import * as milestone from './lib/milestone.js';
 import * as commands from './lib/commands.js';
 import * as init from './lib/init.js';
 import * as frontmatter from './lib/frontmatter.js';
+import { checkForUpdate, promptForUpdate, runUpdate, getCachedUpdateInfo } from './lib/version-check.js';
+
+// Colors for terminal output
+const cyan = '\x1b[36m';
+const green = '\x1b[32m';
+const yellow = '\x1b[33m';
+const dim = '\x1b[2m';
+const reset = '\x1b[0m';
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
@@ -52,7 +60,7 @@ async function main(): Promise<void> {
   const command = args[0];
 
   if (!command) {
-    error('Usage: fase-tools <command> [args] [--raw] [--cwd <path>]\nCommands: state, resolve-model, find-phase, commit, verify-summary, verify, frontmatter, template, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section, init, phase, roadmap, milestone, validate, progress, todo, scaffold, websearch, history-digest, summary-extract, phase-plan-index, state-snapshot, phases, requirements');
+    error('Usage: fase-tools <command> [args] [--raw] [--cwd <path>]\nCommands: state, resolve-model, find-phase, commit, verify-summary, verify, frontmatter, template, generate-slug, current-timestamp, list-todos, verify-path-exists, config-ensure-section, init, phase, roadmap, milestone, validate, progress, todo, scaffold, websearch, history-digest, summary-extract, phase-plan-index, state-snapshot, phases, requirements, check-update');
   }
 
   // Track command execution for analytics (opt-in, safe to fail)
@@ -463,6 +471,46 @@ async function main(): Promise<void> {
         limit: limitIdx !== -1 ? parseInt(args[limitIdx + 1], 10) : 10,
         freshness: freshnessIdx !== -1 ? args[freshnessIdx + 1] : undefined,
       }, raw);
+      break;
+    }
+
+    case 'check-update': {
+      const currentVersion = args[1];
+      const useCache = args.includes('--cached');
+
+      if (!currentVersion) {
+        error('Uso: check-update <versão-atual> [--cached]');
+      }
+
+      let versionInfo;
+      if (useCache) {
+        versionInfo = getCachedUpdateInfo();
+      }
+
+      if (!versionInfo) {
+        versionInfo = checkForUpdate(currentVersion);
+      }
+
+      if (raw) {
+        output(versionInfo, true, JSON.stringify(versionInfo));
+      } else {
+        if (versionInfo.updateAvailable && versionInfo.latest) {
+          console.log(`  ${yellow}Atualização disponível!${reset}`);
+          console.log(`  Versão atual: ${dim}v${versionInfo.current}${reset}`);
+          console.log(`  Nova versão:  ${cyan}v${versionInfo.latest}${reset}`);
+
+          // In non-raw mode, also prompt for update
+          const shouldUpdate = await promptForUpdate(versionInfo);
+          if (shouldUpdate) {
+            runUpdate();
+            process.exit(0);
+          }
+        } else if (!versionInfo.latest) {
+          console.log(`  ${yellow}⚠${reset} Não foi possível verificar a versão no npm`);
+        } else {
+          console.log(`  ${green}✓${reset} Você está na versão mais recente (${cyan}v${versionInfo.current}${reset})`);
+        }
+      }
       break;
     }
 

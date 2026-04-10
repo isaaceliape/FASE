@@ -5,6 +5,22 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-04-10
+
+### Adicionado
+- **Verificação automática de versão**: Hook `SessionStart` verifica silenciosamente por atualizações no npm registry
+- **Prompt interativo de atualização**: Quando há nova versão, o FASE pergunta se deseja atualizar automaticamente
+- **Notificação na statusline**: Indicador `⬆ /fase:atualizar` aparece quando há atualização disponível
+- **Cache de versão**: Resultado da verificação é cacheado em `~/.claude/cache/fase-update-check.json`
+- **Comando `check-update`**: Nova ferramenta `fase-tools check-update <versão>` para verificação manual
+- **Módulo `version-check.ts`**: Biblioteca centralizada para verificação e comparação de versões
+
+### Detalhes Técnicos
+- Hooks convertidos para CommonJS para compatibilidade com execução direta pelo Node.js
+- Script de build atualizado para copiar hooks JavaScript corretamente
+- Sistema de comparação semântica de versões (major.minor.patch)
+- Verificação em background não bloqueia o início da sessão
+
 ## [3.2.0] - 2026-03-21
 
 ### Adicionado
