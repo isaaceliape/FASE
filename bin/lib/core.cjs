@@ -513,4 +513,7 @@ module.exports = {
   toPosixPath,
   ensureInsidePlanejamento,
   isInsidePlanejamento,
+  // Aliases for backward compatibility with tests
+  getRoadmapPhaseInternal: getRoadmapEtapaInternal,
+  searchPhaseInDir: searchEtapaInDir,
 };
