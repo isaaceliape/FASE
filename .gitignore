@@ -36,5 +36,8 @@ STATE.md
 .husky/_/.gitignore
 .husky/_/husky.sh
 
+# TypeScript compiled output
+bin/dist/
+
 # Keep bin package lock
 !.bin/package-lock.json

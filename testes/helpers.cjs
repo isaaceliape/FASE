@@ -6,7 +6,7 @@ const { execSync, execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const TOOLS_PATH = path.join(__dirname, '..', 'bin', 'fase-tools.cjs');
+const TOOLS_PATH = path.join(__dirname, '..', 'bin', 'dist', 'fase-tools.js');
 
 /**
  * Run gsd-tools command.

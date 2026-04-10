@@ -2,9 +2,10 @@
   "name": "fase-ai",
   "version": "3.3.0",
   "description": "F.A.S.E. - Framework de Automação Sem Enrolação. Brazilian Portuguese translation of get-shit-done for AI coding assistants",
+  "type": "module",
   "bin": {
-    "fase-ai": "install.js",
-    "fase": "install.js"
+    "fase-ai": "dist/install.js",
+    "fase": "dist/install.js"
   },
   "repository": {
     "type": "git",
@@ -33,38 +34,41 @@
   },
   "homepage": "https://github.com/isaaceliape/FASE#readme",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
+    "build": "tsc",
+    "postbuild": "node scripts/fix-shebangs.mjs",
     "verificar-pacote": "npm pack --dry-run",
-    "test": "mocha test/*.test.js",
-    "test:install": "mocha test/install.test.js",
-    "test:providers": "mocha test/providers.test.js",
-    "test:integration": "mocha test/integration.test.js",
-    "test:docker": "mocha test/docker-test.js",
-    "test:edge-cases": "mocha test/edge-cases.test.js",
-    "test:watch": "mocha test/*.test.js --watch",
-    "test:coverage": "mocha test/*.test.js --reporter json > test-results.json",
+    "test": "mocha test/*.test.cjs",
+    "test:install": "mocha test/install.test.cjs",
+    "test:providers": "mocha test/providers.test.cjs",
+    "test:integration": "mocha test/integration.test.cjs",
+    "test:docker": "mocha test/docker-test.cjs",
+    "test:edge-cases": "mocha test/edge-cases.test.cjs",
+    "test:watch": "mocha test/*.test.cjs --watch",
+    "test:coverage": "mocha test/*.test.cjs --reporter json > test-results.json",
     "test:docker:all": "cd test && bash run-docker-tests.sh --all",
-    "test:docker:clean": "cd test && bash run-docker-tests.sh --cleanup"
+    "test:docker:clean": "cd test && bash run-docker-tests.sh --cleanup",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
+    "@types/node": "^25.6.0",
     "husky": "^9.0.0",
     "lint-staged": "^15.0.0",
-    "mocha": "^10.0.0"
+    "mocha": "^10.0.0",
+    "typescript": "^6.0.2"
   },
   "lint-staged": {
     "package.json": [
-      "node -e \"const pkg = require('./package.json'); console.log('✓ package.json válido');\""
+      "node -e \"import('./package.json', { assert: { type: 'json' } }).then(m => console.log('✓ package.json válido'))\""
     ]
   },
   "files": [
-    "lib/",
+    "dist/",
     "agentes/",
     "comandos/",
     "fase-shared/",
-    "install.js",
-    "verificar-instalacao.js",
     "README.md"
   ]
 }
