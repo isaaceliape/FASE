@@ -1,6 +1,6 @@
 <div align="center">
 
-# F.A.S.E. v3.3.0
+# F.A.S.E. v3.3.1
 
 ## Framework de Automação Sem Enrolação
 

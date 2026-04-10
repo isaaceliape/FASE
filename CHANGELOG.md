@@ -5,6 +5,12 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.1] - 2026-04-10
+
+### Corrigido
+- Correção na execução dos hooks: convertidos para CommonJS para compatibilidade com Node.js
+- Ajuste no script de build para copiar hooks JavaScript corretamente
+
 ## [3.3.0] - 2026-04-10
 
 ### Adicionado

@@ -1,6 +1,6 @@
 # Git Hooks - Segurança de Commits
 
-> **Versão**: 3.3.0 | Última atualização: 2026-04-10
+> **Versão**: 3.3.1 | Última atualização: 2026-04-10
 
 Os hooks do git garantem que nenhum pacote quebrado seja publicado no npm.
 

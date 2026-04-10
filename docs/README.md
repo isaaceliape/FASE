@@ -1,6 +1,6 @@
 # 📚 Documentação do FASE
 
-> **Versão**: 3.3.0 | Última atualização: 2026-04-10
+> **Versão**: 3.3.1 | Última atualização: 2026-04-10
 
 Bem-vindo ao centro de documentação do FASE! Aqui você encontra tudo que precisa para instalar, usar e contribuir ao projeto.
 

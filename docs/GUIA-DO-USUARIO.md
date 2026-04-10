@@ -1,6 +1,6 @@
 # Guia do Usuário — FASE
 
-> **Versão**: 3.3.0 | Última atualização: 2026-04-10
+> **Versão**: 3.3.1 | Última atualização: 2026-04-10
 
 Referência detalhada de fluxos de trabalho, resolução de problemas e configuração. Para configuração rápida, veja o [README](readme.html).
 
