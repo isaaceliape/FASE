@@ -20,6 +20,9 @@ tmp/
 temp/
 *.tmp
 
+# Planning & implementation specs (internal working docs)
+specs/
+
 # State files (generated during execution)
 .planejamento/
 STATE.md
