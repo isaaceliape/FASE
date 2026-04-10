@@ -138,6 +138,49 @@ Implementar uma feature completa com testes, documentação e múltiplas depend�
 
 ---
 
+## 🎬 In Action
+
+Watch FASE in action. Below are terminal recordings showing real workflows:
+
+### Installation & Setup
+
+```bash
+# Record your installation session
+asciinema rec assets/demo-install.cast
+
+# Then embed in README as:
+# <asciinema-player src="assets/demo-install.cast"></asciinema-player>
+```
+
+### Complete Workflow: From Idea to Deployment
+
+```bash
+# Record a workflow session with these steps:
+# 1. /fase-novo-projeto
+# 2. /fase-planejar-fase 1
+# 3. /fase-executar-fase 1
+# 4. /fase-validar-fase 1
+
+asciinema rec assets/demo-workflow.cast
+```
+
+**Tools to record your own demos:**
+
+- **[asciinema](https://asciinema.org/)** — Interactive recordings, embeddable, shareable
+  ```bash
+  npm install -g asciinema
+  asciinema rec my-recording.cast
+  asciinema upload my-recording.cast
+  ```
+
+- **[termtosvg](https://github.com/nbedos/termtosvg)** — Generates SVG animations
+  ```bash
+  pip install termtosvg
+  termtosvg record my-recording.svg
+  ```
+
+---
+
 ## ✨ Novidades em v3.2.0
 
 ### 🎯 Path Standardization
