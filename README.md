@@ -121,6 +121,23 @@ npx fase-ai@latest
 
 ---
 
+## 📚 Exemplos de Uso
+
+Quer ver FASE em ação? Temos **3 exemplos reais** mostrando diferentes níveis de complexidade:
+
+### 🟢 Beginner: [CLI Pomodoro Timer](./examples/01-cli-pomodoro/)
+Construir uma ferramenta de linha de comando simples com FASE.
+
+### 🟡 Intermediate: [Refatoração de Código Legacy](./examples/02-refactor-legacy/)
+Refatorar um script grande em partes menores e testáveis.
+
+### 🔴 Advanced: [JWT Authentication Feature](./examples/03-full-feature/)
+Implementar uma feature completa com testes, documentação e múltiplas dependências.
+
+👉 **[Explorar todos os exemplos →](./examples/)**
+
+---
+
 ## ✨ Novidades em v3.2.0
 
 ### 🎯 Path Standardization
