@@ -56,8 +56,9 @@ process.stdin.on('end', () => {
       try {
         warnData = JSON.parse(fs.readFileSync(warnPath, 'utf8'));
         firstWarn = false;
-      } catch {
-        // Arquivo corrompido, reinicia
+      } catch (e) {
+        // Arquivo corrompido, reinicia com dados padrão
+        process.stderr.write(`[fase-context-monitor] Aviso de dados corrompido em ${warnPath}: ${e.message}\n`);
       }
     }
 
@@ -107,7 +108,9 @@ process.stdin.on('end', () => {
     };
 
     process.stdout.write(JSON.stringify(output));
-  } catch {
+  } catch (e) {
+    // Erro ao processar métricas de contexto - falha silenciosa para não interferir com o hook
+    process.stderr.write(`[fase-context-monitor] Erro ao processar contexto: ${e.message}\n`);
     process.exit(0);
   }
 });
