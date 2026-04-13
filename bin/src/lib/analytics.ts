@@ -7,6 +7,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { safeJsonParse } from './core.js';
 import os from 'os';
 
 export interface AnalyticsEvent {
@@ -110,7 +111,12 @@ function flushToBackend(installId: string): void {
     if (!logContent) return;
 
     // Parse JSONL into array for upload
-    const events = logContent.split('\n').filter(Boolean).map(line => JSON.parse(line));
+    const events = logContent.split('\n')
+      .filter(Boolean)
+      .map((line, idx) => {
+        const parsed = safeJsonParse(line, `analytics event ${idx}`);
+        return parsed || { error: 'failed to parse event', index: idx };
+      });
 
     // Build request payload
     const payload = {
