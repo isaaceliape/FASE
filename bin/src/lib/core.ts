@@ -155,6 +155,23 @@ export function safeReadFile(filePath: string): string | null {
   }
 }
 
+/**
+ * Safely parse JSON with error handling and logging
+ * @param content JSON string to parse
+ * @param context Context for error message (filename, operation)
+ * @returns Parsed object or null on error
+ */
+export function safeJsonParse<T = unknown>(content: string, context?: string): T | null {
+  try {
+    return JSON.parse(content) as T;
+  } catch (err) {
+    if (context) {
+      console.error(`[FASE] Failed to parse JSON in ${context}: ${(err as Error).message}`);
+    }
+    return null;
+  }
+}
+
 export function loadConfig(cwd: string): Config {
   const configPath = path.join(cwd, '.fase-ai-local', 'config.json');
   const defaults: Config = {
