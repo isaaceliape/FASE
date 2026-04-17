@@ -54,7 +54,7 @@ jobs:
           TAG_NAME: ${{ github.ref_name }}
         run: |
           NOTES=$(cat <<'EOF'
-          Publicado em npm: https://www.npmjs.com/package/fase-ai/v${{ github.ref_name }}
+          Publicado em npm: https://www.npmjs.com/package/fase-ai/${{ github.ref_name }}
 
           Instale com:
           ```bash
@@ -62,4 +62,4 @@ jobs:
           ```
           EOF
           )
-          gh release create "${{ github.ref }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES" 2>/dev/null || gh release edit "${{ github.ref }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES"
+          gh release create "${{ github.ref_name }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES" 2>/dev/null || gh release edit "${{ github.ref_name }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES"
