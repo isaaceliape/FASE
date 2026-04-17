@@ -29,7 +29,8 @@ describe('Provider Configuration', () => {
       { name: 'claude', dir: '.claude', env: 'CLAUDE_CONFIG_DIR' },
       { name: 'opencode', dir: '.config/opencode', env: 'OPENCODE_CONFIG_DIR' },
       { name: 'gemini', dir: '.gemini', env: 'GEMINI_CONFIG_DIR' },
-      { name: 'codex', dir: '.codex', env: 'CODEX_HOME' }
+      { name: 'codex', dir: '.codex', env: 'CODEX_HOME' },
+      { name: 'github-copilot', dir: '.github-copilot', env: 'GITHUB_COPILOT_CONFIG_DIR' }
     ];
 
     providers.forEach(provider => {
@@ -78,6 +79,13 @@ describe('Provider Configuration', () => {
       process.env.CODEX_HOME = customDir;
 
       assert.strictEqual(process.env.CODEX_HOME, customDir);
+    });
+
+    it('should respect GITHUB_COPILOT_CONFIG_DIR environment variable', () => {
+      const customDir = path.join(tempDir, 'custom-github-copilot');
+      process.env.GITHUB_COPILOT_CONFIG_DIR = customDir;
+
+      assert.strictEqual(process.env.GITHUB_COPILOT_CONFIG_DIR, customDir);
     });
 
     it('should handle XDG_CONFIG_HOME for OpenCode', () => {
@@ -145,6 +153,21 @@ describe('Provider Configuration', () => {
         version: '1.0.0',
         attribution: {
           commit: 'Codex <codex@openai.com>'
+        }
+      };
+
+      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+      const read = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+
+      assert.deepStrictEqual(read, settings);
+    });
+
+    it('should write valid JSON settings for GitHub Copilot', () => {
+      const settingsPath = path.join(tempDir, 'copilot-settings.json');
+      const settings = {
+        version: '1.0.0',
+        attribution: {
+          commit: 'GitHub Copilot <copilot@github.com>'
         }
       };
 
@@ -285,6 +308,15 @@ describe('Provider Configuration', () => {
 
       assert.strictEqual(expanded, path.join(os.homedir(), '.codex'));
     });
+
+    it('should expand tilde for GitHub Copilot config', () => {
+      const tilePath = '~/.github-copilot';
+      const expanded = tilePath.startsWith('~/')
+        ? path.join(os.homedir(), tilePath.slice(2))
+        : tilePath;
+
+      assert.strictEqual(expanded, path.join(os.homedir(), '.github-copilot'));
+    });
   });
 
   describe('Duplicate Configuration Prevention', () => {
@@ -332,6 +364,17 @@ describe('Provider Configuration', () => {
 
       assert.strictEqual(fs.existsSync(configPath), true);
     });
+
+    it('should not create duplicate GitHub Copilot configs', () => {
+      const configPath = path.join(tempDir, '.github-copilot');
+      fs.mkdirSync(configPath, { recursive: true });
+
+      assert.doesNotThrow(() => {
+        fs.mkdirSync(configPath, { recursive: true });
+      });
+
+      assert.strictEqual(fs.existsSync(configPath), true);
+    });
   });
 
   describe('Provider-Specific Default Paths', () => {
@@ -353,6 +396,11 @@ describe('Provider Configuration', () => {
     it('Codex should default to ~/.codex', () => {
       const defaultPath = path.join(os.homedir(), '.codex');
       assert.ok(defaultPath.endsWith('.codex'));
+    });
+
+    it('GitHub Copilot should default to ~/.github-copilot', () => {
+      const defaultPath = path.join(os.homedir(), '.github-copilot');
+      assert.ok(defaultPath.endsWith('.github-copilot'));
     });
   });
 
@@ -378,7 +426,7 @@ describe('Provider Configuration', () => {
 
   describe('Mixed Provider Installation', () => {
     it('should support installing multiple providers simultaneously', () => {
-      const providers = ['.claude', '.gemini', '.codex', '.config/opencode'];
+      const providers = ['.claude', '.gemini', '.codex', '.config/opencode', '.github-copilot'];
 
       providers.forEach(provider => {
         const configPath = path.join(tempDir, provider);
@@ -386,7 +434,7 @@ describe('Provider Configuration', () => {
         assert.strictEqual(fs.existsSync(configPath), true);
       });
 
-      assert.strictEqual(providers.length, 4);
+      assert.strictEqual(providers.length, 5);
     });
 
     it('should isolate configurations between providers', () => {
@@ -410,7 +458,7 @@ describe('Provider Configuration', () => {
 
 describe('Provider Validation', () => {
   describe('Valid Providers', () => {
-    const validProviders = ['claude', 'opencode', 'gemini', 'codex'];
+    const validProviders = ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'];
 
     validProviders.forEach(provider => {
       it(`should validate ${provider} as a valid provider`, () => {

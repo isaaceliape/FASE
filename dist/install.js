@@ -65,6 +65,7 @@ const hasOpencode = args.includes('--opencode');
 const hasClaude = args.includes('--claude');
 const hasGemini = args.includes('--gemini');
 const hasCodex = args.includes('--codex');
+const hasGithubCopilot = args.includes('--github-copilot');
 const hasBoth = args.includes('--both'); // Legacy flag, keeps working
 const hasAll = args.includes('--all');
 const hasUninstall = args.includes('--uninstall') || args.includes('-u');
@@ -73,7 +74,7 @@ const hasAtualizar = args.includes('--atualizar') || args.includes('--update');
 // Runtime selection - can be set by flags or interactive prompt
 let selectedRuntimes = [];
 if (hasAll) {
-    selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex'];
+    selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'];
 }
 else if (hasBoth) {
     selectedRuntimes = ['claude', 'opencode'];
@@ -87,6 +88,8 @@ else {
         selectedRuntimes.push('gemini');
     if (hasCodex)
         selectedRuntimes.push('codex');
+    if (hasGithubCopilot)
+        selectedRuntimes.push('github-copilot');
 }
 /**
  * Convert a pathPrefix (which uses absolute paths for global installs) to a
@@ -110,12 +113,14 @@ function getDirName(runtime) {
         return '.gemini';
     if (runtime === 'codex')
         return '.codex';
+    if (runtime === 'github-copilot')
+        return '.github-copilot';
     return '.claude';
 }
 /**
  * Get the config directory path relative to home directory for a runtime
  * Used for templating hooks that use path.join(homeDir, '<configDir>', ...)
- * @param {string} runtime - 'claude', 'opencode', 'gemini', or 'codex'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
  * @param {boolean} isGlobal - Whether this is a global install
  */
 function getConfigDirFromHome(runtime, isGlobal) {
@@ -133,6 +138,8 @@ function getConfigDirFromHome(runtime, isGlobal) {
         return "'.gemini'";
     if (runtime === 'codex')
         return "'.codex'";
+    if (runtime === 'github-copilot')
+        return "'.github-copilot'";
     return "'.claude'";
 }
 /**
@@ -158,7 +165,7 @@ function getOpencodeGlobalDir() {
 }
 /**
  * Get the global config directory for a runtime
- * @param {string} runtime - 'claude', 'opencode', 'gemini', or 'codex'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
  * @param {string|null} explicitDir - Explicit directory from --config-dir flag
  */
 function getGlobalDir(runtime, explicitDir = null) {
@@ -189,6 +196,16 @@ function getGlobalDir(runtime, explicitDir = null) {
         }
         return path.join(os.homedir(), '.codex');
     }
+    if (runtime === 'github-copilot') {
+        // GitHub Copilot: --config-dir > GITHUB_COPILOT_CONFIG_DIR > ~/.github-copilot
+        if (explicitDir) {
+            return expandTilde(explicitDir);
+        }
+        if (process.env.GITHUB_COPILOT_CONFIG_DIR) {
+            return expandTilde(process.env.GITHUB_COPILOT_CONFIG_DIR);
+        }
+        return path.join(os.homedir(), '.github-copilot');
+    }
     // Claude Code: --config-dir > CLAUDE_CONFIG_DIR > ~/.claude
     if (explicitDir) {
         return expandTilde(explicitDir);
@@ -209,7 +226,7 @@ const banner = '\n' +
     '  FASE ' + dim + 'v' + pkg.version + reset + '\n' +
     '  Framework de Automação Sem Enrolação\n' +
     '  Sistema de meta-prompting, context engineering e\n' +
-    '  desenvolvimento spec-driven para Claude Code, OpenCode, Gemini e Codex.\n';
+    '  desenvolvimento spec-driven para Claude Code, OpenCode, Gemini, Codex e GitHub Copilot.\n';
 // Parse --config-dir argument
 function parseConfigDirArg() {
     const configDirIndex = args.findIndex(arg => arg === '--config-dir' || arg === '-c');
@@ -252,7 +269,7 @@ if (hasVerificar) {
 }
 // Show help if requested
 if (hasHelp) {
-    console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.\n`);
+    console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--github-copilot${reset}          Instalar apenas para GitHub Copilot\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para GitHub Copilot${reset}\n    npx fase-ai --github-copilot\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do GitHub Copilot${reset}\n    npx fase-ai --github-copilot --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME / GITHUB_COPILOT_CONFIG_DIR.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.\n`);
     process.exit(0);
 }
 /**
@@ -293,11 +310,61 @@ function readSettings(settingsPath) {
 function writeSettings(settingsPath, settings) {
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
 }
+/**
+ * Get the local .fase-ai config path in the current working directory
+ */
+function getLocalAnalyticsConfigPath() {
+    return path.join(process.cwd(), '.fase-ai', 'config.json');
+}
+/**
+ * Read analytics preference from local config if it exists
+ * @returns {null|boolean} null if not set, true/false if set
+ */
+function readAnalyticsPreference() {
+    const configPath = getLocalAnalyticsConfigPath();
+    if (fs.existsSync(configPath)) {
+        try {
+            const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            if (typeof config.analytics_enabled === 'boolean') {
+                return config.analytics_enabled;
+            }
+        }
+        catch (e) {
+            // Ignore parsing errors
+        }
+    }
+    return null;
+}
+/**
+ * Save analytics preference to local config
+ */
+function saveAnalyticsPreference(enabled) {
+    const configPath = getLocalAnalyticsConfigPath();
+    const configDir = path.dirname(configPath);
+    // Create .fase-ai directory if it doesn't exist
+    if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
+    }
+    // Read existing config or create new one
+    let config = {};
+    if (fs.existsSync(configPath)) {
+        try {
+            config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        }
+        catch (e) {
+            config = {};
+        }
+    }
+    // Update analytics preference
+    config.analytics_enabled = enabled;
+    // Write back to file
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
+}
 // Cache for attribution settings (populated once per runtime during install)
 const attributionCache = new Map();
 /**
  * Get commit attribution setting for a runtime
- * @param {string} runtime - 'claude', 'opencode', 'gemini', or 'codex'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
  * @returns {null|undefined|string} null = remove, undefined = keep default, string = custom
  */
 function getCommitAttribution(runtime) {
@@ -326,6 +393,19 @@ function getCommitAttribution(runtime) {
     else if (runtime === 'claude') {
         // Claude Code
         const settings = readSettings(path.join(getGlobalDir('claude', explicitConfigDir), 'settings.json'));
+        if (!settings.attribution || settings.attribution.commit === undefined) {
+            result = undefined;
+        }
+        else if (settings.attribution.commit === '') {
+            result = null;
+        }
+        else {
+            result = settings.attribution.commit;
+        }
+    }
+    else if (runtime === 'github-copilot') {
+        // GitHub Copilot: check .copilot-settings.json for attribution config
+        const settings = readSettings(path.join(getGlobalDir('github-copilot', explicitConfigDir), '.copilot-settings.json'));
         if (!settings.attribution || settings.attribution.commit === undefined) {
             result = undefined;
         }
@@ -2321,57 +2401,134 @@ function handleStatusline(settings, isInteractive, callback) {
     });
 }
 /**
- * Prompt for runtime selection
+ * Interactive menu selection with arrow key navigation
+ * Displays menu options and allows user to select with arrows and Enter
  */
-function promptRuntime(callback) {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+function promptInteractiveMenu(options, callback) {
+    let selectedIndex = 0;
     let answered = false;
-    rl.on('close', () => {
-        if (!answered) {
+    // Enable raw mode to capture arrow keys
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    const renderMenu = () => {
+        // Clear previous menu (move cursor up)
+        const lines = options.length + 2;
+        for (let i = 0; i < lines; i++) {
+            process.stdout.write('\x1B[1A\x1B[2K');
+        }
+        console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n`);
+        options.forEach((option, index) => {
+            const isSelected = index === selectedIndex;
+            const prefix = isSelected ? `${cyan}▶${reset}` : ' ';
+            const color = isSelected ? cyan : '';
+            const label = `${prefix} ${color}${index + 1}${reset}) ${option.label}`;
+            console.log(`  ${label}${option.description ? ` ${dim}${option.description}${reset}` : ''}`);
+        });
+    };
+    // Initial render
+    console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n`);
+    options.forEach((option, index) => {
+        const isSelected = index === selectedIndex;
+        const prefix = isSelected ? `${cyan}▶${reset}` : ' ';
+        const color = isSelected ? cyan : '';
+        const label = `${prefix} ${color}${index + 1}${reset}) ${option.label}`;
+        console.log(`  ${label}${option.description ? ` ${dim}${option.description}${reset}` : ''}`);
+    });
+    const cleanup = () => {
+        process.stdin.setRawMode(false);
+        process.stdin.pause();
+        process.stdin.removeListener('data', handleKeypress);
+    };
+    const handleKeypress = (chunk) => {
+        if (answered)
+            return;
+        const key = chunk.toString();
+        // Check for arrow keys (ESC sequences)
+        if (key === '\x1B') {
+            // This is the start of an escape sequence
+            return;
+        }
+        // Arrow Up
+        if (key === '\x1B[A' || key === '\x1B\x4F\x41') {
+            selectedIndex = (selectedIndex - 1 + options.length) % options.length;
+            renderMenu();
+        }
+        // Arrow Down
+        else if (key === '\x1B[B' || key === '\x1B\x4F\x42') {
+            selectedIndex = (selectedIndex + 1) % options.length;
+            renderMenu();
+        }
+        // Enter
+        else if (key === '\r' || key === '\n') {
             answered = true;
+            cleanup();
+            console.log('');
+            callback(selectedIndex);
+        }
+        // Ctrl+C
+        else if (key === '\x03') {
+            answered = true;
+            cleanup();
             console.log(`\n  ${yellow}Instalação cancelada${reset}\n`);
             process.exit(0);
         }
-    });
-    console.log(`  ${yellow}Para qual(is) runtime(s) deseja instalar?${reset}\n\n  ${cyan}1${reset}) Claude Code
-  ${cyan}2${reset}) OpenCode ${dim}- código aberto, modelos gratuitos${reset}
-  ${cyan}3${reset}) Gemini
-  ${cyan}4${reset}) Codex
-  ${cyan}5${reset}) Todos
-  ${cyan}6${reset}) Desinstalar ${dim}(remover FASE)${reset}
-`);
-    rl.question(`  Escolha ${dim}[1]${reset}: `, (answer) => {
-        answered = true;
-        rl.close();
-        const choice = answer.trim() || '1';
-        if (choice === '6') {
-            // Special callback for uninstall
-            callback('uninstall');
+        // Number keys 1-9
+        else if (key >= '1' && key <= '9') {
+            const idx = parseInt(key) - 1;
+            if (idx < options.length) {
+                answered = true;
+                cleanup();
+                console.log('');
+                callback(idx);
+            }
         }
-        else if (choice === '5') {
-            callback(['claude', 'opencode', 'gemini', 'codex']);
+    };
+    process.stdin.on('data', handleKeypress);
+}
+/**
+ * Prompt for runtime selection
+ */
+function promptRuntime(callback) {
+    const options = [
+        { label: 'Claude Code', description: `${dim}- IA avançada da Anthropic${reset}` },
+        { label: 'OpenCode', description: `${dim}- código aberto, modelos gratuitos${reset}` },
+        { label: 'Gemini', description: `${dim}- IA multimodal do Google${reset}` },
+        { label: 'Codex', description: `${dim}- modelo de codificação da OpenAI${reset}` },
+        { label: 'GitHub Copilot', description: `${dim}- copiloto de IA por GitHub${reset}` },
+        { label: 'Todos', description: `${dim}- instalar todos os runtimes${reset}` },
+        { label: 'Desinstalar', description: `${dim}- remover FASE${reset}` },
+        { label: 'Sair', description: `${dim}- sair sem instalar${reset}` }
+    ];
+    promptInteractiveMenu(options, (selectedIndex) => {
+        const runtimeMap = [
+            ['claude'],
+            ['opencode'],
+            ['gemini'],
+            ['codex'],
+            ['github-copilot'],
+            ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'],
+            'uninstall',
+            'exit'
+        ];
+        const action = runtimeMap[selectedIndex];
+        if (action === 'exit') {
+            console.log(`  ${yellow}Saindo da instalação${reset}\n`);
+            process.exit(0);
         }
-        else if (choice === '4') {
-            callback(['codex']);
-        }
-        else if (choice === '3') {
-            callback(['gemini']);
-        }
-        else if (choice === '2') {
-            callback(['opencode']);
-        }
-        else {
-            callback(['claude']);
-        }
+        callback(action);
     });
 }
 /**
  * Prompt user for analytics opt-in
  */
 function promptAnalyticsOptIn(callback) {
+    // Check if preference was already set
+    const savedPreference = readAnalyticsPreference();
+    if (savedPreference !== null) {
+        // Use saved preference without prompting
+        callback(savedPreference);
+        return;
+    }
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
@@ -2390,12 +2547,15 @@ function promptAnalyticsOptIn(callback) {
     ❌ Informações pessoais
   ${dim}Quando é enviado:${reset}
     • Uma vez a cada 7 dias
-    • Você pode desabilitar a qualquer momento editando ~/.fase-ai/config.json
+    • Você pode desabilitar a qualquer momento editando .fase-ai/config.json
 `);
-    rl.question(`  Habilitar análise anônima? ${dim}[n]${reset}: `, (answer) => {
+    rl.question(`  Habilitar análise anônima? ${cyan}(y/n)${reset} ${dim}[n]${reset}: `, (answer) => {
         rl.close();
         const choice = (answer.trim() || 'n').toLowerCase();
-        callback(choice === 'y' || choice === 's' || choice === 'sim');
+        const enabled = choice === 'y' || choice === 's' || choice === 'sim';
+        // Save the preference
+        saveAnalyticsPreference(enabled);
+        callback(enabled);
     });
 }
 /**
@@ -2610,7 +2770,7 @@ function installAllRuntimes(runtimes, isGlobal, isInteractive) {
                     console.log(`\n  ${green}✓${reset} Análise anônima habilitada (ID: ${installId.slice(0, 8)}...)\n`);
                 }
                 else {
-                    console.log(`\n  ${dim}Análise desabilitada. Você pode habilitar depois editando ~/.fase-ai/config.json\n${reset}`);
+                    console.log(`\n  ${dim}Análise desabilitada. Você pode habilitar depois editando .fase-ai/config.json\n${reset}`);
                 }
             });
         }

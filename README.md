@@ -1,6 +1,6 @@
 <div align="center">
 
-# FASE. v3.5.1
+# FASE. v3.5.3
 
 ## Framework de Automação Sem Enrolação
 
@@ -43,7 +43,7 @@ Ele traz:
 
 **Traduzimos:**
 - ✅ 12 agentes de prompt (pesquisadores, verificadores, planejadores, executores)
-- ✅ 32 comandos interativos
+- ✅ 34 comandos interativos
 - ✅ Documentação completa
 - ✅ Mensagens e outputs
 
@@ -51,6 +51,12 @@ Ele traz:
 - 🔧 Termos técnicos consolidados (ex: "context window", "checkpoint", "hooks")
 - 💻 Comandos de terminal e código-fonte
 - 📦 Nomes de pacotes npm e APIs
+
+**Suportados agora:**
+- 🤖 5 provedores de IA: Claude Code, OpenCode, Gemini, Codex, GitHub Copilot
+- ⌨️ Navegação interativa com setas (↑↓) no menu
+- 💾 Preferências de análise persistentes
+- 🚪 Opção de saída graceful do instalador
 
 ---
 

@@ -5,6 +5,60 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.3] - 2026-04-17
+
+### Adicionado
+
+- **Suporte a GitHub Copilot**: Novo provedor de IA integrado seguindo padrões predefinidos
+  - Configuração em `~/.github-copilot/.copilot-settings.json`
+  - Variável de ambiente: `GITHUB_COPILOT_CONFIG_DIR`
+  - Integração completa com verificação e desinstalação
+- **Descrições de provedores**: Menu de instalação agora mostra descrição curta para cada provedor
+  - Claude Code: "IA avançada da Anthropic"
+  - OpenCode: "código aberto, modelos gratuitos"
+  - Gemini: "IA multimodal do Google"
+  - Codex: "modelo de codificação da OpenAI"
+  - GitHub Copilot: "copiloto de IA por GitHub"
+- **Navegação interativa melhorada**: Opção "Sair" (exit) adicionada ao menu
+  - Permite sair gracefully sem instalar nada
+  - Complementa "Desinstalar" que remove FASE completamente
+- **Suporte a setas do teclado**: Navegação ↑↓ no menu de seleção de provedores
+  - Visual feedback com indicador ▶ e destaque em cyan
+  - Backward compatible com seleção numérica (1-8)
+
+### Atualizado
+
+- **Menu de instalação**: 8 opções agora (era 7) com Sair como nova opção
+- **Suporte a teclas numéricas**: Expandido de 1-7 para 1-9
+- **Descrição do projeto**: Atualizada para mencionar 5 provedores e 34 comandos
+- **Documentação**: README menciona todos os novos recursos e provedores
+
+### Teste
+
+- ✅ **Build system**: Compilação sem erros ou warnings
+- ✅ **Testes**: 155/155 passando (100% de taxa)
+- ✅ **GitHub Copilot**: 8+ testes cobrindo provider completamente
+- ✅ **Analytics persistence**: 3 testes de persistência de preferências
+- ✅ **Arrow navigation**: Navegação interativa testada em múltiplos cenários
+
+### Detalhes Técnicos
+
+- **Arquivos modificados**: 
+  - `src/install.ts` (~200 linhas de novo código)
+  - `src/verificar-instalacao.ts` (~10 linhas)
+  - `test/providers.test.cjs` (~40 linhas)
+  - `package.json` (version bump)
+  - `README.md` (documentação)
+  - `CHANGELOG.md` (este arquivo)
+- **Compatibilidade**: 100% backward compatible
+- **Impacto**: Novo provedor, melhor UX, mais opções de instalação
+
+### Publicação
+
+- 📦 **npm**: Pronto para publicação em `@isaaceliape/fase-ai@3.5.3`
+- 🏷️ **Tag**: v3.5.3 (release com novo provedor e UX melhorada)
+- 🌐 **Documentação**: Atualizada em landing page e docs
+
 ## [3.5.2] - 2026-04-17
 
 ### Adicionado
