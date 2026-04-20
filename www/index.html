@@ -733,7 +733,7 @@
             <!-- Status Badge -->
             <div style="margin: 40px 0 40px 0; padding: 16px; background: rgba(0, 255, 136, 0.1); border-left: 3px solid var(--primary); border-radius: 4px;">
                 <div style="color: var(--primary); font-weight: bold; margin-bottom: 8px;">✓ v4.0.0 - Todos os testes passando</div>
-                <div style="color: var(--dim); font-size: 0.9rem;">34/34 comandos validados • 5/5 runtimes funcionando • Sistema de logging integrado</div>
+                <div style="color: var(--dim); font-size: 0.9rem;">34/34 comandos validados • 6/6 runtimes funcionando • Sistema de logging integrado</div>
             </div>
 
             <!-- Stats -->
@@ -747,7 +747,7 @@
                     <div class="stat-label">Comandos</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number">5</div>
+                    <div class="stat-number">6</div>
                     <div class="stat-label">Runtimes</div>
                 </div>
             </div>
@@ -858,18 +858,31 @@ $ npx fase-ai
 ╚════════════════════════════════════════════════════════════════╝
 
 ? Qual runtime você deseja usar? (use ↑↓ para navegar)
-❯ Claude Code
-  OpenCode
-  Gemini
-  Codex
-  Todos
+❯ Claude Code         - IA avançada da Anthropic
+  OpenCode            - código aberto, modelos gratuitos
+  Gemini              - IA multimodal do Google
+  Codex               - modelo de codificação da OpenAI
+  GitHub Copilot      - copiloto de IA por GitHub
+  Qwen Code           - IA da Alibaba Cloud
+  Todos               - instalar todos os runtimes
+  Desinstalar         - remover FASE
+  Sair                - sair sem instalar
 
-? Tipo de instalação:
-  ◯ Global (npm install -g)
-❯ ◉ Local (no diretório atual)
+  📊 Análise de Uso Anônima
+  FASE pode rastrear quais comandos você usa (sem código ou conteúdo).
+  Isso ajuda a melhorar o framework.
 
-? Habilitar comandos de IA? (S/n)
-❯ Sim
+  O que é rastreado:
+    • Nome do comando (/fase-novo-projeto, etc)
+    • Qual runtime você usa
+    • Um ID anônimo da instalação
+
+  O que NÃO é rastreado:
+    ❌ Código ou conteúdo do projeto
+    ❌ Prompts ou conversas
+    ❌ Informações pessoais
+
+? Habilitar análise anônima? (y/n) [n]: y
 
 ✓ Instalando dependências...
 ✓ Configurando comandos...
@@ -879,8 +892,8 @@ $ npx fase-ai
 ║ ✓ Instalação concluída com sucesso!                            ║
 ║                                                                ║
 ║ Próximos passos:                                               ║
-║ $ fase:ajuda.pt        (ver comandos disponíveis)              ║
-║ $ fase:novo-projeto.pt (iniciar novo projeto)                  ║
+║ $ /fase-ajuda        (ver comandos disponíveis)                ║
+║ $ /fase-novo-projeto (iniciar novo projeto)                    ║
 ╚════════════════════════════════════════════════════════════════╝
                 </pre>
 
@@ -926,7 +939,7 @@ $ npx fase-ai --claude --global
 ✓ Ativando comandos FASE...
 
 ╔════════════════════════════════════════════════════════════════╗
-║ ✓ Pronto! Use /fase:ajuda.pt para começar                      ║
+║ ✓ Pronto! Use /fase-ajuda para começar                         ║
 ╚════════════════════════════════════════════════════════════════╝
                 </pre>
 
@@ -957,12 +970,12 @@ $ npx fase-ai --opencode --local
 
 ✓ Runtime: OpenCode
 ✓ Escopo: Local
-✓ Instalando em: ./.claude/
+✓ Instalando em: ./.opencode/
 ✓ Copiando comandos...
 ✓ Gerando configurações...
 
 ╔════════════════════════════════════════════════════════════════╗
-║ ✓ Pronto! Use fase:ajuda.pt no terminal                        ║
+║ ✓ Pronto! Use /fase-ajuda no terminal                          ║
 ╚════════════════════════════════════════════════════════════════╝
                 </pre>
 
@@ -993,15 +1006,17 @@ $ npx fase-ai --all --global
   ✓ OpenCode
   ✓ Gemini
   ✓ Codex
+  ✓ GitHub Copilot
+  ✓ Qwen Code
 ✓ Modo: Global
 
 ╔════════════════════════════════════════════════════════════════╗
 ║ ✓ Todos os runtimes configurados com sucesso!                  ║
 ║                                                                ║
 ║ Comece agora:                                                  ║
-║ $ /fase:novo-projeto.pt                                        ║
-║ $ /fase:novo-marco.pt                                          ║
-║ $ /fase:executar-fase.pt                                       ║
+║ $ /fase-novo-projeto                                           ║
+║ $ /fase-novo-marco                                             ║
+║ $ /fase-executar-etapa                                         ║
 ╚════════════════════════════════════════════════════════════════╝
                 </pre>
             </div>
@@ -1034,6 +1049,11 @@ $ npx fase-ai --all --global
                         <div class="runtime-name">GitHub Copilot</div>
                         <div class="runtime-desc">Copiloto de IA por GitHub</div>
                         <div class="runtime-path">~/.github-copilot</div>
+                    </div>
+                    <div class="runtime">
+                        <div class="runtime-name">Qwen Code</div>
+                        <div class="runtime-desc">IA da Alibaba Cloud</div>
+                        <div class="runtime-path">~/.qwen</div>
                     </div>
                 </div>
             </div>

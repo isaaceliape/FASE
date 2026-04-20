@@ -425,7 +425,21 @@ function detectAvailableRuntimes() {
 // Cache for attribution settings (populated once per runtime during install)
 const attributionCache = new Map();
 /**
+ * Get the local (project-level) config directory path for a runtime
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', 'github-copilot', or 'qwen'
+ * @returns {string} Path to local config directory
+ */
+function getLocalDir(runtime) {
+  if (runtime === 'opencode') return path.join(process.cwd(), '.opencode');
+  if (runtime === 'gemini') return path.join(process.cwd(), '.gemini');
+  if (runtime === 'codex') return path.join(process.cwd(), '.codex');
+  if (runtime === 'github-copilot') return path.join(process.cwd(), '.github-copilot');
+  if (runtime === 'qwen') return path.join(process.cwd(), '.qwen');
+  return path.join(process.cwd(), '.claude');
+}
+/**
  * Get commit attribution setting for a runtime
+ * Checks project-local config first, then falls back to global config
  * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
  * @returns {null|undefined|string} null = remove, undefined = keep default, string = custom
  */
@@ -436,47 +450,82 @@ function getCommitAttribution(runtime) {
   }
   let result;
   if (runtime === 'opencode') {
-    const config = readSettings(path.join(getGlobalDir('opencode', null), 'opencode.json'));
-    result = config.disable_ai_attribution === true ? null : undefined;
+    // Check local config first
+    const localConfig = readSettings(path.join(getLocalDir('opencode'), 'opencode.json'));
+    if (localConfig.disable_ai_attribution !== undefined) {
+      result = localConfig.disable_ai_attribution === true ? null : undefined;
+    } else {
+      // Fall back to global config
+      const globalConfig = readSettings(path.join(getGlobalDir('opencode', null), 'opencode.json'));
+      result = globalConfig.disable_ai_attribution === true ? null : undefined;
+    }
   } else if (runtime === 'gemini') {
     // Gemini: check gemini settings.json for attribution config
-    const settings = readSettings(path.join(getGlobalDir('gemini', explicitConfigDir), 'settings.json'));
-    if (!settings.attribution || settings.attribution.commit === undefined) {
-      result = undefined;
-    } else if (settings.attribution.commit === '') {
-      result = null;
+    // Check local config first
+    const localSettings = readSettings(path.join(getLocalDir('gemini'), 'settings.json'));
+    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
+      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
     } else {
-      result = settings.attribution.commit;
+      // Fall back to global config
+      const globalSettings = readSettings(path.join(getGlobalDir('gemini', explicitConfigDir), 'settings.json'));
+      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+        result = undefined;
+      } else if (globalSettings.attribution.commit === '') {
+        result = null;
+      } else {
+        result = globalSettings.attribution.commit;
+      }
     }
   } else if (runtime === 'claude') {
     // Claude Code
-    const settings = readSettings(path.join(getGlobalDir('claude', explicitConfigDir), 'settings.json'));
-    if (!settings.attribution || settings.attribution.commit === undefined) {
-      result = undefined;
-    } else if (settings.attribution.commit === '') {
-      result = null;
+    // Check local config first
+    const localSettings = readSettings(path.join(getLocalDir('claude'), 'settings.json'));
+    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
+      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
     } else {
-      result = settings.attribution.commit;
+      // Fall back to global config
+      const globalSettings = readSettings(path.join(getGlobalDir('claude', explicitConfigDir), 'settings.json'));
+      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+        result = undefined;
+      } else if (globalSettings.attribution.commit === '') {
+        result = null;
+      } else {
+        result = globalSettings.attribution.commit;
+      }
     }
   } else if (runtime === 'github-copilot') {
     // GitHub Copilot: check .copilot-settings.json for attribution config
-    const settings = readSettings(path.join(getGlobalDir('github-copilot', explicitConfigDir), '.copilot-settings.json'));
-    if (!settings.attribution || settings.attribution.commit === undefined) {
-      result = undefined;
-    } else if (settings.attribution.commit === '') {
-      result = null;
+    // Check local config first
+    const localSettings = readSettings(path.join(getLocalDir('github-copilot'), '.copilot-settings.json'));
+    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
+      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
     } else {
-      result = settings.attribution.commit;
+      // Fall back to global config
+      const globalSettings = readSettings(path.join(getGlobalDir('github-copilot', explicitConfigDir), '.copilot-settings.json'));
+      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+        result = undefined;
+      } else if (globalSettings.attribution.commit === '') {
+        result = null;
+      } else {
+        result = globalSettings.attribution.commit;
+      }
     }
   } else if (runtime === 'qwen') {
     // Qwen Code: check settings.json for gitCoAuthor config
-    const settings = readSettings(path.join(getGlobalDir('qwen', explicitConfigDir), 'settings.json'));
-    if (settings.gitCoAuthor === undefined) {
-      result = undefined;
-    } else if (settings.gitCoAuthor === '' || settings.gitCoAuthor === null) {
-      result = null;
+    // Check local config first
+    const localSettings = readSettings(path.join(getLocalDir('qwen'), 'settings.json'));
+    if (localSettings.gitCoAuthor !== undefined) {
+      result = localSettings.gitCoAuthor === '' || localSettings.gitCoAuthor === null ? null : localSettings.gitCoAuthor;
     } else {
-      result = settings.gitCoAuthor;
+      // Fall back to global config
+      const globalSettings = readSettings(path.join(getGlobalDir('qwen', explicitConfigDir), 'settings.json'));
+      if (globalSettings.gitCoAuthor === undefined) {
+        result = undefined;
+      } else if (globalSettings.gitCoAuthor === '' || globalSettings.gitCoAuthor === null) {
+        result = null;
+      } else {
+        result = globalSettings.gitCoAuthor;
+      }
     }
   } else {
     // Codex currently has no attribution setting equivalent
@@ -2806,7 +2855,8 @@ function installAllRuntimes(runtimes, isGlobal, isInteractive) {
 }
 // Test-only exports — skip main logic when loaded as a module for testing
 if (process.env.FASE_TEST_MODE) {
-  module.exports = {
+  // Export for both CommonJS and ES modules
+  const testExports = {
     getCodexSkillAdapterHeader,
     convertClaudeAgentToCodexAgent,
     generateCodexAgentToml,
@@ -2821,7 +2871,19 @@ if (process.env.FASE_TEST_MODE) {
     isRunningAsPostinstall,
     readProjectConfig,
     detectAvailableRuntimes,
+    // Project-local config exports
+    getLocalDir,
+    getCommitAttribution,
   };
+  
+  // Try CommonJS first, fallback to ES module export
+  try {
+    // @ts-ignore
+    module.exports = testExports;
+  } catch {
+    // ES module context - export individually
+    Object.assign(globalThis, testExports);
+  }
 } else {
 // Main logic
 (async () => {
