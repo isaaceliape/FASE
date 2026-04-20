@@ -30,7 +30,8 @@ describe('Provider Configuration', () => {
       { name: 'opencode', dir: '.config/opencode', env: 'OPENCODE_CONFIG_DIR' },
       { name: 'gemini', dir: '.gemini', env: 'GEMINI_CONFIG_DIR' },
       { name: 'codex', dir: '.codex', env: 'CODEX_HOME' },
-      { name: 'github-copilot', dir: '.github-copilot', env: 'GITHUB_COPILOT_CONFIG_DIR' }
+      { name: 'github-copilot', dir: '.github-copilot', env: 'GITHUB_COPILOT_CONFIG_DIR' },
+      { name: 'qwen', dir: '.qwen', env: 'QWEN_CONFIG_DIR' }
     ];
 
     providers.forEach(provider => {
@@ -86,6 +87,13 @@ describe('Provider Configuration', () => {
       process.env.GITHUB_COPILOT_CONFIG_DIR = customDir;
 
       assert.strictEqual(process.env.GITHUB_COPILOT_CONFIG_DIR, customDir);
+    });
+
+    it('should respect QWEN_CONFIG_DIR environment variable', () => {
+      const customDir = path.join(tempDir, 'custom-qwen');
+      process.env.QWEN_CONFIG_DIR = customDir;
+
+      assert.strictEqual(process.env.QWEN_CONFIG_DIR, customDir);
     });
 
     it('should handle XDG_CONFIG_HOME for OpenCode', () => {
@@ -270,6 +278,16 @@ describe('Provider Configuration', () => {
 
       assert.strictEqual(fs.existsSync(hookPath), true);
     });
+
+    it('should create hook file for Qwen', () => {
+      const hookPath = path.join(tempDir, 'qwen-hook.js');
+      const hookContent = `#!/usr/bin/env node\nconsole.log('Qwen hook');`;
+
+      fs.writeFileSync(hookPath, hookContent);
+      fs.chmodSync(hookPath, 0o755);
+
+      assert.strictEqual(fs.existsSync(hookPath), true);
+    });
   });
 
   describe('Path Expansion', () => {
@@ -316,6 +334,15 @@ describe('Provider Configuration', () => {
         : tilePath;
 
       assert.strictEqual(expanded, path.join(os.homedir(), '.github-copilot'));
+    });
+
+    it('should expand tilde for Qwen config', () => {
+      const tilePath = '~/.qwen';
+      const expanded = tilePath.startsWith('~/')
+        ? path.join(os.homedir(), tilePath.slice(2))
+        : tilePath;
+
+      assert.strictEqual(expanded, path.join(os.homedir(), '.qwen'));
     });
   });
 
@@ -375,6 +402,17 @@ describe('Provider Configuration', () => {
 
       assert.strictEqual(fs.existsSync(configPath), true);
     });
+
+    it('should not create duplicate Qwen configs', () => {
+      const configPath = path.join(tempDir, '.qwen');
+      fs.mkdirSync(configPath, { recursive: true });
+
+      assert.doesNotThrow(() => {
+        fs.mkdirSync(configPath, { recursive: true });
+      });
+
+      assert.strictEqual(fs.existsSync(configPath), true);
+    });
   });
 
   describe('Provider-Specific Default Paths', () => {
@@ -402,6 +440,11 @@ describe('Provider Configuration', () => {
       const defaultPath = path.join(os.homedir(), '.github-copilot');
       assert.ok(defaultPath.endsWith('.github-copilot'));
     });
+
+    it('Qwen should default to ~/.qwen', () => {
+      const defaultPath = path.join(os.homedir(), '.qwen');
+      assert.ok(defaultPath.endsWith('.qwen'));
+    });
   });
 
   describe('Permissions', () => {
@@ -426,7 +469,7 @@ describe('Provider Configuration', () => {
 
   describe('Mixed Provider Installation', () => {
     it('should support installing multiple providers simultaneously', () => {
-      const providers = ['.claude', '.gemini', '.codex', '.config/opencode', '.github-copilot'];
+      const providers = ['.claude', '.gemini', '.codex', '.config/opencode', '.github-copilot', '.qwen'];
 
       providers.forEach(provider => {
         const configPath = path.join(tempDir, provider);
@@ -434,7 +477,7 @@ describe('Provider Configuration', () => {
         assert.strictEqual(fs.existsSync(configPath), true);
       });
 
-      assert.strictEqual(providers.length, 5);
+      assert.strictEqual(providers.length, 6);
     });
 
     it('should isolate configurations between providers', () => {

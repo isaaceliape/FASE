@@ -4,7 +4,7 @@
 
 ## Framework de Automação Sem Enrolação
 
-**🇧🇷 Tradução brasileira do [get-shit-done](https://github.com/gsd-build/get-shit-done) para Claude Code, OpenCode, Gemini e Codex.**
+**🇧🇷 Tradução brasileira do [get-shit-done](https://github.com/gsd-build/get-shit-done) para Claude Code, OpenCode, Gemini, Codex e Qwen Code.**
 
 Spec-driven development, context engineering e meta-prompting — agora em português brasileiro.
 
@@ -32,7 +32,7 @@ Spec-driven development, context engineering e meta-prompting — agora em portu
 
 ## 🤔 O Que É Isso?
 
-O **FASE.** é a versão em português brasileiro do **Get Shit Done (GSD)** — um sistema de meta-prompting e context engineering que faz os assistentes de IA (Claude Code, OpenCode, Gemini, Codex) funcionarem de verdade em projetos de software.
+O **FASE.** é a versão em português brasileiro do **Get Shit Done (GSD)** — um sistema de meta-prompting e context engineering que faz os assistentes de IA (Claude Code, OpenCode, Gemini, Codex, Qwen Code) funcionarem de verdade em projetos de software.
 
 Ele traz:
 - 🎯 **Spec-driven development** — descreva o que quer, o AI constrói
@@ -53,7 +53,7 @@ Ele traz:
 - 📦 Nomes de pacotes npm e APIs
 
 **Suportados agora:**
-- 🤖 5 provedores de IA: Claude Code, OpenCode, Gemini, Codex, GitHub Copilot
+- 🤖 6 provedores de IA: Claude Code, OpenCode, Gemini, Codex, GitHub Copilot, Qwen Code
 - ⌨️ Navegação interativa com setas (↑↓) no menu
 - 💾 Preferências de análise persistentes
 - 🚪 Opção de saída graceful do instalador
@@ -69,7 +69,7 @@ npx fase-ai
 ```
 
 O instalador perguntará:
-1. **Runtime** — qual assistente você quer usar (Claude Code, OpenCode, Gemini, Codex, ou todos)
+1. **Runtime** — qual assistente você quer usar (Claude Code, OpenCode, Gemini, Codex, Qwen Code, ou todos)
 2. **Escopo** — local (apenas projeto atual)
 
 ### Instalação Direta por Runtime
@@ -87,6 +87,9 @@ npx fase-ai --gemini
 # Codex
 npx fase-ai --codex
 
+# Qwen Code
+npx fase-ai --qwen
+
 # Todos os runtimes
 npx fase-ai --all
 ```
@@ -96,7 +99,7 @@ npx fase-ai --all
 Após instalar, teste o comando de ajuda:
 
 ```bash
-# Claude Code / OpenCode / Gemini
+# Claude Code / OpenCode / Gemini / Qwen Code
 /fase-ajuda
 
 # Codex
@@ -254,7 +257,7 @@ Organize em categorias por função (planning, research, execution, verification
 Context monitoring para gerenciar estado e histórico automaticamente via integração nativa (settings.json)
 
 ### 4. **Instalador Universal**
-Suporta múltiplos runtimes (Claude Code, OpenCode, Gemini, Codex) com detecção automática
+Suporta múltiplos runtimes (Claude Code, OpenCode, Gemini, Codex, Qwen Code) com detecção automática
 
 ## 📖 Por Que "FASE."?
 

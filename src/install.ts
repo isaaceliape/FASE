@@ -66,6 +66,7 @@ const hasClaude = args.includes('--claude');
 const hasGemini = args.includes('--gemini');
 const hasCodex = args.includes('--codex');
 const hasGithubCopilot = args.includes('--github-copilot');
+const hasQwen = args.includes('--qwen');
 const hasBoth = args.includes('--both'); // Legacy flag, keeps working
 const hasAll = args.includes('--all');
 const hasUninstall = args.includes('--uninstall') || args.includes('-u');
@@ -74,7 +75,7 @@ const hasAtualizar = args.includes('--atualizar') || args.includes('--update');
 // Runtime selection - can be set by flags or interactive prompt
 let selectedRuntimes = [];
 if (hasAll) {
-  selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'];
+  selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'];
 } else if (hasBoth) {
   selectedRuntimes = ['claude', 'opencode'];
 } else {
@@ -83,6 +84,7 @@ if (hasAll) {
   if (hasGemini) selectedRuntimes.push('gemini');
   if (hasCodex) selectedRuntimes.push('codex');
   if (hasGithubCopilot) selectedRuntimes.push('github-copilot');
+  if (hasQwen) selectedRuntimes.push('qwen');
 }
 /**
  * Convert a pathPrefix (which uses absolute paths for global installs) to a
@@ -192,6 +194,16 @@ function getGlobalDir(runtime, explicitDir = null) {
     }
     return path.join(os.homedir(), '.github-copilot');
   }
+  if (runtime === 'qwen') {
+    // Qwen Code: --config-dir > QWEN_CONFIG_DIR > ~/.qwen
+    if (explicitDir) {
+      return expandTilde(explicitDir);
+    }
+    if (process.env.QWEN_CONFIG_DIR) {
+      return expandTilde(process.env.QWEN_CONFIG_DIR);
+    }
+    return path.join(os.homedir(), '.qwen');
+  }
   // Claude Code: --config-dir > CLAUDE_CONFIG_DIR > ~/.claude
   if (explicitDir) {
     return expandTilde(explicitDir);
@@ -255,7 +267,7 @@ if (hasVerificar) {
 }
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--github-copilot${reset}          Instalar apenas para GitHub Copilot\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para GitHub Copilot${reset}\n    npx fase-ai --github-copilot\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do GitHub Copilot${reset}\n    npx fase-ai --github-copilot --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME / GITHUB_COPILOT_CONFIG_DIR.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.\n`);
+  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--github-copilot${reset}          Instalar apenas para GitHub Copilot\n    ${cyan}--qwen${reset}                    Instalar apenas para Qwen Code\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para GitHub Copilot${reset}\n    npx fase-ai --github-copilot\n\n    ${dim}# Instalar para Qwen Code${reset}\n    npx fase-ai --qwen\n\n    ${dim}# Instalar para todos os runtimes${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do GitHub Copilot${reset}\n    npx fase-ai --github-copilot --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n    ${dim}# Desinstalar do Qwen Code${reset}\n    npx fase-ai --qwen --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME / GITHUB_COPILOT_CONFIG_DIR / QWEN_CONFIG_DIR.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.\n`);
   process.exit(0);
 }
 /**
@@ -392,6 +404,16 @@ function getCommitAttribution(runtime) {
       result = null;
     } else {
       result = settings.attribution.commit;
+    }
+  } else if (runtime === 'qwen') {
+    // Qwen Code: check settings.json for gitCoAuthor config
+    const settings = readSettings(path.join(getGlobalDir('qwen', explicitConfigDir), 'settings.json'));
+    if (settings.gitCoAuthor === undefined) {
+      result = undefined;
+    } else if (settings.gitCoAuthor === '' || settings.gitCoAuthor === null) {
+      result = null;
+    } else {
+      result = settings.gitCoAuthor;
     }
   } else {
     // Codex currently has no attribution setting equivalent
@@ -1074,7 +1096,12 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
       content = content.replace(globalFaseRegex, pathPrefix);
       content = content.replace(globalFaseHomeRegex, sharedHomePath);
       content = processAttribution(content, getCommitAttribution(runtime));
-      content = convertClaudeToOpencodeFrontmatter(content);
+      // Convert frontmatter based on runtime
+      if (runtime === 'qwen') {
+        content = convertClaudeToQwenCommand(content);
+      } else {
+        content = convertClaudeToOpencodeFrontmatter(content);
+      }
       fs.writeFileSync(destPath, content);
     }
   }
@@ -1937,6 +1964,7 @@ function install(isGlobal, runtime = 'claude') {
   const isOpencode = runtime === 'opencode';
   const isGemini = runtime === 'gemini';
   const isCodex = runtime === 'codex';
+  const isQwen = runtime === 'qwen';
   const dirName = getDirName(runtime);
   const src = __dirname;
   // Get the target directory based on runtime and install type
@@ -1956,6 +1984,7 @@ function install(isGlobal, runtime = 'claude') {
   if (isOpencode) runtimeLabel = 'OpenCode';
   if (isGemini) runtimeLabel = 'Gemini';
   if (isCodex) runtimeLabel = 'Codex';
+  if (isQwen) runtimeLabel = 'Qwen Code';
   console.log(`  Instalando para ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`);
   // Track installation failures
   const failures = [];
@@ -1986,6 +2015,18 @@ function install(isGlobal, runtime = 'claude') {
       console.log(`  ${green}✓${reset} Instaladas ${installedSkillNames.length} skills em skills/`);
     } else {
       failures.push('skills/fase-*');
+    }
+  } else if (isQwen) {
+    // Qwen Code: flat structure in commands/ directory (no fase/ subdirectory)
+    const commandsDir = path.join(targetDir, 'commands');
+    fs.mkdirSync(commandsDir, { recursive: true });
+    const faseSrc = path.join(src, 'comandos');
+    copyFlattenedCommands(faseSrc, commandsDir, 'fase', pathPrefix, runtime);
+    if (verifyInstalled(commandsDir, 'commands/fase-*')) {
+      const count = fs.readdirSync(commandsDir).filter(f => f.startsWith('fase-')).length;
+      console.log(`  ${green}✓${reset} Instalados ${count} comandos em commands/`);
+    } else {
+      failures.push('commands/fase-*');
     }
   } else {
     // Claude Code & Gemini: nested structure in commands/ directory
@@ -2047,6 +2088,8 @@ function install(isGlobal, runtime = 'claude') {
           content = convertClaudeToGeminiAgent(content);
         } else if (isCodex) {
           content = convertClaudeAgentToCodexAgent(content);
+        } else if (isQwen) {
+          content = convertClaudeToQwenCommand(content);
         }
         fs.writeFileSync(path.join(agentsDest, entry.name), content);
       }
@@ -2415,11 +2458,12 @@ function promptRuntime(callback) {
     { label: 'Gemini', description: `${dim}- IA multimodal do Google${reset}` },
     { label: 'Codex', description: `${dim}- modelo de codificação da OpenAI${reset}` },
     { label: 'GitHub Copilot', description: `${dim}- copiloto de IA por GitHub${reset}` },
+    { label: 'Qwen Code', description: `${dim}- IA da Alibaba Cloud${reset}` },
     { label: 'Todos', description: `${dim}- instalar todos os runtimes${reset}` },
     { label: 'Desinstalar', description: `${dim}- remover FASE${reset}` },
     { label: 'Sair', description: `${dim}- sair sem instalar${reset}` }
   ];
-  
+
   promptInteractiveMenu(options, (selectedIndex) => {
     const runtimeMap = [
       ['claude'],
@@ -2427,7 +2471,8 @@ function promptRuntime(callback) {
       ['gemini'],
       ['codex'],
       ['github-copilot'],
-      ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'],
+      ['qwen'],
+      ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'],
       'uninstall',
       'exit'
     ];
@@ -2727,7 +2772,7 @@ if (process.env.FASE_TEST_MODE) {
       const runtimes = selectedRuntimes;
       promptUninstallConfirmation(runtimes, false);
     } else {
-      promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+      promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen']);
     }
   } else if (selectedRuntimes.length > 0) {
     installAllRuntimes(selectedRuntimes, false, false);
@@ -2739,7 +2784,7 @@ if (process.env.FASE_TEST_MODE) {
     } else {
       promptRuntime((runtimes) => {
         if (runtimes === 'uninstall') {
-          promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex']);
+          promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen']);
         } else {
           promptLocation(runtimes);
         }

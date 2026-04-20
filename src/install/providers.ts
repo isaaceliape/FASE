@@ -17,7 +17,7 @@ import os from 'os';
 /**
  * Supported provider runtimes
  */
-export type ProviderRuntime = 'claude' | 'opencode' | 'gemini' | 'codex' | 'github-copilot';
+export type ProviderRuntime = 'claude' | 'opencode' | 'gemini' | 'codex' | 'github-copilot' | 'qwen';
 
 /**
  * Expand ~ to home directory (shell doesn't expand in env vars passed to node)
@@ -54,6 +54,7 @@ export function getDirName(runtime: ProviderRuntime): string {
   if (runtime === 'gemini') return '.gemini';
   if (runtime === 'codex') return '.codex';
   if (runtime === 'github-copilot') return '.github-copilot';
+  if (runtime === 'qwen') return '.qwen';
   return '.claude';
 }
 
@@ -86,6 +87,7 @@ export function getConfigDirFromHome(runtime: ProviderRuntime, isGlobal: boolean
   if (runtime === 'gemini') return "'.gemini'";
   if (runtime === 'codex') return "'.codex'";
   if (runtime === 'github-copilot') return "'.github-copilot'";
+  if (runtime === 'qwen') return "'.qwen'";
   return "'.claude'";
 }
 
@@ -175,7 +177,18 @@ export function getGlobalDir(runtime: ProviderRuntime, explicitDir: string | nul
     }
     return path.join(os.homedir(), '.github-copilot');
   }
-  
+
+  if (runtime === 'qwen') {
+    // Qwen Code: --config-dir > QWEN_CONFIG_DIR > ~/.qwen
+    if (explicitDir) {
+      return expandTilde(explicitDir);
+    }
+    if (process.env.QWEN_CONFIG_DIR) {
+      return expandTilde(process.env.QWEN_CONFIG_DIR);
+    }
+    return path.join(os.homedir(), '.qwen');
+  }
+
   // Claude Code: --config-dir > CLAUDE_CONFIG_DIR > ~/.claude
   if (explicitDir) {
     return expandTilde(explicitDir);
@@ -199,7 +212,7 @@ export function getGlobalDir(runtime: ProviderRuntime, explicitDir: string | nul
  * ```
  */
 export function isValidProvider(runtime: string): runtime is ProviderRuntime {
-  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'].includes(runtime);
+  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'].includes(runtime);
 }
 
 /**
@@ -208,5 +221,5 @@ export function isValidProvider(runtime: string): runtime is ProviderRuntime {
  * @returns Array of valid provider runtime names
  */
 export function getSupportedProviders(): ProviderRuntime[] {
-  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot'];
+  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'];
 }
