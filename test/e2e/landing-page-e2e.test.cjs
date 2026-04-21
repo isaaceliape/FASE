@@ -140,7 +140,7 @@ describe('E2E: Landing Page Package Consistency', function() {
       const installSourcePath = path.join(rootDir, 'src', 'install', 'providers.ts');
 
       // If TypeScript source exists, count providers there
-      let actualRuntimeCount = 5; // Default based on known providers
+      let actualRuntimeCount = 6; // Default based on known providers
 
       if (fs.existsSync(installSourcePath)) {
         const installSource = fs.readFileSync(installSourcePath, 'utf-8');
@@ -183,7 +183,8 @@ describe('E2E: Landing Page Package Consistency', function() {
         { name: 'OpenCode', key: 'opencode' },
         { name: 'Gemini', key: 'gemini' },
         { name: 'Codex', key: 'codex' },
-        { name: 'GitHub Copilot', key: 'github-copilot' }
+        { name: 'GitHub Copilot', key: 'github-copilot' },
+        { name: 'Qwen Code', key: 'qwen' }
       ];
 
       const runtimesSectionMatch = wwwIndexContent.match(/<div id="runtimes"[\s\S]*?<\/div>\s*<\/div>\s*<\/div>\s*<!-- Workflow Section -->/);
@@ -214,7 +215,7 @@ describe('E2E: Landing Page Package Consistency', function() {
         .filter(f => !f.startsWith('.') && f.endsWith('.md'))
         .length;
 
-      const expectedRuntimeCount = 5;
+      const expectedRuntimeCount = 6;
 
       // Extract all displayed values
       const agentCountMatch = wwwIndexContent.match(/<div class="stat-number">(\d+)<\/div>\s*<div class="stat-label">Agentes<\/div>/);

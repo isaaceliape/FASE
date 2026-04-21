@@ -1,12 +1,12 @@
-name: Deploy Docs to GitHub Pages
+name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - 'www/docs/**'
+      - 'www/**'
+      - 'docs/**'
       - '.github/workflows/deploy-pages.yml'
-
   workflow_dispatch:
 
 permissions:
@@ -29,14 +29,49 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: www/docs/package-lock.json
-      - run: npm ci
-        working-directory: www/docs
-      - run: npm run build
-        working-directory: www/docs
+
+      # Build www/docs if it exists (Astro documentation)
+      - name: Build www/docs (Astro)
+        if: hashFiles('www/docs/package.json') != ''
+        run: |
+          cd www/docs
+          npm ci
+          npm run build
+        continue-on-error: true
+
+      # Prepare deployment directory
+      - name: Prepare GitHub Pages content
+        run: |
+          mkdir -p _site
+          
+          # Copy landing page and assets
+          cp www/index.html _site/index.html
+          cp -r www/fonts _site/ 2>/dev/null || true
+          cp -r www/images _site/ 2>/dev/null || true
+          cp www/fase-logo.png _site/ 2>/dev/null || true
+          
+          # Copy Astro-built docs if available
+          if [ -d "www/docs/dist" ]; then
+            mkdir -p _site/docs
+            cp -r www/docs/dist/* _site/docs/
+          fi
+          
+          # Copy pre-built docs as fallback
+          if [ ! -f "_site/docs/index.html" ] && [ -d "docs" ]; then
+            mkdir -p _site/docs
+            cp -r docs/* _site/docs/
+          fi
+          
+          # Create .nojekyll to bypass Jekyll processing
+          touch _site/.nojekyll
+          
+          # List what we're deploying
+          echo "📦 Deployment contents:"
+          find _site -type f | head -30
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: www/docs/dist
+          path: _site
 
   deploy:
     needs: build
