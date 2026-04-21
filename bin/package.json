@@ -66,8 +66,8 @@
   },
   "files": [
     "dist/",
-    "agentes/",
-    "comandos/",
+    ".github/agents/",
+    ".github/commands/",
     "fase-shared/",
     "README.md"
   ]
