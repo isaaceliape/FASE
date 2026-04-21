@@ -23,8 +23,8 @@ Qual idioma você quer traduzir?
 
 O que será traduzido?
 
-- [ ] **Agentes** (12 arquivos em `agentes/`)
-- [ ] **Comandos** (32 arquivos em `comandos/`)
+- [ ] **Agentes** (13 arquivos em `.github/agents/`)
+- [ ] **Comandos** (34+ arquivos em `.github/commands/`)
 - [ ] **Documentação** (README, guias, etc)
 - [ ] **Tudo** (agentes + comandos + docs)
 
