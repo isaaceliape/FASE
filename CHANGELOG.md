@@ -5,6 +5,13 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.2] - 2026-04-21
+
+### Fixed
+
+- **npm Publish Workflow**: Fixed GitHub Release creation by properly escaping backticks in release notes (file-based approach)
+- **Release Notes**: Resolved shell interpretation issues with markdown code blocks in automated release notes
+
 ## [4.0.1] - 2026-04-21
 
 ### Fixed
