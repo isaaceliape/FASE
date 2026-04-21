@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# FASE v4.0.0 - Simple Multi-Platform Test Script
+# FASE v4.0.2 - Simple Multi-Platform Test Script
 # Run on each platform to verify basic functionality
 
 set -e
 
 echo "=============================================="
-echo "FASE v4.0.0 - Multi-Platform Test"
+echo "FASE v4.0.2 - Multi-Platform Test"
 echo "=============================================="
 echo ""
 
@@ -62,19 +62,19 @@ fi
 # Test 4: Package version
 echo "Test 4: Package version..."
 VERSION=$(node -p "require('./package.json').version")
-if [ "$VERSION" = "4.0.0" ]; then
-    echo "✓ PASS: Version is 4.0.0"
+if [ "$VERSION" = "4.0.2" ]; then
+    echo "✓ PASS: Version is 4.0.2"
 else
-    echo "✗ FAIL: Version is $VERSION (expected 4.0.0)"
+    echo "✗ FAIL: Version is $VERSION (expected 4.0.2)"
     exit 1
 fi
 
 # Test 5: CHANGELOG
 echo "Test 5: CHANGELOG has v4.0.0..."
-if grep -q "## \[4.0.0\]" CHANGELOG.md; then
-    echo "✓ PASS: CHANGELOG has v4.0.0 entry"
+if grep -q "## \[4.0.2\]" CHANGELOG.md; then
+    echo "✓ PASS: CHANGELOG has v4.0.2 entry"
 else
-    echo "✗ FAIL: CHANGELOG missing v4.0.0 entry"
+    echo "✗ FAIL: CHANGELOG missing v4.0.2 entry"
     exit 1
 fi
 
