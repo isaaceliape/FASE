@@ -2110,7 +2110,7 @@ function install(isGlobal, runtime = 'claude') {
     const commandDir = path.join(targetDir, 'command');
     fs.mkdirSync(commandDir, { recursive: true });
     // Copy bin/comandos/*.md as command/fase-*.md (flatten structure)
-    const faseSrc = path.join(src, 'comandos');
+    const faseSrc = path.join(src, '.github', 'commands');
     copyFlattenedCommands(faseSrc, commandDir, 'fase', pathPrefix, runtime);
     if (verifyInstalled(commandDir, 'command/fase-*')) {
       const count = fs.readdirSync(commandDir).filter(f => f.startsWith('fase-')).length;
@@ -2120,7 +2120,7 @@ function install(isGlobal, runtime = 'claude') {
     }
   } else if (isCodex) {
     const skillsDir = path.join(targetDir, 'skills');
-    const faseSrc = path.join(src, 'comandos');
+    const faseSrc = path.join(src, '.github', 'commands');
     copyCommandsAsCodexSkills(faseSrc, skillsDir, 'fase', pathPrefix, runtime);
     const installedSkillNames = listCodexSkillNames(skillsDir);
     if (installedSkillNames.length > 0) {
@@ -2132,7 +2132,7 @@ function install(isGlobal, runtime = 'claude') {
     // Qwen Code: flat structure in commands/ directory (no fase/ subdirectory)
     const commandsDir = path.join(targetDir, 'commands');
     fs.mkdirSync(commandsDir, { recursive: true });
-    const faseSrc = path.join(src, 'comandos');
+    const faseSrc = path.join(src, '.github', 'commands');
     copyFlattenedCommands(faseSrc, commandsDir, 'fase', pathPrefix, runtime);
     if (verifyInstalled(commandsDir, 'commands/fase-*')) {
       const count = fs.readdirSync(commandsDir).filter(f => f.startsWith('fase-')).length;
@@ -2144,7 +2144,7 @@ function install(isGlobal, runtime = 'claude') {
     // Claude Code & Gemini: nested structure in commands/ directory
     const commandsDir = path.join(targetDir, 'commands');
     fs.mkdirSync(commandsDir, { recursive: true });
-    const faseSrc = path.join(src, 'comandos');
+    const faseSrc = path.join(src, '.github', 'commands');
     const faseDest = path.join(commandsDir, 'fase');
     copyWithPathReplacement(faseSrc, faseDest, pathPrefix, runtime, true);
     if (verifyInstalled(faseDest, 'commands/fase')) {
@@ -2165,7 +2165,7 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
   // Copy agents to agents directory
-  const agentsSrc = path.join(src, 'agentes');
+  const agentsSrc = path.join(src, '.github', 'agents');
   if (fs.existsSync(agentsSrc)) {
     const agentsDest = path.join(targetDir, 'agents');
     fs.mkdirSync(agentsDest, { recursive: true });
@@ -2234,7 +2234,7 @@ function install(isGlobal, runtime = 'claude') {
     }
     // Copy hooks from hooks/ (compiled alongside install.js)
     // Template paths for the target runtime (replaces '.claude' with correct config dir)
-    const hooksSrc = path.join(src, 'hooks');
+    const hooksSrc = path.join(src, '.github', 'hooks');
     if (fs.existsSync(hooksSrc)) {
       try {
         const hooksDest = path.join(targetDir, 'hooks');
