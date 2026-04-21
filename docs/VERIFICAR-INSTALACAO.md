@@ -277,7 +277,7 @@ npx fase-ai --all
 
 - `bin/verificar-instalacao.js` - Script principal
 - `bin/test/verificar-instalacao.test.js` - Testes
-- `bin/comandos/verificar-instalacao.md` - Comando em português
+- `.github/commands/verificar-instalacao.md` - Comando em português
 
 ### Executar Testes
 
