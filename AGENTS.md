@@ -26,7 +26,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🟢 Planejador (Planner)
 
-**File:** `agentes/fase-planejador.md`
+**File:** `.github/agents/fase-planejador.md`
 
 **Purpose:** Creates executable phase plans with clear task division, dependency analysis, and backward verification.
 
@@ -49,7 +49,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🟡 Executor (Executor)
 
-**File:** `agentes/fase-executor.md`
+**File:** `.github/agents/fase-executor.md`
 
 **Purpose:** Executes FASE plans atomically with one commit per task, automatic deviation handling, and checkpoint protocols.
 
@@ -74,7 +74,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🔵 Verificador (Verifier)
 
-**File:** `agentes/fase-verificador.md`
+**File:** `.github/agents/fase-verificador.md`
 
 **Purpose:** Validates that implementations meet specifications and code quality standards.
 
@@ -94,7 +94,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🔴 Verificador de Plano (Plan Verifier)
 
-**File:** `agentes/fase-verificador-plano.md`
+**File:** `.github/agents/fase-verificador-plano.md`
 
 **Purpose:** Validates plan structure, feasibility, and dependency resolution before execution.
 
@@ -113,7 +113,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🟠 Verificador de Integração (Integration Verifier)
 
-**File:** `agentes/fase-verificador-integracao.md`
+**File:** `.github/agents/fase-verificador-integracao.md`
 
 **Purpose:** Tests component integration and cross-module functionality.
 
@@ -132,7 +132,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 📚 Pesquisador FASE (FASE Researcher)
 
-**File:** `agentes/fase-pesquisador-fase.md`
+**File:** `.github/agents/fase-pesquisador-fase.md`
 
 **Purpose:** Researches FASE framework capabilities, patterns, and best practices.
 
@@ -152,7 +152,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🔍 Pesquisador de Projeto (Project Researcher)
 
-**File:** `agentes/fase-pesquisador-projeto.md`
+**File:** `.github/agents/fase-pesquisador-projeto.md`
 
 **Purpose:** Analyzes project structure, dependencies, and overall architecture.
 
@@ -172,7 +172,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🎯 Auditor Nyquist (Nyquist Auditor)
 
-**File:** `agentes/fase-auditor-nyquist.md`
+**File:** `.github/agents/fase-auditor-nyquist.md`
 
 **Purpose:** Performs Nyquist-based code quality and stability auditing.
 
@@ -192,7 +192,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🐛 Depurador (Debugger)
 
-**File:** `agentes/fase-depurador.md`
+**File:** `.github/agents/fase-depurador.md`
 
 **Purpose:** Debugs issues systematically with error analysis and solution verification.
 
@@ -212,7 +212,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🏗️ Arquiteto (Architect)
 
-**File:** `agentes/fase-arquiteto.md`
+**File:** `.github/agents/fase-arquiteto.md`
 
 **Purpose:** Designs system architecture, refactoring strategies, and long-term planning.
 
@@ -232,7 +232,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🗺️ Mapeador de Código (Code Mapper)
 
-**File:** `agentes/fase-mapeador-codigo.md`
+**File:** `.github/agents/fase-mapeador-codigo.md`
 
 **Purpose:** Maps codebase structure, dependencies, and relationships.
 
@@ -252,7 +252,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 🛣️ Roadmapper (Roadmap Planner)
 
-**File:** `agentes/fase-roadmapper.md`
+**File:** `.github/agents/fase-roadmapper.md`
 
 **Purpose:** Creates development roadmaps, timelines, and milestone planning.
 
@@ -272,7 +272,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 ### 📖 Sintetizador de Pesquisa (Research Synthesizer)
 
-**File:** `agentes/fase-sintetizador-pesquisa.md`
+**File:** `.github/agents/fase-sintetizador-pesquisa.md`
 
 **Purpose:** Synthesizes research findings into actionable insights and documentation.
 
