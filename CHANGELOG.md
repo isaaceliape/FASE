@@ -5,6 +5,21 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Folder Structure**: Migrated GitHub Copilot installation from root-level folders to `.github/` standard structure
+  - `agentes/` → `.github/agents/` (13 agent files)
+  - `comandos/` → `.github/commands/` (34+ command files)
+  - `hooks/` → `.github/hooks/` (organized by function: checks, monitors, builders)
+  - `skills/` → `.github/skills/` (organized by category: integrations, tools, frameworks)
+- **Build System**: Updated `fix-shebangs.mjs` to copy from new `.github/` directories to `dist/`
+- **Package Configuration**: Updated `package.json` and `bin/package.json` to include new folder structure in npm package
+- **Installer**: Updated `src/install.ts` to read agent, command, and hook files from new locations
+- **Documentation**: Updated all references to point to `.github/` folder structure
+- **Tests**: Updated 9 test files to use new canonical paths (all 258 tests passing)
+
 ## [4.0.2] - 2026-04-21
 
 ### Fixed
