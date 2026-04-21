@@ -365,8 +365,8 @@ tools:
       const pesquisaDir = path.join(__dirname, '..', 'fase-shared', 'templates', 'pesquisa-project');
       assert.strictEqual(fs.existsSync(pesquisaDir), true, 'pesquisa-project directory should exist');
 
-      const sumariosPath = path.join(pesquisaDir, 'SUMARIO.md');
-      assert.strictEqual(fs.existsSync(sumariosPath), true, 'SUMARIO.md should exist');
+      const sumariosPath = path.join(pesquisaDir, 'RESUMO.md');
+      assert.strictEqual(fs.existsSync(sumariosPath), true, 'RESUMO.md should exist');
     });
   });
 });

@@ -23,7 +23,7 @@ Version: $ARGUMENTS (opcional — defaults para current milestone)
 Arquivos core de planning são resolvidos in-workflow (`init milestone-op`) e carregados apenas quando necessário.
 
 **Trabalho Concluído:**
-Glob: .fase-ai/fases/*/*-SUMARIO.md
+Glob: .fase-ai/fases/*/*-RESUMO.md
 Glob: .fase-ai/fases/*/*-VERIFICACAO.md
 </context>
 

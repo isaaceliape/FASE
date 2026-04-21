@@ -57,7 +57,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 - Execute plans step-by-step with atomic commits
 - Handle deviations from plan automatically
 - Create checkpoint files for recovery
-- Generate summary reports (SUMARIO.md)
+- Generate summary reports (RESUMO.md)
 - Update project state (ESTADO.md)
 - Manage state transitions and rollback
 
@@ -67,7 +67,7 @@ FASE (Framework de Automação Sem Enrolação) includes a comprehensive suite o
 
 **Output:**
 - Committed code changes
-- `SUMARIO.md` execution summaries
+- `RESUMO.md` execution summaries
 - Updated `ESTADO.md`
 
 ---
@@ -357,7 +357,7 @@ Project state tracking and history.
 ### PLANO.md
 Current execution plan.
 
-### SUMARIO.md
+### RESUMO.md
 Execution summaries and results.
 
 ---
@@ -413,7 +413,7 @@ Ensure agent file exists in `agentes/` directory with `.md` extension.
 Check `Verificador-de-Plano` output for specific issues.
 
 ### Execution Errors
-Review `SUMARIO.md` and `ESTADO.md` for error details.
+Review `RESUMO.md` and `ESTADO.md` for error details.
 
 ### Research Returns Limited Results
 Ensure sufficient project documentation is available for research agents.

@@ -410,7 +410,7 @@ Aprovar roteiro ou fornecer feedback para revisão.
 Orchestrator fornece:
 - Conteúdo do PROJETO.md (core value, constraints)
 - Conteúdo do REQUISITOS.md (requisitos v1 com REQ-IDs)
-- Conteúdo de pesquisa/SUMARIO.md (se existe - sugestões de fases)
+- Conteúdo de pesquisa/RESUMO.md (se existe - sugestões de fases)
 - config.json (configuração de granularidade)
 
 Analise e confirme entendimento antes de prosseguir.
@@ -434,7 +434,7 @@ Total v1: 11 requisitos
 
 ## Passo 3: Carregar Contexto de Pesquisa (se existe)
 
-Se pesquisa/SUMARIO.md fornecido:
+Se pesquisa/RESUMO.md fornecido:
 - Extrair estrutura de phase sugerida de "Implications for Roadmap"
 - Anotar flags de pesquisa (quais fases precisam de pesquisa mais profunda)
 - Usar como input, não mandato

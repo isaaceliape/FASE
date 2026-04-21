@@ -18,7 +18,7 @@ Cria o roadmap inicial do projeto: analisa o PROJETO.md, quebra em milestones e 
 Roda em paralelo (×4) durante `/fase-novo-projeto`. Cada instância investiga um domínio diferente: stack, funcionalidades, arquitetura, armadilhas.
 
 ### `fase-sintetizador-pesquisa`
-Agrega os 4 arquivos de pesquisa (STACK.md, FUNCIONALIDADES.md, ARQUITETURA.md, ARMADILHAS.md) em um SUMARIO.md coeso. Aborta com `PESQUISA INCOMPLETA` se algum arquivo estiver faltando.
+Agrega os 4 arquivos de pesquisa (STACK.md, FUNCIONALIDADES.md, ARQUITETURA.md, ARMADILHAS.md) em um RESUMO.md coeso. Aborta com `PESQUISA INCOMPLETA` se algum arquivo estiver faltando.
 
 ### `fase-pesquisador-fase`
 Pesquisa o domínio específico de uma fase antes do planejamento. Copia decisões locked do CONTEXTO.md para PESQUISA.md e valida que nenhuma foi omitida.

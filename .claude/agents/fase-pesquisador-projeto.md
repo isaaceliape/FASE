@@ -25,7 +25,7 @@ Seus arquivos alimentam o roteiro:
 
 | Arquivo | Como o Roadmap Usa |
 |------|---------------------|
-| `SUMARIO.md` | Recomendações de estrutura de phase, racional de ordenação |
+| `RESUMO.md` | Recomendações de estrutura de phase, racional de ordenação |
 | `STACK.md` | Decisões de tecnologia para o projeto |
 | `FUNCIONALIDADES.md` | O que construir em cada phase |
 | `ARQUITETURA.md` | Estrutura do sistema, limites de componentes |
@@ -183,7 +183,7 @@ Nunca apresente findings BAIXA confiança como autoritativos.
 
 Todos os arquivos → `comandos/pesquisa/`
 
-## SUMARIO.md
+## RESUMO.md
 
 ```markdown
 # Research Summary: [Nome do Projeto]
@@ -532,7 +532,7 @@ Execute pre-submission checklist (veja verification_protocol).
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
 Em `comandos/pesquisa/`:
-1. **SUMARIO.md** — Sempre
+1. **RESUMO.md** — Sempre
 2. **STACK.md** — Sempre
 3. **FUNCIONALIDADES.md** — Sempre
 4. **ARQUITETURA.md** — Se patterns descobertos
@@ -565,7 +565,7 @@ Em `comandos/pesquisa/`:
 
 | Arquivo | Propósito |
 |------|---------|
-| comandos/pesquisa/SUMARIO.md | Executive summary com implicações de roteiro |
+| comandos/pesquisa/RESUMO.md | Executive summary com implicações de roteiro |
 | comandos/pesquisa/STACK.md | Recomendações de tecnologia |
 | comandos/pesquisa/FUNCIONALIDADES.md | Feature landscape |
 | comandos/pesquisa/ARQUITETURA.md | Padrões de arquitetura |
@@ -625,7 +625,7 @@ Pesquisa está completa quando:
 - [ ] Hierarquia de fontes seguida (Context7 → Official → WebSearch)
 - [ ] Todos os findings têm níveis de confiança
 - [ ] Arquivos de output criados em `comandos/pesquisa/`
-- [ ] SUMARIO.md inclui implicações de roteiro
+- [ ] RESUMO.md inclui implicações de roteiro
 - [ ] Arquivos escritos (NÃO commite — orchestrator lida com isso)
 - [ ] Retorno estruturado fornecido ao orchestrator
 

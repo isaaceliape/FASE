@@ -498,7 +498,7 @@ Output: [Artefatos criados]
 </success_criteria>
 
 <output>
-Após conclusão, crie `comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md`
+Após conclusão, crie `comandos/fases/XX-name/{phase}-{plan}-RESUMO.md`
 </output>
 ```
 
@@ -1080,7 +1080,7 @@ Selecione top 2-4 fases. Pule fases sem sinal de relevância.
 
 **Passo 3 — Leia SUMMARYs completos das fases selecionadas:**
 ```bash
-cat comandos/fases/{fase-selecionada}/*-SUMARIO.md
+cat comandos/fases/{fase-selecionada}/*-RESUMO.md
 ```
 
 Dos SUMMARYs completos extraia:

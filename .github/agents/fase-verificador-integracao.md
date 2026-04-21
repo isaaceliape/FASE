@@ -68,7 +68,7 @@ Para cada fase, extraia o que ela provê e o que deveria consumir.
 
 ```bash
 # Key exports de cada fase
-for summary in comandos/fases/*/*-SUMARIO.md; do
+for summary in comandos/fases/*/*-RESUMO.md; do
   echo "=== $summary ==="
   grep -A 10 "Key Files\|Exports\|Provides" "$summary" 2>/dev/null
 done

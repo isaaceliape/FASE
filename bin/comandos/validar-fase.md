@@ -15,7 +15,7 @@ allowed-tools:
 <objective>
 Auditar cobertura de validação Nyquist para uma fase completada. Três estados:
 - (A) VALIDACAO.md existe — audita e preenche gaps
-- (B) Sem VALIDACAO.md, SUMARIO.md existe — reconstrói dos artefatos
+- (B) Sem VALIDACAO.md, RESUMO.md existe — reconstrói dos artefatos
 - (C) Fase não executada — sai com orientação
 
 Output: VALIDACAO.md atualizado + arquivos de teste gerados.

@@ -21,7 +21,7 @@ Seu trabalho: Verificação goal-backward. Começa pelo que a fase DEVERIA entre
 **CRÍTICO: Leitura Inicial Obrigatória**
 Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Read` para carregar todos os arquivos listados antes de realizar qualquer outra ação. Este é seu contexto primário.
 
-**Mentalidade crítica:** NÃO confie nas claims do SUMARIO.md. SUMMARYs documentam o que o Claude DISSE que fez. Você verifica o que REALMENTE existe no código. Estes frequentemente diferem.
+**Mentalidade crítica:** NÃO confie nas claims do RESUMO.md. SUMMARYs documentam o que o Claude DISSE que fez. Você verifica o que REALMENTE existe no código. Estes frequentemente diferem.
 </role>
 
 <project_context>
@@ -88,7 +88,7 @@ Setar `is_re_verification = false`, `closure_attempts = 0`, prosseguir com Step 
 
 ```bash
 ls "$PHASE_DIR"/*-PLANO.md 2>/dev/null
-ls "$PHASE_DIR"/*-SUMARIO.md 2>/dev/null
+ls "$PHASE_DIR"/*-RESUMO.md 2>/dev/null
 node "$HOME/.claude/fase/bin/fase-tools.cjs" roteiro get-phase "$PHASE_NUM"
 grep -E "^| $PHASE_NUM" comandos/REQUISITOS.md 2>/dev/null
 ```
@@ -296,20 +296,20 @@ Se REQUISITOS.md mapeia IDs adicionais para esta fase que não aparecem no campo
 
 ## Step 7: Escanear por Anti-Patterns
 
-Identifique arquivos modificados nesta fase da seção key-files do SUMARIO.md, ou extraia commits e verifique:
+Identifique arquivos modificados nesta fase da seção key-files do RESUMO.md, ou extraia commits e verifique:
 
 ```bash
 # Opção 1: Extrair do frontmatter do SUMMARY
-SUMMARY_FILES=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" summary-extract "$PHASE_DIR"/*-SUMARIO.md --fields key-files)
+SUMMARY_FILES=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" summary-extract "$PHASE_DIR"/*-RESUMO.md --fields key-files)
 
 # Opção 2: Verificar se commits existem (se hashes de commits documentados)
-COMMIT_HASHES=$(grep -oE "[a-f0-9]{7,40}" "$PHASE_DIR"/*-SUMARIO.md | head -10)
+COMMIT_HASHES=$(grep -oE "[a-f0-9]{7,40}" "$PHASE_DIR"/*-RESUMO.md | head -10)
 if [ -n "$COMMIT_HASHES" ]; then
   COMMITS_VALID=$(node "$HOME/.claude/fase/bin/fase-tools.cjs" verify commits $COMMIT_HASHES)
 fi
 
 # Fallback: grep por arquivos
-grep -E "^\- \`" "$PHASE_DIR"/*-SUMARIO.md | sed 's/.*`\([^`]*\)`.*/\1/' | sort -u
+grep -E "^\- \`" "$PHASE_DIR"/*-RESUMO.md | sed 's/.*`\([^`]*\)`.*/\1/' | sort -u
 ```
 
 Rode detecção de anti-pattern em cada arquivo:

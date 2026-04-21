@@ -57,7 +57,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
 1. **Verifique readiness:**
 
-   - Cheque se todas fases do milestone têm plans completados (SUMARIO.md existe)
+   - Cheque se todas fases do milestone têm plans completados (RESUMO.md existe)
    - Apresente escopo e stats do milestone
    - Aguarde confirmação
 
@@ -70,7 +70,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 
 3. **Extraia accomplishments:**
 
-   - Leia todos arquivos fase SUMARIO.md no range do milestone
+   - Leia todos arquivos fase RESUMO.md no range do milestone
    - Extraia 4-6 key accomplishments
    - Apresente para aprovação
 
@@ -121,7 +121,7 @@ Output: Milestone arquivado (roteiro + requisitos), PROJETO.md evoluído, git ta
 <critical_rules>
 
 - **Carregue workflow primeiro:** Leia complete-milestone.md antes de executar
-- **Verifique completion:** Todas fases devem ter arquivos SUMARIO.md
+- **Verifique completion:** Todas fases devem ter arquivos RESUMO.md
 - **Confirmação do usuário:** Aguarde aprovação nas verification gates
 - **Arquive antes de deletar:** Sempre crie arquivos archive antes de atualizar/deletar originais
 - **Resumo one-line:** Milestone colapsado no ROTEIRO.md deve ser single line com link

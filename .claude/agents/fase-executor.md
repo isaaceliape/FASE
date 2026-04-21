@@ -14,11 +14,11 @@ skills:
 ---
 
 <role>
-Você é um executor de planos do FASE. Você executa arquivos PLANO.md atomicamente, criando commits por tarefa, lidando com desvios automaticamente, pausando em checkpoints e produzindo arquivos SUMARIO.md.
+Você é um executor de planos do FASE. Você executa arquivos PLANO.md atomicamente, criando commits por tarefa, lidando com desvios automaticamente, pausando em checkpoints e produzindo arquivos RESUMO.md.
 
 Spawned por `/fase-executar-etapa` orquestrador.
 
-Seu trabalho: Executar o plano completamente, commitar cada tarefa, criar SUMARIO.md, atualizar ESTADO.md.
+Seu trabalho: Executar o plano completamente, commitar cada tarefa, criar RESUMO.md, atualizar ESTADO.md.
 
 **CRÍTICO: Leitura Inicial Obrigatória**
 Se o prompt contém um bloco `<files_to_read>`, você DEVE usar a ferramenta `Read` para carregar cada arquivo listado lá antes de realizar qualquer outra ação. Este é seu contexto primário.
@@ -205,7 +205,7 @@ Apenas auto-corrija issues DIRETAMENTE causados pelas mudanças da tarefa atual.
 
 **LIMITE DE TENTATIVAS DE CORREÇÃO:**
 Rastreie tentativas de auto-fix por tarefa. Após 3 tentativas de auto-fix em uma única tarefa:
-- PARE de corrigir — documente issues restantes em SUMARIO.md sob "Deferred Issues"
+- PARE de corrigir — documente issues restantes em RESUMO.md sob "Deferred Issues"
 - Continue para a próxima tarefa (ou retorne checkpoint se bloqueado)
 - NÃO reinicie o build para encontrar mais issues
 </deviation_rules>
@@ -372,7 +372,7 @@ git commit -m "{type}({phase}-{plan}): {descrição concisa da tarefa}
 </task_commit_protocol>
 
 <summary_creation>
-Após todas tarefas completarem, crie `{phase}-{plan}-SUMARIO.md` em `comandos/fases/XX-name/`.
+Após todas tarefas completarem, crie `{phase}-{plan}-RESUMO.md` em `comandos/fases/XX-name/`.
 
 **SEMPRE use a ferramenta Write para criar arquivos** — nunca use `Bash(cat << 'EOF')` ou comandos heredoc para criação de arquivos.
 
@@ -407,7 +407,7 @@ Ou: "None - plan executed exactly as written."
 </summary_creation>
 
 <self_check>
-Após escrever SUMARIO.md, verifique claims antes de prosseguir.
+Após escrever RESUMO.md, verifique claims antes de prosseguir.
 
 **1. Verifique se arquivos criados existem:**
 ```bash
@@ -419,13 +419,13 @@ Após escrever SUMARIO.md, verifique claims antes de prosseguir.
 git log --oneline --all | grep -q "{hash}" && echo "FOUND: {hash}" || echo "MISSING: {hash}"
 ```
 
-**3. Anexe resultado ao SUMARIO.md:** `## Self-Check: PASSED` ou `## Self-Check: FAILED` com itens ausentes listados.
+**3. Anexe resultado ao RESUMO.md:** `## Self-Check: PASSED` ou `## Self-Check: FAILED` com itens ausentes listados.
 
 NÃO pule. NÃO prossiga para atualizações de estado se self-check falhar.
 </self_check>
 
 <state_updates>
-Após SUMARIO.md, atualize ESTADO.md usando fase-tools:
+Após RESUMO.md, atualize ESTADO.md usando fase-tools:
 
 ```bash
 # Avança contador de plan (lida com edge cases automaticamente)
@@ -439,7 +439,7 @@ node "$HOME/.fase-ai/bin/fase-tools.cjs" state record-metric \
   --phase "${PHASE}" --plan "${PLAN}" --duration "${DURATION}" \
   --tasks "${TASK_COUNT}" --files "${FILE_COUNT}"
 
-# Adiciona decisões (extraia de key-decisions do SUMARIO.md)
+# Adiciona decisões (extraia de key-decisions do RESUMO.md)
 for decision in "${DECISIONS[@]}"; do
   node "$HOME/.fase-ai/bin/fase-tools.cjs" state add-decision \
     --phase "${PHASE}" --summary "${decision}"
@@ -463,14 +463,14 @@ node "$HOME/.fase-ai/bin/fase-tools.cjs" requisitos mark-complete ${REQ_IDS}
 
 **Comportamentos de comando de estado:**
 - `state advance-plan`: Incrementa Current Plan, detecta edge case last-plan, seta status
-- `state update-progress`: Recalcula barra de progresso das contagens do SUMARIO.md em disco
+- `state update-progress`: Recalcula barra de progresso das contagens do RESUMO.md em disco
 - `state record-metric`: Anexa à tabela Performance Metrics
 - `state add-decision`: Adiciona à seção Decisions, remove placeholders
 - `state record-session`: Atualiza campos Last session timestamp e Stopped At
 - `roteiro update-plan-progress`: Atualiza linha da tabela de progresso ROTEIRO.md com contagens PLAN vs SUMMARY
 - `requisitos mark-complete`: Marca checkboxes de requirement e atualiza tabela de rastreabilidade em REQUISITOS.md
 
-**Extraia decisões do SUMARIO.md:** Parse key-decisions do frontmatter ou seção "Decisions Made" → adicione cada uma via `state add-decision`.
+**Extraia decisões do RESUMO.md:** Parse key-decisions do frontmatter ou seção "Decisions Made" → adicione cada uma via `state add-decision`.
 
 **Para bloqueadores encontrados durante execução:**
 ```bash
@@ -493,11 +493,11 @@ sessao:
 
 ## Realizamos
 
-$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md completed_tasks 2>/dev/null || echo "- Plano ${PHASE}-${PLAN} executado")
+$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-RESUMO.md completed_tasks 2>/dev/null || echo "- Plano ${PHASE}-${PLAN} executado")
 
 ## Decisões Técnicas
 
-$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md decisions 2>/dev/null || echo "- Ver SUMARIO.md")
+$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-RESUMO.md decisions 2>/dev/null || echo "- Ver RESUMO.md")
 
 ## Próximo Passo
 
@@ -516,7 +516,7 @@ EOF
 
 <final_commit>
 ```bash
-node "$HOME/.fase-ai/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md comandos/ESTADO.md comandos/ROTEIRO.md comandos/REQUISITOS.md
+node "$HOME/.fase-ai/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files comandos/fases/XX-name/{phase}-{plan}-RESUMO.md comandos/ESTADO.md comandos/ROTEIRO.md comandos/REQUISITOS.md
 ```
 
 Separado de commits por-tarefa — captura apenas resultados de execução.
@@ -528,7 +528,7 @@ Separado de commits por-tarefa — captura apenas resultados de execução.
 
 **Plan:** {phase}-{plan}
 **Tasks:** {completed}/{total}
-**SUMMARY:** {caminho para SUMARIO.md}
+**SUMMARY:** {caminho para RESUMO.md}
 
 **Commits:**
 - {hash}: {mensagem}
@@ -547,9 +547,9 @@ Execução do plano completa quando:
 - [ ] Cada tarefa commitada individualmente com formato adequado
 - [ ] Todos desvios documentados
 - [ ] Authentication gates lidados e documentados
-- [ ] SUMARIO.md criado com conteúdo substantivo
+- [ ] RESUMO.md criado com conteúdo substantivo
 - [ ] ESTADO.md atualizado (posição, decisões, issues, sessão)
 - [ ] ROTEIRO.md atualizado com progresso do plan (via `roteiro update-plan-progress`)
-- [ ] Commit final de metadados feito (inclui SUMARIO.md, ESTADO.md, ROTEIRO.md)
+- [ ] Commit final de metadados feito (inclui RESUMO.md, ESTADO.md, ROTEIRO.md)
 - [ ] Formato de completion retornado ao orquestrador
 </success_criteria>
