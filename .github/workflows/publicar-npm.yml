@@ -2,65 +2,174 @@ name: Publicar no npm
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
   workflow_dispatch:
 
 jobs:
+  check-version:
+    name: Check Version Change
+    runs-on: ubuntu-latest
+    outputs:
+      version-changed: ${{ steps.version-check.outputs.version-changed }}
+      current-version: ${{ steps.version-check.outputs.current-version }}
+      published-version: ${{ steps.version-check.outputs.published-version }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Check version change
+        id: version-check
+        run: |
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -e "console.log(require('./package.json').version)")
+          echo "current-version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Get published version from npm
+          PUBLISHED_VERSION=$(npm view fase-ai@latest version 2>/dev/null || echo "0.0.0")
+          echo "published-version=$PUBLISHED_VERSION" >> $GITHUB_OUTPUT
+          echo "Published version: $PUBLISHED_VERSION"
+          
+          # Compare versions
+          if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "version-changed=true" >> $GITHUB_OUTPUT
+            echo "✓ Version changed: $PUBLISHED_VERSION → $CURRENT_VERSION"
+          else
+            echo "version-changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ No version change: $CURRENT_VERSION (skipping publish)"
+          fi
+
   publicar:
+    name: Publish to npm
+    needs: check-version
+    if: needs.check-version.outputs.version-changed == 'true'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
     env:
       NODE_VERSION: '24'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
+    
     steps:
-      - name: Clonar repositório
-        uses: actions/checkout@v4.2.0
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4.1.0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-
-      - name: Instalar dependências
+      
+      - name: Install dependencies
         run: npm ci
-
+      
       - name: Build
         run: npm run build
-
-      - name: Verificar integridade do pacote
+      
+      - name: Verify package integrity
         run: |
           npm pack --dry-run > /tmp/pack_output.txt
           if grep -q "total files: 0" /tmp/pack_output.txt; then
-            echo "❌ Erro: nenhum arquivo encontrado no pacote"
+            echo "❌ Error: no files found in package"
             exit 1
           fi
-          echo "✓ Pacote verificado com sucesso"
+          echo "✓ Package verified successfully"
           cat /tmp/pack_output.txt
-
-      - name: Publicar no npm
+      
+      - name: Publish to npm
         run: |
           npm config set registry https://registry.npmjs.org/
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm publish --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Criar release no GitHub
+      
+      - name: Create git tag
+        run: |
+          VERSION=${{ needs.check-version.outputs.current-version }}
+          TAG="v${VERSION}"
+          echo "Creating git tag: $TAG"
+          
+          # Configure git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Create and push tag
+          git tag "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+          
+          echo "✓ Tag created and pushed: $TAG"
+      
+      - name: Extract release notes from CHANGELOG
+        id: changelog
+        run: |
+          VERSION=${{ needs.check-version.outputs.current-version }}
+          
+          # Extract changelog section for this version
+          # Looks for ## [version] or ## version pattern
+          CHANGELOG=$(awk -v ver="$VERSION" '
+            /^## \[?'"$VERSION"'\]?/ {found=1; next}
+            found && /^## / {exit}
+            found {print}
+          ' CHANGELOG.md)
+          
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="See CHANGELOG.md for details"
+          fi
+          
+          # Store in output (handle multiline)
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ github.ref_name }}
+          TAG_NAME: v${{ needs.check-version.outputs.current-version }}
         run: |
-          NOTES=$(cat <<'EOF'
-          Publicado em npm: https://www.npmjs.com/package/fase-ai/${{ github.ref_name }}
+          VERSION=${{ needs.check-version.outputs.current-version }}
+          TAG="v${VERSION}"
+          
+          RELEASE_NOTES="## Changes
+          
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ## Installation
+          
+          \`\`\`bash
+          npm install fase-ai@${VERSION}
+          # or
+          npx fase-ai@${VERSION}
+          \`\`\`
+          
+          **Published on npm:** https://www.npmjs.com/package/fase-ai/${VERSION}"
+          
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes "$RELEASE_NOTES" \
+            2>/dev/null || gh release edit "$TAG" \
+            --title "Release $TAG" \
+            --notes "$RELEASE_NOTES"
+          
+          echo "✓ GitHub Release created/updated: $TAG"
 
-          Instale com:
-          ```bash
-          npx fase-ai@${{ github.ref_name }}
-          ```
-          EOF
-          )
-          gh release create "${{ github.ref_name }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES" 2>/dev/null || gh release edit "${{ github.ref_name }}" --title "Release ${{ github.ref_name }}" --notes "$NOTES"
+  skip-notification:
+    name: Skip Notification
+    needs: check-version
+    if: needs.check-version.outputs.version-changed == 'false'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Log skip reason
+        run: |
+          echo "ℹ Skipping npm publish"
+          echo "Current version: ${{ needs.check-version.outputs.current-version }}"
+          echo "Published version: ${{ needs.check-version.outputs.published-version }}"
+          echo ""
+          echo "To publish a new version:"
+          echo "1. Update the version in package.json"
+          echo "2. Push to main branch"
+          echo "3. This workflow will automatically detect the change and publish"
