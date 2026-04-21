@@ -39,16 +39,18 @@ jobs:
           echo "Testing clean install for Node ${{ matrix.node }}..."
           node dist/install.js --claude
           
-          # Verify installation
-          if [ -d "$HOME/.claude/fase-ai" ]; then
+          # Verify installation (local install path)
+          if [ -d "./.claude/fase-ai" ]; then
             echo "✓ Installation directory exists"
           else
             echo "✗ Installation directory missing"
+            echo "Debug: Checking directory structure..."
+            find . -maxdepth 2 -type d -name "*claude*" -o -name "*fase*"
             exit 1
           fi
           
           # Verify hooks
-          if [ -f "$HOME/.claude/hooks/fase-statusline.cjs" ]; then
+          if [ -f "./.claude/hooks/fase-statusline.cjs" ]; then
             echo "✓ Hooks installed"
           else
             echo "✗ Hooks missing"
@@ -61,7 +63,7 @@ jobs:
         run: |
           node dist/install.js --uninstall
           
-          if [ ! -d "$HOME/.claude/fase-ai" ]; then
+          if [ ! -d "./.claude/fase-ai" ]; then
             echo "✓ Uninstall successful"
           else
             echo "✗ Uninstall failed"
@@ -99,11 +101,13 @@ jobs:
           echo "Testing clean install for Node ${{ matrix.node }}..."
           node dist/install.js --claude
           
-          # Verify installation
-          if [ -d "$HOME/.claude/fase-ai" ]; then
+          # Verify installation (local install path)
+          if [ -d "./.claude/fase-ai" ]; then
             echo "✓ Installation directory exists"
           else
             echo "✗ Installation directory missing"
+            echo "Debug: Checking directory structure..."
+            find . -maxdepth 2 -type d -name "*claude*" -o -name "*fase*"
             exit 1
           fi
           
@@ -141,12 +145,14 @@ jobs:
           Write-Host "Testing clean install for Node ${{ matrix.node }}..."
           node dist/install.js --claude
           
-          # Verify installation
-          $installDir = "$env:USERPROFILE\.claude\fase-ai"
+          # Verify installation (local install path)
+          $installDir = "./.claude/fase-ai"
           if (Test-Path $installDir) {
             Write-Host "✓ Installation directory exists"
           } else {
             Write-Host "✗ Installation directory missing"
+            Write-Host "Debug: Checking directory structure..."
+            Get-ChildItem -Path "." -Recurse -Include "*claude*", "*fase*" -Directory
             exit 1
           }
           
