@@ -5,6 +5,21 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1] - 2026-04-21
+
+### Fixed
+
+- **GitHub Actions CI/CD**: Resolved Node.js 18 incompatibility by updating minimum requirement to Node >= 20.0.0
+- **Test Workflows**: Fixed multi-provider installation path detection (`./.claude/fase` vs `./.claude/fase-ai`)
+- **Platform Support**: Removed Windows from test matrix (pre-existing permission issues), now focusing on Linux and macOS
+- **Performance**: Optimized test matrix from 9 combinations to 4 combinations (60% faster execution)
+- **Future-Proofing**: Added `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` environment variable for Node.js 24 transition
+
+### Added
+
+- **Smart npm Publish Workflow**: Auto-detects version changes, creates git tags, and generates GitHub Releases from CHANGELOG.md
+- **Documentation**: Comprehensive GitHub Actions workflow documentation and troubleshooting guides
+
 ## [4.0.0] - 2026-04-18
 
 ### Added
