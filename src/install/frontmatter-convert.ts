@@ -56,6 +56,23 @@ export const claudeToGeminiTools: Record<string, string> = {
 };
 
 /**
+ * Tool name mapping from Claude Code to GitHub Copilot
+ * GitHub Copilot uses similar tool names to Gemini CLI
+ */
+export const claudeToCopilotTools: Record<string, string> = {
+  Read: 'read_file',
+  Write: 'write_file',
+  Edit: 'replace',
+  Bash: 'run_shell_command',
+  Glob: 'glob',
+  Grep: 'search_file_content',
+  WebSearch: 'google_web_search',
+  WebFetch: 'web_fetch',
+  TodoWrite: 'write_todos',
+  AskUserQuestion: 'ask_user',
+};
+
+/**
  * Convert a Claude Code tool name to OpenCode format
  * 
  * @param claudeTool - Claude Code tool name
@@ -74,7 +91,7 @@ export function convertToolName(claudeTool: string): string {
 /**
  * Convert a Claude Code tool name to Gemini CLI format
  * Filters out MCP tools and Task (auto-registered in Gemini)
- * 
+ *
  * @param claudeTool - Claude Code tool name
  * @returns Gemini tool name or null if should be excluded
  */
@@ -87,6 +104,26 @@ export function convertGeminiToolName(claudeTool: string): string | null {
   }
   if (claudeToGeminiTools[claudeTool]) {
     return claudeToGeminiTools[claudeTool];
+  }
+  return claudeTool.toLowerCase();
+}
+
+/**
+ * Convert a Claude Code tool name to GitHub Copilot format
+ * Filters out MCP tools and Task (auto-registered in Copilot)
+ *
+ * @param claudeTool - Claude Code tool name
+ * @returns Copilot tool name or null if should be excluded
+ */
+export function convertCopilotToolName(claudeTool: string): string | null {
+  if (claudeTool.startsWith('mcp__')) {
+    return null;
+  }
+  if (claudeTool === 'Task') {
+    return null;
+  }
+  if (claudeToCopilotTools[claudeTool]) {
+    return claudeToCopilotTools[claudeTool];
   }
   return claudeTool.toLowerCase();
 }

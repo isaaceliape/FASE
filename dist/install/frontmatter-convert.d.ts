@@ -21,6 +21,11 @@ export declare const claudeToOpencodeTools: Record<string, string>;
  */
 export declare const claudeToGeminiTools: Record<string, string>;
 /**
+ * Tool name mapping from Claude Code to GitHub Copilot
+ * GitHub Copilot uses similar tool names to Gemini CLI
+ */
+export declare const claudeToCopilotTools: Record<string, string>;
+/**
  * Convert a Claude Code tool name to OpenCode format
  *
  * @param claudeTool - Claude Code tool name
@@ -35,6 +40,14 @@ export declare function convertToolName(claudeTool: string): string;
  * @returns Gemini tool name or null if should be excluded
  */
 export declare function convertGeminiToolName(claudeTool: string): string | null;
+/**
+ * Convert a Claude Code tool name to GitHub Copilot format
+ * Filters out MCP tools and Task (auto-registered in Copilot)
+ *
+ * @param claudeTool - Claude Code tool name
+ * @returns Copilot tool name or null if should be excluded
+ */
+export declare function convertCopilotToolName(claudeTool: string): string | null;
 /**
  * Extract frontmatter and body from markdown content
  *
