@@ -66,7 +66,7 @@ const hasOpencode = args.includes('--opencode');
 const hasClaude = args.includes('--claude');
 const hasGemini = args.includes('--gemini');
 const hasCodex = args.includes('--codex');
-const hasGithubCopilot = args.includes('--github-copilot');
+const hasCopilot = args.includes('--copilot');
 const hasQwen = args.includes('--qwen');
 const hasBoth = args.includes('--both'); // Legacy flag, keeps working
 const hasAll = args.includes('--all');
@@ -77,7 +77,7 @@ const hasAutoDetect = args.includes('--auto-detect');
 // Runtime selection - can be set by flags or interactive prompt
 let selectedRuntimes = [];
 if (hasAll) {
-  selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'];
+  selectedRuntimes = ['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen'];
 } else if (hasBoth) {
   selectedRuntimes = ['claude', 'opencode'];
 } else {
@@ -85,7 +85,7 @@ if (hasAll) {
   if (hasClaude) selectedRuntimes.push('claude');
   if (hasGemini) selectedRuntimes.push('gemini');
   if (hasCodex) selectedRuntimes.push('codex');
-  if (hasGithubCopilot) selectedRuntimes.push('github-copilot');
+  if (hasCopilot) selectedRuntimes.push('copilot');
   if (hasQwen) selectedRuntimes.push('qwen');
 }
 /**
@@ -107,14 +107,14 @@ function getDirName(runtime) {
   if (runtime === 'opencode') return '.opencode';
   if (runtime === 'gemini') return '.gemini';
   if (runtime === 'codex') return '.codex';
-  if (runtime === 'github-copilot') return '.github-copilot';
+  if (runtime === 'copilot') return '.copilot';
   if (runtime === 'qwen') return '.qwen';
   return '.claude';
 }
 /**
  * Get the config directory path relative to home directory for a runtime
  * Used for templating hooks that use path.join(homeDir, '<configDir>', ...)
- * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'copilot'
  * @param {boolean} isGlobal - Whether this is a global install
  */
 function getConfigDirFromHome(runtime, isGlobal) {
@@ -130,7 +130,7 @@ function getConfigDirFromHome(runtime, isGlobal) {
   }
   if (runtime === 'gemini') return "'.gemini'";
   if (runtime === 'codex') return "'.codex'";
-  if (runtime === 'github-copilot') return "'.github-copilot'";
+  if (runtime === 'copilot') return "'.copilot'";
   if (runtime === 'qwen') return "'.qwen'";
   return "'.claude'";
 }
@@ -157,7 +157,7 @@ function getOpencodeGlobalDir() {
 }
 /**
  * Get the global config directory for a runtime
- * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'copilot'
  * @param {string|null} explicitDir - Explicit directory from --config-dir flag
  */
 function getGlobalDir(runtime, explicitDir = null) {
@@ -188,15 +188,15 @@ function getGlobalDir(runtime, explicitDir = null) {
     }
     return path.join(os.homedir(), '.codex');
   }
-  if (runtime === 'github-copilot') {
-    // GitHub Copilot: --config-dir > GITHUB_COPILOT_CONFIG_DIR > ~/.github-copilot
+  if (runtime === 'copilot') {
+    // GitHub Copilot: --config-dir > COPILOT_CONFIG_DIR > ~/.github-copilot
     if (explicitDir) {
       return expandTilde(explicitDir);
     }
-    if (process.env.GITHUB_COPILOT_CONFIG_DIR) {
-      return expandTilde(process.env.GITHUB_COPILOT_CONFIG_DIR);
+    if (process.env.COPILOT_CONFIG_DIR) {
+      return expandTilde(process.env.COPILOT_CONFIG_DIR);
     }
-    return path.join(os.homedir(), '.github-copilot');
+    return path.join(os.homedir(), '.copilot');
   }
   if (runtime === 'qwen') {
     // Qwen Code: --config-dir > QWEN_CONFIG_DIR > ~/.qwen
@@ -271,11 +271,11 @@ if (hasVerificar) {
 }
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--github-copilot${reset}          Instalar apenas para GitHub Copilot\n    ${cyan}--qwen${reset}                    Instalar apenas para Qwen Code\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente
-    ${cyan}--auto-detect${reset}             Modo automático: detecta runtimes e usa configuração do projeto\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para GitHub Copilot${reset}\n    npx fase-ai --github-copilot\n\n    ${dim}# Instalar para Qwen Code${reset}\n    npx fase-ai --qwen\n\n    ${dim}# Instalar para todos os runtimes${reset}
+  console.log(`  ${yellow}Uso:${reset} npx fase-ai [opções]\n\n  ${yellow}Opções:${reset}\n    ${cyan}--claude${reset}                  Instalar apenas para Claude Code\n    ${cyan}--opencode${reset}                Instalar apenas para OpenCode\n    ${cyan}--gemini${reset}                  Instalar apenas para Gemini\n    ${cyan}--codex${reset}                   Instalar apenas para Codex\n    ${cyan}--copilot${reset}          Instalar apenas para GitHub Copilot\n    ${cyan}--qwen${reset}                    Instalar apenas para Qwen Code\n    ${cyan}--all${reset}                     Instalar para todos os runtimes\n    ${cyan}-u, --uninstall${reset}           Desinstalar o FASE (remover todos os arquivos)\n    ${cyan}--atualizar${reset}               Atualizar FASE: detecta runtimes instalados e reinstala\n    ${cyan}-v, --verificar${reset}           Verificar instalação e gerar relatório\n    ${cyan}-c, --config-dir <caminho>${reset} Especificar diretório de configuração customizado\n    ${cyan}-h, --help${reset}                Exibir esta mensagem de ajuda\n    ${cyan}--force-statusline${reset}        Substituir configuração de statusline existente
+    ${cyan}--auto-detect${reset}             Modo automático: detecta runtimes e usa configuração do projeto\n\n  ${yellow}Exemplos:${reset}\n    ${dim}# Instalação interativa (solicita runtime)${reset}\n    npx fase-ai\n\n    ${dim}# Instalar para Claude Code${reset}\n    npx fase-ai --claude\n\n    ${dim}# Instalar para OpenCode${reset}\n    npx fase-ai --opencode\n\n    ${dim}# Instalar para Gemini${reset}\n    npx fase-ai --gemini\n\n    ${dim}# Instalar para Codex${reset}\n    npx fase-ai --codex\n\n    ${dim}# Instalar para GitHub Copilot${reset}\n    npx fase-ai --copilot\n\n    ${dim}# Instalar para Qwen Code${reset}\n    npx fase-ai --qwen\n\n    ${dim}# Instalar para todos os runtimes${reset}
     npx fase-ai --all
 
-    ${dim}# Instalação automática (para package.json postinstall)${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do GitHub Copilot${reset}\n    npx fase-ai --github-copilot --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n    ${dim}# Desinstalar do Qwen Code${reset}\n    npx fase-ai --qwen --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME / GITHUB_COPILOT_CONFIG_DIR / QWEN_CONFIG_DIR.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.
+    ${dim}# Instalação automática (para package.json postinstall)${reset}\n    npx fase-ai --all\n\n    ${dim}# Atualizar todos os runtimes instalados${reset}\n    npx fase-ai --atualizar\n\n    ${dim}# Atualizar apenas Claude Code${reset}\n    npx fase-ai --claude --atualizar\n\n    ${dim}# Verificar instalação${reset}\n    npx fase-ai --verificar\n\n    ${dim}# Desinstalação interativa (solicita confirma)${reset}\n    npx fase-ai --uninstall\n\n    ${dim}# Desinstalar do GitHub Copilot${reset}\n    npx fase-ai --copilot --uninstall\n\n    ${dim}# Desinstalar do Codex${reset}\n    npx fase-ai --codex --uninstall\n\n    ${dim}# Desinstalar do OpenCode${reset}\n    npx fase-ai --opencode --uninstall\n\n    ${dim}# Desinstalar do Qwen Code${reset}\n    npx fase-ai --qwen --uninstall\n\n  ${yellow}Notas:${reset}\n    A opção --config-dir é útil quando você tem múltiplas configurações.\n    Tem prioridade sobre as variáveis de ambiente CLAUDE_CONFIG_DIR / GEMINI_CONFIG_DIR / CODEX_HOME / COPILOT_CONFIG_DIR / QWEN_CONFIG_DIR.\n    Use ${cyan}--uninstall${reset} sem localização para um processo interativo seguro.\n    Use ${cyan}--atualizar${reset} para re-instalar mantendo configurações existentes.
     Use ${cyan}--auto-detect${reset} para instalação via npm postinstall (package.json).\n`);
   process.exit(0);
 }
@@ -409,7 +409,7 @@ function detectAvailableRuntimes() {
     { runtime: 'opencode', command: 'opencode' },
     { runtime: 'gemini', command: 'gemini' },
     { runtime: 'codex', command: 'codex' },
-    { runtime: 'github-copilot', command: 'gh' },
+    { runtime: 'copilot', command: 'gh' },
     { runtime: 'qwen', command: 'qwen' }
   ];
 
@@ -429,21 +429,21 @@ function detectAvailableRuntimes() {
 const attributionCache = new Map();
 /**
  * Get the local (project-level) config directory path for a runtime
- * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', 'github-copilot', or 'qwen'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', 'copilot', or 'qwen'
  * @returns {string} Path to local config directory
  */
 function getLocalDir(runtime) {
   if (runtime === 'opencode') return path.join(process.cwd(), '.opencode');
   if (runtime === 'gemini') return path.join(process.cwd(), '.gemini');
   if (runtime === 'codex') return path.join(process.cwd(), '.codex');
-  if (runtime === 'github-copilot') return path.join(process.cwd(), '.github-copilot');
+  if (runtime === 'copilot') return path.join(process.cwd(), '.copilot');
   if (runtime === 'qwen') return path.join(process.cwd(), '.qwen');
   return path.join(process.cwd(), '.claude');
 }
 /**
  * Get commit attribution setting for a runtime
  * Checks project-local config first, then falls back to global config
- * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'github-copilot'
+ * @param {string} runtime - 'claude', 'opencode', 'gemini', 'codex', or 'copilot'
  * @returns {null|undefined|string} null = remove, undefined = keep default, string = custom
  */
 function getCommitAttribution(runtime) {
@@ -496,15 +496,15 @@ function getCommitAttribution(runtime) {
         result = globalSettings.attribution.commit;
       }
     }
-  } else if (runtime === 'github-copilot') {
+  } else if (runtime === 'copilot') {
     // GitHub Copilot: check .copilot-settings.json for attribution config
     // Check local config first
-    const localSettings = readSettings(path.join(getLocalDir('github-copilot'), '.copilot-settings.json'));
+    const localSettings = readSettings(path.join(getLocalDir('copilot'), '.copilot-settings.json'));
     if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
       result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
     } else {
       // Fall back to global config
-      const globalSettings = readSettings(path.join(getGlobalDir('github-copilot', explicitConfigDir), '.copilot-settings.json'));
+      const globalSettings = readSettings(path.join(getGlobalDir('copilot', explicitConfigDir), '.copilot-settings.json'));
       if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
         result = undefined;
       } else if (globalSettings.attribution.commit === '') {
@@ -2585,9 +2585,9 @@ function promptRuntime(callback) {
       ['opencode'],
       ['gemini'],
       ['codex'],
-      ['github-copilot'],
+      ['copilot'],
       ['qwen'],
-      ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'],
+      ['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen'],
       'uninstall',
       'exit'
     ];
@@ -2928,7 +2928,7 @@ if (process.env.FASE_TEST_MODE) {
       const runtimes = selectedRuntimes;
       promptUninstallConfirmation(runtimes, false);
     } else {
-      promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen']);
+      promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen']);
     }
   } else if (selectedRuntimes.length > 0) {
     installAllRuntimes(selectedRuntimes, false, false);
@@ -2940,7 +2940,7 @@ if (process.env.FASE_TEST_MODE) {
     } else {
       promptRuntime((runtimes) => {
         if (runtimes === 'uninstall') {
-          promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen']);
+          promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen']);
         } else {
           promptLocation(runtimes);
         }
