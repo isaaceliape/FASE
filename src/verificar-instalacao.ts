@@ -193,13 +193,13 @@ const runtimes: Runtime[] = [
   },
   {
     name: 'GitHub Copilot',
-    configDir: path.join(os.homedir(), '.github-copilot'),
-    settingsFile: path.join(os.homedir(), '.github-copilot', '.copilot-settings.json'),
-    commandsDir: path.join(os.homedir(), '.github-copilot', 'commands'),
-    hooksDir: path.join(os.homedir(), '.github-copilot', 'hooks'),
+    configDir: path.join(os.homedir(), '.copilot'),
+    settingsFile: path.join(os.homedir(), '.copilot', '.copilot-settings.json'),
+    commandsDir: path.join(os.homedir(), '.copilot', 'commands'),
+    hooksDir: path.join(os.homedir(), '.copilot', 'hooks'),
     commandPattern: /^fase-.*\.md$/,
     hookPattern: /^fase-.*\.js$/,
-    installFlag: '--github-copilot'
+    installFlag: '--copilot'
   }
 ];
 

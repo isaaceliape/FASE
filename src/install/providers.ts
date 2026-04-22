@@ -17,7 +17,7 @@ import os from 'os';
 /**
  * Supported provider runtimes
  */
-export type ProviderRuntime = 'claude' | 'opencode' | 'gemini' | 'codex' | 'github-copilot' | 'qwen';
+export type ProviderRuntime = 'claude' | 'opencode' | 'gemini' | 'codex' | 'copilot' | 'qwen';
 
 /**
  * Expand ~ to home directory (shell doesn't expand in env vars passed to node)
@@ -53,7 +53,7 @@ export function getDirName(runtime: ProviderRuntime): string {
   if (runtime === 'opencode') return '.opencode';
   if (runtime === 'gemini') return '.gemini';
   if (runtime === 'codex') return '.codex';
-  if (runtime === 'github-copilot') return '.github-copilot';
+  if (runtime === 'copilot') return '.copilot';
   if (runtime === 'qwen') return '.qwen';
   return '.claude';
 }
@@ -86,7 +86,7 @@ export function getConfigDirFromHome(runtime: ProviderRuntime, isGlobal: boolean
   }
   if (runtime === 'gemini') return "'.gemini'";
   if (runtime === 'codex') return "'.codex'";
-  if (runtime === 'github-copilot') return "'.github-copilot'";
+  if (runtime === 'copilot') return "'.copilot'";
   if (runtime === 'qwen') return "'.qwen'";
   return "'.claude'";
 }
@@ -167,15 +167,15 @@ export function getGlobalDir(runtime: ProviderRuntime, explicitDir: string | nul
     return path.join(os.homedir(), '.codex');
   }
   
-  if (runtime === 'github-copilot') {
-    // GitHub Copilot: --config-dir > GITHUB_COPILOT_CONFIG_DIR > ~/.github-copilot
+  if (runtime === 'copilot') {
+    // GitHub Copilot: --config-dir > COPILOT_CONFIG_DIR > ~/.github-copilot
     if (explicitDir) {
       return expandTilde(explicitDir);
     }
-    if (process.env.GITHUB_COPILOT_CONFIG_DIR) {
-      return expandTilde(process.env.GITHUB_COPILOT_CONFIG_DIR);
+    if (process.env.COPILOT_CONFIG_DIR) {
+      return expandTilde(process.env.COPILOT_CONFIG_DIR);
     }
-    return path.join(os.homedir(), '.github-copilot');
+    return path.join(os.homedir(), '.copilot');
   }
 
   if (runtime === 'qwen') {
@@ -212,7 +212,7 @@ export function getGlobalDir(runtime: ProviderRuntime, explicitDir: string | nul
  * ```
  */
 export function isValidProvider(runtime: string): runtime is ProviderRuntime {
-  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'].includes(runtime);
+  return ['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen'].includes(runtime);
 }
 
 /**
@@ -221,5 +221,5 @@ export function isValidProvider(runtime: string): runtime is ProviderRuntime {
  * @returns Array of valid provider runtime names
  */
 export function getSupportedProviders(): ProviderRuntime[] {
-  return ['claude', 'opencode', 'gemini', 'codex', 'github-copilot', 'qwen'];
+  return ['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen'];
 }

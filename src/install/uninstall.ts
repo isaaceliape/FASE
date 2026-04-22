@@ -177,7 +177,7 @@ export function uninstallFase(
     const settingsPath = path.join(
       configDir,
       runtime === 'opencode' ? 'opencode.json' : 
-      runtime === 'github-copilot' ? '.copilot-settings.json' : 
+      runtime === 'copilot' ? '.copilot-settings.json' : 
       'settings.json'
     );
     

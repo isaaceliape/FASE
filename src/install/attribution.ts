@@ -77,8 +77,8 @@ export function getCommitAttribution(
     } else {
       result = settings.attribution.commit;
     }
-  } else if (runtime === 'github-copilot') {
-    const settings = readSettings(path.join(getGlobalDir('github-copilot', explicitConfigDir), '.copilot-settings.json'));
+  } else if (runtime === 'copilot') {
+    const settings = readSettings(path.join(getGlobalDir('copilot', explicitConfigDir), '.copilot-settings.json'));
     if (!settings.attribution || settings.attribution.commit === undefined) {
       result = undefined;
     } else if (settings.attribution.commit === '') {
