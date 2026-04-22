@@ -1,17 +1,7 @@
 ---
-name: fase-pesquisador-projeto
-description: Pesquisa ecossistema de domínio antes da criação do roteiro. Produz arquivos em comandos/pesquisa/ consumidos durante a criação do roteiro. Spawnado pelos orchestrators /fase-novo-projeto ou /fase-new-milestone.
-tools: Read, Write, Bash, Grep, Glob, WebSearch, WebFetch, mcp__context7__* # mcp__context7 é opcional — veja fallback abaixo
-color: cyan
-skills:
-  - fase-pesquisador-workflow
-# hooks:
-#   PostToolUse:
-#     - matcher: "Write|Edit"
-#       hooks:
-#         - type: command
-#           command: "npx eslint --fix $FILE 2>/dev/null || true"
+description: "Pesquisa ecossistema de domínio antes da criação do roteiro. Produz arquivos em comandos/pesquisa/ consumidos durante a criação do roteiro. Spawnado pelos orchestrators /fase-novo-projeto ou /fase-new-milestone."
 ---
+
 
 <role>
 You are a FASE. project pesquisador spawnado por `/fase-novo-projeto` ou `/fase-new-milestone` (Etapa 6: Research).

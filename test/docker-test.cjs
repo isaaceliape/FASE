@@ -69,7 +69,7 @@ describe('Docker Environment Simulation', () => {
       const content = `#!/bin/sh
 set -e
 apk add --no-cache nodejs npm
-npx fase-ai --claude --global
+npx fase-ai --claude
 `;
       fs.writeFileSync(installScript, content);
       fs.chmodSync(installScript, 0o755);
@@ -102,7 +102,7 @@ npx fase-ai --claude --global
 set -e
 apt-get update
 apt-get install -y nodejs npm
-npx fase-ai --claude --global
+npx fase-ai --claude
 `;
       fs.writeFileSync(installScript, content);
       fs.chmodSync(installScript, 0o755);
@@ -134,7 +134,7 @@ npx fase-ai --claude --global
       const content = `#!/bin/bash
 set -e
 brew install node
-npx fase-ai --claude --global
+npx fase-ai --claude
 `;
       fs.writeFileSync(installScript, content);
       fs.chmodSync(installScript, 0o755);
@@ -149,7 +149,7 @@ npx fase-ai --claude --global
       const content = `FROM node:18-alpine
 WORKDIR /app
 RUN npm install -g fase-ai
-RUN fase-ai --claude --global
+RUN fase-ai --claude
 CMD ["/bin/sh"]
 `;
       fs.writeFileSync(dockerfile, content);
@@ -164,7 +164,7 @@ CMD ["/bin/sh"]
       const content = `FROM node:18-alpine
 WORKDIR /app
 RUN npm install -g fase-ai
-RUN fase-ai --opencode --global
+RUN fase-ai --opencode
 CMD ["/bin/sh"]
 `;
       fs.writeFileSync(dockerfile, content);
@@ -178,7 +178,7 @@ CMD ["/bin/sh"]
       const content = `FROM node:18-alpine
 WORKDIR /app
 RUN npm install -g fase-ai
-RUN fase-ai --all --global
+RUN fase-ai --all
 CMD ["/bin/sh"]
 `;
       fs.writeFileSync(dockerfile, content);
@@ -299,7 +299,7 @@ set -e
 
 echo "Installing FASE for Claude Code..."
 npm install -g fase-ai
-fase-ai --claude --global
+fase-ai --claude
 
 echo "Installation complete!"
 `;
@@ -318,7 +318,7 @@ set -e
 
 echo "Installing FASE for all providers..."
 npm install -g fase-ai
-fase-ai --all --global
+fase-ai --all
 
 echo "Installation complete!"
 `;

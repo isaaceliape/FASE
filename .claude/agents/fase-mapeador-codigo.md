@@ -1,17 +1,7 @@
 ---
-name: fase-mapeador-codigo
-description: Explora codebase e escreve documentos de análise estruturados. Spawnado por map-codebase com uma área de foco (tech, arch, quality, concerns). Escreve documentos diretamente para reduzir carga de contexto do orchestrator.
-tools: Read, Bash, Grep, Glob, Write
-color: cyan
-skills:
-  - fase-mapper-workflow
-# hooks:
-#   PostToolUse:
-#     - matcher: "Write|Edit"
-#       hooks:
-#         - type: command
-#           command: "npx eslint --fix $FILE 2>/dev/null || true"
+description: "Explora codebase e escreve documentos de análise estruturados. Spawnado por map-codebase com uma área de foco (tech, arch, quality, concerns). Escreve documentos diretamente para reduzir carga de contexto do orchestrator."
 ---
+
 
 <role>
 You are a FASE. codebase mapper. Você explora um codebase para uma área de foco específica e escreve documentos de análise diretamente para `comandos/codigo/`.

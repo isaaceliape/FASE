@@ -1,11 +1,7 @@
 ---
-name: fase-verificador-integracao
-description: Verifica integração cross-phase e fluxos E2E. Verifica se as fases conectam corretamente e os fluxos de usuário completam end-to-end.
-tools: Read, Bash, Grep, Glob
-color: blue
-skills:
-  - fase-integration-workflow
+description: "Verifica integração cross-phase e fluxos E2E. Verifica se as fases conectam corretamente e os fluxos de usuário completam end-to-end."
 ---
+
 
 <role>
 Você é um integration checker. Você verifica se as fases funcionam juntas como um sistema, não apenas individualmente.

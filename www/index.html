@@ -733,7 +733,7 @@
 
             <!-- Status Badge -->
             <div style="margin: 40px 0 40px 0; padding: 16px; background: rgba(0, 255, 136, 0.1); border-left: 3px solid var(--primary); border-radius: 4px;">
-                <div style="color: var(--primary); font-weight: bold; margin-bottom: 8px;">✓ v4.0.2 - Todos os testes passando</div>
+                <div style="color: var(--primary); font-weight: bold; margin-bottom: 8px;">✓ v4.0.3 - Todos os testes passando</div>
                 <div style="color: var(--dim); font-size: 0.9rem;">34/34 comandos validados • 6/6 runtimes funcionando • Sistema de logging integrado</div>
             </div>
 
@@ -855,7 +855,7 @@ $ npx fase-ai
 
 ╔════════════════════════════════════════════════════════════════╗
 ║ F.A.S.E - Framework de Automação Sem Enrolação                 ║
-║ Instalador Interativo v4.0.2                                   ║
+║ Instalador Interativo v4.0.3                                   ║
 ╚════════════════════════════════════════════════════════════════╝
 
 ? Qual runtime você deseja usar? (use ↑↓ para navegar)
@@ -909,11 +909,11 @@ $ npx fase-ai
                 </p>
 
                 <div class="command">
-                    npx fase-ai --claude --global
+                    npx fase-ai --claude
                     <button
                         class="copy-btn"
                         onclick="
-                            copyToClipboard('npx fase-ai --claude --global')
+                            copyToClipboard('npx fase-ai --claude')
                         "
                     >
                         copiar
@@ -931,11 +931,10 @@ $ npx fase-ai
                         margin-bottom: 30px;
                     "
                 >
-$ npx fase-ai --claude --global
+$ npx fase-ai --claude
 
 ✓ Runtime: Claude Code
-✓ Escopo: Global
-✓ Instalando em: /usr/local/lib/node_modules/
+✓ Instalando em: ~/.claude/
 ✓ Configurando bash profile...
 ✓ Ativando comandos FASE...
 
@@ -945,11 +944,11 @@ $ npx fase-ai --claude --global
                 </pre>
 
                 <div class="command">
-                    npx fase-ai --opencode --local
+                    npx fase-ai --opencode
                     <button
                         class="copy-btn"
                         onclick="
-                            copyToClipboard('npx fase-ai --opencode --local')
+                            copyToClipboard('npx fase-ai --opencode')
                         "
                     >
                         copiar
@@ -967,10 +966,9 @@ $ npx fase-ai --claude --global
                         margin-bottom: 30px;
                     "
                 >
-$ npx fase-ai --opencode --local
+$ npx fase-ai --opencode
 
 ✓ Runtime: OpenCode
-✓ Escopo: Local
 ✓ Instalando em: ./.opencode/
 ✓ Copiando comandos...
 ✓ Gerando configurações...
@@ -981,10 +979,10 @@ $ npx fase-ai --opencode --local
                 </pre>
 
                 <div class="command">
-                    npx fase-ai --all --global
+                    npx fase-ai --all
                     <button
                         class="copy-btn"
-                        onclick="copyToClipboard('npx fase-ai --all --global')"
+                        onclick="copyToClipboard('npx fase-ai --all')"
                     >
                         copiar
                     </button>
@@ -1000,7 +998,7 @@ $ npx fase-ai --opencode --local
                         line-height: 1.6;
                     "
                 >
-$ npx fase-ai --all --global
+$ npx fase-ai --all
 
 ✓ Instalando para todos os runtimes:
   ✓ Claude Code
@@ -1009,7 +1007,6 @@ $ npx fase-ai --all --global
   ✓ Codex
   ✓ GitHub Copilot
   ✓ Qwen Code
-✓ Modo: Global
 
 ╔════════════════════════════════════════════════════════════════╗
 ║ ✓ Todos os runtimes configurados com sucesso!                  ║

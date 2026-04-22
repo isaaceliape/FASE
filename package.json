@@ -1,6 +1,6 @@
 {
   "name": "fase-ai",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "FASE. - Framework de Automação Sem Enrolação. Brazilian Portuguese translation of get-shit-done for AI coding assistants",
   "type": "module",
   "bin": {
@@ -46,6 +46,9 @@
     "verificar-instalacao": "node dist/verificar-instalacao.js",
     "build-docs": "node build-docs.cjs",
     "test": "mocha test/*.test.cjs",
+    "test:tmux": "./test/tmux/run-all-tests.sh",
+    "test:tmux:smoke": "node test/tmux-runner.cjs --smoke",
+    "test:tmux:all": "node test/tmux-runner.cjs --all",
     "test:edge-cases": "mocha test/edge-cases.test.cjs",
     "test:teses": "mocha testes/*.test.cjs --require ./testes/test-helper.cjs",
     "test:all": "npm run test:edge-cases && npm run test:teses",

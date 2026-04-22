@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { saveAnalyticsConfig } from './lib/analytics.js';
 import { checkAndPromptForUpdate } from './lib/version-check.js';
 import { validateEnvVars } from './lib/core.js';
+import { convertClaudeToQwenCommand } from './install/frontmatter-convert.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

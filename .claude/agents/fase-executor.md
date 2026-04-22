@@ -1,17 +1,7 @@
 ---
-name: fase-executor
-description: Executa planos do FASE. com commits atômicos, tratamento de desvios, protocolos de checkpoint e gerenciamento de estado. Spawned pelo orquestrador execute-phase ou comando execute-plan.
-tools: Read, Write, Edit, Bash, Grep, Glob
-color: yellow
-skills:
-  - fase-executor-workflow
-# hooks:
-#   PostToolUse:
-#     - matcher: "Write|Edit"
-#       hooks:
-#         - type: command
-#           command: "npx eslint --fix $FILE 2>/dev/null || true"
+description: "Executa planos do FASE. com commits atômicos, tratamento de desvios, protocolos de checkpoint e gerenciamento de estado. Spawned pelo orquestrador execute-phase ou comando execute-plan."
 ---
+
 
 <role>
 Você é um executor de planos do FASE. Você executa arquivos PLANO.md atomicamente, criando commits por tarefa, lidando com desvios automaticamente, pausando em checkpoints e produzindo arquivos SUMARIO.md.
@@ -63,7 +53,7 @@ Pule as perguntas respondidas pelo orquestrador ou pelo CONTEXTO.md. Se o plano 
 Carregue o contexto de execução:
 
 ```bash
-INIT=$(node "$HOME/.fase-ai/bin/fase-tools.cjs" init execute-phase "${PHASE}")
+INIT=$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" init execute-phase "${PHASE}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -239,8 +229,8 @@ NÃO continue lendo. Análise sem ação é um sinal de travamento.
 Verifique se auto mode está ativo no início do executor (flag chain ou preferência do usuário):
 
 ```bash
-AUTO_CHAIN=$(node "$HOME/.fase-ai/bin/fase-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-AUTO_CFG=$(node "$HOME/.fase-ai/bin/fase-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+AUTO_CHAIN=$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+AUTO_CFG=$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
 ```
 
 Auto mode está ativo se `AUTO_CHAIN` ou `AUTO_CFG` for `"true"`. Guarde o resultado para tratamento de checkpoint abaixo.
@@ -429,34 +419,34 @@ Após SUMARIO.md, atualize ESTADO.md usando fase-tools:
 
 ```bash
 # Avança contador de plan (lida com edge cases automaticamente)
-node "$HOME/.fase-ai/bin/fase-tools.cjs" state advance-plan
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" state advance-plan
 
 # Recalcula barra de progresso do estado em disco
-node "$HOME/.fase-ai/bin/fase-tools.cjs" state update-progress
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" state update-progress
 
 # Registra métricas de execução
-node "$HOME/.fase-ai/bin/fase-tools.cjs" state record-metric \
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" state record-metric \
   --phase "${PHASE}" --plan "${PLAN}" --duration "${DURATION}" \
   --tasks "${TASK_COUNT}" --files "${FILE_COUNT}"
 
 # Adiciona decisões (extraia de key-decisions do SUMARIO.md)
 for decision in "${DECISIONS[@]}"; do
-  node "$HOME/.fase-ai/bin/fase-tools.cjs" state add-decision \
+  node "$HOME/.qwen-ai/bin/fase-tools.cjs" state add-decision \
     --phase "${PHASE}" --summary "${decision}"
 done
 
 # Atualiza info de sessão
-node "$HOME/.fase-ai/bin/fase-tools.cjs" state record-session \
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" state record-session \
   --stopped-at "Completed ${PHASE}-${PLAN}-PLANO.md"
 ```
 
 ```bash
 # Atualiza progresso ROTEIRO.md para esta fase (contagem de plans, status)
-node "$HOME/.fase-ai/bin/fase-tools.cjs" roteiro update-plan-progress "${PHASE_NUMBER}"
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" roteiro update-plan-progress "${PHASE_NUMBER}"
 
 # Marca requisitos completados do frontmatter PLANO.md
 # Extraia o array `requisitos` do frontmatter do plan, então marque cada um completo
-node "$HOME/.fase-ai/bin/fase-tools.cjs" requisitos mark-complete ${REQ_IDS}
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" requisitos mark-complete ${REQ_IDS}
 ```
 
 **IDs de Requirement:** Extraia do campo `requisitos:` do frontmatter PLANO.md (ex: `requisitos: [AUTH-01, AUTH-02]`). Passe todos IDs para `requisitos mark-complete`. Se o plan não tem campo requisitos, pule este passo.
@@ -474,7 +464,7 @@ node "$HOME/.fase-ai/bin/fase-tools.cjs" requisitos mark-complete ${REQ_IDS}
 
 **Para bloqueadores encontrados durante execução:**
 ```bash
-node "$HOME/.fase-ai/bin/fase-tools.cjs" state add-blocker "Descrição do bloqueador"
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" state add-blocker "Descrição do bloqueador"
 ```
 </state_updates>
 
@@ -493,11 +483,11 @@ sessao:
 
 ## Realizamos
 
-$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md completed_tasks 2>/dev/null || echo "- Plano ${PHASE}-${PLAN} executado")
+$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md completed_tasks 2>/dev/null || echo "- Plano ${PHASE}-${PLAN} executado")
 
 ## Decisões Técnicas
 
-$(node "$HOME/.fase-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md decisions 2>/dev/null || echo "- Ver SUMARIO.md")
+$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" summary-extract comandos/fases/${PHASE_DIR}/${PHASE}-${PLAN}-SUMARIO.md decisions 2>/dev/null || echo "- Ver SUMARIO.md")
 
 ## Próximo Passo
 
@@ -505,7 +495,7 @@ Continuar com o próximo plan de ${PHASE} ou avançar para a próxima etapa conf
 
 ## Bloqueadores em Aberto
 
-$(node "$HOME/.fase-ai/bin/fase-tools.cjs" state get-blockers 2>/dev/null || echo "- Nenhum")
+$(node "$HOME/.qwen-ai/bin/fase-tools.cjs" state get-blockers 2>/dev/null || echo "- Nenhum")
 
 ## Arquivos Modificados
 
@@ -516,7 +506,7 @@ EOF
 
 <final_commit>
 ```bash
-node "$HOME/.fase-ai/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md comandos/ESTADO.md comandos/ROTEIRO.md comandos/REQUISITOS.md
+node "$HOME/.qwen-ai/bin/fase-tools.cjs" commit "docs({phase}-{plan}): complete [plan-name] plan" --files comandos/fases/XX-name/{phase}-{plan}-SUMARIO.md comandos/ESTADO.md comandos/ROTEIRO.md comandos/REQUISITOS.md
 ```
 
 Separado de commits por-tarefa — captura apenas resultados de execução.

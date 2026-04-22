@@ -184,9 +184,6 @@ Isso simula a publicação no npm e mostra:
 # Instalação local (projeto atual)
 node bin/install.js --claude --local
 
-# Instalar globalmente (seu computador)
-node bin/install.js --claude --global
-
 # Uninstall
 node bin/install.js --uninstall
 ```

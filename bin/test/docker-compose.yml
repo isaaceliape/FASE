@@ -30,7 +30,7 @@ services:
       sh -c "
         npm install &&
         npm install -g . &&
-        fase-ai --claude --global &&
+        fase-ai --claude &&
         test -d /root/.claude &&
         echo '✓ Claude installation successful'
       "
@@ -52,7 +52,7 @@ services:
       sh -c "
         npm install &&
         npm install -g . &&
-        fase-ai --opencode --global &&
+        fase-ai --opencode &&
         test -d /root/.config/opencode &&
         echo '✓ OpenCode installation successful'
       "
@@ -73,7 +73,7 @@ services:
       sh -c "
         npm install &&
         npm install -g . &&
-        fase-ai --gemini --global &&
+        fase-ai --gemini &&
         test -d /root/.gemini &&
         echo '✓ Gemini installation successful'
       "
@@ -94,7 +94,7 @@ services:
       sh -c "
         npm install &&
         npm install -g . &&
-        fase-ai --codex --global &&
+        fase-ai --codex &&
         test -d /root/.codex &&
         echo '✓ Codex installation successful'
       "
@@ -122,7 +122,7 @@ services:
       sh -c "
         npm install &&
         npm install -g . &&
-        fase-ai --all --global &&
+        fase-ai --all &&
         test -d /root/.claude &&
         test -d /root/.config/opencode &&
         test -d /root/.gemini &&

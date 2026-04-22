@@ -23,22 +23,22 @@ RUN npm test
 
 # Test Claude installation
 RUN npm install -g . && \
-    fase-ai --claude --global && \
+    fase-ai --claude && \
     test -d /root/.claude && \
     echo "✓ Claude installation successful"
 
 # Test OpenCode installation
-RUN fase-ai --opencode --global && \
+RUN fase-ai --opencode && \
     test -d /root/.config/opencode && \
     echo "✓ OpenCode installation successful"
 
 # Test Gemini installation
-RUN fase-ai --gemini --global && \
+RUN fase-ai --gemini && \
     test -d /root/.gemini && \
     echo "✓ Gemini installation successful"
 
 # Test Codex installation
-RUN fase-ai --codex --global && \
+RUN fase-ai --codex && \
     test -d /root/.codex && \
     echo "✓ Codex installation successful"
 

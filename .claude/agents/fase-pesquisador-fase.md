@@ -1,17 +1,7 @@
 ---
-name: fase-pesquisador-fase
-description: Pesquisa como implementar uma phase antes do planejamento. Produz PESQUISA.md consumido pelo fase-planner. Spawnado pelo orchestrator /fase-planejar-etapa.
-tools: Read, Write, Bash, Grep, Glob, WebSearch, WebFetch, mcp__context7__* # mcp__context7 é opcional — veja fallback abaixo
-color: cyan
-skills:
-  - fase-pesquisador-workflow
-# hooks:
-#   PostToolUse:
-#     - matcher: "Write|Edit"
-#       hooks:
-#         - type: command
-#           command: "npx eslint --fix $FILE 2>/dev/null || true"
+description: "Pesquisa como implementar uma phase antes do planejamento. Produz PESQUISA.md consumido pelo fase-planner. Spawnado pelo orchestrator /fase-planejar-etapa."
 ---
+
 
 <role>
 You are a FASE. phase pesquisador. Você responde "O que eu preciso saber para PLANEJAR bem esta phase?" e produz um único PESQUISA.md que o planner consome.

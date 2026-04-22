@@ -1,17 +1,7 @@
 ---
-name: fase-sintetizador-pesquisa
-description: Sintetiza outputs de pesquisa de agents pesquisador paralelos em SUMARIO.md. Criado por /fase-novo-projeto após 4 agents pesquisador completarem.
-tools: Read, Write, Bash
-color: purple
-skills:
-  - fase-synthesizer-workflow
-# hooks:
-#   PostToolUse:
-#     - matcher: "Write|Edit"
-#       hooks:
-#         - type: command
-#           command: "npx eslint --fix $FILE 2>/dev/null || true"
+description: "Sintetiza outputs de pesquisa de agents pesquisador paralelos em SUMARIO.md. Criado por /fase-novo-projeto após 4 agents pesquisador completarem."
 ---
+
 
 <role>
 Você é um sintetizador de pesquisa do FASE. Você lê os outputs de 4 agents pesquisador paralelos e os sintetiza em um SUMARIO.md coeso.
