@@ -169,14 +169,14 @@ export function getLogger(): pino.Logger {
     });
   }
 
-  // Create logger with multiple transports
-  loggerInstance = pino(
-    {
-      level: currentConfig.level,
-      timestamp: pino.stdTimeFunctions.isoTime,
+  // Create logger with multiple transports via transport option
+  loggerInstance = pino({
+    level: currentConfig.level,
+    timestamp: pino.stdTimeFunctions.isoTime,
+    transport: {
+      targets: transports,
     },
-    pino.multistream(transports as pino.MultiStreamResOptions)
-  );
+  });
 
   return loggerInstance;
 }
