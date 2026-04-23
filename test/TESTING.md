@@ -2,6 +2,18 @@
 
 Suite completa de testes para FASE (Framework de Automação Sem Enrolação) em todos os provedores suportados e métodos de instalação.
 
+## 📁 Estrutura de Diretórios
+
+```
+test/
+├── unit/           # Testes unitários (25+ arquivos, 153 testes)
+├── integration/    # Testes de integração (6 arquivos, 179 testes)
+├── e2e/            # Testes end-to-end (2 arquivos, 25 testes)
+├── helpers/        # Utilitários de teste compartilhados
+├── tmux/           # Testes baseados em tmux
+└── (infraestrutura Docker)
+```
+
 ## 📋 Visão Geral
 
 Esta suite de testes oferece cobertura abrangente para:
@@ -14,16 +26,16 @@ Esta suite de testes oferece cobertura abrangente para:
 
 ### Executar Todos os Testes
 ```bash
-npm test
+npm test                    # Unit + Integration tests (332 testes)
 ```
 
 ### Executar Suite Específica de Testes
 ```bash
-npm run test:install      # Testes de instalação
-npm run test:providers    # Testes de configuração de provedor
-npm run test:integration  # Testes de integração
-npm run test:docker       # Simulações de ambiente Docker
-npm run test:edge-cases   # Casos extremos e cenários complexos
+npm run test:unit           # Testes unitários (153 testes)
+npm run test:integration    # Testes de integração (179 testes)
+npm run test:e2e            # Testes end-to-end (25 testes)
+npm run test:all            # Unit + Integration tests
+npm run test:tmux           # Testes tmux interativos
 ```
 
 ### Modo Watch (Auto-reload em mudanças)
@@ -268,9 +280,9 @@ O installer (`dist/install.js`) converte caminhos de origem para localizações 
 - ✅ OpenCode recebe caminhos corretamente formatados `~/.config/opencode/fase/`
 
 ### Testes Relacionados
-- **`testes/phase.test.cjs`** - Valida formatos de caminho de contexto de execução
-- **`testes/agent-frontmatter.test.cjs`** - Valida consistência de arquivo de agente
-- **`test/install.test.js`** - Testa construção básica de caminho e operações de arquivo
+- **`test/unit/etapa.test.cjs`** - Valida formatos de caminho de contexto de execução
+- **`test/unit/agent-frontmatter.test.cjs`** - Valida consistência de arquivo de agente
+- **`test/unit/install.test.cjs`** - Testa construção básica de caminho e operações de arquivo
 
 ## 🛠️ Comandos Comuns
 

@@ -2,6 +2,18 @@
 
 Suite abrangente de testes para instalações do FASE em diferentes provedores (Claude Code, OpenCode, Gemini e Codex).
 
+## Estrutura de Diretórios de Teste
+
+```
+test/
+├── unit/           # Testes unitários (25+ arquivos, 153 testes)
+├── integration/    # Testes de integração (6 arquivos, 179 testes)
+├── e2e/            # Testes end-to-end (2 arquivos, 25 testes)
+├── helpers/        # Utilitários de teste compartilhados
+├── tmux/           # Testes baseados em tmux
+└── (infraestrutura Docker)
+```
+
 ## Arquivos de Teste
 
 ### `install.test.js`
@@ -70,7 +82,15 @@ npm run test:docker
 
 Executar a suite completa de testes:
 ```bash
-npm test
+npm test                    # Unit + Integration tests
+```
+
+Executar suites específicas:
+```bash
+npm run test:unit           # Testes unitários apenas
+npm run test:integration    # Testes de integração apenas
+npm run test:e2e            # Testes end-to-end
+npm run test:all            # Unit + Integration + E2E
 ```
 
 Modo watch (re-executar em mudanças de arquivo):
