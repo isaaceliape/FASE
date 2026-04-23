@@ -6,7 +6,7 @@ const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGsdTools, createTempProject, cleanup } = require('../helpers/helpers.cjs');
 
 describe('state-snapshot command', () => {
   let tmpDir;
@@ -506,7 +506,7 @@ describe('STATE.md frontmatter sync', () => {
 // stateExtractField and stateReplaceField helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-const { stateExtractField, stateReplaceField } = require('../dist/lib/state.js');
+const { stateExtractField, stateReplaceField } = require('../../dist/lib/state.js');
 
 describe('stateExtractField and stateReplaceField helpers', () => {
   // stateExtractField tests

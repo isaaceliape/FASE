@@ -11,7 +11,7 @@ const fs = require('fs');
 process.env.NODE_ENV = 'test';
 
 // Resolve paths relative to project root
-const ROOT_DIR = path.join(__dirname, '..');
+const ROOT_DIR = path.join(__dirname, '..', '..');
 const BIN_DIR = path.join(ROOT_DIR, 'bin');
 const SRC_DIR = path.join(ROOT_DIR, 'src');
 const DIST_DIR = path.join(ROOT_DIR, 'dist');

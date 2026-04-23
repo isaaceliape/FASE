@@ -6,7 +6,7 @@ const { execSync } = require('child_process');
 
 describe('FASE Provider-Specific Installation', () => {
   let tempDir;
-  const INSTALLER_PATH = path.join(__dirname, '..', 'dist', 'install.js');
+  const INSTALLER_PATH = path.join(__dirname, '..', '..', 'dist', 'install.js');
 
   beforeEach(() => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fase-provider-test-'));

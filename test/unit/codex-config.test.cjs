@@ -37,7 +37,7 @@ const AGENT_SECTION = '[agents';
 process.env.FASE_TEST_MODE = '1';
 
 // Import from ES module using dynamic import
-const installModule = require('../dist/install.js');
+const installModule = require('../../dist/install.js');
 const faseExports = globalThis.FASE_TEST_EXPORTS || {
   getCodexSkillAdapterHeader: () => {},
   convertClaudeAgentToCodexAgent: () => {},
@@ -516,7 +516,7 @@ describe('mergeCodexConfig', () => {
 
 describe('installCodexConfig (integration)', () => {
   let tmpTarget;
-  const agentsSrc = path.join(__dirname, '..', 'agents');
+  const agentsSrc = path.join(__dirname, '..', '..', 'agents');
 
   beforeEach(() => {
     tmpTarget = fs.mkdtempSync(path.join(os.tmpdir(), 'gsd-codex-install-'));
@@ -530,7 +530,7 @@ describe('installCodexConfig (integration)', () => {
   const hasAgents = fs.existsSync(agentsSrc);
 
   (hasAgents ? test : test.skip)('generates config.toml and agent .toml files', () => {
-    const { installCodexConfig } = require('../dist/install.js');
+    const { installCodexConfig } = require('../../dist/install.js');
     const count = installCodexConfig(tmpTarget, agentsSrc);
 
     assert.ok(count >= 11, `installed ${count} agents (expected >= 11)`);

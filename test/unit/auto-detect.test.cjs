@@ -18,7 +18,7 @@ describe('Auto-Detect Mode', () => {
 
   before(async () => {
     // Dynamically import the ES module - functions will be on globalThis
-    await import('../dist/install.js');
+    await import('../../dist/install.js');
   });
 
   beforeEach(() => {
@@ -257,7 +257,7 @@ describe('Auto-Detect Integration', () => {
 
   before(async () => {
     // Dynamically import the ES module - functions will be on globalThis
-    await import('../dist/install.js');
+    await import('../../dist/install.js');
   });
 
   beforeEach(() => {

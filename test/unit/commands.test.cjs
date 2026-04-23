@@ -6,7 +6,7 @@ const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGsdTools, createTempProject, cleanup } = require('../helpers/helpers.cjs');
 
 describe('history-digest command', () => {
   let tmpDir;
@@ -973,7 +973,7 @@ describe('resolve-model command', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('commit command', () => {
-  const { createTempGitProject } = require('./helpers.cjs');
+  const { createTempGitProject } = require('../helpers/helpers.cjs');
   const { execSync } = require('child_process');
   let tmpDir;
 
@@ -1068,7 +1068,7 @@ describe('commit command', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('websearch command', () => {
-  const { cmdWebsearch } = require('../dist/lib/commands.js');
+  const { cmdWebsearch } = require('../../dist/lib/commands.js');
   let origFetch;
   let origApiKey;
   let origStdoutWrite;

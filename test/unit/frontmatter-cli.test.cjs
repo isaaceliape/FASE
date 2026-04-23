@@ -13,7 +13,7 @@ const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { runGsdTools } = require('./helpers.cjs');
+const { runGsdTools } = require('../helpers/helpers.cjs');
 
 // Track temp files for cleanup
 let tempFiles = [];
@@ -89,7 +89,7 @@ describe('frontmatter set', () => {
 
     // Read back and verify
     const content = fs.readFileSync(file, 'utf-8');
-    const { extractFrontmatter } = require('../dist/lib/frontmatter.js');
+    const { extractFrontmatter } = require('../../dist/lib/frontmatter.js');
     const fm = extractFrontmatter(content);
     assert.strictEqual(fm.etapa, '02');
   });
@@ -100,7 +100,7 @@ describe('frontmatter set', () => {
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const content = fs.readFileSync(file, 'utf-8');
-    const { extractFrontmatter } = require('../dist/lib/frontmatter.js');
+    const { extractFrontmatter } = require('../../dist/lib/frontmatter.js');
     const fm = extractFrontmatter(content);
     assert.strictEqual(fm.status, 'active');
   });
@@ -111,7 +111,7 @@ describe('frontmatter set', () => {
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const content = fs.readFileSync(file, 'utf-8');
-    const { extractFrontmatter } = require('../dist/lib/frontmatter.js');
+    const { extractFrontmatter } = require('../../dist/lib/frontmatter.js');
     const fm = extractFrontmatter(content);
     assert.ok(Array.isArray(fm.tags), 'tags should be an array');
     assert.deepStrictEqual(fm.tags, ['a', 'b']);
@@ -144,7 +144,7 @@ describe('frontmatter merge', () => {
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const content = fs.readFileSync(file, 'utf-8');
-    const { extractFrontmatter } = require('../dist/lib/frontmatter.js');
+    const { extractFrontmatter } = require('../../dist/lib/frontmatter.js');
     const fm = extractFrontmatter(content);
     assert.strictEqual(fm.etapa, '01', 'original field should be preserved');
     assert.strictEqual(fm.plan, '02', 'merged field should be present');
@@ -157,7 +157,7 @@ describe('frontmatter merge', () => {
     assert.ok(result.success, `Command failed: ${result.error}`);
 
     const content = fs.readFileSync(file, 'utf-8');
-    const { extractFrontmatter } = require('../dist/lib/frontmatter.js');
+    const { extractFrontmatter } = require('../../dist/lib/frontmatter.js');
     const fm = extractFrontmatter(content);
     assert.strictEqual(fm.etapa, '02', 'conflicting field should be overwritten');
     assert.strictEqual(fm.type, 'execute', 'non-conflicting field should be preserved');

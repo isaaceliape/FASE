@@ -337,7 +337,7 @@ tools:
 
   describe('Shared Content (v3.2.0)', () => {
     it('should have fase-shared directory with template files', () => {
-      const faseSharedDir = path.join(__dirname, '..', 'fase-shared');
+      const faseSharedDir = path.join(__dirname, '..', '..', 'fase-shared');
       assert.strictEqual(fs.existsSync(faseSharedDir), true, 'fase-shared directory should exist');
 
       const templatesDir = path.join(faseSharedDir, 'templates');
@@ -351,7 +351,7 @@ tools:
     });
 
     it('should have references directory with checkpoint documentation', () => {
-      const referencesDir = path.join(__dirname, '..', 'fase-shared', 'references');
+      const referencesDir = path.join(__dirname, '..', '..', 'fase-shared', 'references');
       assert.strictEqual(fs.existsSync(referencesDir), true, 'references directory should exist');
 
       const checkpointsPath = path.join(referencesDir, 'checkpoints.md');
@@ -362,7 +362,7 @@ tools:
     });
 
     it('should have pesquisa-project subdirectory with research template', () => {
-      const pesquisaDir = path.join(__dirname, '..', 'fase-shared', 'templates', 'pesquisa-project');
+      const pesquisaDir = path.join(__dirname, '..', '..', 'fase-shared', 'templates', 'pesquisa-project');
       assert.strictEqual(fs.existsSync(pesquisaDir), true, 'pesquisa-project directory should exist');
 
       const sumariosPath = path.join(pesquisaDir, 'SUMARIO.md');

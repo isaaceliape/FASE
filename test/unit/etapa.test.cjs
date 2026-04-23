@@ -6,7 +6,7 @@ const { test, describe, beforeEach, afterEach } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
-const { runGsdTools, createTempProject, cleanup } = require('./helpers.cjs');
+const { runGsdTools, createTempProject, cleanup } = require('../helpers/helpers.cjs');
 
 describe('phases list command', () => {
   let tmpDir;
@@ -1329,7 +1329,7 @@ describe('phase complete command', () => {
 // compareEtapaNum and normalizeEtapaNome (imported directly)
 // ─────────────────────────────────────────────────────────────────────────────
 
-const { compareEtapaNum, normalizeEtapaNome } = require('../dist/lib/core.js');
+const { compareEtapaNum, normalizeEtapaNome } = require('../../dist/lib/core.js');
 
 describe('compareEtapaNum', () => {
   test('sorts integer phases numerically', () => {

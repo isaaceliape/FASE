@@ -17,7 +17,7 @@ const {
   spliceFrontmatter,
   parseMustHavesBlock,
   FRONTMATTER_SCHEMAS,
-} = require('../dist/lib/frontmatter.js');
+} = require('../../dist/lib/frontmatter.js');
 
 // ─── extractFrontmatter ─────────────────────────────────────────────────────
 

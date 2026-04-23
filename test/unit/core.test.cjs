@@ -28,7 +28,7 @@ const {
   findEtapaInternal,
   ensureInsidePlanejamento,
   isInsidePlanejamento,
-} = require('../dist/lib/core.js');
+} = require('../../dist/lib/core.js');
 
 // ─── loadConfig ────────────────────────────────────────────────────────────────
 

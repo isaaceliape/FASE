@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const COMMAND_FILE = path.join(__dirname, '..', 'bin', 'comandos', 'atualizar.md');
+const COMMAND_FILE = path.join(__dirname, '..', '..', 'bin', 'comandos', 'atualizar.md');
 
 // ─── Helpers de teste ─────────────────────────────────────────────────────────
 
