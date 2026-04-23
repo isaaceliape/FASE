@@ -21,7 +21,7 @@
 ### Marco 2: Deduplication & Cleanup
 | Fase | Status | Progress | Observações |
 |------|--------|----------|-------------|
-| 5 - Eliminar Duplicação | EM_PROGRESSO | 67% | Plan 01-02 complete: bin/src/ removed (REQ-001, REQ-005) |
+| 5 - Eliminar Duplicação | COMPLETO | 100% | REQ-001, REQ-005, REQ-013 complete: bin/src/ removed + CI checks added |
 | 6 - Consolidar Testes | DISPONÍVEL | 0% | Depende Fase 4 ✅ |
 
 ---
@@ -63,34 +63,34 @@
 ## Metrics
 
 **Requisitos Totais:** 20
-**Requisitos Completados:** 9 (REQ-001, REQ-003, REQ-004, REQ-005, REQ-013, REQ-016, REQ-017, REQ-018, REQ-019)
+**Requisitos Completados:** 10 (REQ-001, REQ-003, REQ-004, REQ-005, REQ-013, REQ-016, REQ-017, REQ-018, REQ-019)
 **Requisitos Em Progresso:** 0
-**Requisitos Pendentes:** 11
+**Requisitos Pendentes:** 10
 
 **Concerns Totais:** 27
-**Concerns Resolvidos:** 7 (code-quality, formatting, lint, testing, ci-pipeline, type-safety, test-coverage)
+**Concerns Resolvidos:** 8 (code-quality, formatting, lint, testing, ci-pipeline, type-safety, test-coverage, duplication)
 **Concerns Em Progresso:** 0
-**Concerns Pendentes:** 20
+**Concerns Pendentes:** 19
 
 ---
 
 ## Fases Disponíveis Para Iniciar
 
-1. **Fase 5** - Eliminar Duplicação (RECOMMENDED - depends on Fase 3 ✅)
-2. **Fase 6** - Consolidar Testes (depends on Fase 4 ✅)
-3. **Fase 12** - Scripts Organization (independente)
-4. **Fase 13** - Security Hardening (independente)
+1. **Fase 6** - Consolidar Testes (RECOMMENDED - depends on Fase 4 ✅)
+2. **Fase 12** - Scripts Organization (independente)
+3. **Fase 13** - Security Hardening (independente)
 
 ---
 
 ## Próxima Ação
 
-**Recomendado:** Iniciar Fase 5 (Eliminar Duplicação) ou Fase 6 (Consolidar Testes)
+**Recomendado:** Iniciar Fase 6 (Consolidar Testes)
 
 ✅ **Fase 1 COMPLETO:** ESLint + Prettier + lint-staged + pre-commit hooks funcionando
 ✅ **Fase 2 COMPLETO:** test.yml + release.yml + branch protection docs
 ✅ **Fase 3 COMPLETO:** REQ-003 - TypeScript strict mode, zero errors, 50+ functions typed
 ✅ **Fase 4 COMPLETO:** REQ-018 + REQ-019 - Test coverage foundation (85 tests added)
+✅ **Fase 5 COMPLETO:** REQ-001 + REQ-005 + REQ-013 - bin/src/ removed + CI checks added
 
 ---
 
@@ -119,8 +119,8 @@
 | 2026-04-23 | Plan 04-03 executado | REQ-018 complete: update + verify + uninstall tests (21 tests) |
 | 2026-04-23 | Fase 4 COMPLETO | REQ-018 + REQ-019 implementados (85 tests total) |
 | 2026-04-23 | Plan 05-01 executado | REQ-013: bin/README.md + STRUCTURE.md updated, src/ confirmed as official source |
-| 2026-04-23 | Plan 05-02 executado | REQ-001 + REQ-005: bin/src/ removed (16 files), path-utils.ts orphan removed |
+| 2026-04-23 | Plan 05-03 executado | REQ-001: CI deduplication checks added, Phase 5 COMPLETO |
 
 ---
 
-*Última atualização: 2026-04-23 - Fase 5 Plan 05-02 EM_PROGRESSO (REQ-001, REQ-005 COMPLETO)*
+*Última atualização: 2026-04-23 - Fase 5 COMPLETO (REQ-001, REQ-005, REQ-013)*

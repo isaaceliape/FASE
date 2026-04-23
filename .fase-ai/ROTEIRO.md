@@ -93,15 +93,15 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 
 **Objetivo:** Eliminar duplicação e cleanup codebase.
 
-### Fase 5: Eliminar Duplicação src/ vs bin/
+### Fase 5: Eliminar Duplicação src/ vs bin/ ✅ COMPLETO
 **Requisitos:** REQ-001, REQ-005, REQ-013
 **Plans:** 3 plans em 3 etapas
-**Status:** EM_PROGRESSO
+**Status:** COMPLETO
 
 **Plans:**
 - [x] 05-01-PLANO.md — Determine official source + clarify bin/ purpose (REQ-013) ✅
 - [x] 05-02-PLANO.md — Remove bin/src/ duplicated sources + path-utils.ts (REQ-001, REQ-005) ✅
-- [ ] 05-03-PLANO.md — CI sync verification (REQ-001)
+- [x] 05-03-PLANO.md — CI sync verification (REQ-001) ✅
 
 **Estimativa:** 2-3 dias
 **Dependências:** Fase 3 ✅ COMPLETO
@@ -112,6 +112,7 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 - ✅ 12 files duplicated with different versions
 - ✅ path-utils.ts orphaned (not used anywhere)
 - ✅ bin/package.json outdated (3.3.1) vs root (5.0.1)
+- ✅ CI checks added to prevent future duplication
 
 ---
 
@@ -328,5 +329,5 @@ Fase 13 ─► (independente)
 *Última atualização: 2026-04-23*
 *Total Fases: 16*
 *Total Marcos: 6*
-*Fases Completadas: 4 (Fase 1-4)*
-*Fases Em Progresso: 1 (Fase 5 - 67%)*
+*Fases Completadas: 5 (Fase 1-5)*
+*Fases Em Progresso: 0*

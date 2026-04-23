@@ -6,12 +6,12 @@
 
 ### REQ-001: Eliminar Duplicação src/ vs bin/src/ ✅ COMPLETO
 **Descrição:** Remover duplicação de 12 arquivos TypeScript entre src/lib/ e bin/src/lib/
-**Status:** COMPLETO (Plan 05-02)
+**Status:** COMPLETO (Plan 05-02 + Plan 05-03)
 **Critérios de Aceitação:**
 - [x] Source oficial definido (src/) ✅ (verified Plan 05-01)
-- [x] bin/src/lib/*.ts removido ✅ (13 files deleted)
+- [x] bin/src/lib/*.ts removido ✅ (13 files deleted Plan 05-02)
 - [x] Build process atualizado se necessário ✅ (no changes needed)
-- [ ] CI check para sync verification (Plan 05-03)
+- [x] CI check para sync verification ✅ (Plan 05-03 - deduplication checks added)
 - [x] Tests passando após removal ✅ (349 passing)
 
 **Arquivos:**
@@ -246,4 +246,4 @@
 
 **Total Requisitos:** 20 (priorizados P0-P3)
 
-*Última atualização: 2026-04-23 - REQ-001, REQ-005 COMPLETO (Phase 5 Plan 02)*
+*Última atualização: 2026-04-23 - REQ-001 CI criterion COMPLETO (Phase 5 Plan 03)*
