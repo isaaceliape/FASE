@@ -46,6 +46,8 @@
     "verificar-instalacao": "node dist/verificar-instalacao.js",
     "build-docs": "node build-docs.cjs",
     "lint": "eslint src/",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
     "test": "mocha test/*.test.cjs",
     "test:tmux": "./test/tmux/run-all-tests.sh",
     "test:tmux:smoke": "node test/tmux-runner.cjs --smoke",
