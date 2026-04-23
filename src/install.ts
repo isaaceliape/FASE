@@ -17,11 +17,16 @@ const __dirname = path.dirname(__filename);
  * @param options - Options for error handling (exitOnError: whether to exit on failure)
  * @returns Parsed JSON object, or null if parsing fails and exitOnError is false
  */
-function safeJsonParse(jsonStr, context = 'JSON', options = { exitOnError: true }) {
+function safeJsonParse<T = unknown>(
+  jsonStr: string,
+  context: string = 'JSON',
+  options: { exitOnError: boolean } = { exitOnError: true }
+): T | null {
   try {
-    return JSON.parse(jsonStr);
+    return JSON.parse(jsonStr) as T;
   } catch (err) {
-    console.error(`Invalid ${context}: ${err.message}`);
+    const error = err as Error;
+    console.error(`Invalid ${context}: ${error.message}`);
     if (options.exitOnError) {
       process.exit(1);
     }
