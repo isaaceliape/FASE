@@ -7,23 +7,29 @@ sessao:
 
 ## Realizamos
 
-- Plan 06-01 executado: Unit tests migrated from testes/ to test/unit/
-- 25 test files consolidated (17 from testes/, 8 install tests from test/)
-- Import paths updated in 20 test files
-- Package.json scripts updated: test:teses → test:unit
-- 153 unit tests passing
+- Plan 06-02 executado: Integration/E2E tests migration
+- 6 integration tests moved to test/integration/
+- 1 E2E test moved to test/e2e/
+- Import paths updated in 5 test files
+- package.json scripts updated: test:integration, test:e2e, test:all
+- lint-staged Node.js v25 import assertion syntax fixed (assert → with)
+- All 357 tests passing (153 unit + 179 integration + 25 e2e)
+- 3 atomic commits created
 
 ## Decisões Técnicas
 
-- Consolidated all unit tests into test/unit/ for unified structure
-- Shared helpers moved to test/helpers/ for centralized access
-- Created test/integration/ (empty) for future integration tests
-- Import path pattern: require('../helpers/helpers.cjs') from test/unit/
-- Package.json test:unit script uses mocha with test-helper.cjs require
+- Moved uninstall-slash-commands.test.cjs to test/integration/ (discovered additional file)
+- Updated all root-relative paths from ../ → ../../
+- Fixed lint-staged hook for Node.js v25.2.0 compatibility
+- test/ root now contains only infrastructure files (no .test.cjs)
 
 ## Próximo Passo
 
-Continuar Fase 6 com Plan 06-02: Integration/E2E tests migration.
+Plan 06-03: CI/Docs update + final verification
+- Update .github/workflows/test.yml to use new test paths
+- Update test documentation (TESTING.md, README.md)
+- Final verification of all test categories
+- Mark REQ-007 as COMPLETO
 
 ## Bloqueadores em Aberto
 
@@ -31,6 +37,7 @@ Continuar Fase 6 com Plan 06-02: Integration/E2E tests migration.
 
 ## Arquivos Modificados
 
-Ver commits desta sessão em `git log --oneline -5`:
-- 1502f86: feat(06-01): update import paths after test migration
-- f8de672: feat(06-01): create unified test directory structure
+Ver commits desta sessão em `git log --oneline -10`:
+- 8de0343 feat(06-02): remove migrated tests from test/ root
+- 353fb56 feat(06-02): move E2E test and update paths
+- 29d7b56 feat(06-02): move integration tests to test/integration/

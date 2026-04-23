@@ -22,7 +22,7 @@
 | Fase | Status | Progress | Observações |
 |------|--------|----------|-------------|
 | 5 - Eliminar Duplicação | COMPLETO | 100% | REQ-001, REQ-005, REQ-013 complete: bin/src/ removed + CI checks added |
-| 6 - Consolidar Testes | EM PROGRESSO | 33% | Plan 06-01: Unit tests migrated to test/unit/ (25 files, 153 tests passing) |
+| 6 - Consolidar Testes | EM PROGRESSO | 66% | Plan 06-01 + 06-02: Unit + Integration/E2E tests migrated (31 files, 357 tests passing) |
 
 ---
 
@@ -64,7 +64,7 @@
 
 **Requisitos Totais:** 20
 **Requisitos Completados:** 10 (REQ-001, REQ-003, REQ-004, REQ-005, REQ-013, REQ-016, REQ-017, REQ-018, REQ-019)
-**Requisitos Em Progresso:** 1 (REQ-007: Consolidar Testes - Part 1/3)
+**Requisitos Em Progresso:** 1 (REQ-007: Consolidar Testes - Part 2/3)
 **Requisitos Pendentes:** 9
 
 **Concerns Totais:** 27
@@ -84,14 +84,14 @@
 
 ## Próxima Ação
 
-**Recomendado:** Continuar Fase 6 (Plan 06-02: Integration/E2E tests migration)
+**Recomendado:** Continuar Fase 6 (Plan 06-03: CI/Docs update + final verification)
 
 ✅ **Fase 1 COMPLETO:** ESLint + Prettier + lint-staged + pre-commit hooks funcionando
 ✅ **Fase 2 COMPLETO:** test.yml + release.yml + branch protection docs
 ✅ **Fase 3 COMPLETO:** REQ-003 - TypeScript strict mode, zero errors, 50+ functions typed
 ✅ **Fase 4 COMPLETO:** REQ-018 + REQ-019 - Test coverage foundation (85 tests added)
 ✅ **Fase 5 COMPLETO:** REQ-001 + REQ-005 + REQ-013 - bin/src/ removed + CI checks added
-🔄 **Fase 6 EM PROGRESSO:** REQ-007 - Unit tests migrated (Plan 01/3)
+🔄 **Fase 6 EM PROGRESSO:** REQ-007 - Unit + Integration/E2E tests migrated (Plan 01+02/3)
 
 ---
 
@@ -122,7 +122,8 @@
 | 2026-04-23 | Plan 05-01 executado | REQ-013: bin/README.md + STRUCTURE.md updated, src/ confirmed as official source |
 | 2026-04-23 | Plan 05-03 executado | REQ-001: CI deduplication checks added, Phase 5 COMPLETO |
 | 2026-04-23 | Plan 06-01 executado | REQ-007 Part 1: Unit tests migrated (testes/ → test/unit/, 25 files, 153 tests) |
+| 2026-04-23 | Plan 06-02 executado | REQ-007 Part 2: Integration/E2E tests migrated (test/ → test/integration/, test/e2e/, 7 files, 357 tests) |
 
 ---
 
-*Última atualização: 2026-04-23 - Fase 6 Plan 01 COMPLETO (REQ-007 Part 1)*
+*Última atualização: 2026-04-23 - Fase 6 Plan 02 COMPLETO (REQ-007 Part 2)*

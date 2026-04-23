@@ -48,7 +48,7 @@
     "lint": "eslint src/",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
-    "test": "mocha test/*.test.cjs",
+    "test": "mocha test/unit/*.test.cjs test/integration/*.test.cjs",
     "test:unit": "mocha test/unit/*.test.cjs --require ./test/helpers/test-helper.cjs",
     "test:integration": "mocha test/integration/*.test.cjs",
     "test:e2e": "mocha test/e2e/*.test.cjs",
