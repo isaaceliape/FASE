@@ -37,6 +37,7 @@ function safeJsonParse<T = unknown>(
 const cyan = '\x1b[36m';
 const green = '\x1b[32m';
 const yellow = '\x1b[33m';
+const red = '\x1b[31m';
 const dim = '\x1b[2m';
 const reset = '\x1b[0m';
 // Codex config.toml constants
@@ -45,7 +46,7 @@ const reset = '\x1b[0m';
 // - Pipes in grep patterns: \| → | (pipes don't need escaping in grep -E)
 // - Parentheses in grep: \( → \\( (escape backslashes for TOML)
 const FASE_CODEX_MARKER = '# FASE Agent Configuration \u2014 managed by fase-ai installer';
-const CODEX_AGENT_SANDBOX = {
+const CODEX_AGENT_SANDBOX: Record<string, string> = {
   'fase-executor': 'workspace-write',
   'fase-planner': 'workspace-write',
   'fase-phase-researcher': 'workspace-write',
@@ -425,57 +426,63 @@ function getCommitAttribution(runtime: string): null | undefined | string {
     // Gemini: check gemini settings.json for attribution config
     // Check local config first
     const localSettings = readSettings(path.join(getLocalDir('gemini'), 'settings.json'));
-    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
-      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
+    const localAttribution = localSettings.attribution as Record<string, unknown> | undefined;
+    if (localAttribution && localAttribution.commit !== undefined) {
+      result = localAttribution.commit === '' ? null : (localAttribution.commit as string);
     } else {
       // Fall back to global config
       const globalSettings = readSettings(
         path.join(getGlobalDir('gemini', explicitConfigDir), 'settings.json')
       );
-      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+      const globalAttribution = globalSettings.attribution as Record<string, unknown> | undefined;
+      if (!globalAttribution || globalAttribution.commit === undefined) {
         result = undefined;
-      } else if (globalSettings.attribution.commit === '') {
+      } else if (globalAttribution.commit === '') {
         result = null;
       } else {
-        result = globalSettings.attribution.commit;
+        result = globalAttribution.commit as string;
       }
     }
   } else if (runtime === 'claude') {
     // Claude Code
     // Check local config first
     const localSettings = readSettings(path.join(getLocalDir('claude'), 'settings.json'));
-    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
-      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
+    const localAttribution = localSettings.attribution as Record<string, unknown> | undefined;
+    if (localAttribution && localAttribution.commit !== undefined) {
+      result = localAttribution.commit === '' ? null : (localAttribution.commit as string);
     } else {
       // Fall back to global config
       const globalSettings = readSettings(
         path.join(getGlobalDir('claude', explicitConfigDir), 'settings.json')
       );
-      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+      const globalAttribution = globalSettings.attribution as Record<string, unknown> | undefined;
+      if (!globalAttribution || globalAttribution.commit === undefined) {
         result = undefined;
-      } else if (globalSettings.attribution.commit === '') {
+      } else if (globalAttribution.commit === '') {
         result = null;
       } else {
-        result = globalSettings.attribution.commit;
+        result = globalAttribution.commit as string;
       }
     }
   } else if (runtime === 'copilot') {
     // GitHub Copilot: check .copilot-settings.json for attribution config
     // Check local config first
     const localSettings = readSettings(path.join(getLocalDir('copilot'), '.copilot-settings.json'));
-    if (localSettings.attribution && localSettings.attribution.commit !== undefined) {
-      result = localSettings.attribution.commit === '' ? null : localSettings.attribution.commit;
+    const localAttribution = localSettings.attribution as Record<string, unknown> | undefined;
+    if (localAttribution && localAttribution.commit !== undefined) {
+      result = localAttribution.commit === '' ? null : (localAttribution.commit as string);
     } else {
       // Fall back to global config
       const globalSettings = readSettings(
         path.join(getGlobalDir('copilot', explicitConfigDir), '.copilot-settings.json')
       );
-      if (!globalSettings.attribution || globalSettings.attribution.commit === undefined) {
+      const globalAttribution = globalSettings.attribution as Record<string, unknown> | undefined;
+      if (!globalAttribution || globalAttribution.commit === undefined) {
         result = undefined;
-      } else if (globalSettings.attribution.commit === '') {
+      } else if (globalAttribution.commit === '') {
         result = null;
       } else {
-        result = globalSettings.attribution.commit;
+        result = globalAttribution.commit as string;
       }
     }
   } else if (runtime === 'qwen') {
@@ -505,8 +512,8 @@ function getCommitAttribution(runtime: string): null | undefined | string {
     result = undefined;
   }
   // Cache and return
-  attributionCache.set(runtime, result);
-  return result;
+  attributionCache.set(runtime, result as null | undefined | string);
+  return result as null | undefined | string;
 }
 /**
  * Process Co-Authored-By lines based on attribution setting
@@ -533,7 +540,7 @@ function processAttribution(content: string, attribution: null | undefined | str
  * @returns {string} - Content with converted frontmatter
  */
 // Color name to hex mapping for opencode compatibility
-const colorNameToHex = {
+const colorNameToHex: Record<string, string> = {
   cyan: '#00FFFF',
   red: '#FF0000',
   green: '#00FF00',
@@ -550,7 +557,7 @@ const colorNameToHex = {
 };
 // Tool name mapping from Claude Code to OpenCode
 // OpenCode uses lowercase tool names; special mappings for renamed tools
-const claudeToOpencodeTools = {
+const claudeToOpencodeTools: Record<string, string> = {
   AskUserQuestion: 'question',
   SlashCommand: 'skill',
   TodoWrite: 'todowrite',
@@ -559,7 +566,7 @@ const claudeToOpencodeTools = {
 };
 // Tool name mapping from Claude Code to Gemini CLI
 // Gemini CLI uses snake_case built-in tool names
-const claudeToGeminiTools = {
+const claudeToGeminiTools: Record<string, string> = {
   Read: 'read_file',
   Write: 'write_file',
   Edit: 'replace',
@@ -643,12 +650,12 @@ function convertSlashCommandsToCodexSkillMentions(content: string): string {
   converted = converted.replace(/\/fase-help\b/g, '$fase-help');
   return converted;
 }
-function convertClaudeToCodexMarkdown(content) {
+function convertClaudeToCodexMarkdown(content: string): string {
   let converted = convertSlashCommandsToCodexSkillMentions(content);
   converted = converted.replace(/\$ARGUMENTS\b/g, '{{FASE_ARGS}}');
   return converted;
 }
-function getCodexSkillAdapterHeader(skillName) {
+function getCodexSkillAdapterHeader(skillName: string): string {
   const invocation = `$${skillName}`;
   return `<codex_skill_adapter>
 ## A. Skill Invocation
@@ -681,7 +688,7 @@ Result parsing:
 - \`close_agent(id)\` after collecting results from each agent
 </codex_skill_adapter>`;
 }
-function convertClaudeCommandToCodexSkill(content, skillName) {
+function convertClaudeCommandToCodexSkill(content: string, skillName: string): string {
   const converted = convertClaudeToCodexMarkdown(content);
   const { frontmatter, body } = extractFrontmatterAndBody(converted);
   let description = `Run FASE workflow ${skillName}.`;
@@ -702,7 +709,7 @@ function convertClaudeCommandToCodexSkill(content, skillName) {
  * Applies base markdown conversions, then adds a <codex_agent_role> header
  * and cleans up frontmatter (removes tools/color fields).
  */
-function convertClaudeAgentToCodexAgent(content) {
+function convertClaudeAgentToCodexAgent(content: string): string {
   const converted = convertClaudeToCodexMarkdown(content);
   const { frontmatter, body } = extractFrontmatterAndBody(converted);
   if (!frontmatter) return converted;
@@ -723,7 +730,7 @@ purpose: ${toSingleLine(description)}
  * - Backticks: converts \` to \\` (escapes backslashes for TOML)
  * - Grep patterns: fixes invalid escape sequences like \| that are invalid in TOML
  */
-function fixTomlEscaping(content) {
+function fixTomlEscaping(content: string): string {
   let fixed = content;
   // Fix backtick escaping: \` becomes \\`
   fixed = fixed.replace(/\\`/g, '\\\\`');
@@ -736,7 +743,7 @@ function fixTomlEscaping(content) {
  * Generate a per-agent .toml config file for Codex.
  * Sets sandbox_mode and developer_instructions from the agent markdown body.
  */
-function generateCodexAgentToml(agentName, agentContent) {
+function generateCodexAgentToml(agentName: string, agentContent: string): string {
   const sandboxMode = CODEX_AGENT_SANDBOX[agentName] || 'read-only';
   const { body } = extractFrontmatterAndBody(agentContent);
   let instructions = body.trim();
@@ -754,7 +761,7 @@ function generateCodexAgentToml(agentName, agentContent) {
  * Generate FASE config block for Codex config.toml.
  * @param {Array<{name: string, description: string}>} agents
  */
-function generateCodexConfigBlock(agents) {
+function generateCodexConfigBlock(agents: Array<{ name: string; description: string }>): string {
   const lines = [
     FASE_CODEX_MARKER,
     '[features]',
@@ -778,7 +785,7 @@ function generateCodexConfigBlock(agents) {
  * Strip FASE sections from Codex config.toml content.
  * Returns cleaned content, or null if file would be empty.
  */
-function stripGsdFromCodexConfig(content) {
+function stripGsdFromCodexConfig(content: string): string | null {
   const markerIndex = content.indexOf(FASE_CODEX_MARKER);
   if (markerIndex !== -1) {
     // Has FASE marker — remove everything from marker to EOF
@@ -810,7 +817,7 @@ function stripGsdFromCodexConfig(content) {
  * Merge FASE config block into an existing or new config.toml.
  * Three cases: new file, existing with FASE marker, existing without marker.
  */
-function mergeCodexConfig(configPath, faseBlock) {
+function mergeCodexConfig(configPath: string, faseBlock: string): void {
   // Case 1: No config.toml — create fresh
   if (!fs.existsSync(configPath)) {
     fs.writeFileSync(configPath, faseBlock + '\n');
@@ -872,7 +879,7 @@ function mergeCodexConfig(configPath, faseBlock) {
  * Generate config.toml and per-agent .toml files for Codex.
  * Reads agent .md files from source, extracts metadata, writes .toml configs.
  */
-function installCodexConfig(targetDir, agentsSrc) {
+function installCodexConfig(targetDir: string, agentsSrc: string): number {
   const configPath = path.join(targetDir, 'config.toml');
   const agentsTomlDir = path.join(targetDir, 'agents');
   fs.mkdirSync(agentsTomlDir, { recursive: true });
@@ -888,8 +895,9 @@ function installCodexConfig(targetDir, agentsSrc) {
     content = content.replace(/~\/\.claude\//g, codexPathPrefix);
     content = content.replace(/\$HOME\/\.claude\//g, toHomePrefix(codexPathPrefix));
     const { frontmatter } = extractFrontmatterAndBody(content);
-    const name = extractFrontmatterField(frontmatter, 'name') || file.replace('.md', '');
-    const description = extractFrontmatterField(frontmatter, 'description') || '';
+    const name = (extractFrontmatterField(frontmatter || '', 'name') ||
+      file.replace('.md', '')) as string;
+    const description = (extractFrontmatterField(frontmatter || '', 'description') || '') as string;
     agents.push({ name, description: toSingleLine(description) });
     const tomlContent = generateCodexAgentToml(name, content);
     fs.writeFileSync(path.join(agentsTomlDir, `${name}.toml`), tomlContent);
@@ -903,7 +911,7 @@ function installCodexConfig(targetDir, agentsSrc) {
  * Terminals don't support subscript — Gemini renders these as raw HTML.
  * Converts <sub>text</sub> to italic *(text)* for readable terminal output.
  */
-function stripSubTags(content) {
+function stripSubTags(content: string): string {
   return content.replace(/<sub>(.*?)<\/sub>/g, '*($1)*');
 }
 /**
@@ -915,7 +923,7 @@ function stripSubTags(content) {
  * - color: must be removed (causes validation error)
  * - mcp__* tools: must be excluded (auto-discovered at runtime)
  */
-function convertClaudeToGeminiAgent(content) {
+function convertClaudeToGeminiAgent(content: string): string {
   if (!content.startsWith('---')) return content;
   const endIndex = content.indexOf('---', 3);
   if (endIndex === -1) return content;
@@ -1008,7 +1016,7 @@ function convertClaudeToGeminiAgent(content) {
   const escapedBody = body.replace(/\$\{(\w+)\}/g, '$$$1');
   return `---\n${newFrontmatter}\n---${stripSubTags(escapedBody)}`;
 }
-function convertClaudeToOpencodeFrontmatter(content) {
+function convertClaudeToOpencodeFrontmatter(content: string): string {
   // Replace tool name references in content (applies to all files)
   let convertedContent = content;
   convertedContent = convertedContent.replace(/\bAskUserQuestion\b/g, 'question');
@@ -1057,8 +1065,8 @@ function convertClaudeToOpencodeFrontmatter(content) {
         // Parse comma-separated tools
         const tools = toolsValue
           .split(',')
-          .map((t) => t.trim())
-          .filter((t) => t);
+          .map((t: string) => t.trim())
+          .filter((t: string) => t);
         allowedTools.push(...tools);
       }
       continue;
@@ -1115,7 +1123,7 @@ function convertClaudeToOpencodeFrontmatter(content) {
  * @param {string} content - Markdown file content with YAML frontmatter
  * @returns {string} - TOML content
  */
-function convertClaudeToGeminiToml(content) {
+function convertClaudeToGeminiToml(content: string): string {
   // Check if content has frontmatter
   if (!content.startsWith('---')) {
     return `prompt = ${JSON.stringify(content)}\n`;
@@ -1155,7 +1163,13 @@ function convertClaudeToGeminiToml(content) {
  * @param {string} pathPrefix - Path prefix for file references
  * @param {string} runtime - Target runtime ('claude' or 'opencode')
  */
-function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
+function copyFlattenedCommands(
+  srcDir: string,
+  destDir: string,
+  prefix: string,
+  pathPrefix: string,
+  runtime: string
+): void {
   if (!fs.existsSync(srcDir)) {
     return;
   }
@@ -1206,7 +1220,7 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
     }
   }
 }
-function listCodexSkillNames(skillsDir, prefix = 'fase-') {
+function listCodexSkillNames(skillsDir: string, prefix: string = 'fase-'): string[] {
   if (!fs.existsSync(skillsDir)) return [];
   const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
   return entries
@@ -1215,7 +1229,13 @@ function listCodexSkillNames(skillsDir, prefix = 'fase-') {
     .map((entry) => entry.name)
     .sort();
 }
-function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtime) {
+function copyCommandsAsCodexSkills(
+  srcDir: string,
+  skillsDir: string,
+  prefix: string,
+  pathPrefix: string,
+  runtime: string
+): void {
   if (!fs.existsSync(srcDir)) {
     return;
   }
@@ -1227,7 +1247,7 @@ function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtim
       fs.rmSync(path.join(skillsDir, entry.name), { recursive: true });
     }
   }
-  function recurse(currentSrcDir, currentPrefix) {
+  function recurse(currentSrcDir: string, currentPrefix: string): void {
     const entries = fs.readdirSync(currentSrcDir, { withFileTypes: true });
     for (const entry of entries) {
       const srcPath = path.join(currentSrcDir, entry.name);
@@ -1271,7 +1291,13 @@ function copyCommandsAsCodexSkills(srcDir, skillsDir, prefix, pathPrefix, runtim
  * @param {string} pathPrefix - Path prefix for file references
  * @param {string} runtime - Target runtime ('claude', 'opencode', 'gemini', 'codex')
  */
-function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand = false) {
+function copyWithPathReplacement(
+  srcDir: string,
+  destDir: string,
+  pathPrefix: string,
+  runtime: string,
+  isCommand: boolean = false
+): void {
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
   const dirName = getDirName(runtime);
@@ -1330,7 +1356,7 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime, isCommand
 /**
  * Clean up orphaned files from previous FASE versions
  */
-function cleanupOrphanedFiles(configDir) {
+function cleanupOrphanedFiles(configDir: string): void {
   const orphanedFiles = [
     'hooks/fase-notify.sh', // Removed in v1.6.x
     'hooks/statusline.js', // Renamed to fase-statusline.js in v1.9.0
@@ -1365,7 +1391,7 @@ function cleanupOrphanedFiles(configDir) {
 /**
  * Clean up orphaned hook registrations from settings.json
  */
-function cleanupOrphanedHooks(settings) {
+function cleanupOrphanedHooks(settings: Record<string, unknown>): Record<string, unknown> {
   const orphanedHookPatterns = [
     'fase-notify.sh', // Removed in v1.6.x
     'hooks/statusline.js', // Renamed to fase-statusline.js in v1.9.0
@@ -1379,17 +1405,24 @@ function cleanupOrphanedHooks(settings) {
   let cleanedHooks = false;
   // Check all hook event types (Stop, SessionStart, etc.)
   if (settings.hooks) {
-    for (const eventType of Object.keys(settings.hooks)) {
-      const hookEntries = settings.hooks[eventType];
+    const hooks = settings.hooks as Record<string, unknown>;
+    for (const eventType of Object.keys(hooks)) {
+      const hookEntries = hooks[eventType];
       if (Array.isArray(hookEntries)) {
         // Filter out entries that contain orphaned hooks
-        const filtered = hookEntries.filter((entry) => {
-          if (entry.hooks && Array.isArray(entry.hooks)) {
+        const filtered = hookEntries.filter((entry: unknown) => {
+          const entryObj = entry as Record<string, unknown>;
+          if (entryObj.hooks && Array.isArray(entryObj.hooks)) {
             // Check if any hook in this entry matches orphaned patterns
-            const hasOrphaned = entry.hooks.some(
-              (h) =>
-                h.command && orphanedHookPatterns.some((pattern) => h.command.includes(pattern))
-            );
+            const hasOrphaned = entryObj.hooks.some((h: unknown) => {
+              const hObj = h as Record<string, unknown>;
+              const cmd = hObj.command;
+              return (
+                cmd &&
+                typeof cmd === 'string' &&
+                orphanedHookPatterns.some((pattern: string) => cmd.includes(pattern))
+              );
+            });
             if (hasOrphaned) {
               cleanedHooks = true;
               return false; // Remove this entry
@@ -1397,7 +1430,7 @@ function cleanupOrphanedHooks(settings) {
           }
           return true; // Keep this entry
         });
-        settings.hooks[eventType] = filtered;
+        hooks[eventType] = filtered;
       }
     }
   }
@@ -1407,12 +1440,14 @@ function cleanupOrphanedHooks(settings) {
   // Fix #330: Update statusLine if it points to old FASE statusline.js path
   // Only match the specific old FASE path pattern (hooks/statusline.js),
   // not third-party statusline scripts that happen to contain 'statusline.js'
+  const statusLine = settings.statusLine as Record<string, unknown> | undefined;
   if (
-    settings.statusLine &&
-    settings.statusLine.command &&
-    /hooks[\/\\]statusline\.js/.test(settings.statusLine.command)
+    statusLine &&
+    statusLine.command &&
+    typeof statusLine.command === 'string' &&
+    /hooks[\/\\]statusline\.js/.test(statusLine.command)
   ) {
-    settings.statusLine.command = settings.statusLine.command.replace(
+    statusLine.command = statusLine.command.replace(
       /hooks([\/\\])statusline\.js/,
       'hooks$1fase-statusline.js'
     );
@@ -1428,7 +1463,7 @@ function cleanupOrphanedHooks(settings) {
  * @param {boolean} isGlobal - Whether to uninstall from global or local
  * @param {string} runtime - Target runtime ('claude', 'opencode', 'gemini', 'codex')
  */
-function uninstall(isGlobal, runtime = 'claude') {
+function uninstall(isGlobal: boolean, runtime: string = 'claude'): void {
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
   const dirName = getDirName(runtime);
@@ -1591,63 +1626,79 @@ function uninstall(isGlobal, runtime = 'claude') {
     const settings = readSettings(settingsPath);
     let settingsModified = false;
     // Remove FASE statusline if it references our hook
+    const statusLine = settings.statusLine as Record<string, unknown> | undefined;
     if (
-      settings.statusLine &&
-      settings.statusLine.command &&
-      settings.statusLine.command.includes('fase-statusline')
+      statusLine &&
+      statusLine.command &&
+      typeof statusLine.command === 'string' &&
+      statusLine.command.includes('fase-statusline')
     ) {
       delete settings.statusLine;
       settingsModified = true;
       console.log(`  ${green}✓${reset} Removida statusline do FASE das configurações`);
     }
     // Remove FASE hooks from SessionStart
-    if (settings.hooks && settings.hooks.SessionStart) {
-      const before = settings.hooks.SessionStart.length;
-      settings.hooks.SessionStart = settings.hooks.SessionStart.filter((entry) => {
-        if (entry.hooks && Array.isArray(entry.hooks)) {
+    const hooks = settings.hooks as Record<string, unknown> | undefined;
+    if (hooks && hooks.SessionStart) {
+      const sessionStartHooks = hooks.SessionStart as unknown[];
+      const before = sessionStartHooks.length;
+      hooks.SessionStart = sessionStartHooks.filter((entry: unknown) => {
+        const entryObj = entry as Record<string, unknown>;
+        if (entryObj.hooks && Array.isArray(entryObj.hooks)) {
           // Filter out FASE hooks
-          const hasGsdHook = entry.hooks.some(
-            (h) =>
-              h.command &&
-              (h.command.includes('fase-check-update') || h.command.includes('fase-statusline'))
-          );
+          const hasGsdHook = entryObj.hooks.some((h: unknown) => {
+            const hObj = h as Record<string, unknown>;
+            return (
+              hObj.command &&
+              typeof hObj.command === 'string' &&
+              (hObj.command.includes('fase-check-update') ||
+                hObj.command.includes('fase-statusline'))
+            );
+          });
           return !hasGsdHook;
         }
         return true;
       });
-      if (settings.hooks.SessionStart.length < before) {
+      if ((hooks.SessionStart as unknown[]).length < before) {
         settingsModified = true;
         console.log(`  ${green}✓${reset} Removidos hooks FASE das configurações`);
       }
       // Clean up empty array
-      if (settings.hooks.SessionStart.length === 0) {
-        delete settings.hooks.SessionStart;
+      if ((hooks.SessionStart as unknown[]).length === 0) {
+        delete hooks.SessionStart;
       }
     }
     // Remove FASE hooks from PostToolUse and AfterTool (Gemini uses AfterTool)
     for (const eventName of ['PostToolUse', 'AfterTool']) {
-      if (settings.hooks && settings.hooks[eventName]) {
-        const before = settings.hooks[eventName].length;
-        settings.hooks[eventName] = settings.hooks[eventName].filter((entry) => {
-          if (entry.hooks && Array.isArray(entry.hooks)) {
-            const hasGsdHook = entry.hooks.some(
-              (h) => h.command && h.command.includes('fase-context-monitor')
-            );
+      if (hooks && hooks[eventName]) {
+        const eventHooks = hooks[eventName] as unknown[];
+        const before = eventHooks.length;
+        hooks[eventName] = eventHooks.filter((entry: unknown) => {
+          const entryObj = entry as Record<string, unknown>;
+          if (entryObj.hooks && Array.isArray(entryObj.hooks)) {
+            const hasGsdHook = entryObj.hooks.some((h: unknown) => {
+              const hObj = h as Record<string, unknown>;
+              return (
+                hObj.command &&
+                typeof hObj.command === 'string' &&
+                hObj.command.includes('fase-context-monitor')
+              );
+            });
             return !hasGsdHook;
           }
           return true;
         });
-        if (settings.hooks[eventName].length < before) {
+        if ((hooks[eventName] as unknown[]).length < before) {
           settingsModified = true;
           console.log(`  ${green}✓${reset} Removido hook do monitor de contexto das configurações`);
         }
-        if (settings.hooks[eventName].length === 0) {
-          delete settings.hooks[eventName];
+        if ((hooks[eventName] as unknown[]).length === 0) {
+          delete hooks[eventName];
         }
       }
     }
     // Clean up empty hooks object
-    if (settings.hooks && Object.keys(settings.hooks).length === 0) {
+    if (settings.hooks && Object.keys(settings.hooks as Record<string, unknown>).length === 0) {
       delete settings.hooks;
     }
     if (settingsModified) {
@@ -1676,29 +1727,35 @@ function uninstall(isGlobal, runtime = 'claude') {
     const configPath = path.join(opencodeConfigDir, 'opencode.json');
     if (fs.existsSync(configPath)) {
       try {
-        const config = safeJsonParse(fs.readFileSync(configPath, 'utf8'), 'opencode.json', {
-          exitOnError: false,
-        });
+        const config = safeJsonParse<Record<string, unknown>>(
+          fs.readFileSync(configPath, 'utf8'),
+          'opencode.json',
+          {
+            exitOnError: false,
+          }
+        );
         if (!config) return; // Skip if JSON is invalid
         let modified = false;
         // Remove FASE permission entries
-        if (config.permission) {
+        const permission = config.permission as Record<string, unknown> | undefined;
+        if (permission) {
           for (const permType of ['read', 'external_directory']) {
-            if (config.permission[permType]) {
-              const keys = Object.keys(config.permission[permType]);
+            const permObj = permission[permType] as Record<string, unknown> | undefined;
+            if (permObj) {
+              const keys = Object.keys(permObj);
               for (const key of keys) {
                 if (key.includes('fase-ai')) {
-                  delete config.permission[permType][key];
+                  delete permObj[key];
                   modified = true;
                 }
               }
               // Clean up empty objects
-              if (Object.keys(config.permission[permType]).length === 0) {
-                delete config.permission[permType];
+              if (Object.keys(permObj).length === 0) {
+                delete permission[permType];
               }
             }
           }
-          if (Object.keys(config.permission).length === 0) {
+          if (Object.keys(permission).length === 0) {
             delete config.permission;
           }
         }
@@ -1751,7 +1808,7 @@ function uninstall(isGlobal, runtime = 'claude') {
  * OpenCode supports JSONC format via jsonc-parser, so users may have comments.
  * This is a lightweight inline parser to avoid adding dependencies.
  */
-function parseJsonc(content) {
+function parseJsonc(content: string): Record<string, unknown> {
   // Strip BOM if present
   if (content.charCodeAt(0) === 0xfeff) {
     content = content.slice(1);
@@ -1802,8 +1859,9 @@ function parseJsonc(content) {
   result = result.replace(/,(\s*[}\]])/g, '$1');
   try {
     return JSON.parse(result);
-  } catch (err) {
-    console.error(`Invalid JSON after stripping comments: ${err.message}`);
+  } catch (err: unknown) {
+    const error = err as Error;
+    console.error(`Invalid JSON after stripping comments: ${error.message}`);
     return {};
   }
 }
@@ -1812,7 +1870,7 @@ function parseJsonc(content) {
  * This prevents permission prompts when FASE accesses the fase-ai directory
  * @param {boolean} isGlobal - Whether this is a global or local install
  */
-function configureOpencodePermissions(isGlobal = true) {
+function configureOpencodePermissions(isGlobal: boolean = true): void {
   // For local installs, use ./.opencode/opencode.json
   // For global installs, use ~/.config/opencode/opencode.json
   const opencodeConfigDir = isGlobal
@@ -1822,17 +1880,18 @@ function configureOpencodePermissions(isGlobal = true) {
   // Ensure config directory exists
   fs.mkdirSync(opencodeConfigDir, { recursive: true });
   // Read existing config or create empty object
-  let config = {};
+  let config: Record<string, unknown> = {};
   if (fs.existsSync(configPath)) {
     try {
       const content = fs.readFileSync(configPath, 'utf8');
       config = parseJsonc(content);
-    } catch (e) {
+    } catch (e: unknown) {
+      const error = e as Error;
       // Cannot parse - DO NOT overwrite user's config
       console.log(
         `  ${yellow}⚠${reset} Não foi possível analisar opencode.json - ignorando configuração de permissões`
       );
-      console.log(`    ${dim}Motivo: ${e.message}${reset}`);
+      console.log(`    ${dim}Motivo: ${error.message}${reset}`);
       console.log(
         `    ${dim}Sua configuração NÃO foi modificada. Corrija a sintaxe manualmente se necessário.${reset}`
       );
@@ -1840,9 +1899,11 @@ function configureOpencodePermissions(isGlobal = true) {
     }
   }
   // Ensure permission structure exists
-  if (!config.permission) {
+  const permission = config.permission as Record<string, unknown> | undefined;
+  if (!permission) {
     config.permission = {};
   }
+  const permObj = (config.permission as Record<string, unknown>) || {};
   // Build the FASE path using the actual config directory
   // Use ~ shorthand if it's in the default location, otherwise use full path
   const defaultConfigDir = path.join(os.homedir(), '.config', 'opencode');
@@ -1852,34 +1913,33 @@ function configureOpencodePermissions(isGlobal = true) {
       : `${opencodeConfigDir.replace(/\\/g, '/')}/fase-ai/*`;
   let modified = false;
   // Configure read permission
-  if (!config.permission.read || typeof config.permission.read !== 'object') {
-    config.permission.read = {};
+  if (!permObj.read || typeof permObj.read !== 'object') {
+    permObj.read = {};
   }
-  if (config.permission.read[fasePath] !== 'allow') {
-    config.permission.read[fasePath] = 'allow';
+  const readPerm = permObj.read as Record<string, unknown>;
+  if (readPerm[fasePath] !== 'allow') {
+    readPerm[fasePath] = 'allow';
     modified = true;
   }
   // Configure external_directory permission (the safety guard for paths outside project)
-  if (
-    !config.permission.external_directory ||
-    typeof config.permission.external_directory !== 'object'
-  ) {
-    config.permission.external_directory = {};
+  if (!permObj.external_directory || typeof permObj.external_directory !== 'object') {
+    permObj.external_directory = {};
   }
+  const externalPerm = permObj.external_directory as Record<string, unknown>;
   // For local installs, also configure permissions for the command/ directory so OpenCode can discover commands
   if (!isGlobal) {
     const commandPath = `${opencodeConfigDir.replace(/\\/g, '/')}/command/*`;
-    if (config.permission.read[commandPath] !== 'allow') {
-      config.permission.read[commandPath] = 'allow';
+    if (readPerm[commandPath] !== 'allow') {
+      readPerm[commandPath] = 'allow';
       modified = true;
     }
-    if (config.permission.external_directory[commandPath] !== 'allow') {
-      config.permission.external_directory[commandPath] = 'allow';
+    if (externalPerm[commandPath] !== 'allow') {
+      externalPerm[commandPath] = 'allow';
       modified = true;
     }
   }
-  if (!config.permission.external_directory[fasePath]) {
-    config.permission.external_directory[fasePath] = 'allow';
+  if (!externalPerm[fasePath]) {
+    externalPerm[fasePath] = 'allow';
     modified = true;
   }
   if (!modified) {
@@ -1892,7 +1952,7 @@ function configureOpencodePermissions(isGlobal = true) {
 /**
  * Verify a directory exists and contains files
  */
-function verifyInstalled(dirPath, description) {
+function verifyInstalled(dirPath: string, description: string): boolean {
   if (!fs.existsSync(dirPath)) {
     console.error(
       `  ${yellow}✗${reset} Falha ao instalar ${description}: diretório não foi criado`
@@ -1905,8 +1965,9 @@ function verifyInstalled(dirPath, description) {
       console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: diretório está vazio`);
       return false;
     }
-  } catch (e) {
-    console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: ${e.message}`);
+  } catch (e: unknown) {
+    const error = e as Error;
+    console.error(`  ${yellow}✗${reset} Falha ao instalar ${description}: ${error.message}`);
     return false;
   }
   return true;
@@ -1925,16 +1986,16 @@ const MANIFEST_NAME = 'fase-file-manifest.json';
 /**
  * Compute SHA256 hash of file contents
  */
-function fileHash(filePath) {
+function fileHash(filePath: string): string {
   const content = fs.readFileSync(filePath);
   return crypto.createHash('sha256').update(content).digest('hex');
 }
 /**
  * Recursively collect all files in dir with their hashes
  */
-function generateManifest(dir, baseDir) {
+function generateManifest(dir: string, baseDir?: string): Record<string, string> {
   if (!baseDir) baseDir = dir;
-  const manifest = {};
+  const manifest: Record<string, string> = {};
   if (!fs.existsSync(dir)) return manifest;
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
@@ -1951,7 +2012,7 @@ function generateManifest(dir, baseDir) {
 /**
  * Write file manifest after installation for future modification detection
  */
-function writeManifest(configDir, runtime = 'claude') {
+function writeManifest(configDir: string, runtime: string = 'claude'): Record<string, unknown> {
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
   const faseDir = path.join(configDir, 'fase-ai');
@@ -1959,7 +2020,11 @@ function writeManifest(configDir, runtime = 'claude') {
   const opencodeCommandDir = path.join(configDir, 'command');
   const codexSkillsDir = path.join(configDir, 'skills');
   const agentsDir = path.join(configDir, 'agents');
-  const manifest = { version: pkg.version, timestamp: new Date().toISOString(), files: {} };
+  const manifest: { version: string; timestamp: string; files: Record<string, string> } = {
+    version: pkg.version,
+    timestamp: new Date().toISOString(),
+    files: {},
+  };
   const faseHashes = generateManifest(faseDir);
   for (const [rel, hash] of Object.entries(faseHashes)) {
     manifest.files['fase-ai/' + rel] = hash;
@@ -2000,7 +2065,7 @@ function writeManifest(configDir, runtime = 'claude') {
  * Detect user-modified FASE files by comparing against install manifest.
  * Backs up modified files to fase-local-patches/ for reapply after update.
  */
-function saveLocalPatches(configDir) {
+function saveLocalPatches(configDir: string): string[] {
   const manifestPath = path.join(configDir, MANIFEST_NAME);
   if (!fs.existsSync(manifestPath)) return [];
   let manifest;
@@ -2010,7 +2075,7 @@ function saveLocalPatches(configDir) {
     return [];
   }
   const patchesDir = path.join(configDir, PATCHES_DIR_NAME);
-  const modified = [];
+  const modified: string[] = [];
   for (const [relPath, originalHash] of Object.entries(manifest.files || {})) {
     const fullPath = path.join(configDir, relPath);
     if (!fs.existsSync(fullPath)) continue;
@@ -2049,7 +2114,7 @@ function saveLocalPatches(configDir) {
 /**
  * After install, report backed-up patches for user to reapply.
  */
-function reportLocalPatches(configDir, runtime = 'claude') {
+function reportLocalPatches(configDir: string, runtime: string = 'claude'): string[] {
   const patchesDir = path.join(configDir, PATCHES_DIR_NAME);
   const metaPath = path.join(patchesDir, 'backup-meta.json');
   if (!fs.existsSync(metaPath)) return [];
@@ -2086,7 +2151,15 @@ function reportLocalPatches(configDir, runtime = 'claude') {
  * Install shared FASE content to ~/.fase-ai/ (v3.2.0+)
  * Templates, references, and VERSION/CHANGELOG shared across all runtimes
  */
-function install(isGlobal, runtime = 'claude') {
+function install(
+  isGlobal: boolean,
+  runtime: string = 'claude'
+): {
+  settingsPath: string | null;
+  settings: Record<string, unknown> | null;
+  statuslineCommand: string | null;
+  runtime: string;
+} {
   const isOpencode = runtime === 'opencode';
   const isGemini = runtime === 'gemini';
   const isCodex = runtime === 'codex';
@@ -2113,7 +2186,7 @@ function install(isGlobal, runtime = 'claude') {
     `  Instalando para ${cyan}${runtimeLabel}${reset} em ${cyan}${locationLabel}${reset}\n`
   );
   // Track installation failures
-  const failures = [];
+  const failures: string[] = [];
   // Save any locally modified FASE files before they get wiped
   saveLocalPatches(targetDir);
   // Clean up orphaned files from previous versions
@@ -2295,8 +2368,8 @@ function install(isGlobal, runtime = 'claude') {
   reportLocalPatches(targetDir, runtime);
   // Verify no leaked .claude paths in non-Claude runtimes
   if (runtime !== 'claude') {
-    const leakedPaths = [];
-    function scanForLeakedPaths(dir) {
+    const leakedPaths: Array<{ file: string; count: number }> = [];
+    function scanForLeakedPaths(dir: string): void {
       if (!fs.existsSync(dir)) return;
       const entries = fs.readdirSync(dir, { withFileTypes: true });
       for (const entry of entries) {
@@ -2320,7 +2393,10 @@ function install(isGlobal, runtime = 'claude') {
     }
     scanForLeakedPaths(targetDir);
     if (leakedPaths.length > 0) {
-      const totalLeaks = leakedPaths.reduce((sum, l) => sum + l.count, 0);
+      const totalLeaks = leakedPaths.reduce(
+        (sum: number, l: { file: string; count: number }) => sum + l.count,
+        0
+      );
       console.warn(
         `\n  ${yellow}⚠${reset}  Encontrada(s) ${totalLeaks} referência(s) de caminho .claude não substituída(s) em ${leakedPaths.length} arquivo(s):`
       );
@@ -2367,28 +2443,44 @@ function install(isGlobal, runtime = 'claude') {
     : null;
   // Enable experimental agents for Gemini CLI (required for custom sub-agents)
   if (isGemini) {
-    if (!settings.experimental) {
+    const experimental = settings.experimental as Record<string, unknown> | undefined;
+    if (!experimental) {
       settings.experimental = {};
     }
-    if (!settings.experimental.enableAgents) {
-      settings.experimental.enableAgents = true;
+    const expObj = settings.experimental as Record<string, unknown>;
+    if (!expObj.enableAgents) {
+      expObj.enableAgents = true;
       console.log(`  ${green}✓${reset} Agentes experimentais habilitados`);
     }
   }
   // Configure SessionStart hook for update checking (skip for opencode and if hooks don't exist)
   if (!isOpencode && hooksExist && updateCheckCommand) {
-    if (!settings.hooks) {
+    const hooks = settings.hooks as Record<string, unknown> | undefined;
+    if (!hooks) {
       settings.hooks = {};
     }
-    if (!settings.hooks.SessionStart) {
-      settings.hooks.SessionStart = [];
+    const hooksObj = settings.hooks as Record<string, unknown>;
+    if (!hooksObj.SessionStart) {
+      hooksObj.SessionStart = [];
     }
-    const hasGsdUpdateHook = settings.hooks.SessionStart.some(
-      (entry) =>
-        entry.hooks && entry.hooks.some((h) => h.command && h.command.includes('fase-check-update'))
-    );
+    const sessionStartHooks = hooksObj.SessionStart as unknown[];
+    const hasGsdUpdateHook = sessionStartHooks.some((entry: unknown) => {
+      const entryObj = entry as Record<string, unknown>;
+      const entryHooks = entryObj.hooks as unknown[] | undefined;
+      return (
+        entryHooks &&
+        entryHooks.some((h: unknown) => {
+          const hObj = h as Record<string, unknown>;
+          return (
+            hObj.command &&
+            typeof hObj.command === 'string' &&
+            hObj.command.includes('fase-check-update')
+          );
+        })
+      );
+    });
     if (!hasGsdUpdateHook) {
-      settings.hooks.SessionStart.push({
+      sessionStartHooks.push({
         hooks: [
           {
             type: 'command',
@@ -2399,16 +2491,27 @@ function install(isGlobal, runtime = 'claude') {
       console.log(`  ${green}✓${reset} Hook de verificação de atualização configurado`);
     }
     // Configure post-tool hook for context window monitoring
-    if (!settings.hooks[postToolEvent]) {
-      settings.hooks[postToolEvent] = [];
+    if (!hooksObj[postToolEvent]) {
+      hooksObj[postToolEvent] = [];
     }
-    const hasContextMonitorHook = settings.hooks[postToolEvent].some(
-      (entry) =>
-        entry.hooks &&
-        entry.hooks.some((h) => h.command && h.command.includes('fase-context-monitor'))
-    );
+    const postToolHooks = hooksObj[postToolEvent] as unknown[];
+    const hasContextMonitorHook = postToolHooks.some((entry: unknown) => {
+      const entryObj = entry as Record<string, unknown>;
+      const entryHooks = entryObj.hooks as unknown[] | undefined;
+      return (
+        entryHooks &&
+        entryHooks.some((h: unknown) => {
+          const hObj = h as Record<string, unknown>;
+          return (
+            hObj.command &&
+            typeof hObj.command === 'string' &&
+            hObj.command.includes('fase-context-monitor')
+          );
+        })
+      );
+    });
     if (!hasContextMonitorHook && contextMonitorCommand) {
-      settings.hooks[postToolEvent].push({
+      postToolHooks.push({
         hooks: [
           {
             type: 'command',
@@ -2425,16 +2528,16 @@ function install(isGlobal, runtime = 'claude') {
  * Apply statusline config, then print completion message
  */
 function finishInstall(
-  settingsPath,
-  settings,
-  statuslineCommand,
-  shouldInstallStatusline,
-  runtime = 'claude',
-  isGlobal = true
-) {
+  settingsPath: string | null,
+  settings: Record<string, unknown> | null,
+  statuslineCommand: string | null,
+  shouldInstallStatusline: boolean,
+  runtime: string = 'claude',
+  isGlobal: boolean = true
+): void {
   const isOpencode = runtime === 'opencode';
   const isCodex = runtime === 'codex';
-  if (shouldInstallStatusline && !isOpencode && !isCodex && statuslineCommand) {
+  if (shouldInstallStatusline && !isOpencode && !isCodex && statuslineCommand && settings) {
     settings.statusLine = {
       type: 'command',
       command: statuslineCommand,
@@ -2442,7 +2545,7 @@ function finishInstall(
     console.log(`  ${green}✓${reset} Statusline configurada`);
   }
   // Write settings when runtime supports settings.json
-  if (!isCodex) {
+  if (!isCodex && settingsPath && settings) {
     writeSettings(settingsPath, settings);
   }
   // Configure OpenCode permissions
@@ -2462,7 +2565,11 @@ function finishInstall(
 /**
  * Handle statusline configuration with optional prompt
  */
-function handleStatusline(settings, isInteractive, callback) {
+function handleStatusline(
+  settings: Record<string, unknown>,
+  isInteractive: boolean,
+  callback: (shouldInstall: boolean) => void
+): void {
   const hasExisting = settings.statusLine != null;
   if (!hasExisting) {
     callback(true);
@@ -2478,7 +2585,8 @@ function handleStatusline(settings, isInteractive, callback) {
     callback(false);
     return;
   }
-  const existingCmd = settings.statusLine.command || settings.statusLine.url || '(custom)';
+  const statusLine = settings.statusLine as Record<string, unknown> | undefined;
+  const existingCmd = (statusLine?.command || statusLine?.url || '(custom)') as string;
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -2504,7 +2612,10 @@ function handleStatusline(settings, isInteractive, callback) {
  * Interactive menu selection with arrow key navigation
  * Displays menu options and allows user to select with arrows and Enter
  */
-function promptInteractiveMenu(options, callback) {
+function promptInteractiveMenu(
+  options: Array<{ label: string; description?: string }>,
+  callback: (selectedIndex: number) => void
+): void {
   let selectedIndex = 0;
   let answered = false;
 
@@ -2545,7 +2656,7 @@ function promptInteractiveMenu(options, callback) {
     process.stdin.removeListener('data', handleKeypress);
   };
 
-  const handleKeypress = (chunk) => {
+  const handleKeypress = (chunk: Buffer): void => {
     if (answered) return;
 
     const key = chunk.toString();
@@ -2597,7 +2708,7 @@ function promptInteractiveMenu(options, callback) {
 /**
  * Prompt for runtime selection
  */
-function promptRuntime(callback) {
+function promptRuntime(callback: (action: string[] | string) => void): void {
   const options = [
     { label: 'Claude Code', description: `${dim}- IA avançada da Anthropic${reset}` },
     { label: 'OpenCode', description: `${dim}- código aberto, modelos gratuitos${reset}` },
@@ -2633,14 +2744,14 @@ function promptRuntime(callback) {
 /**
  * Prompt for install location
  */
-function promptLocation(runtimes) {
+function promptLocation(runtimes: string[]): void {
   // Always install locally now
   installAllRuntimes(runtimes, false, true);
 }
 /**
  * Prompt for uninstall location (global or local)
  */
-function promptUninstallLocation(runtimes) {
+function promptUninstallLocation(runtimes: string[]): void {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -2653,7 +2764,7 @@ function promptUninstallLocation(runtimes) {
       process.exit(0);
     }
   });
-  const localExamples = runtimes.map((r) => `./${getDirName(r)}`).join(', ');
+  const localExamples = runtimes.map((r: string) => `./${getDirName(r)}`).join(', ');
   console.log(`  ${yellow}Onde deseja desinstalar o FASE?${reset}\n\n  ${cyan}1${reset}) Local  ${dim}(${localExamples})${reset} - remove deste projeto
    ${cyan}2${reset}) Cancelar
 `);
@@ -2671,7 +2782,7 @@ function promptUninstallLocation(runtimes) {
 /**
  * Prompt for confirmation before uninstalling
  */
-function promptUninstallConfirmation(runtimes, isGlobal) {
+function promptUninstallConfirmation(runtimes: string[], isGlobal: boolean): void {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -2686,7 +2797,7 @@ function promptUninstallConfirmation(runtimes, isGlobal) {
   });
   const locationLabel = isGlobal ? 'globalmente' : 'localmente';
   const runtimeList = runtimes
-    .map((r) => {
+    .map((r: string) => {
       if (r === 'claude') return 'Claude Code';
       if (r === 'opencode') return 'OpenCode';
       if (r === 'gemini') return 'Gemini';
@@ -2765,7 +2876,7 @@ function detectInstalledRuntimes() {
  * Checks npm for the latest version, shows a diff summary, then reinstalls.
  * @param {string[]} runtimesArg - runtimes to update (empty = auto-detect)
  */
-function atualizar(runtimesArg) {
+function atualizar(runtimesArg: string[]): void {
   // execSync already imported at top of file
   // --- 1. Version check ---
   let latestVersion = null;
@@ -2804,13 +2915,13 @@ function atualizar(runtimesArg) {
     console.log(`  Execute ${cyan}npx fase-ai${reset} para instalar.\n`);
     process.exit(0);
   }
-  const runtimeLabels = {
+  const runtimeLabels: Record<string, string> = {
     claude: 'Claude Code',
     opencode: 'OpenCode',
     gemini: 'Gemini',
     codex: 'Codex',
   };
-  const labels = runtimes.map((r) => runtimeLabels[r] || r).join(', ');
+  const labels = runtimes.map((r: string) => runtimeLabels[r] || r).join(', ');
   console.log(`  Atualizando: ${cyan}${labels}${reset}\n`);
   // --- 3. Reinstall ---
   installAllRuntimes(runtimes, false, false);
@@ -2829,15 +2940,27 @@ function atualizar(runtimesArg) {
 /**
  * Install FASE for all selected runtimes
  */
-function installAllRuntimes(runtimes, isGlobal, isInteractive) {
-  const results = [];
+function installAllRuntimes(runtimes: string[], isGlobal: boolean, isInteractive: boolean): void {
+  const results: Array<{
+    settingsPath: string | null;
+    settings: Record<string, unknown> | null;
+    statuslineCommand: string | null;
+    runtime: string;
+  }> = [];
   for (const runtime of runtimes) {
     const result = install(isGlobal, runtime);
     results.push(result);
   }
   const statuslineRuntimes = ['claude', 'gemini'];
-  const primaryStatuslineResult = results.find((r) => statuslineRuntimes.includes(r.runtime));
-  const finalize = (shouldInstallStatusline) => {
+  const primaryStatuslineResult = results.find(
+    (r: {
+      settingsPath: string | null;
+      settings: Record<string, unknown> | null;
+      statuslineCommand: string | null;
+      runtime: string;
+    }) => statuslineRuntimes.includes(r.runtime)
+  );
+  const finalize = (shouldInstallStatusline: boolean) => {
     for (const result of results) {
       const useStatusline = statuslineRuntimes.includes(result.runtime) && shouldInstallStatusline;
       finishInstall(
@@ -2850,7 +2973,7 @@ function installAllRuntimes(runtimes, isGlobal, isInteractive) {
       );
     }
   };
-  if (primaryStatuslineResult) {
+  if (primaryStatuslineResult && primaryStatuslineResult.settings) {
     handleStatusline(primaryStatuslineResult.settings, isInteractive, finalize);
   } else {
     finalize(false);
@@ -2949,7 +3072,7 @@ if (process.env.FASE_TEST_MODE) {
           if (runtimes === 'uninstall') {
             promptUninstallLocation(['claude', 'opencode', 'gemini', 'codex', 'copilot', 'qwen']);
           } else {
-            promptLocation(runtimes);
+            promptLocation(Array.isArray(runtimes) ? runtimes : [runtimes]);
           }
         });
       }
