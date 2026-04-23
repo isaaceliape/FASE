@@ -14,7 +14,7 @@
 | 1 - Dependências & Tooling | COMPLETO | 100% | ESLint + Prettier + lint-staged + hooks funcionando |
 | 2 - CI/CD Pipeline | COMPLETO | 100% | test.yml + release.yml + branch protection docs |
 | 3 - TypeScript Strict Mode | COMPLETO | 100% | REQ-003: Zero TS errors, @ts-nocheck removed, 50+ functions typed |
-| 4 - Test Coverage Foundation | EM PROGRESSO | 33% | Plan 04-01: REQ-019 state locking tests (8 tests, bug fix) |
+| 4 - Test Coverage Foundation | EM PROGRESSO | 67% | Plan 04-01 + 04-02: REQ-019 + REQ-018 partial (56 tests) |
 
 ---
 
@@ -64,7 +64,7 @@
 
 **Requisitos Totais:** 20
 **Requisitos Completados:** 4 (REQ-003, REQ-004, REQ-016, REQ-017)
-**Requisitos Em Progresso:** 1 (REQ-019)
+**Requisitos Em Progresso:** 2 (REQ-018, REQ-019)
 **Requisitos Pendentes:** 15
 
 **Concerns Totais:** 27
@@ -114,7 +114,8 @@
 | 2026-04-23 | Plan 03-03 executado | 177 TS errors resolved, 50+ functions typed, REQ-003 COMPLETO |
 | 2026-04-23 | Fase 3 COMPLETO | REQ-003 implementado: TypeScript strict mode completo |
 | 2026-04-23 | Plan 04-01 executado | REQ-019 state locking tests: 8 tests, acquireStateLock bug fix |
+| 2026-04-23 | Plan 04-02 executado | REQ-018 partial: provider paths + rollback + copy tests (56 tests) |
 
 ---
 
-*Última atualização: 2026-04-23 - Fase 4 Plan 04-01 COMPLETO*
+*Última atualização: 2026-04-23 - Fase 4 Plan 04-02 COMPLETO*

@@ -207,12 +207,14 @@
 
 ## Test Coverage (P0)
 
-### REQ-018: install.ts Test Coverage
+### REQ-018: install.ts Test Coverage 🔄 EM PROGRESSO
 **Descrição:** Add tests para installer
+**Status:** EM PROGRESSO (Plan 04-02 - 3/4 criteria met)
 **Critérios de Aceitação:**
 - [ ] Interactive prompts testados
-- [ ] Provider-specific paths testados
-- [ ] Rollback scenarios testados
+- [x] Provider-specific paths testados ✅ (27 tests - Plan 04-02)
+- [x] Rollback scenarios testados ✅ (23 tests - Plan 04-02)
+- [x] File copy operations testados ✅ (6 tests - Plan 04-02)
 - [ ] Update mode testado
 
 ---
@@ -241,4 +243,4 @@
 
 **Total Requisitos:** 20 (priorizados P0-P3)
 
-*Última atualização: 2026-04-23 - REQ-019 completado (Plan 04-01)*
+*Última atualização: 2026-04-23 - REQ-018 em progresso (Plan 04-02 - 3/4 criteria)*
