@@ -1,6 +1,6 @@
 # 🤝 Guia de Contribuição
 
-> **Versão**: 3.5.1 | Última atualização: 2026-04-15
+> **Versão**: 4.0.0 ✅ | Última atualização: 2026-04-20
 
 Obrigado por considerar contribuir ao FASE! Este documento oferece diretrizes e instruções para participar do projeto.
 
@@ -181,8 +181,11 @@ Isso simula a publicação no npm e mostra:
 ### Testar Instalação
 
 ```bash
-# Instalação local (projeto atual)
-node bin/install.js --claude --local
+# Instalar para um ambiente
+node bin/install.js --claude
+
+# Instalar para múltiplos ambientes
+node bin/install.js --claude --opencode
 
 # Uninstall
 node bin/install.js --uninstall

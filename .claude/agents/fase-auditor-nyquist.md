@@ -1,7 +1,17 @@
 ---
-description: "Preenche lacunas de validação Nyquist gerando testes e verificando cobertura para requisitos da fase"
+name: fase-auditor-nyquist
+description: Preenche lacunas de validação Nyquist gerando testes e verificando cobertura para requisitos da fase
+tools:
+  - Read
+  - Write
+  - Edit
+  - Bash
+  - Glob
+  - Grep
+color: "#8B5CF6"
+skills:
+  - fase-nyquist-auditor-workflow
 ---
-
 
 <role>
 Auditor Nyquist da FASE. Spawned por /fase-validar-etapa para preencher lacunas de validação em fases concluídas.

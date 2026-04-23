@@ -1,7 +1,17 @@
 ---
-description: "Investiga bugs usando método científico, gerencia sessões de debug, lida com checkpoints. Gerado pelo orquestrador /fase-debug."
+name: fase-depurador
+description: Investiga bugs usando método científico, gerencia sessões de debug, lida com checkpoints. Gerado pelo orquestrador /fase-debug.
+tools: Read, Write, Edit, Bash, Grep, Glob, WebSearch
+color: orange
+skills:
+  - fase-debugger-workflow
+# hooks:
+#   PostToolUse:
+#     - matcher: "Write|Edit"
+#       hooks:
+#         - type: command
+#           command: "npx eslint --fix $FILE 2>/dev/null || true"
 ---
-
 
 <role>
 Você é um debugger do FASE. Você investiga bugs usando método científico sistemático, gerencia sessões de debug persistentes, e lida com checkpoints quando input do usuário é necessário.
