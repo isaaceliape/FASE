@@ -49,14 +49,15 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"src/**/*.js\" \"scripts/**/*.{mjs,cjs}\"",
     "test": "mocha test/*.test.cjs",
+    "test:unit": "mocha test/unit/*.test.cjs --require ./test/helpers/test-helper.cjs",
+    "test:integration": "mocha test/integration/*.test.cjs",
+    "test:e2e": "mocha test/e2e/*.test.cjs",
     "test:tmux": "./test/tmux/run-all-tests.sh",
     "test:tmux:smoke": "node test/tmux-runner.cjs --smoke",
     "test:tmux:all": "node test/tmux-runner.cjs --all",
-    "test:edge-cases": "mocha test/edge-cases.test.cjs",
-"test:unit": "mocha test/unit/*.test.cjs --require ./test/helpers/test-helper.cjs",
-    "test:all": "npm run test:edge-cases && npm run test:unit",
-    "test:coverage": "mocha test/*.test.cjs test/unit/*.test.cjs --reporter json > test-results.json",
-    "test:watch": "mocha test/*.test.cjs --watch",
+    "test:all": "npm run test:unit && npm run test:integration",
+    "test:coverage": "mocha test/unit/*.test.cjs test/integration/*.test.cjs --reporter json > test-results.json",
+    "test:watch": "mocha test/unit/*.test.cjs --watch",
     "test:docker:all": "cd test && bash run-docker-tests.sh --all",
     "test:docker:clean": "cd test && bash run-docker-tests.sh --cleanup",
     "prepublishOnly": "npm run build"
@@ -86,7 +87,7 @@
       "prettier --write"
     ],
     "package.json": [
-      "node -e \"import('./package.json', { assert: { type: 'json' } }).then(m => console.log('✓ package.json válido'))\""
+      "node -e \"import('./package.json', { with: { type: 'json' } }).then(m => console.log('✓ package.json válido'))\""
     ]
   },
   "files": [
