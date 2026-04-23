@@ -369,6 +369,134 @@ tools:
       assert.strictEqual(fs.existsSync(sumariosPath), true, 'SUMARIO.md should exist');
     });
   });
+
+  describe('File Copy Validation', () => {
+    it('should validate file content after copy', () => {
+      const sourceDir = path.join(tempDir, 'source');
+      const targetDir = path.join(tempDir, 'target');
+      const sourceFile = path.join(sourceDir, 'test.md');
+      const targetFile = path.join(targetDir, 'test.md');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      const content = '# Test\n\nContent here.';
+      fs.writeFileSync(sourceFile, content);
+
+      // Simulate copy
+      fs.copyFileSync(sourceFile, targetFile);
+
+      assert.strictEqual(
+        fs.readFileSync(targetFile, 'utf-8'),
+        content,
+        'Copied content should match source'
+      );
+    });
+
+    it('should handle copy of binary files', () => {
+      const sourceDir = path.join(tempDir, 'binary-source');
+      const targetDir = path.join(tempDir, 'binary-target');
+      const sourceFile = path.join(sourceDir, 'test.bin');
+      const targetFile = path.join(targetDir, 'test.bin');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      // Create binary-like content
+      const binaryContent = Buffer.from([0x00, 0x01, 0x02, 0x03]);
+      fs.writeFileSync(sourceFile, binaryContent);
+
+      fs.copyFileSync(sourceFile, targetFile);
+
+      const copied = fs.readFileSync(targetFile);
+      assert.deepStrictEqual(copied, binaryContent, 'Binary content should be preserved');
+    });
+
+    it('should preserve file permissions during copy', () => {
+      const sourceDir = path.join(tempDir, 'perms-source');
+      const targetDir = path.join(tempDir, 'perms-target');
+      const sourceFile = path.join(sourceDir, 'executable.sh');
+      const targetFile = path.join(targetDir, 'executable.sh');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      fs.writeFileSync(sourceFile, '#!/bin/bash\necho test');
+      fs.chmodSync(sourceFile, 0o755);
+
+      fs.copyFileSync(sourceFile, targetFile);
+
+      const sourceMode = fs.statSync(sourceFile).mode & 0o777;
+      const targetMode = fs.statSync(targetFile).mode & 0o777;
+
+      // Note: copyFileSync preserves mode on most systems
+      assert.strictEqual(targetMode, sourceMode, 'Permissions should be preserved');
+    });
+
+    it('should verify copy source exists before copying', () => {
+      const sourceDir = path.join(tempDir, 'verify-source');
+      const targetDir = path.join(tempDir, 'verify-target');
+      const sourceFile = path.join(sourceDir, 'exists.md');
+      const targetFile = path.join(targetDir, 'exists.md');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+      fs.writeFileSync(sourceFile, 'content');
+
+      // Verify source exists
+      assert.strictEqual(fs.existsSync(sourceFile), true, 'Source should exist before copy');
+
+      // Copy succeeds
+      fs.copyFileSync(sourceFile, targetFile);
+      assert.strictEqual(fs.existsSync(targetFile), true, 'Target should exist after copy');
+    });
+
+    it('should handle copy to existing file (overwrite)', () => {
+      const sourceDir = path.join(tempDir, 'overwrite-source');
+      const targetDir = path.join(tempDir, 'overwrite-target');
+      const sourceFile = path.join(sourceDir, 'new.md');
+      const targetFile = path.join(targetDir, 'old.md');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      // Create old file
+      fs.writeFileSync(targetFile, 'old content');
+
+      // Create new source
+      fs.writeFileSync(sourceFile, 'new content');
+
+      // Overwrite
+      fs.copyFileSync(sourceFile, targetFile);
+
+      assert.strictEqual(
+        fs.readFileSync(targetFile, 'utf-8'),
+        'new content',
+        'Target should be overwritten'
+      );
+    });
+
+    it('should validate file size matches after copy', () => {
+      const sourceDir = path.join(tempDir, 'size-source');
+      const targetDir = path.join(tempDir, 'size-target');
+      const sourceFile = path.join(sourceDir, 'size.txt');
+      const targetFile = path.join(targetDir, 'size.txt');
+
+      fs.mkdirSync(sourceDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
+
+      const content = 'A'.repeat(1000);
+      fs.writeFileSync(sourceFile, content);
+
+      fs.copyFileSync(sourceFile, targetFile);
+
+      const sourceSize = fs.statSync(sourceFile).size;
+      const targetSize = fs.statSync(targetFile).size;
+
+      assert.strictEqual(targetSize, sourceSize, 'File sizes should match');
+      assert.strictEqual(targetSize, 1000, 'Size should be 1000 bytes');
+    });
+  });
 });
 
 // Run tests if executed directly
