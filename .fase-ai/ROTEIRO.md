@@ -118,14 +118,15 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 
 ### Fase 6: Consolidar Testes
 **Requisitos:** REQ-007
-**Tarefas:**
-- Migrate testes/ → test/
-- Structure: test/unit/, test/integration/, test/e2e/
-- Update CI paths
-- Document structure
+**Plans:** 3 plans em 3 etapas
+
+**Plans:**
+- [ ] 06-01-PLANO.md — Unit tests migration (testes/ → test/unit/)
+- [ ] 06-02-PLANO.md — Integration/E2E tests migration
+- [ ] 06-03-PLANO.md — CI/Docs update + final verification
 
 **Estimativa:** 1-2 dias
-**Dependências:** Fase 4
+**Dependências:** Fase 4 ✅ COMPLETO
 
 ---
 
