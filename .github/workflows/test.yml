@@ -68,6 +68,32 @@ jobs:
       - name: Build
         run: npm run build
       
+      - name: Verify no source duplication (bin/src should not exist)
+        run: |
+          if [ -d "bin/src" ]; then
+            echo "::error::bin/src/ exists - source duplication detected!"
+            echo "Official source is src/ (see tsconfig.json rootDir)"
+            exit 1
+          fi
+          echo "✓ No duplication: bin/src/ does not exist"
+      
+      - name: Verify src is official TypeScript source
+        run: |
+          # Verify tsconfig.json uses src as rootDir
+          if ! grep -q '"rootDir": "src"' tsconfig.json; then
+            echo "::error::tsconfig.json rootDir should be 'src'"
+            exit 1
+          fi
+          
+          # Verify no other TypeScript source directories exist
+          for dir in bin/src lib src2 src-backup; do
+            if [ -d "$dir" ] && [ "$(find $dir -name '*.ts' 2>/dev/null | wc -l)" -gt 0 ]; then
+              echo "::warning::Found TypeScript files in $dir - consider removing"
+            fi
+          done
+          
+          echo "✓ Source verification: src/ is official TypeScript source"
+      
       - name: Run unit tests
         run: npm test
       
@@ -120,6 +146,32 @@ jobs:
       - name: Build
         run: npm run build
       
+      - name: Verify no source duplication (bin/src should not exist)
+        run: |
+          if [ -d "bin/src" ]; then
+            echo "::error::bin/src/ exists - source duplication detected!"
+            echo "Official source is src/ (see tsconfig.json rootDir)"
+            exit 1
+          fi
+          echo "✓ No duplication: bin/src/ does not exist"
+      
+      - name: Verify src is official TypeScript source
+        run: |
+          # Verify tsconfig.json uses src as rootDir
+          if ! grep -q '"rootDir": "src"' tsconfig.json; then
+            echo "::error::tsconfig.json rootDir should be 'src'"
+            exit 1
+          fi
+          
+          # Verify no other TypeScript source directories exist
+          for dir in bin/src lib src2 src-backup; do
+            if [ -d "$dir" ] && [ "$(find $dir -name '*.ts' 2>/dev/null | wc -l)" -gt 0 ]; then
+              echo "::warning::Found TypeScript files in $dir - consider removing"
+            fi
+          done
+          
+          echo "✓ Source verification: src/ is official TypeScript source"
+      
       - name: Run unit tests
         run: npm test
       
@@ -157,6 +209,25 @@ jobs:
       
       - name: Build
         run: npm run build
+      
+      - name: Verify no source duplication (bin/src should not exist)
+        run: |
+          if [ -d "bin/src" ]; then
+            echo "::error::bin/src/ exists - source duplication detected!"
+            echo "Official source is src/ (see tsconfig.json rootDir)"
+            exit 1
+          fi
+          echo "✓ No duplication: bin/src/ does not exist"
+      
+      - name: Verify src is official TypeScript source
+        run: |
+          # Verify tsconfig.json uses src as rootDir
+          if ! grep -q '"rootDir": "src"' tsconfig.json; then
+            echo "::error::tsconfig.json rootDir should be 'src'"
+            exit 1
+          fi
+          
+          echo "✓ Source verification: src/ is official TypeScript source"
       
       - name: Run integration tests
         run: |
