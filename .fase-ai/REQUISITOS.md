@@ -95,13 +95,14 @@
 
 ---
 
-### REQ-007: Consolidar Testes
+### REQ-007: Consolidar Testes ✅ COMPLETO
 **Descrição:** Unificar estrutura de testes
+**Status:** COMPLETO (Plan 06-01 + 06-02 + 06-03)
 **Critérios de Aceitação:**
-- [ ] testes/ removido/migrado para test/
-- [ ] test/unit/, test/integration/, test/e2e/ structure
-- [ ] CI updated para nova estrutura
-- [ ] Documentation updated
+- [x] testes/ removido/migrado para test/ ✅ (Plan 06-01: 17 files moved)
+- [x] test/unit/, test/integration/, test/e2e/ structure ✅ (Plan 06-01 + 06-02)
+- [x] CI updated para nova estrutura ✅ (Plan 06-03: package.json + test.yml)
+- [x] Documentation updated ✅ (Plan 06-03: README.md + TESTING.md)
 
 ---
 

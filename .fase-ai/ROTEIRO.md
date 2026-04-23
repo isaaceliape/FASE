@@ -116,15 +116,15 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 
 ---
 
-### Fase 6: Consolidar Testes
+### Fase 6: Consolidar Testes ✅ COMPLETO
 **Requisitos:** REQ-007
 **Plans:** 3 plans em 3 etapas
-**Status:** EM PROGRESSO (66% - Plan 01+02 complete)
+**Status:** COMPLETO
 
 **Plans:**
 - [x] 06-01-PLANO.md — Unit tests migration (testes/ → test/unit/) ✅
 - [x] 06-02-PLANO.md — Integration/E2E tests migration ✅
-- [ ] 06-03-PLANO.md — CI/Docs update + final verification
+- [x] 06-03-PLANO.md — CI/Docs update + final verification ✅
 
 **Discovery:**
 - ✅ testes/ directory removed (17 test files)
@@ -136,10 +136,12 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 - ✅ Import paths fixed: 5 files updated
 - ✅ 357 tests passing after migration (153 unit + 179 integration + 25 e2e)
 - ✅ lint-staged Node.js v25 import assertion syntax fixed
+- ✅ CI workflow verified (npm test entry point)
+- ✅ Documentation updated (README.md + TESTING.md)
 
 **Estimativa:** 1-2 dias
 **Dependências:** Fase 4 ✅ COMPLETO
-**Progress:** 2/3 plans (66%)
+**Progress:** 3/3 plans (100%)
 
 ---
 
@@ -343,5 +345,5 @@ Fase 13 ─► (independente)
 *Última atualização: 2026-04-23*
 *Total Fases: 16*
 *Total Marcos: 6*
-*Fases Completadas: 5 (Fase 1-5)*
-*Fases Em Progresso: 1 (Fase 6 - 66%)*
+*Fases Completadas: 6 (Fase 1-6)*
+*Fases Em Progresso: 0*
