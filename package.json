@@ -45,6 +45,7 @@
     "verificar-pacote": "npm pack --dry-run",
     "verificar-instalacao": "node dist/verificar-instalacao.js",
     "build-docs": "node build-docs.cjs",
+    "lint": "eslint src/",
     "test": "mocha test/*.test.cjs",
     "test:tmux": "./test/tmux/run-all-tests.sh",
     "test:tmux:smoke": "node test/tmux-runner.cjs --smoke",

@@ -1,9 +1,19 @@
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  tseslint.configs.recommended,
+  // Global ignores - must be first
   {
-    ignores: ['dist/**', 'node_modules/**', 'bin/**'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'bin/**',
+      'src/hooks/**', // JavaScript files not in TypeScript project
+    ],
+  },
+  // TypeScript recommended config
+  tseslint.configs.recommended,
+  // Custom rules
+  {
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
@@ -21,6 +31,7 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off', // Allow @ts-nocheck for now
     },
   }
 );
