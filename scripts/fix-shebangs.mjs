@@ -9,7 +9,7 @@
  * 3. Copies static directories (.github/commands, .github/agents, .github/hooks, .github/skills, fase-shared, docs) to dist/
  */
 
-import { readFileSync, writeFileSync, chmodSync, existsSync, readdirSync, mkdirSync, copyFileSync, statSync, rmSync } from 'fs';
+import { readFileSync, writeFileSync, chmodSync, existsSync, readdirSync, mkdirSync, copyFileSync, statSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -55,22 +55,6 @@ function copyStaticDir(dirName) {
 // Copy static directories
 for (const dir of STATIC_DIRS) {
   copyStaticDir(dir);
-}
-
-// Clean up old deprecated directories from dist/
-const deprecatedDirs = ['agentes', 'comandos', 'hooks', 'skills'];
-for (const dirName of deprecatedDirs) {
-  const oldPath = join(distDir, dirName);
-  if (existsSync(oldPath)) {
-    // Only remove if it's in dist root (not dist/.github)
-    try {
-      // Use rmSync from fs module
-      rmSync(oldPath, { recursive: true });
-      console.log(`  ✓ removed deprecated dist/${dirName}/`);
-    } catch (err) {
-      console.warn(`  skip removing deprecated dist/${dirName}/ — ${err.message}`);
-    }
-  }
 }
 
 // Process CLI entry points
