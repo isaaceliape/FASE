@@ -21,7 +21,7 @@
 ### Marco 2: Deduplication & Cleanup
 | Fase | Status | Progress | Observações |
 |------|--------|----------|-------------|
-| 5 - Eliminar Duplicação | DISPONÍVEL | 0% | Depende Fase 3 ✅ |
+| 5 - Eliminar Duplicação | EM_PROGRESSO | 33% | Plan 01 complete: bin/ purpose documented (REQ-013) |
 | 6 - Consolidar Testes | DISPONÍVEL | 0% | Depende Fase 4 ✅ |
 
 ---
@@ -63,9 +63,9 @@
 ## Metrics
 
 **Requisitos Totais:** 20
-**Requisitos Completados:** 6 (REQ-003, REQ-004, REQ-016, REQ-017, REQ-018, REQ-019)
+**Requisitos Completados:** 7 (REQ-003, REQ-004, REQ-013, REQ-016, REQ-017, REQ-018, REQ-019)
 **Requisitos Em Progresso:** 0
-**Requisitos Pendentes:** 14
+**Requisitos Pendentes:** 13
 
 **Concerns Totais:** 27
 **Concerns Resolvidos:** 7 (code-quality, formatting, lint, testing, ci-pipeline, type-safety, test-coverage)
@@ -118,7 +118,8 @@
 | 2026-04-23 | Plan 04-02 executado | REQ-018 partial: provider paths + rollback + copy tests (56 tests) |
 | 2026-04-23 | Plan 04-03 executado | REQ-018 complete: update + verify + uninstall tests (21 tests) |
 | 2026-04-23 | Fase 4 COMPLETO | REQ-018 + REQ-019 implementados (85 tests total) |
+| 2026-04-23 | Plan 05-01 executado | REQ-013: bin/README.md + STRUCTURE.md updated, src/ confirmed as official source |
 
 ---
 
-*Última atualização: 2026-04-23 - Fase 4 Plan 04-03 COMPLETO (Phase 4 100%)*
+*Última atualização: 2026-04-23 - Fase 5 Plan 05-01 EM_PROGRESSO (REQ-013 COMPLETO)*

@@ -151,12 +151,13 @@
 
 ---
 
-### REQ-013: Clarificar bin/ Purpose
+### REQ-013: Clarificar bin/ Purpose ✅ COMPLETO
 **Descrição:** Resolver bin/src/*.ts vs compiled output
+**Status:** COMPLETO (Plan 05-01)
 **Critérios de Aceitação:**
-- [ ] bin/ purpose documented
-- [ ] TypeScript sources removidos de bin/ se é output
-- [ ] Ou tsconfig para bin/ se é source separado
+- [x] bin/ purpose documented ✅ (bin/README.md created)
+- [x] TypeScript sources removidos de bin/ se é output ✅ (bin/src/ marked as legacy, will be removed in Plan 02)
+- [x] tsconfig.json verified ✅ (rootDir: "src", src/ is official source)
 
 ---
 
@@ -243,4 +244,4 @@
 
 **Total Requisitos:** 20 (priorizados P0-P3)
 
-*Última atualização: 2026-04-23 - REQ-018 e REQ-019 COMPLETO (Phase 4 100%)*
+*Última atualização: 2026-04-23 - REQ-013 COMPLETO (Phase 5 Plan 01)*
