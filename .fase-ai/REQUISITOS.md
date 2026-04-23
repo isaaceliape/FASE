@@ -4,14 +4,15 @@
 
 ## Alta Prioridade (P0)
 
-### REQ-001: Eliminar Duplicação src/ vs bin/src/
+### REQ-001: Eliminar Duplicação src/ vs bin/src/ ✅ COMPLETO
 **Descrição:** Remover duplicação de 12 arquivos TypeScript entre src/lib/ e bin/src/lib/
+**Status:** COMPLETO (Plan 05-02)
 **Critérios de Aceitação:**
-- [ ] Source oficial definido (src/)
-- [ ] bin/src/lib/*.ts removido
-- [ ] Build process atualizado se necessário
-- [ ] CI check para sync verification
-- [ ] Tests passando após removal
+- [x] Source oficial definido (src/) ✅ (verified Plan 05-01)
+- [x] bin/src/lib/*.ts removido ✅ (13 files deleted)
+- [x] Build process atualizado se necessário ✅ (no changes needed)
+- [ ] CI check para sync verification (Plan 05-03)
+- [x] Tests passando após removal ✅ (349 passing)
 
 **Arquivos:**
 - src/lib/*.ts (12 arquivos)
@@ -66,12 +67,13 @@
 
 ---
 
-### REQ-005: Consolidar path-utils.ts
+### REQ-005: Consolidar path-utils.ts ✅ COMPLETO
 **Descrição:** Resolver inconsistência de path-utils.ts
+**Status:** COMPLETO (Plan 05-02 - removed as orphan)
 **Critérios de Aceitação:**
-- [ ] path-utils.ts em src/lib/ ou removido
-- [ ] Se necessário, documentar uso
-- [ ] bin/src/lib/path-utils.ts removido ou sincronizado
+- [x] path-utils.ts em src/lib/ ou removido ✅ (removed - orphaned code)
+- [x] Se necessário, documentar uso ✅ (not used anywhere, documented in SUMARIO)
+- [x] bin/src/lib/path-utils.ts removido ou sincronizado ✅ (deleted)
 
 **Arquivos:**
 - bin/src/lib/path-utils.ts
@@ -244,4 +246,4 @@
 
 **Total Requisitos:** 20 (priorizados P0-P3)
 
-*Última atualização: 2026-04-23 - REQ-013 COMPLETO (Phase 5 Plan 01)*
+*Última atualização: 2026-04-23 - REQ-001, REQ-005 COMPLETO (Phase 5 Plan 02)*

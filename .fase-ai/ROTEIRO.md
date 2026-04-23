@@ -100,7 +100,7 @@ Roteiro para endereçar 27 concerns através de improvement continuo. Fases orga
 
 **Plans:**
 - [x] 05-01-PLANO.md — Determine official source + clarify bin/ purpose (REQ-013) ✅
-- [ ] 05-02-PLANO.md — Remove bin/src/ duplicated sources + path-utils.ts (REQ-001, REQ-005)
+- [x] 05-02-PLANO.md — Remove bin/src/ duplicated sources + path-utils.ts (REQ-001, REQ-005) ✅
 - [ ] 05-03-PLANO.md — CI sync verification (REQ-001)
 
 **Estimativa:** 2-3 dias
@@ -329,4 +329,4 @@ Fase 13 ─► (independente)
 *Total Fases: 16*
 *Total Marcos: 6*
 *Fases Completadas: 4 (Fase 1-4)*
-*Fases Em Progresso: 1 (Fase 5 - 33%)*
+*Fases Em Progresso: 1 (Fase 5 - 67%)*
