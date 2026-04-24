@@ -168,7 +168,7 @@ O FASE verifica automaticamente por atualizações em cada sessão:
 
 Para verificar manualmente:
 ```bash
-node ~/.claude/fase-ai/hooks/fase-check-update.js
+node ./.claude/fase-ai/hooks/fase-check-update.js
 ```
 
 ---

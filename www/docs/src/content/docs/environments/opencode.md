@@ -105,14 +105,11 @@ OpenCode usa XDG Base Directory specification:
 ```bash
 # Instalar apenas para OpenCode
 npx fase-ai --opencode
-
-# Com diretório customizado
-npx fase-ai --opencode --config-dir /custom/path
 ```
 
 ## Configuração Recomendada
 
-Arquivo: `~/.config/opencode/settings.json`
+Arquivo: `.opencode/settings.json` (projeto local)
 
 ```json
 {
@@ -139,7 +136,7 @@ Arquivo: `~/.config/opencode/settings.json`
 ## Estrutura de Diretórios
 
 ```
-~/.config/opencode/
+.opencode/
 ├── settings.json
 ├── skills/
 │   ├── fase-terminologia.md

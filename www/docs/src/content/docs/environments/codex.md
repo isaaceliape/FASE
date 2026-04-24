@@ -125,14 +125,11 @@ Context window varia por plano/subscription. Verifique seu plano para detalhes.
 ```bash
 # Instalar apenas para Codex
 npx fase-ai --codex
-
-# Com diretório customizado
-npx fase-ai --codex --config-dir /custom/path
 ```
 
 ## Configuração Recomendada
 
-Arquivo: `~/.codex/settings.json`
+Arquivo: `.codex/settings.json` (projeto local)
 
 ```json
 {
@@ -155,15 +152,13 @@ Arquivo: `~/.codex/settings.json`
 ## Estrutura de Diretórios
 
 ```
-~/.codex/
+.codex/
 ├── settings.json
-├── agents/
-│   └── fase/
 ├── skills/
 │   ├── fase-terminologia.md
 │   └── enterprise-conventions.md
-└── projects/
-    └── [projeto-atual]/
+└── agents/
+    └── fase/
 ```
 
 ## Comandos

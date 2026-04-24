@@ -103,14 +103,11 @@ Gemini CLI tem suporte básico a hooks. Verifique documentação oficial para de
 ```bash
 # Instalar apenas para Gemini
 npx fase-ai --gemini
-
-# Com diretório customizado
-npx fase-ai --gemini --config-dir /custom/path
 ```
 
 ## Configuração Recomendada
 
-Arquivo: `~/.gemini/settings.json`
+Arquivo: `.gemini/settings.json` (projeto local)
 
 ```json
 {
@@ -127,13 +124,11 @@ Arquivo: `~/.gemini/settings.json`
 ## Estrutura de Diretórios
 
 ```
-~/.gemini/
+.gemini/
 ├── settings.json
-├── fase/
-│   ├── commands/
-│   └── agents/
-└── projects/
-    └── [projeto-atual]/
+└── fase/
+    ├── commands/
+    └── agents/
 ```
 
 ## Comandos

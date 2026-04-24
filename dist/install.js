@@ -2301,12 +2301,8 @@ function install(runtime = 'claude') {
     // Check if hooks directory actually exists before building hook commands
     const hooksDest = path.join(targetDir, 'hooks');
     const hooksExist = fs.existsSync(hooksDest);
-    const statuslineCommand = hooksExist
-        ? 'node ' + dirName + '/hooks/fase-statusline.js'
-        : null;
-    const updateCheckCommand = hooksExist
-        ? 'node ' + dirName + '/hooks/fase-check-update.js'
-        : null;
+    const statuslineCommand = hooksExist ? 'node ' + dirName + '/hooks/fase-statusline.js' : null;
+    const updateCheckCommand = hooksExist ? 'node ' + dirName + '/hooks/fase-check-update.js' : null;
     const contextMonitorCommand = hooksExist
         ? 'node ' + dirName + '/hooks/fase-context-monitor.js'
         : null;
