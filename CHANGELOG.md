@@ -5,6 +5,27 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-br/1.0.0/),
 e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1] - 2026-04-24
+
+### Fixed
+
+- **Error Handling Standardization** (Issue #9): Completed standardization of error handling throughout the codebase
+  - Refactored `src/install/helpers.ts`: `safeJsonParse()` now throws `ValidationError` instead of calling `process.exit(1)`
+  - Refactored `src/install.ts`: `install()` function now throws `InstallationError` instead of `process.exit(1)`
+  - Added proper error handling in `installAllRuntimes()` function
+  - Improved testability by separating library error throwing from CLI-level exit handling
+  
+- **Agent Documentation Patterns**: Fixed agent frontmatter validation issues
+  - Added anti-heredoc instruction to 10 file-writing agents (fase-arquiteto, fase-depurador, fase-executor, fase-mapeador-codigo, fase-pesquisador-fase, fase-pesquisador-projeto, fase-planejador, fase-roadmapper, fase-sintetizador-pesquisa, fase-verificador)
+  - Added hooks pattern section to `agentes/fase-arquiteto.md`
+  - Fixed agent reference in `comandos/debug.md`: corrected subagent_type from "faz-debugger" to "fase-depurador"
+
+### Tests
+
+- All 414 tests now passing (previously 399/414)
+- Resolved all 15 pre-existing framework pattern validation failures
+- No regressions introduced in error handling refactoring
+
 ## [5.0.1] - 2026-04-22
 
 ### Removed
