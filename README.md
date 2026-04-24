@@ -1,6 +1,6 @@
 <div align="center">
 
-# FASE. v4.0.2
+# FASE. v5.1.0
 
 ## Framework de Automação Sem Enrolação
 
@@ -230,6 +230,26 @@ asciinema upload my-recording.cast
 pip install termtosvg
 termtosvg record my-recording.svg
 ```
+
+---
+
+## Novidades em v5.1.0
+
+### Error Handling Standardization (Issue #9)
+Padronização completa de tratamento de erros em toda a codebase:
+- Funções de biblioteca agora lançam erros tipados em vez de chamar `process.exit()`
+- Melhor testabilidade separando lançamento de erros no nível da biblioteca do encerramento no nível do CLI
+- 414/414 testes passando com 0 regressões
+
+### Agent Documentation Patterns
+- Anti-heredoc instruction adicionada a 10 agentes que escrevem arquivos
+- Hooks pattern documentation atualizado
+- Referências de agent corrigidas em todos os comandos
+
+### Arquitetura Melhorada
+- Sistema de erros tipado com 9 classes de erro especializadas
+- Logging unificado com pino
+- Integração de testes estruturada para todos os 6 provedores
 
 ---
 
