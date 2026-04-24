@@ -93,7 +93,7 @@ npx fase-ai --qwen
 npx fase-ai --all
 ```
 
-### Instalação via Dev Dependency (Recomendado para Times)
+### Instalação via Dependência de Desenvolvimento (Recomendado para Times)
 
 Para projetos em equipe, instale FASE como dev dependency para garantir **versão consistente** entre todos os desenvolvedores:
 
@@ -177,37 +177,37 @@ node ~/.claude/fase-ai/hooks/fase-check-update.js
 
 Quer ver FASE em ação? Temos **3 exemplos reais** mostrando diferentes níveis de complexidade:
 
-### Beginner: [CLI Pomodoro Timer](./examples/01-cli-pomodoro/)
+### Iniciante: [CLI Pomodoro Timer](./examples/01-cli-pomodoro/)
 Construir uma ferramenta de linha de comando simples com FASE.
 
-### Intermediate: [Refatoração de Código Legacy](./examples/02-refactor-legacy/)
+### Intermediário: [Refatoração de Código Legacy](./examples/02-refactor-legacy/)
 Refatorar um script grande em partes menores e testáveis.
 
-### Advanced: [JWT Authentication Feature](./examples/03-full-feature/)
+### Avançado: [JWT Authentication Feature](./examples/03-full-feature/)
 Implementar uma feature completa com testes, documentação e múltiplas dependências.
 
 **[Explorar todos os exemplos →](./examples/)**
 
 ---
 
-## In Action
+## Em Ação
 
-Watch FASE in action. Below are terminal recordings showing real workflows:
+Veja FASE em ação. Abaixo estão gravações de terminal mostrando workflows reais:
 
-### Installation & Setup
+### Instalação e Configuração
 
 ```bash
-# Record your installation session
+# Grave sua sessão de instalação
 asciinema rec assets/demo-install.cast
 
-# Then embed in README as:
+# Depois incorpore no README como:
 # <asciinema-player src="assets/demo-install.cast"></asciinema-player>
 ```
 
-### Complete Workflow: From Idea to Deployment
+### Workflow Completo: Da Ideia ao Deploy
 
 ```bash
-# Record a workflow session with these steps:
+# Grave uma sessão de workflow com estes passos:
 # 1. /fase-novo-projeto
 # 2. /fase-planejar-etapa 1
 # 3. /fase-executar-etapa 1
@@ -216,16 +216,16 @@ asciinema rec assets/demo-install.cast
 asciinema rec assets/demo-workflow.cast
 ```
 
-**Tools to record your own demos:**
+**Ferramentas para gravar seus próprios demos:**
 
-- **[asciinema](https://asciinema.org/)** — Interactive recordings, embeddable, shareable
+- **[asciinema](https://asciinema.org/)** — Gravações interativas, incorporáveis e compartilháveis
 ```bash
 npm install -g asciinema
 asciinema rec my-recording.cast
 asciinema upload my-recording.cast
 ```
 
-- **[termtosvg](https://github.com/nbedos/termtosvg)** — Generates SVG animations
+- **[termtosvg](https://github.com/nbedos/termtosvg)** — Gera animações SVG
 ```bash
 pip install termtosvg
 termtosvg record my-recording.svg
@@ -267,10 +267,10 @@ Cada agente tem um propósito específico no ciclo de desenvolvimento:
 - **Especialistas**: `fase-depurador`, `fase-auditor-nyquist`
 
 ### 2. **Comandos (32 operacionais)**
-Organize em categorias por função (planning, research, execution, verification, debug, utility)
+Organize em categorias por função (planejamento, pesquisa, execução, verificação, debug, utilitários)
 
 ### 3. **Sistema de Hooks**
-Context monitoring para gerenciar estado e histórico automaticamente via integração nativa (settings.json)
+Monitoramento de contexto para gerenciar estado e histórico automaticamente via integração nativa (settings.json)
 
 ### 4. **Instalador Universal**
 Suporta múltiplos runtimes (Claude Code, OpenCode, Gemini, Codex, Qwen Code) com detecção automática
@@ -327,7 +327,7 @@ FASE oferece **34 comandos em português brasileiro**, organizados por função:
 /fase-checar-tarefas # Revisa task list
 ```
 
-### Execution & Development
+### Execução e Desenvolvimento
 ```bash
 /fase-executar-etapa # Executa uma fase completa
 /fase-rapido # Modo fast-track para tarefas simples
@@ -335,14 +335,14 @@ FASE oferece **34 comandos em português brasileiro**, organizados por função:
 /fase-adicionar-tarefa # Adiciona task ao histórico
 ```
 
-### Debug & Troubleshooting
+### Debug e Solução de Problemas
 ```bash
 /fase-debug # Diagnostica problemas
 /fase-depurador # Invoca agente debugger (via agente)
 /fase-discutir-etapa # Abre discussão estruturada
 ```
 
-### Maintenance & Administration
+### Manutenção e Administração
 ```bash
 /fase-pausar-trabalho # Pausa execução
 /fase-retomar-trabalho # Continua de onde parou
@@ -396,27 +396,27 @@ Gerenciador de sprint/kanban (use Jira/Linear para isso)
 - [ Testes](docs/TESTING.md) — Guia de testes, como rodar e contribuir
 - [ Resultados de Testes](TEST_RESULTS.md) — Últimos resultados de validação
 
-### Build & Development
-- **Build:** `npm run build` — Compila TypeScript e copia static files
-- **Test:** `npm test` — Executa testes de edge cases
-- **Test All:** `npm run test:all` — Executa todos os testes (legacy + moderno)
+### Compilação e Desenvolvimento
+- **Build:** `npm run build` — Compila TypeScript e copia arquivos estáticos
+- **Teste:** `npm test` — Executa testes de casos extremos
+- **Teste Tudo:** `npm run test:all` — Executa todos os testes (legado + moderno)
 - **Estrutura:** `src/` (TypeScript) → `dist/` (compilado com static files)
 
-### GitHub Actions & CI/CD
+### GitHub Actions e CI/CD
 
 FASE possui um pipeline completo de CI/CD automatizado:
 
-#### **Multi-Platform Testing** (test-multi-platform.yml)
+#### **Testes Multi-Plataforma** (test-multi-platform.yml)
 - **Plataformas suportadas:** Linux (ubuntu-latest) e macOS (macos-latest)
 - **Versões Node.js:** 20 e 22 (total de 4 combinações)
-- **Testes:** Build, unit tests, e verificação de instalação
+- **Testes:** Compilação, testes unitários e verificação de instalação
 - **Integração:** Testa instalação multi-provider (--claude, --opencode)
 - **Performance:** Matriz otimizada com 60% mais rápida que versões anteriores
 
 **Execução:** Automaticamente em cada push para `main` ou pull request
 
-#### **Smart npm Publishing** (publicar-npm.yml)
-- **Detecção de versão:** Compara `package.json` com npm registry
+#### **Publicação npm Inteligente** (publicar-npm.yml)
+- **Detecção de versão:** Compara `package.json` com registro npm
 - **Publicação condicional:** Só publica se versão mudou
 - **Git tags automáticos:** Cria `v{version}` automaticamente
 - **GitHub Releases:** Geradas automaticamente de `CHANGELOG.md`
