@@ -39,7 +39,16 @@ function validateCwdForShell(dir) {
  */
 function findCodeFiles(dir, maxDepth, extensions) {
     const results = [];
-    const skipDirs = ['node_modules', '.git', '.svn', '.hg', '__pycache__', 'vendor', 'dist', 'build'];
+    const skipDirs = [
+        'node_modules',
+        '.git',
+        '.svn',
+        '.hg',
+        '__pycache__',
+        'vendor',
+        'dist',
+        'build',
+    ];
     function search(currentDir, depth) {
         if (depth > maxDepth)
             return;
@@ -246,12 +255,6 @@ export function cmdInitVerifyWork(cwd, phase, raw) {
 }
 export function cmdInitPhaseOp(cwd, phase, raw) {
     const ctx = buildPhaseContext(cwd, phase);
-    // Handle case where phase not found in etapas but in roadmap
-    let phaseInfo = ctx.phaseInfo;
-    if (!phaseInfo) {
-        const roadmapEtapa = ctx.phaseInfo; // Already handled in buildPhaseContext
-        // PhaseContext handles this internally now
-    }
     const result = {
         ...ctx.phaseBase(),
         brave_search: ctx.config.brave_search,

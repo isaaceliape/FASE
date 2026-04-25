@@ -315,13 +315,6 @@ export function cmdInitVerifyWork(cwd: string, phase: string, raw: boolean): voi
 export function cmdInitPhaseOp(cwd: string, phase: string, raw: boolean): void {
   const ctx = buildPhaseContext(cwd, phase);
 
-  // Handle case where phase not found in etapas but in roadmap
-  const phaseInfo = ctx.phaseInfo;
-  if (!phaseInfo) {
-    const roadmapEtapa = ctx.phaseInfo; // Already handled in buildPhaseContext
-    // PhaseContext handles this internally now
-  }
-
   const result = {
     ...ctx.phaseBase(),
 
