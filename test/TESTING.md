@@ -259,7 +259,7 @@ Comandos e agentes do FASE usam referências de caminho padronizadas e agnóstic
 
 ### Convenção de Arquivo Fonte
 - **Localização**: `comandos/*.md` e `agentes/*.md`
-- **Padrão de Caminho**: `@~/.fase/workflows/`, `@~/.fase/templates/`, `$HOME/.fase/`
+- **Padrão de Caminho**: `@./.fase-ai/workflows/`, `@./.fase-ai/templates/`, `./.fase-ai/`
 - **Propósito**: Referências universais que funcionam em todos os runtimes
 
 ### Substituição de Caminho do Installer
@@ -267,14 +267,14 @@ O installer (`dist/install.js`) converte caminhos de origem para localizações 
 
 | Runtime | Padrão de Origem | Caminho Instalado |
 |---------|---|---|
-| Claude Code | `@~/.fase/` | `~/.claude/fase/` |
-| OpenCode | `@~/.fase/` | `~/.config/opencode/fase/` |
-| Gemini | `@~/.fase/` | `~/.gemini/fase/` |
-| Codex | `@~/.fase/` | `~/.codex/fase/` |
+| Claude Code | `@./.fase-ai/` | `~/.claude/fase/` |
+| OpenCode | `@./.fase-ai/` | `~/.config/opencode/fase/` |
+| Gemini | `@./.fase-ai/` | `~/.gemini/fase/` |
+| Codex | `@./.fase-ai/` | `~/.codex/fase/` |
 
 ### Cobertura de Testes
-- ✅ Todos os 32 arquivos de comando usam padrão `@~/.fase/`
-- ✅ Todos os 12 arquivos de agente usam padrão `@~/.fase/`
+- ✅ Todos os 32 arquivos de comando usam padrão `@./.fase-ai/`
+- ✅ Todos os 12 arquivos de agente usam padrão `@./.fase-ai/`
 - ✅ Nenhuma referência de arquivo `.pt.md` restante (todos renomeados para `.md`)
 - ✅ Substituição de caminho funciona nas três funções de cópia do installer
 - ✅ OpenCode recebe caminhos corretamente formatados `~/.config/opencode/fase/`

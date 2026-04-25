@@ -11,10 +11,10 @@ Os comandos do FASE usam referências de caminho agnósticas ao ambiente que sã
 ### Arquivos Fonte (`comandos/*.md`)
 
 Os arquivos de comando fonte usam referências de caminho universal:
-- **Workflows**: `@~/.fase/workflows/workflow-name.md`
-- **Templates**: `@~/.fase/templates/template-name.md`
-- **Referências**: `@~/.fase/references/reference-name.md`
-- **Ferramentas do runtime**: `$HOME/.fase/bin/fase-tools.cjs`
+- **Workflows**: `@./.fase-ai/workflows/workflow-name.md`
+- **Templates**: `@./.fase-ai/templates/template-name.md`
+- **Referências**: `@./.fase-ai/references/reference-name.md`
+- **Ferramentas do runtime**: `./.fase-ai/bin/fase-tools.cjs`
 
 Esses caminhos são **agnósticos ao ambiente** e usados em:
 1. Blocos `<execution_context>` (para carregamento de contexto do Claude Code)
@@ -36,19 +36,19 @@ Quando FASE é instalado via `npx fase-ai [--runtime]`, o instalador (`bin/insta
 
 **Para Instalação no Gemini:**
 ```
-Fonte:       @~/.fase/workflows/plan-phase.md
+Fonte:       @./.fase-ai/workflows/plan-phase.md
 Instalado:   @~/.gemini/fase/workflows/plan-phase.md
 ```
 
 **Para Instalação no OpenCode:**
 ```
-Fonte:       $HOME/.fase/bin/fase-tools.cjs
+Fonte:       ./.fase-ai/bin/fase-tools.cjs
 Instalado:   $HOME/.config/opencode/fase/bin/fase-tools.cjs
 ```
 
 **Para Instalação no Claude Code:**
 ```
-Fonte:       ~/.fase/workflows/add-phase.md
+Fonte:       ./.fase-ai/workflows/add-phase.md
 Instalado:   ~/.claude/fase/workflows/add-phase.md
 ```
 
@@ -64,7 +64,7 @@ O instalador aplica substituições de caminho em três funções:
 
 Padrões de substituição:
 - `~/\.fase/` → `<pathPrefix>fase/` (por exemplo, `~/.claude/fase/`)
-- `$HOME/.fase/` → `<homePrefix>fase/` (por exemplo, `$HOME/.claude/fase/`)
+- `./.fase-ai/` → `<homePrefix>fase/` (por exemplo, `$HOME/.claude/fase/`)
 
 Para OpenCode especificamente:
 - `~/.fase` → `~/.config/opencode/fase`
@@ -74,7 +74,7 @@ Para OpenCode especificamente:
 
 O diretório `bin/` contém arquivos de comando pré-construídos distribuídos via NPM. Esses arquivos:
 - Têm blocos `<execution_context>` **removidos** (não necessários após instalação)
-- Têm referências inline `~/.fase/` **preservadas** para o instalador substituir
+- Têm referências inline `./.fase-ai/` **preservadas** para o instalador substituir
 - Contêm texto completamente traduzido para português
 - São instalados em localizações específicas do runtime pelo instalador
 
@@ -88,7 +88,7 @@ Esses arquivos são instalados na localização de caminho convertido (por exemp
 
 ## Uso em Desenvolvimento
 
-Ao desenvolver localmente com arquivos de comando fonte do FASE (`comandos/*.md`), você precisa ter arquivos de workflow disponíveis em `~/.fase/` para que o Claude Code carregue via blocos `<execution_context>`. Opções:
+Ao desenvolver localmente com arquivos de comando fonte do FASE (`comandos/*.md`), você precisa ter arquivos de workflow disponíveis em `./.fase-ai/` para que o Claude Code carregue via blocos `<execution_context>`. Opções:
 
 1. **Symlink para instalação do GSD:**
    ```bash
@@ -104,7 +104,7 @@ Ao desenvolver localmente com arquivos de comando fonte do FASE (`comandos/*.md`
 ## Consistência em Múltiplos Ambientes
 
 Todos os 32 comandos do FASE agora seguem a mesma convenção de caminho:
-- <i class="fa fa-check-circle"></i> 13 comandos com referências de workflow usam `@~/.fase/`
+- <i class="fa fa-check-circle"></i> 13 comandos com referências de workflow usam `@./.fase-ai/`
 - <i class="fa fa-check-circle"></i> 19 comandos sem referências externas (auto-contidos)
 - <i class="fa fa-check-circle"></i> Instalador converte corretamente caminhos para cada runtime
 - <i class="fa fa-check-circle"></i> OpenCode recebe caminhos corretamente formatados `~/.config/opencode/fase/`

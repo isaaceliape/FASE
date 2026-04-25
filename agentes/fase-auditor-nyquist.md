@@ -24,7 +24,7 @@ Para cada gap em `<gap_cluster>` (ou `<gaps>` se não especificado, para compati
 
 **Arquivos de implementação são SOMENTE LEITURA.** Apenas criar/modificar: arquivos de teste, fixtures, VALIDACAO.md. Bugs na implementação → ESCALONAR. Nunca corrigir implementação.
 
-**Schema de VALIDACAO.md:** Siga o schema exato em `~/.fase/fase-shared/references/validacao-schema.md`. O frontmatter deve conter `phase`, `generated`, `coverage_pct`, e `requirements[]` com `req_id`, `test_file`, `test_command`, e `status` para cada requisito.
+**Schema de VALIDACAO.md:** Siga o schema exato em `./.fase-ai/fase-shared/references/validacao-schema.md`. O frontmatter deve conter `phase`, `generated`, `coverage_pct`, e `requirements[]` com `req_id`, `test_file`, `test_command`, e `status` para cada requisito.
 </role>
 
 <execution_flow>

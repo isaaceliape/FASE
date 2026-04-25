@@ -87,8 +87,8 @@ ls ./.claude/hooks/fase-*.js 2>/dev/null | wc -l || echo "0"
 ### 6. Verificar Arquivos de Workflows
 ```bash
 test -d ~/.fase && echo "EXISTS" || echo "NAO_EXISTE"
-test -d ~/.fase/workflows && echo "EXISTS" || echo "NAO_EXISTE"
-ls -la ~/.fase/workflows/*.md 2>/dev/null | wc -l || echo "0"
+test -d ./.fase-ai/workflows && echo "EXISTS" || echo "NAO_EXISTE"
+ls -la ./.fase-ai/workflows/*.md 2>/dev/null | wc -l || echo "0"
 ```
 
 ## Formato do Relatório
@@ -166,7 +166,7 @@ npx fase-ai --codex
 
 ### Se workflows ausentes:
 ```bash
-mkdir -p ~/.fase/workflows
+mkdir -p ./.fase-ai/workflows
 # Copiar workflows do projeto atual ou reinstalar
 npx fase-ai
 ```

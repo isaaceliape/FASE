@@ -51,8 +51,8 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - `TEST_SETUP_SUMMARY.md` estendido com detalhes de conversão de paths do instalador
 
 ### Alterado
-- **Interno**: Padronizados todos os paths de comandos para usar o padrão `@~/.fase/`
-- **Interno**: Padronizados todos os paths de agentes para usar o padrão `@~/.fase/`
+- **Interno**: Padronizados todos os paths de comandos para usar o padrão `@./.fase-ai/`
+- **Interno**: Padronizados todos os paths de agentes para usar o padrão `@./.fase-ai/`
 - Atualizada lógica de substituição de paths do instalador (`bin/install.js`) para todos os 4 runtimes
 - Renomeados todos os arquivos de comandos de `.pt.md` para `.md` para consistência
 - Arquivos de teste atualizados para refletir novas convenções de paths padronizados
@@ -65,7 +65,7 @@ O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Detalhes Técnicos
 - Padronização de paths garante que comandos funcionem identicamente no Claude Code, OpenCode, Gemini e Codex
-- O instalador converte transparentemente `@~/.fase/` para paths específicos de cada runtime durante a instalação
+- O instalador converte transparentemente `@./.fase-ai/` para paths específicos de cada runtime durante a instalação
 - Todos os 129 testes unitários passando com as novas convenções de paths
 - Sem breaking changes — transparente para usuários finais
 

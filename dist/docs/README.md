@@ -122,7 +122,7 @@ npm run test:tmux:interaction  # 11 testes de TUI (60s)
 ### v3.2.0 (Março 2026)
 
 **Path Standardization & Multi-Runtime Architecture**
-- <i class="fa fa-check-circle"></i> Todos os comandos e agentes agora usam padrão universal `@~/.fase/`
+- <i class="fa fa-check-circle"></i> Todos os comandos e agentes agora usam padrão universal `@./.fase-ai/`
 - <i class="fa fa-check-circle"></i> Installer converte automaticamente para caminhos específicos de cada runtime
 - <i class="fa fa-check-circle"></i> 129 testes unitários com cobertura completa
 - <i class="fa fa-check-circle"></i> Documentação expandida sobre path standardization

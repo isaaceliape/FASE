@@ -247,7 +247,7 @@ Comandos e agentes do FASE usam referências de caminho padronizadas e agnóstic
 
 ### Convenção de Arquivo Fonte
 - **Localização**: `comandos/*.md` e `agentes/*.md`
-- **Padrão de Caminho**: `@~/.fase/workflows/`, `@~/.fase/templates/`, `$HOME/.fase/`
+- **Padrão de Caminho**: `@./.fase-ai/workflows/`, `@./.fase-ai/templates/`, `./.fase-ai/`
 - **Propósito**: Referências universais que funcionam em todos os runtimes
 
 ### Substituição de Caminho do Installer
@@ -255,14 +255,14 @@ O installer (`bin/install.js`) converte caminhos de origem para localizações e
 
 | Runtime | Padrão de Origem | Caminho Instalado |
 |---------|---|---|
-| Claude Code | `@~/.fase/` | `~/.claude/fase/` |
-| OpenCode | `@~/.fase/` | `~/.config/opencode/fase/` |
-| Gemini | `@~/.fase/` | `~/.gemini/fase/` |
-| Codex | `@~/.fase/` | `~/.codex/fase/` |
+| Claude Code | `@./.fase-ai/` | `~/.claude/fase/` |
+| OpenCode | `@./.fase-ai/` | `~/.config/opencode/fase/` |
+| Gemini | `@./.fase-ai/` | `~/.gemini/fase/` |
+| Codex | `@./.fase-ai/` | `~/.codex/fase/` |
 
 ### Cobertura de Testes
-- <i class="fa fa-check-circle"></i> Todos os 32 arquivos de comando usam padrão `@~/.fase/`
-- <i class="fa fa-check-circle"></i> Todos os 12 arquivos de agente usam padrão `@~/.fase/`
+- <i class="fa fa-check-circle"></i> Todos os 32 arquivos de comando usam padrão `@./.fase-ai/`
+- <i class="fa fa-check-circle"></i> Todos os 12 arquivos de agente usam padrão `@./.fase-ai/`
 - <i class="fa fa-check-circle"></i> Nenhuma referência de arquivo `.pt.md` restante (todos renomeados para `.md`)
 - <i class="fa fa-check-circle"></i> Substituição de caminho funciona nas três funções de cópia do installer
 - <i class="fa fa-check-circle"></i> OpenCode recebe caminhos corretamente formatados `~/.config/opencode/fase/`

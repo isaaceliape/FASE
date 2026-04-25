@@ -130,9 +130,9 @@ npm run test:coverage
 FASE usa referências de caminho padronizadas em todos os arquivos de comando e agente:
 
 ### Caminhos Padrão
-- **Comandos**: `comandos/*.md` usam `@~/.fase/` para todas as referências de workflow
-- **Agentes**: `agentes/*.md` usam `@~/.fase/` para todas as referências de template
-- **Installer**: Converte `@~/.fase/` para caminhos específicos de runtime durante a instalação
+- **Comandos**: `comandos/*.md` usam `@./.fase-ai/` para todas as referências de workflow
+- **Agentes**: `agentes/*.md` usam `@./.fase-ai/` para todas as referências de template
+- **Installer**: Converte `@./.fase-ai/` para caminhos específicos de runtime durante a instalação
 
 ### Caminhos de Instalação
 O installer (`bin/install.js`) converte caminhos de origem:
@@ -142,8 +142,8 @@ O installer (`bin/install.js`) converte caminhos de origem:
 - Codex: `~/.codex/fase/`
 
 ### Verificação de Teste
-- Todos os 32 comandos seguem a convenção `@~/.fase/`
-- Todos os 12 agentes seguem a convenção `@~/.fase/`
+- Todos os 32 comandos seguem a convenção `@./.fase-ai/`
+- Todos os 12 agentes seguem a convenção `@./.fase-ai/`
 - Substituição de caminho testada em install.test.js
 - Convenção de nomenclatura de arquivo: todos `.md` (sem arquivos `.pt.md`)
 

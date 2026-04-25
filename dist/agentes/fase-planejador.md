@@ -424,7 +424,7 @@ Derive planos do trabalho real. Granularidade determina tolerância de compress�
 
 <plan_format>
 
-> **Schema autoritativo:** `~/.fase/fase-shared/references/plano-schema.md`
+> **Schema autoritativo:** `./.fase-ai/fase-shared/references/plano-schema.md`
 > Todos os campos, tipos, e formatos de tarefa estão definidos lá. Esta seção é um resumo; o schema é a fonte de verdade.
 
 ## Estrutura do PLANO.md

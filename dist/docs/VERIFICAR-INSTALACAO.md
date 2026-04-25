@@ -59,7 +59,7 @@ Para cada runtime suportado:
 
 ### 3. Workflows FASE
 - Diretório `~/.fase`
-- Subdiretório `~/.fase/workflows`
+- Subdiretório `./.fase-ai/workflows`
 - Arquivos de workflow (`.md`)
 
 ## Saída do Relatório
@@ -158,7 +158,7 @@ npx fase-ai --codex
 
 ### Workflows Ausentes
 ```bash
-mkdir -p ~/.fase/workflows
+mkdir -p ./.fase-ai/workflows
 # Copiar workflows do projeto ou reinstalar
 npx fase-ai
 ```

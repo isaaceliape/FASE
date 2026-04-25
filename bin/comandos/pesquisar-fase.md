@@ -34,7 +34,7 @@ Normalize input da fase no passo 1 antes de qualquer lookup de diretório.
 ## 0. Inicializar Contexto
 
 ```bash
-INIT=$(node "$HOME/.fase/bin/fase-tools.cjs" init fase-op "$ARGUMENTS")
+INIT=$(node "./.fase-ai/bin/fase-tools.cjs" init fase-op "$ARGUMENTS")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -42,13 +42,13 @@ Extraia do init JSON: `phase_dir`, `phase_number`, `phase_name`, `phase_found`, 
 
 Resolva modelo do pesquisador:
 ```bash
-PESQUISAER_MODEL=$(node "$HOME/.fase/bin/fase-tools.cjs" resolve-model faz-fase-pesquisador --raw)
+PESQUISAER_MODEL=$(node "./.fase-ai/bin/fase-tools.cjs" resolve-model faz-fase-pesquisador --raw)
 ```
 
 ## 1. Validar Fase
 
 ```bash
-PHASE_INFO=$(node "$HOME/.fase/bin/fase-tools.cjs" roteiro get-fase "${phase_number}")
+PHASE_INFO=$(node "./.fase-ai/bin/fase-tools.cjs" roteiro get-fase "${phase_number}")
 ```
 
 **Se `found` é false:** Erro e exit. **Se `found` é true:** Extraia `phase_number`, `phase_name`, `goal` do JSON.

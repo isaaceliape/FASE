@@ -285,8 +285,8 @@ e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0
 - TEST_SETUP_SUMMARY.md estendido com detalhes de conversão de caminhos do instalador
 
 ### Alterado
-- **Interno**: Padronizados todos os referencias de caminhos de comandos para usar padrão `@~/.fase/`
-- **Interno**: Padronizados todos os referencias de caminhos de agentes para usar padrão `@~/.fase/`
+- **Interno**: Padronizados todos os referencias de caminhos de comandos para usar padrão `@./.fase-ai/`
+- **Interno**: Padronizados todos os referencias de caminhos de agentes para usar padrão `@./.fase-ai/`
 - Atualizada lógica de substituição de caminhos do instalador (bin/install.js) para os 4 runtimes
 - Renomeados todos os arquivos de comandos de `.pt.md` para `.md` para consistência
 - Atualizados arquivos de teste para refletir novas convenções de caminho padronizadas
@@ -299,7 +299,7 @@ e este projeto adiere ao [Versionamento Semântico](https://semver.org/spec/v2.0
 
 ### Detalhes Técnicos
 - Padronização de caminhos garante que comandos funcionem identicamente em Claude Code, OpenCode, Gemini e Codex
-- Instalador converte transparentemente `@~/.fase/` para caminhos específicos de runtime durante a instalação
+- Instalador converte transparentemente `@./.fase-ai/` para caminhos específicos de runtime durante a instalação
 - Todos os 129 testes unitários passando com novas convenções de caminho
 - Sem mudanças que quebram compatibilidade - transparente para usuários finais
 
