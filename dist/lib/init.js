@@ -4,7 +4,8 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { loadConfig, resolveModelInternal, findEtapaInternal, getRoadmapEtapaInternal, pathExistsInternal, generateSlugInternal, getMilestoneInfo, toPosixPath, output, error, } from './core.js';
+import { resolveModelInternal, findEtapaInternal, getRoadmapEtapaInternal, pathExistsInternal, generateSlugInternal, getMilestoneInfo, toPosixPath, output, error, } from './core.js';
+import { loadConfig } from './config.js';
 /**
  * Validates that a directory path is safe for use with shell commands.
  * Checks that the directory exists and doesn't contain suspicious patterns.

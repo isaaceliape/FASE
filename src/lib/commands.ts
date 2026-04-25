@@ -11,21 +11,20 @@
 import fs from 'fs';
 import path from 'path';
 import {
-  loadConfig,
-  isGitIgnored,
-  execGit,
   normalizeEtapaNome,
   compareEtapaNum,
   getArchivedEtapasDirs,
   generateSlugInternal,
   getMilestoneInfo,
   resolveModelInternal,
-  MODEL_PROFILES,
   toPosixPath,
   output,
   error,
   findEtapaInternal,
 } from './core.js';
+import { loadConfig } from './config.js';
+import { isGitIgnored, execGit } from './git.js';
+import { MODEL_PROFILES } from './models.js';
 import { extractFrontmatter, type ParsedFrontmatter } from './frontmatter.js';
 
 /**

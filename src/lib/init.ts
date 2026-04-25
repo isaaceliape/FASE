@@ -6,7 +6,6 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import {
-  loadConfig,
   resolveModelInternal,
   findEtapaInternal,
   getRoadmapEtapaInternal,
@@ -17,6 +16,7 @@ import {
   output,
   error,
 } from './core.js';
+import { loadConfig } from './config.js';
 
 /**
  * Validates that a directory path is safe for use with shell commands.

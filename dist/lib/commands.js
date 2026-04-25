@@ -10,7 +10,10 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { loadConfig, isGitIgnored, execGit, normalizeEtapaNome, compareEtapaNum, getArchivedEtapasDirs, generateSlugInternal, getMilestoneInfo, resolveModelInternal, MODEL_PROFILES, toPosixPath, output, error, findEtapaInternal, } from './core.js';
+import { normalizeEtapaNome, compareEtapaNum, getArchivedEtapasDirs, generateSlugInternal, getMilestoneInfo, resolveModelInternal, toPosixPath, output, error, findEtapaInternal, } from './core.js';
+import { loadConfig } from './config.js';
+import { isGitIgnored, execGit } from './git.js';
+import { MODEL_PROFILES } from './models.js';
 import { extractFrontmatter } from './frontmatter.js';
 /**
  * Validates that a user-provided path stays within the cwd boundary.

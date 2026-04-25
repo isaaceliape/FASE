@@ -6,14 +6,14 @@ import fs from 'fs';
 import path from 'path';
 import {
   escapeRegex,
-  loadConfig,
   getMilestoneInfo,
   getMilestoneEtapaFilter,
   output,
   error,
-  ensureInsidePlanejamento,
   checkDiskSpace,
 } from './core.js';
+import { loadConfig } from './config.js';
+import { ensureInsidePlanejamento } from './path.js';
 import {
   extractFrontmatter,
   reconstructFrontmatter,

@@ -4,7 +4,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { safeReadFile, output, ensureInsidePlanejamento } from './core.js';
+import { output } from './core.js';
+import { safeReadFile } from './config.js';
+import { ensureInsidePlanejamento } from './path.js';
 import { ValidationError } from './errors.js';
 
 // ─── Types ────────────────────────────────────────────────────────────────────

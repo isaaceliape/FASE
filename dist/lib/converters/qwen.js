@@ -9,7 +9,7 @@
  *
  * @module lib/converters/qwen
  */
-import { applyPathReplacements, yamlQuote, } from '../conversion-utils.js';
+import { applyPathReplacements, yamlQuote } from '../conversion-utils.js';
 /**
  * Convert frontmatter for Qwen format
  * Qwen Commands only support 'description' in frontmatter
@@ -46,9 +46,7 @@ function convertQwenFrontmatter(content) {
         // name, tools, color, skills are ignored for Qwen Commands
     }
     // Build new frontmatter (only description if present)
-    const newFrontmatter = description
-        ? `---\ndescription: ${yamlQuote(description)}\n---`
-        : '';
+    const newFrontmatter = description ? `---\ndescription: ${yamlQuote(description)}\n---` : '';
     return newFrontmatter ? `${newFrontmatter}\n${body}` : body;
 }
 /**

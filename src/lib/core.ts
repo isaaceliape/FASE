@@ -1,36 +1,26 @@
 /**
- * Core — Shared utilities, constants, and internal helpers
+ * Core — Shared utilities, types, and internal helpers
+ *
+ * Provides:
+ * - Output helpers (output, error)
+ * - Phase/Etapa utilities (will move to unified Phase module)
+ * - Roadmap utilities
+ * - Misc utilities
+ *
+ * Note: Path utilities moved to lib/path.ts
+ * Note: Git utilities moved to lib/git.ts
+ * Note: Model profiles moved to lib/models.ts
+ * Note: Config loading moved to lib/config.ts
+ *
+ * @module lib/core
  */
 
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { execSync } from 'child_process';
-import { PathTraversalError } from './errors.js';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-
-export interface ModelProfile {
-  quality: string;
-  balanced: string;
-  budget: string;
-}
-
-export interface Config {
-  model_profile: string;
-  commit_docs: boolean;
-  search_gitignored: boolean;
-  branching_strategy: string;
-  etapa_branch_template: string;
-  milestone_branch_template: string;
-  research: boolean;
-  plan_checker: boolean;
-  verifier: boolean;
-  nyquist_validation: boolean;
-  parallelization: boolean;
-  brave_search: boolean;
-  model_overrides: Record<string, string> | null;
-}
 
 export interface EtapaInfo {
   found: boolean;
@@ -45,12 +35,6 @@ export interface EtapaInfo {
   has_context: boolean;
   has_verification: boolean;
   archived?: string;
-}
-
-export interface GitResult {
-  exitCode: number;
-  stdout: string;
-  stderr: string;
 }
 
 export interface MilestoneInfo {
@@ -74,90 +58,6 @@ export interface RoadmapEtapaInfo {
 }
 
 export type MilestoneEtapaFilter = ((dirName: string) => boolean) & { phaseCount: number };
-
-// ─── Path helpers ─────────────────────────────────────────────────────────────
-
-/** Normaliza caminho relativo para usar sempre barras dianteiras (multi-plataforma). */
-export function toPosixPath(p: string): string {
-  return p.split(path.sep).join('/');
-}
-
-/** Guardrail: validates that a file path is inside .fase-ai directory */
-export function ensureInsidePlanejamento(
-  cwd: string,
-  filePath: string,
-  operation = 'file operation'
-): string {
-  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
-  const planejPath = path.join(cwd, '.fase-ai');
-  const normalizedFull = path.normalize(fullPath);
-  const normalizedPlanej = path.normalize(planejPath);
-
-  if (
-    !normalizedFull.startsWith(normalizedPlanej + path.sep) &&
-    normalizedFull !== normalizedPlanej
-  ) {
-    throw new PathTraversalError(
-      `${operation} must be inside .fase-ai/: ${filePath}`,
-      'PATH_OUTSIDE_BOUNDARY',
-      { path: filePath, boundary: '.fase-ai', operation }
-    );
-  }
-  return fullPath;
-}
-
-/** Check if a path is inside .fase-ai without throwing */
-export function isInsidePlanejamento(cwd: string, filePath: string): boolean {
-  const fullPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
-  const planejPath = path.join(cwd, '.fase-ai');
-  const normalizedFull = path.normalize(fullPath);
-  const normalizedPlanej = path.normalize(planejPath);
-  return (
-    normalizedFull.startsWith(normalizedPlanej + path.sep) || normalizedFull === normalizedPlanej
-  );
-}
-
-/**
- * Guardrail: Validates that a user-provided path doesn't escape the project boundary (cwd).
- * Protects against path traversal attacks via ../../../etc/passwd patterns.
- *
- * @param cwd - Project root directory (trusted base)
- * @param userPath - User-provided path (untrusted input)
- * @returns Resolved absolute path if valid
- * @throws PathTraversalError if path escapes project boundary
- */
-export function validatePathInsideCwd(cwd: string, userPath: string): string {
-  const resolved = path.resolve(cwd, userPath);
-  const relative = path.relative(cwd, resolved);
-
-  // Check if relative path tries to escape (starts with ..) or is absolute
-  if (relative.startsWith('..') || path.isAbsolute(relative)) {
-    throw new PathTraversalError(
-      `Path traversal detected: "${userPath}" escapes project boundary`,
-      'PATH_TRAVERSAL_DETECTED',
-      { userPath, resolved, cwd }
-    );
-  }
-
-  return resolved;
-}
-
-// ─── Model Profile Table ──────────────────────────────────────────────────────
-
-export const MODEL_PROFILES: Record<string, ModelProfile> = {
-  'gsd-planner': { quality: 'opus', balanced: 'opus', budget: 'sonnet' },
-  'gsd-roadmapper': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-executor': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-phase-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-project-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-research-synthesizer': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-debugger': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-  'gsd-codebase-mapper': { quality: 'sonnet', balanced: 'haiku', budget: 'haiku' },
-  'gsd-verifier': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-plan-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-integration-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-  'gsd-nyquist-auditor': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-};
 
 // ─── Output helpers ───────────────────────────────────────────────────────────
 
@@ -184,157 +84,8 @@ export function error(message: string): never {
   process.exit(1);
 }
 
-// ─── File & Config utilities ──────────────────────────────────────────────────
-
-export function safeReadFile(filePath: string): string | null {
-  try {
-    return fs.readFileSync(filePath, 'utf-8');
-  } catch {
-    return null;
-  }
-}
-
-export function loadConfig(cwd: string): Config {
-  const configPath = path.join(cwd, '.fase-ai', 'config.json');
-  const defaults: Config = {
-    model_profile: 'balanced',
-    commit_docs: true,
-    search_gitignored: false,
-    branching_strategy: 'none',
-    etapa_branch_template: 'gsd/phase-{phase}-{slug}',
-    milestone_branch_template: 'gsd/{milestone}-{slug}',
-    research: true,
-    plan_checker: true,
-    verifier: true,
-    nyquist_validation: true,
-    parallelization: true,
-    brave_search: false,
-    model_overrides: null,
-  };
-
-  try {
-    const raw = fs.readFileSync(configPath, 'utf-8');
-    const parsed: Record<string, unknown> = JSON.parse(raw);
-
-    // Migrate deprecated "depth" key to "granularity" with value mapping
-    if ('depth' in parsed && !('granularity' in parsed)) {
-      const depthToGranularity: Record<string, string> = {
-        quick: 'coarse',
-        standard: 'standard',
-        comprehensive: 'fine',
-      };
-      parsed['granularity'] = depthToGranularity[parsed['depth'] as string] ?? parsed['depth'];
-      delete parsed['depth'];
-      try {
-        fs.writeFileSync(configPath, JSON.stringify(parsed, null, 2), 'utf-8');
-      } catch (err) {
-        process.stderr.write(
-          `[core:loadConfig] Failed to migrate config: ${(err as Error).message}\n`
-        );
-      }
-    }
-
-    const get = (key: string, nested?: { section: string; field: string }): unknown => {
-      if (parsed[key] !== undefined) return parsed[key];
-      if (nested) {
-        const section = parsed[nested.section];
-        if (section && typeof section === 'object' && section !== null) {
-          const val = (section as Record<string, unknown>)[nested.field];
-          if (val !== undefined) return val;
-        }
-      }
-      return undefined;
-    };
-
-    const parallelization = (() => {
-      const val = get('parallelization');
-      if (typeof val === 'boolean') return val;
-      if (typeof val === 'object' && val !== null && 'enabled' in val)
-        return (val as { enabled: boolean }).enabled;
-      return defaults.parallelization;
-    })();
-
-    return {
-      model_profile: (get('model_profile') ?? defaults.model_profile) as string,
-      commit_docs: (get('commit_docs', { section: 'planning', field: 'commit_docs' }) ??
-        defaults.commit_docs) as boolean,
-      search_gitignored: (get('search_gitignored', {
-        section: 'planning',
-        field: 'search_gitignored',
-      }) ?? defaults.search_gitignored) as boolean,
-      branching_strategy: (get('branching_strategy', {
-        section: 'git',
-        field: 'branching_strategy',
-      }) ?? defaults.branching_strategy) as string,
-      etapa_branch_template: (get('etapa_branch_template', {
-        section: 'git',
-        field: 'etapa_branch_template',
-      }) ?? defaults.etapa_branch_template) as string,
-      milestone_branch_template: (get('milestone_branch_template', {
-        section: 'git',
-        field: 'milestone_branch_template',
-      }) ?? defaults.milestone_branch_template) as string,
-      research: (get('research', { section: 'workflow', field: 'research' }) ??
-        defaults.research) as boolean,
-      plan_checker: (get('plan_checker', { section: 'workflow', field: 'plan_check' }) ??
-        defaults.plan_checker) as boolean,
-      verifier: (get('verifier', { section: 'workflow', field: 'verifier' }) ??
-        defaults.verifier) as boolean,
-      nyquist_validation: (get('nyquist_validation', {
-        section: 'workflow',
-        field: 'nyquist_validation',
-      }) ?? defaults.nyquist_validation) as boolean,
-      parallelization,
-      brave_search: (get('brave_search') ?? defaults.brave_search) as boolean,
-      model_overrides:
-        (parsed['model_overrides'] as Record<string, string> | null | undefined) ?? null,
-    };
-  } catch (err) {
-    process.stderr.write(
-      `[core:loadConfig] Failed to load config from ${configPath}: ${(err as Error).message}\n`
-    );
-    return defaults;
-  }
-}
-
-// ─── Git utilities ────────────────────────────────────────────────────────────
-
-export function isGitIgnored(cwd: string, targetPath: string): boolean {
-  try {
-    // --no-index checks .gitignore rules regardless of whether the file is tracked.
-    execSync('git check-ignore -q --no-index -- ' + targetPath.replace(/[^a-zA-Z0-9._\-/]/g, ''), {
-      cwd,
-      stdio: 'pipe',
-    });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function execGit(cwd: string, args: string[]): GitResult {
-  try {
-    const escaped = args.map((a) => {
-      if (/^[a-zA-Z0-9._\-/=:@]+$/.test(a)) return a;
-      return "'" + a.replace(/'/g, "'\\''") + "'";
-    });
-    const stdout = execSync('git ' + escaped.join(' '), {
-      cwd,
-      stdio: 'pipe',
-      encoding: 'utf-8',
-    });
-    return { exitCode: 0, stdout: (stdout as string).trim(), stderr: '' };
-  } catch (err) {
-    const e = err as NodeJS.ErrnoException & { status?: number; stdout?: Buffer; stderr?: Buffer };
-    return {
-      exitCode: e.status ?? 1,
-      stdout: (e.stdout ?? '').toString().trim(),
-      stderr: (e.stderr ?? '').toString().trim(),
-    };
-  }
-}
-
 // ─── Etapa utilities ──────────────────────────────────────────────────────────
+// Note: These will move to a unified Phase module (Candidate 2)
 
 export function escapeRegex(value: unknown): string {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -383,6 +134,10 @@ export function compareEtapaNum(a: string, b: string): number {
     if (av !== bv) return av - bv;
   }
   return 0;
+}
+
+export function toPosixPath(p: string): string {
+  return p.split(path.sep).join('/');
 }
 
 export function searchEtapaInDir(
@@ -537,7 +292,7 @@ export function getArchivedEtapasDirs(cwd: string): ArchivedEtapaEntry[] {
   return results;
 }
 
-// ─── Roadmap & model utilities ────────────────────────────────────────────────
+// ─── Roadmap utilities ────────────────────────────────────────────────────────
 
 export function getRoadmapEtapaInternal(
   cwd: string,
@@ -582,43 +337,6 @@ export function getRoadmapEtapaInternal(
     );
     return null;
   }
-}
-
-export function resolveModelInternal(cwd: string, agentType: string): string {
-  const config = loadConfig(cwd);
-
-  const override = config.model_overrides?.[agentType];
-  if (override) {
-    return override === 'opus' ? 'inherit' : override;
-  }
-
-  const profile = config.model_profile || 'balanced';
-  const agentModels = MODEL_PROFILES[agentType];
-  if (!agentModels) return 'sonnet';
-  const resolved =
-    agentModels[profile as keyof ModelProfile] || agentModels['balanced'] || 'sonnet';
-  return resolved === 'opus' ? 'inherit' : resolved;
-}
-
-// ─── Misc utilities ───────────────────────────────────────────────────────────
-
-export function pathExistsInternal(cwd: string, targetPath: string): boolean {
-  const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(cwd, targetPath);
-  try {
-    fs.statSync(fullPath);
-    return true;
-  } catch {
-    // Silently return false for non-existent paths (expected behavior)
-    return false;
-  }
-}
-
-export function generateSlugInternal(text: string | null | undefined): string | null {
-  if (!text) return null;
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 export function getMilestoneInfo(cwd: string): MilestoneInfo {
@@ -688,6 +406,75 @@ export function getMilestoneEtapaFilter(cwd: string): MilestoneEtapaFilter {
   return isDirInMilestone as MilestoneEtapaFilter;
 }
 
+// ─── Misc utilities ───────────────────────────────────────────────────────────
+
+export function pathExistsInternal(cwd: string, targetPath: string): boolean {
+  const fullPath = path.isAbsolute(targetPath) ? targetPath : path.join(cwd, targetPath);
+  try {
+    fs.statSync(fullPath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function generateSlugInternal(text: string | null | undefined): string | null {
+  if (!text) return null;
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Resolve model for an agent type based on config profile
+ *
+ * @param cwd - Project root directory
+ * @param agentType - Agent type name
+ * @returns Resolved model name or 'inherit' for opus
+ */
+export function resolveModelInternal(cwd: string, agentType: string): string {
+  const configPath = path.join(cwd, '.fase-ai', 'config.json');
+  let configProfile = 'balanced';
+  let modelOverrides: Record<string, string> | null = null;
+
+  try {
+    const raw = fs.readFileSync(configPath, 'utf-8');
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    configProfile = (parsed['model_profile'] as string) ?? 'balanced';
+    modelOverrides = (parsed['model_overrides'] as Record<string, string> | null) ?? null;
+  } catch {
+    // Use defaults if config not found
+  }
+
+  // Import MODEL_PROFILES from models.ts inline to avoid circular dependency
+  const MODEL_PROFILES: Record<string, { quality: string; balanced: string; budget: string }> = {
+    'gsd-planner': { quality: 'opus', balanced: 'opus', budget: 'sonnet' },
+    'gsd-roadmapper': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+    'gsd-executor': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+    'gsd-phase-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-project-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-research-synthesizer': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-debugger': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
+    'gsd-codebase-mapper': { quality: 'sonnet', balanced: 'haiku', budget: 'haiku' },
+    'gsd-verifier': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-plan-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-integration-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+    'gsd-nyquist-auditor': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
+  };
+
+  const override = modelOverrides?.[agentType];
+  if (override) {
+    return override === 'opus' ? 'inherit' : override;
+  }
+
+  const agentModels = MODEL_PROFILES[agentType];
+  if (!agentModels) return 'sonnet';
+  const resolved =
+    agentModels[configProfile as keyof typeof agentModels] || agentModels['balanced'] || 'sonnet';
+  return resolved === 'opus' ? 'inherit' : resolved;
+}
+
 // ─── Disk space utilities ─────────────────────────────────────────────────────
 
 /**
@@ -744,13 +531,12 @@ export function checkDiskSpace(targetPath: string, minBytes: number = 1024 * 102
     }
 
     // If we can't determine, assume OK but log warning
-    process.stderr.write(`[core:checkDiskSpace] Could not verify disk space for ${targetPath}\n`);
+    process.stderr.write(`[core:checkDiskSpace] Unable to determine disk space for ${dir}\n`);
     return true;
   } catch (err) {
     process.stderr.write(
-      `[core:checkDiskSpace] Error checking disk space: ${(err as Error).message}\n`
+      `[core:checkDiskSpace] Failed to check disk space: ${(err as Error).message}\n`
     );
-    // If check fails, assume OK to avoid blocking operations
-    return true;
+    return true; // Assume OK if check fails
   }
 }

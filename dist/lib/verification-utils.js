@@ -89,7 +89,10 @@ function determineStatusLabel(result) {
  */
 export function isValidCommitHash(cwd, hash) {
     try {
-        const output = execSync(`git -C "${cwd}" cat-file -t "${hash}"`, { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] });
+        const output = execSync(`git -C "${cwd}" cat-file -t "${hash}"`, {
+            encoding: 'utf-8',
+            stdio: ['pipe', 'pipe', 'pipe'],
+        });
         return output.trim() === 'commit';
     }
     catch {

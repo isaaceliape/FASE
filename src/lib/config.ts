@@ -1,11 +1,167 @@
 /**
- * Config — Planning config CRUD operations
+ * Config — Configuration loading and CLI operations
+ *
+ * Provides:
+ * - Config interface and loading utilities
+ * - CLI commands for config CRUD (ensure-section, set, get)
+ *
+ * @module lib/config
  */
 
 import fs from 'fs';
 import path from 'path';
 import { output } from './core.js';
 import { ConfigError, ValidationError, FileError } from './errors.js';
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+/**
+ * FASE configuration structure
+ */
+export interface Config {
+  model_profile: string;
+  commit_docs: boolean;
+  search_gitignored: boolean;
+  branching_strategy: string;
+  etapa_branch_template: string;
+  milestone_branch_template: string;
+  research: boolean;
+  plan_checker: boolean;
+  verifier: boolean;
+  nyquist_validation: boolean;
+  parallelization: boolean;
+  brave_search: boolean;
+  model_overrides: Record<string, string> | null;
+}
+
+// ─── Utilities ────────────────────────────────────────────────────────────────
+
+/**
+ * Safely read a file, returning null if it doesn't exist
+ *
+ * @param filePath - Path to file
+ * @returns File content or null if not found
+ */
+export function safeReadFile(filePath: string): string | null {
+  try {
+    return fs.readFileSync(filePath, 'utf-8');
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Load FASE configuration from .fase-ai/config.json
+ *
+ * Merges user config with defaults, handles migration of deprecated keys.
+ *
+ * @param cwd - Project root directory
+ * @returns Config object with all settings
+ */
+export function loadConfig(cwd: string): Config {
+  const configPath = path.join(cwd, '.fase-ai', 'config.json');
+  const defaults: Config = {
+    model_profile: 'balanced',
+    commit_docs: true,
+    search_gitignored: false,
+    branching_strategy: 'none',
+    etapa_branch_template: 'gsd/phase-{phase}-{slug}',
+    milestone_branch_template: 'gsd/{milestone}-{slug}',
+    research: true,
+    plan_checker: true,
+    verifier: true,
+    nyquist_validation: true,
+    parallelization: true,
+    brave_search: false,
+    model_overrides: null,
+  };
+
+  try {
+    const raw = fs.readFileSync(configPath, 'utf-8');
+    const parsed: Record<string, unknown> = JSON.parse(raw);
+
+    // Migrate deprecated "depth" key to "granularity" with value mapping
+    if ('depth' in parsed && !('granularity' in parsed)) {
+      const depthToGranularity: Record<string, string> = {
+        quick: 'coarse',
+        standard: 'standard',
+        comprehensive: 'fine',
+      };
+      parsed['granularity'] = depthToGranularity[parsed['depth'] as string] ?? parsed['depth'];
+      delete parsed['depth'];
+      try {
+        fs.writeFileSync(configPath, JSON.stringify(parsed, null, 2), 'utf-8');
+      } catch (err) {
+        process.stderr.write(
+          `[config:loadConfig] Failed to migrate config: ${(err as Error).message}\n`
+        );
+      }
+    }
+
+    const get = (key: string, nested?: { section: string; field: string }): unknown => {
+      if (parsed[key] !== undefined) return parsed[key];
+      if (nested) {
+        const section = parsed[nested.section];
+        if (section && typeof section === 'object' && section !== null) {
+          const val = (section as Record<string, unknown>)[nested.field];
+          if (val !== undefined) return val;
+        }
+      }
+      return undefined;
+    };
+
+    const parallelization = (() => {
+      const val = get('parallelization');
+      if (typeof val === 'boolean') return val;
+      if (typeof val === 'object' && val !== null && 'enabled' in val)
+        return (val as { enabled: boolean }).enabled;
+      return defaults.parallelization;
+    })();
+
+    return {
+      model_profile: (get('model_profile') ?? defaults.model_profile) as string,
+      commit_docs: (get('commit_docs', { section: 'planning', field: 'commit_docs' }) ??
+        defaults.commit_docs) as boolean,
+      search_gitignored: (get('search_gitignored', {
+        section: 'planning',
+        field: 'search_gitignored',
+      }) ?? defaults.search_gitignored) as boolean,
+      branching_strategy: (get('branching_strategy', {
+        section: 'git',
+        field: 'branching_strategy',
+      }) ?? defaults.branching_strategy) as string,
+      etapa_branch_template: (get('etapa_branch_template', {
+        section: 'git',
+        field: 'etapa_branch_template',
+      }) ?? defaults.etapa_branch_template) as string,
+      milestone_branch_template: (get('milestone_branch_template', {
+        section: 'git',
+        field: 'milestone_branch_template',
+      }) ?? defaults.milestone_branch_template) as string,
+      research: (get('research', { section: 'workflow', field: 'research' }) ??
+        defaults.research) as boolean,
+      plan_checker: (get('plan_checker', { section: 'workflow', field: 'plan_check' }) ??
+        defaults.plan_checker) as boolean,
+      verifier: (get('verifier', { section: 'workflow', field: 'verifier' }) ??
+        defaults.verifier) as boolean,
+      nyquist_validation: (get('nyquist_validation', {
+        section: 'workflow',
+        field: 'nyquist_validation',
+      }) ?? defaults.nyquist_validation) as boolean,
+      parallelization,
+      brave_search: (get('brave_search') ?? defaults.brave_search) as boolean,
+      model_overrides:
+        (parsed['model_overrides'] as Record<string, string> | null | undefined) ?? null,
+    };
+  } catch (err) {
+    process.stderr.write(
+      `[config:loadConfig] Failed to load config from ${configPath}: ${(err as Error).message}\n`
+    );
+    return defaults;
+  }
+}
+
+// ─── CLI Commands ─────────────────────────────────────────────────────────────
 
 export function cmdConfigEnsureSection(cwd: string, raw: boolean): void {
   const configPath = path.join(cwd, '.fase-ai', 'config.json');

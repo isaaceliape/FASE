@@ -1,26 +1,19 @@
 /**
- * Core — Shared utilities, constants, and internal helpers
+ * Core — Shared utilities, types, and internal helpers
+ *
+ * Provides:
+ * - Output helpers (output, error)
+ * - Phase/Etapa utilities (will move to unified Phase module)
+ * - Roadmap utilities
+ * - Misc utilities
+ *
+ * Note: Path utilities moved to lib/path.ts
+ * Note: Git utilities moved to lib/git.ts
+ * Note: Model profiles moved to lib/models.ts
+ * Note: Config loading moved to lib/config.ts
+ *
+ * @module lib/core
  */
-export interface ModelProfile {
-    quality: string;
-    balanced: string;
-    budget: string;
-}
-export interface Config {
-    model_profile: string;
-    commit_docs: boolean;
-    search_gitignored: boolean;
-    branching_strategy: string;
-    etapa_branch_template: string;
-    milestone_branch_template: string;
-    research: boolean;
-    plan_checker: boolean;
-    verifier: boolean;
-    nyquist_validation: boolean;
-    parallelization: boolean;
-    brave_search: boolean;
-    model_overrides: Record<string, string> | null;
-}
 export interface EtapaInfo {
     found: boolean;
     directory: string;
@@ -34,11 +27,6 @@ export interface EtapaInfo {
     has_context: boolean;
     has_verification: boolean;
     archived?: string;
-}
-export interface GitResult {
-    exitCode: number;
-    stdout: string;
-    stderr: string;
 }
 export interface MilestoneInfo {
     version: string;
@@ -60,41 +48,28 @@ export interface RoadmapEtapaInfo {
 export type MilestoneEtapaFilter = ((dirName: string) => boolean) & {
     phaseCount: number;
 };
-/** Normaliza caminho relativo para usar sempre barras dianteiras (multi-plataforma). */
-export declare function toPosixPath(p: string): string;
-/** Guardrail: validates that a file path is inside .fase-ai directory */
-export declare function ensureInsidePlanejamento(cwd: string, filePath: string, operation?: string): string;
-/** Check if a path is inside .fase-ai without throwing */
-export declare function isInsidePlanejamento(cwd: string, filePath: string): boolean;
-/**
- * Guardrail: Validates that a user-provided path doesn't escape the project boundary (cwd).
- * Protects against path traversal attacks via ../../../etc/passwd patterns.
- *
- * @param cwd - Project root directory (trusted base)
- * @param userPath - User-provided path (untrusted input)
- * @returns Resolved absolute path if valid
- * @throws PathTraversalError if path escapes project boundary
- */
-export declare function validatePathInsideCwd(cwd: string, userPath: string): string;
-export declare const MODEL_PROFILES: Record<string, ModelProfile>;
 export declare function output(result: unknown, raw?: boolean, rawValue?: unknown): void;
 export declare function error(message: string): never;
-export declare function safeReadFile(filePath: string): string | null;
-export declare function loadConfig(cwd: string): Config;
-export declare function isGitIgnored(cwd: string, targetPath: string): boolean;
-export declare function execGit(cwd: string, args: string[]): GitResult;
 export declare function escapeRegex(value: unknown): string;
 export declare function normalizeEtapaNome(etapa: unknown): string;
 export declare function compareEtapaNum(a: string, b: string): number;
+export declare function toPosixPath(p: string): string;
 export declare function searchEtapaInDir(baseDir: string, relBase: string, normalized: string): EtapaInfo | null;
 export declare function findEtapaInternal(cwd: string, etapa: string): EtapaInfo | null;
 export declare function getArchivedEtapasDirs(cwd: string): ArchivedEtapaEntry[];
 export declare function getRoadmapEtapaInternal(cwd: string, etapaNum: string | number): RoadmapEtapaInfo | null;
-export declare function resolveModelInternal(cwd: string, agentType: string): string;
-export declare function pathExistsInternal(cwd: string, targetPath: string): boolean;
-export declare function generateSlugInternal(text: string | null | undefined): string | null;
 export declare function getMilestoneInfo(cwd: string): MilestoneInfo;
 export declare function getMilestoneEtapaFilter(cwd: string): MilestoneEtapaFilter;
+export declare function pathExistsInternal(cwd: string, targetPath: string): boolean;
+export declare function generateSlugInternal(text: string | null | undefined): string | null;
+/**
+ * Resolve model for an agent type based on config profile
+ *
+ * @param cwd - Project root directory
+ * @param agentType - Agent type name
+ * @returns Resolved model name or 'inherit' for opus
+ */
+export declare function resolveModelInternal(cwd: string, agentType: string): string;
 /**
  * Validate environment variables and return status.
  * @returns Object with valid status, missing vars, and warnings
