@@ -56,10 +56,16 @@ export function compareEtapaNum(a, b) {
         return la < lb ? -1 : 1;
     }
     const aDecParts = pa[3]
-        ? pa[3].slice(1).split('.').map((p) => parseInt(p, 10))
+        ? pa[3]
+            .slice(1)
+            .split('.')
+            .map((p) => parseInt(p, 10))
         : [];
     const bDecParts = pb[3]
-        ? pb[3].slice(1).split('.').map((p) => parseInt(p, 10))
+        ? pb[3]
+            .slice(1)
+            .split('.')
+            .map((p) => parseInt(p, 10))
         : [];
     const maxLen = Math.max(aDecParts.length, bDecParts.length);
     if (aDecParts.length === 0 && bDecParts.length > 0)
@@ -112,7 +118,10 @@ export function searchEtapaInDir(baseDir, relBase, normalized) {
             phase_number: etapaNumber,
             phase_name: etapaNome,
             phase_slug: etapaNome
-                ? etapaNome.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+                ? etapaNome
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '')
                 : null,
             plans,
             summaries,

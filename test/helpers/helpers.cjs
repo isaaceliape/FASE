@@ -13,19 +13,22 @@ const TOOLS_PATH = path.join(__dirname, '..', '..', 'dist', 'fase-tools.js');
  *
  * @param {string|string[]} args - Command string (shell-interpreted) or array
  *   of arguments (shell-bypassed via execFileSync, safe for JSON and dollar signs).
- * @param {string} cwd - Working directory.
+ * @param {string} cwd - Working directory (passed via --cwd argument).
  */
 function runGsdTools(args, cwd = process.cwd()) {
   try {
     let result;
+    // Always pass --cwd to ensure CLI knows the correct cwd for path checks
+    const cwdArg = cwd !== process.cwd() ? ['--cwd', cwd] : [];
     if (Array.isArray(args)) {
-      result = execFileSync(process.execPath, [TOOLS_PATH, ...args], {
+      result = execFileSync(process.execPath, [TOOLS_PATH, ...args, ...cwdArg], {
         cwd,
         encoding: 'utf-8',
         stdio: ['pipe', 'pipe', 'pipe'],
       });
     } else {
-      result = execSync(`node "${TOOLS_PATH}" ${args}`, {
+      const cwdStr = cwd !== process.cwd() ? ` --cwd "${cwd}"` : '';
+      result = execSync(`node "${TOOLS_PATH}" ${args}${cwdStr}`, {
         cwd,
         encoding: 'utf-8',
         stdio: ['pipe', 'pipe', 'pipe'],
@@ -44,21 +47,21 @@ function runGsdTools(args, cwd = process.cwd()) {
 // Create temp directory structure
 function createTempProject() {
   const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'gsd-test-'));
-  fs.mkdirSync(path.join(tmpDir, '.fase-ai-local', 'etapas'), { recursive: true });
+  fs.mkdirSync(path.join(tmpDir, '.fase-ai', 'etapas'), { recursive: true });
   return tmpDir;
 }
 
 // Create temp directory with initialized git repo and at least one commit
 function createTempGitProject() {
   const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'gsd-test-'));
-  fs.mkdirSync(path.join(tmpDir, '.fase-ai-local', 'etapas'), { recursive: true });
+  fs.mkdirSync(path.join(tmpDir, '.fase-ai', 'etapas'), { recursive: true });
 
   execSync('git init', { cwd: tmpDir, stdio: 'pipe' });
   execSync('git config user.email "test@test.com"', { cwd: tmpDir, stdio: 'pipe' });
   execSync('git config user.name "Test"', { cwd: tmpDir, stdio: 'pipe' });
 
   fs.writeFileSync(
-    path.join(tmpDir, '.fase-ai-local', 'PROJECT.md'),
+    path.join(tmpDir, '.fase-ai', 'PROJECT.md'),
     '# Project\n\nTest project.\n'
   );
 

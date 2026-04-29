@@ -3,7 +3,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { normalizeEtapaNome, findEtapaInternal, getMilestoneInfo, output, error, } from './core.js';
+import { normalizeEtapaNome, findEtapaInternal, getMilestoneInfo, output, error } from './core.js';
 import { safeReadFile } from './config.js';
 import { execGit } from './git.js';
 import { extractFrontmatter, parseMustHavesBlock } from './frontmatter.js';
