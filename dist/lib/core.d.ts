@@ -9,6 +9,7 @@
  */
 export { EtapaInfo, MilestoneInfo, ArchivedEtapaEntry, RoadmapEtapaInfo, MilestoneEtapaFilter, escapeRegex, normalizeEtapaNome, compareEtapaNum, searchEtapaInDir, findEtapaInternal, getArchivedEtapasDirs, getRoadmapEtapaInternal, getMilestoneInfo, getMilestoneEtapaFilter, } from './phase.js';
 export { toPosixPath } from './path.js';
+export { MODEL_PROFILES, ModelProfile } from './models.js';
 /**
  * Output a JSON result to stdout.
  * For large payloads (>50KB), writes to a temp file and outputs @file:path.
@@ -28,7 +29,7 @@ export declare function pathExistsInternal(cwd: string, targetPath: string): boo
 export declare function generateSlugInternal(text: string | null | undefined): string | null;
 /**
  * Resolve model for an agent type based on config profile.
- * Imports MODEL_PROFILES inline to avoid circular dependency.
+ * Reads config from .fase-ai/config.json and uses MODEL_PROFILES from models.ts.
  */
 export declare function resolveModelInternal(cwd: string, agentType: string): string;
 /**

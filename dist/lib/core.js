@@ -11,10 +11,13 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { execSync } from 'child_process';
+import { MODEL_PROFILES } from './models.js';
 // ─── Re-export from phase.ts for backward compatibility ───────────────────────
 export { escapeRegex, normalizeEtapaNome, compareEtapaNum, searchEtapaInDir, findEtapaInternal, getArchivedEtapasDirs, getRoadmapEtapaInternal, getMilestoneInfo, getMilestoneEtapaFilter, } from './phase.js';
 // ─── Re-export from path.ts for backward compatibility ────────────────────────
 export { toPosixPath } from './path.js';
+// ─── Re-export from models.ts for backward compatibility ──────────────────────
+export { MODEL_PROFILES } from './models.js';
 // ─── Output helpers ───────────────────────────────────────────────────────────
 /**
  * Output a JSON result to stdout.
@@ -71,7 +74,7 @@ export function generateSlugInternal(text) {
 }
 /**
  * Resolve model for an agent type based on config profile.
- * Imports MODEL_PROFILES inline to avoid circular dependency.
+ * Reads config from .fase-ai/config.json and uses MODEL_PROFILES from models.ts.
  */
 export function resolveModelInternal(cwd, agentType) {
     const configPath = path.join(cwd, '.fase-ai', 'config.json');
@@ -86,20 +89,6 @@ export function resolveModelInternal(cwd, agentType) {
     catch {
         // Use defaults if config not found
     }
-    const MODEL_PROFILES = {
-        'gsd-planner': { quality: 'opus', balanced: 'opus', budget: 'sonnet' },
-        'gsd-roadmapper': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-        'gsd-executor': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-        'gsd-phase-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-project-researcher': { quality: 'opus', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-research-synthesizer': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-debugger': { quality: 'opus', balanced: 'sonnet', budget: 'sonnet' },
-        'gsd-codebase-mapper': { quality: 'sonnet', balanced: 'haiku', budget: 'haiku' },
-        'gsd-verifier': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-plan-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-integration-checker': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-        'gsd-nyquist-auditor': { quality: 'sonnet', balanced: 'sonnet', budget: 'haiku' },
-    };
     const override = modelOverrides?.[agentType];
     if (override) {
         return override === 'opus' ? 'inherit' : override;
